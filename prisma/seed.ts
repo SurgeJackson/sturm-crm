@@ -80,16 +80,28 @@ async function main() {
   await db.collection("Client").updateOne(
     { _id: new ObjectId("000000000000000000000001") },
     {
+      $set: {
+        clientType: "INDIVIDUAL",
+        phone: "+7 900 000-00-01",
+        email: "client@example.com",
+        messenger: null,
+        city: "Москва",
+        source: "SHOWROOM",
+        linkedDesignerId: null,
+        status: "NEW",
+        responsibleId: owner._id,
+        updatedAt: now,
+        archivedAt: null,
+        lastContactAt: null,
+        nextContactAt: null,
+        comment: "Seed-запись для проверки dashboard",
+        notes: "Seed-запись для проверки dashboard"
+      },
       $setOnInsert: {
         _id: new ObjectId("000000000000000000000001"),
         name: "Клиент шоурума",
-        status: "ACTIVE",
-        responsibleId: owner._id,
         createdById: owner._id,
-        createdAt: now,
-        updatedAt: now,
-        archivedAt: null,
-        notes: "Seed-запись для проверки dashboard"
+        createdAt: now
       }
     },
     { upsert: true }
@@ -98,16 +110,41 @@ async function main() {
   await db.collection("Designer").updateOne(
     { _id: new ObjectId("000000000000000000000002") },
     {
+      $set: {
+        studio: "Бюро Север",
+        role: "BUREAU_HEAD",
+        phone: "+7 900 000-00-02",
+        email: "designer@example.com",
+        messenger: null,
+        website: "https://example.com",
+        city: "Санкт-Петербург",
+        specialization: ["APARTMENTS", "COMMERCIAL"],
+        projectSegment: "PREMIUM",
+        source: "RECOMMENDATION",
+        status: "ACTIVE",
+        responsibleId: owner._id,
+        relationshipStage: "NEW_CONTACT",
+        potential: "A",
+        loyalty: "WARM",
+        cooperationTerms: null,
+        firstContactAt: now,
+        lastTouchAt: now,
+        nextStepAt: new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000),
+        nextStepText: "Позвонить и договориться о встрече",
+        transferredObjectsCount: 0,
+        activeObjectsCount: 0,
+        proposalsTotalAmount: 0,
+        paymentsTotalAmount: 0,
+        updatedAt: now,
+        archivedAt: null,
+        comment: "Seed-запись для проверки dashboard",
+        notes: "Seed-запись для проверки dashboard"
+      },
       $setOnInsert: {
         _id: new ObjectId("000000000000000000000002"),
         name: "Архитектурное бюро Север",
-        status: "ACTIVE",
-        responsibleId: owner._id,
         createdById: owner._id,
-        createdAt: now,
-        updatedAt: now,
-        archivedAt: null,
-        notes: "Seed-запись для проверки dashboard"
+        createdAt: now
       }
     },
     { upsert: true }

@@ -1,4 +1,17 @@
-import type { AuditEntityType, EntityStatus, TaskStatus, UserRole } from "@prisma/client";
+import type {
+  AuditEntityType,
+  ClientSource,
+  ClientStatus,
+  ClientType,
+  DesignerLoyalty,
+  DesignerPotential,
+  DesignerRelationshipStage,
+  DesignerRole,
+  DesignerSource,
+  EntityStatus,
+  TaskStatus,
+  UserRole
+} from "@prisma/client";
 
 export type CrmUser = {
   id: string;
@@ -30,4 +43,44 @@ export type AuditLogPayload = {
   userId: string;
   before?: unknown;
   after?: unknown;
+};
+
+export type ClientFormValues = {
+  name: string;
+  clientType: ClientType;
+  phone?: string;
+  email?: string;
+  messenger?: string;
+  city?: string;
+  source: ClientSource;
+  linkedDesignerId?: string;
+  responsibleId: string;
+  status: ClientStatus;
+  comment?: string;
+  lastContactAt?: string;
+  nextContactAt?: string;
+};
+
+export type DesignerFormValues = {
+  name: string;
+  studio?: string;
+  role: DesignerRole;
+  phone?: string;
+  email?: string;
+  messenger?: string;
+  website?: string;
+  city: string;
+  specialization: string[];
+  projectSegment?: string;
+  source: DesignerSource;
+  responsibleId: string;
+  relationshipStage: DesignerRelationshipStage;
+  potential: DesignerPotential;
+  loyalty: DesignerLoyalty;
+  cooperationTerms?: string;
+  firstContactAt?: string;
+  lastTouchAt?: string;
+  nextStepAt: string;
+  nextStepText: string;
+  comment?: string;
 };

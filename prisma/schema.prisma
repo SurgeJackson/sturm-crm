@@ -22,6 +22,104 @@ enum EntityStatus {
   SLEEPING
 }
 
+enum ClientType {
+  INDIVIDUAL
+  LEGAL_ENTITY
+  COMPANY_REPRESENTATIVE
+  DESIGNER_FOR_SELF
+  CUSTOMER_REPRESENTATIVE
+}
+
+enum ClientSource {
+  SHOWROOM
+  WEBSITE
+  PHONE
+  DESIGNER
+  RECOMMENDATION
+  EXHIBITION
+  SOCIAL_MEDIA
+  OTHER
+}
+
+enum ClientStatus {
+  NEW
+  ACTIVE
+  SLEEPING
+  REGULAR
+  LOST
+  ARCHIVED
+}
+
+enum DesignerRole {
+  DESIGNER
+  ARCHITECT
+  BUREAU_HEAD
+  COMPLETER
+  DECORATOR
+  DESIGNER_ASSISTANT
+  OTHER
+}
+
+enum DesignerSpecialization {
+  APARTMENTS
+  HOUSES
+  COMMERCIAL
+  HORECA
+  HOTELS
+  OFFICES
+  OTHER
+}
+
+enum DesignerProjectSegment {
+  ECONOMY
+  MIDDLE
+  MIDDLE_PLUS
+  PREMIUM
+  LUXURY
+}
+
+enum DesignerSource {
+  EXHIBITION
+  RECOMMENDATION
+  SOCIAL_MEDIA
+  INCOMING
+  DATABASE
+  SHOWROOM
+  EVENT
+  OTHER
+}
+
+enum DesignerRelationshipStage {
+  NEW_CONTACT
+  FIRST_CONTACT
+  INTERESTED
+  INVITED_TO_SHOWROOM
+  MEETING_DONE
+  PRESENTATION_DONE
+  TERMS_DISCUSSING
+  IN_DEVELOPMENT
+  FIRST_OBJECT_RECEIVED
+  ACTIVE_PARTNER
+  KEY_PARTNER
+  SLEEPING
+  LOST_OR_IRRELEVANT
+}
+
+enum DesignerPotential {
+  A
+  B
+  C
+  D
+}
+
+enum DesignerLoyalty {
+  COLD
+  NEUTRAL
+  WARM
+  LOYAL
+  AMBASSADOR
+}
+
 enum TaskStatus {
   NEW
   IN_PROGRESS
@@ -69,30 +167,63 @@ model User {
 }
 
 model Client {
-  id            String       @id @default(auto()) @map("_id") @db.ObjectId
-  name          String
-  status        EntityStatus @default(ACTIVE)
-  responsibleId String       @db.ObjectId
-  createdById   String       @db.ObjectId
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
-  archivedAt    DateTime?
-  notes         String?
+  id               String       @id @default(auto()) @map("_id") @db.ObjectId
+  name             String
+  clientType       ClientType   @default(INDIVIDUAL)
+  phone            String?
+  email            String?
+  messenger        String?
+  city             String?
+  source           ClientSource @default(SHOWROOM)
+  linkedDesignerId String?      @db.ObjectId
+  responsibleId    String       @db.ObjectId
+  status           ClientStatus @default(NEW)
+  comment          String?
+  createdById      String       @db.ObjectId
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+  archivedAt       DateTime?
+  lastContactAt    DateTime?
+  nextContactAt    DateTime?
+  notes            String?
 
   responsible User @relation("ClientResponsible", fields: [responsibleId], references: [id])
   createdBy   User @relation("ClientCreatedBy", fields: [createdById], references: [id])
 }
 
 model Designer {
-  id            String       @id @default(auto()) @map("_id") @db.ObjectId
-  name          String
-  status        EntityStatus @default(ACTIVE)
-  responsibleId String       @db.ObjectId
-  createdById   String       @db.ObjectId
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
-  archivedAt    DateTime?
-  notes         String?
+  id                     String                    @id @default(auto()) @map("_id") @db.ObjectId
+  name                   String
+  studio                 String?
+  role                   DesignerRole              @default(DESIGNER)
+  phone                  String?
+  email                  String?
+  messenger              String?
+  website                String?
+  city                   String?
+  specialization         DesignerSpecialization[]
+  projectSegment         DesignerProjectSegment?
+  source                 DesignerSource            @default(DATABASE)
+  responsibleId          String                    @db.ObjectId
+  relationshipStage      DesignerRelationshipStage @default(NEW_CONTACT)
+  potential              DesignerPotential         @default(B)
+  loyalty                DesignerLoyalty           @default(NEUTRAL)
+  cooperationTerms       String?
+  firstContactAt         DateTime?
+  lastTouchAt            DateTime?
+  nextStepAt             DateTime?
+  nextStepText           String?
+  transferredObjectsCount Int                       @default(0)
+  activeObjectsCount      Int                       @default(0)
+  proposalsTotalAmount    Float                     @default(0)
+  paymentsTotalAmount     Float                     @default(0)
+  comment                String?
+  status                 EntityStatus              @default(ACTIVE)
+  createdById            String                    @db.ObjectId
+  createdAt              DateTime                  @default(now())
+  updatedAt              DateTime                  @updatedAt
+  archivedAt             DateTime?
+  notes                  String?
 
   responsible User @relation("DesignerResponsible", fields: [responsibleId], references: [id])
   createdBy   User @relation("DesignerCreatedBy", fields: [createdById], references: [id])
