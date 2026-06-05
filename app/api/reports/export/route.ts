@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/auth/options";
 import { writeAuditLog } from "@/lib/audit-log";
 import {
+  getBonusEligibilityReport,
   getCrmDisciplineReport,
   getDealsReport,
   getDesignersReport,
@@ -43,7 +44,10 @@ export async function GET(request: Request) {
     );
   } else if (report === "crm-discipline") {
     const data = await getCrmDisciplineReport(params, user);
-    csv = rowsToCsv(["Раздел", "Проблема", "Серьезность", "Ответственный", "Запись"], data.problems.map((row) => [row.area, row.issue, row.severity, row.responsibleName, row.title]));
+    csv = rowsToCsv(["Раздел", "Проблема", "Серьезность", "Ответственный", "Код", "Влияет на премию", "Запись"], data.problems.map((row) => [row.area, row.issue, row.severity, row.responsibleName, row.violationCode, row.canAffectBonus ? "Да" : "Нет", row.title]));
+  } else if (report === "bonus-eligibility") {
+    const data = await getBonusEligibilityReport(params, user);
+    csv = rowsToCsv(["Сущность", "Название", "Ответственный", "Статус учета", "Нарушения", "Влияет на премию", "Дата обнаружения"], data.rows.map((row) => [row.entity, row.title, row.responsibleName, row.status, row.violations.join("; "), row.affectsBonus ? "Да" : "Нет", row.detectedAt?.toISOString()]));
   } else if (report === "deals") {
     const data = await getDealsReport(params, user);
     csv = rowsToCsv(["Сделка", "Стадия", "Сумма", "Ответственный"], data.deals.map((deal) => [deal.title, deal.stage, deal.potentialAmount, deal.responsible.name]));

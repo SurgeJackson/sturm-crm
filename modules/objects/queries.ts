@@ -2,6 +2,7 @@ import type { Prisma } from "@/generated/prisma/client";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { taskInclude } from "@/modules/tasks/queries";
+import { computeBonusEligibilityStatus, getActiveViolationsForEntity, getActiveViolationsMap } from "@/modules/crm-discipline/service";
 import { canViewAllData, canViewRecord, type PermissionUser } from "@/permissions";
 
 export type ObjectListSearchParams = {
@@ -67,7 +68,7 @@ export async function getProjectObjects(params: ObjectListSearchParams, user: Pe
         ? { implementationStartAt: "asc" }
         : { createdAt: "desc" };
 
-  const [items, total] = await Promise.all([
+  const [rows, total] = await Promise.all([
     prisma.projectObject.findMany({
       where,
       orderBy,
@@ -82,6 +83,15 @@ export async function getProjectObjects(params: ObjectListSearchParams, user: Pe
     }),
     prisma.projectObject.count({ where })
   ]);
+  const violations = await getActiveViolationsMap("OBJECT", rows.map((item) => item.id));
+  const items = rows.map((item) => {
+    const crmViolations = violations.get(item.id) ?? [];
+    return {
+      ...item,
+      crmViolations,
+      bonusEligibilityStatus: computeBonusEligibilityStatus(crmViolations)
+    };
+  });
 
   return {
     items,
@@ -138,7 +148,12 @@ export async function getProjectObjectForUser(id: string, user: PermissionUser) 
     notFound();
   }
 
-  return object;
+  const crmViolations = await getActiveViolationsForEntity("OBJECT", object.id);
+  return {
+    ...object,
+    crmViolations,
+    bonusEligibilityStatus: computeBonusEligibilityStatus(crmViolations)
+  };
 }
 
 export async function getProjectObjectParticipantForUser(

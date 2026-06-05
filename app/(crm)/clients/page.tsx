@@ -10,6 +10,7 @@ import { clientSourceLabels, clientStatusLabels, clientTypeLabels } from "@/lib/
 import { formatRussianDate } from "@/utils/date";
 import { getClients, type ClientListSearchParams } from "@/modules/clients/queries";
 import { clientSourceOptions, clientStatusOptions, clientTypeOptions } from "@/modules/crm/options";
+import { BonusEligibilityBadge, CrmDisciplineBadge } from "@/components/crm/crm-discipline";
 import { getAssignableUsers } from "@/modules/users/queries";
 import { canCreateClient } from "@/permissions";
 
@@ -104,6 +105,8 @@ export default async function ClientsPage({ searchParams }: ClientsPageProps) {
                   <TableHead>Статус</TableHead>
                   <TableHead>Ответственный</TableHead>
                   <TableHead>Следующий контакт</TableHead>
+                  <TableHead>CRM-дисциплина</TableHead>
+                  <TableHead>Учет в премии</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -124,6 +127,8 @@ export default async function ClientsPage({ searchParams }: ClientsPageProps) {
                     <TableCell><Badge variant={client.status === "ARCHIVED" ? "outline" : "secondary"}>{clientStatusLabels[client.status]}</Badge></TableCell>
                     <TableCell>{client.responsible.name}</TableCell>
                     <TableCell>{formatRussianDate(client.nextContactAt)}</TableCell>
+                    <TableCell><CrmDisciplineBadge violations={client.crmViolations} /></TableCell>
+                    <TableCell><BonusEligibilityBadge violations={client.crmViolations} /></TableCell>
                   </TableRow>
                 ))}
               </TableBody>

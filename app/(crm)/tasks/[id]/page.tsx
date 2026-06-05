@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Ban, Edit } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
+import { CrmDisciplinePanel } from "@/components/crm/crm-discipline";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -83,6 +84,16 @@ export default async function TaskPage({ params, searchParams }: TaskPageProps) 
       </div>
 
       {query.saved ? <div className="rounded-md border border-primary p-3 text-sm text-primary">Запись сохранена.</div> : null}
+
+      <CrmDisciplinePanel
+        entityType="TASK"
+        entityId={task.id}
+        editHref={`/tasks/${id}/edit`}
+        returnTo={`/tasks/${id}`}
+        violations={task.crmViolations}
+        user={user}
+        bonusApplies={false}
+      />
 
       <Card>
         <CardHeader><CardTitle>Основное</CardTitle></CardHeader>

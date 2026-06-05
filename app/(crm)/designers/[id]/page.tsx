@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Archive, Edit, MessageSquarePlus, Plus } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
+import { CrmDisciplinePanel } from "@/components/crm/crm-discipline";
 import { TaskActivityTable } from "@/components/tasks/task-activity-table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -84,6 +85,16 @@ export default async function DesignerPage({ params, searchParams }: DesignerPag
       {query.saved ? <div className="rounded-md border border-primary p-3 text-sm text-primary">Дизайнер сохранен.</div> : null}
       {query.archived ? <div className="rounded-md border border-primary p-3 text-sm text-primary">Дизайнер архивирован.</div> : null}
       {query.error ? <div className="rounded-md border border-destructive p-3 text-sm text-destructive">Действие недоступно для вашей роли.</div> : null}
+
+      <CrmDisciplinePanel
+        entityType="DESIGNER"
+        entityId={designer.id}
+        editHref={`/designers/${id}/edit`}
+        returnTo={`/designers/${id}`}
+        violations={designer.crmViolations}
+        user={user}
+        bonusApplies={false}
+      />
 
       <Tabs defaultValue="main">
         <TabsList className="flex-wrap">

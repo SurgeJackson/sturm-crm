@@ -2,6 +2,7 @@ import type { Prisma } from "@/generated/prisma/client";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { taskInclude } from "@/modules/tasks/queries";
+import { computeBonusEligibilityStatus, getActiveViolationsForEntity, getActiveViolationsMap } from "@/modules/crm-discipline/service";
 import { canViewAllData, canViewRecord, type PermissionUser } from "@/permissions";
 
 export type ProposalListSearchParams = {
@@ -89,7 +90,7 @@ export async function getProposals(params: ProposalListSearchParams, user: Permi
           ? { nextTouchAt: "asc" }
           : { createdAt: "desc" };
 
-  const [items, total] = await Promise.all([
+  const [rows, total] = await Promise.all([
     prisma.commercialProposal.findMany({
       where,
       orderBy,
@@ -99,6 +100,15 @@ export async function getProposals(params: ProposalListSearchParams, user: Permi
     }),
     prisma.commercialProposal.count({ where })
   ]);
+  const violations = await getActiveViolationsMap("PROPOSAL", rows.map((item) => item.id));
+  const items = rows.map((item) => {
+    const crmViolations = violations.get(item.id) ?? [];
+    return {
+      ...item,
+      crmViolations,
+      bonusEligibilityStatus: computeBonusEligibilityStatus(crmViolations)
+    };
+  });
 
   return {
     items,
@@ -141,7 +151,12 @@ export async function getProposalForUser(id: string, user: PermissionUser) {
     notFound();
   }
 
-  return proposal;
+  const crmViolations = await getActiveViolationsForEntity("PROPOSAL", proposal.id);
+  return {
+    ...proposal,
+    crmViolations,
+    bonusEligibilityStatus: computeBonusEligibilityStatus(crmViolations)
+  };
 }
 
 export async function getProposalVersionGroup(proposalId: string) {

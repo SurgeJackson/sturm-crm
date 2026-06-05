@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Archive, Edit, MessageSquarePlus, Plus } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
+import { CrmDisciplinePanel } from "@/components/crm/crm-discipline";
 import { TaskActivityTable } from "@/components/tasks/task-activity-table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -134,6 +135,15 @@ export default async function ObjectPage({ params, searchParams }: ObjectPagePro
       {query.participantArchived ? <div className="rounded-md border border-primary p-3 text-sm text-primary">Участник архивирован.</div> : null}
       {query.designerStage ? <div className="rounded-md border border-primary p-3 text-sm text-primary">Этап дизайнера обновлен.</div> : null}
       {query.error ? <div className="rounded-md border border-destructive p-3 text-sm text-destructive">Действие недоступно или данные не найдены.</div> : null}
+
+      <CrmDisciplinePanel
+        entityType="OBJECT"
+        entityId={projectObject.id}
+        editHref={`/objects/${id}/edit`}
+        returnTo={`/objects/${id}`}
+        violations={projectObject.crmViolations}
+        user={user}
+      />
 
       {projectObject.designer && shouldOfferDesignerStageUpdate(projectObject.designer.relationshipStage) ? (
         <Card>

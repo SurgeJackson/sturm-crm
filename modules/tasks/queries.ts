@@ -1,6 +1,7 @@
 import type { Prisma } from "@/generated/prisma/client";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { computeBonusEligibilityStatus, getActiveViolationsForEntity, getActiveViolationsMap } from "@/modules/crm-discipline/service";
 import { canViewAllData, canViewRecord, type PermissionUser } from "@/permissions";
 
 export type TaskListSearchParams = {
@@ -138,7 +139,7 @@ export async function getTasks(params: TaskListSearchParams, user: PermissionUse
   if (entityFilter) filters.push(entityFilter);
 
   const where: Prisma.TaskActivityWhereInput = { AND: filters };
-  const [items, total] = await Promise.all([
+  const [rows, total] = await Promise.all([
     prisma.taskActivity.findMany({
       where,
       orderBy: [{ dueAt: "asc" }, { createdAt: "desc" }],
@@ -148,6 +149,15 @@ export async function getTasks(params: TaskListSearchParams, user: PermissionUse
     }),
     prisma.taskActivity.count({ where })
   ]);
+  const violations = await getActiveViolationsMap("TASK", rows.map((item) => item.id));
+  const items = rows.map((item) => {
+    const crmViolations = violations.get(item.id) ?? [];
+    return {
+      ...item,
+      crmViolations,
+      bonusEligibilityStatus: computeBonusEligibilityStatus(crmViolations, false)
+    };
+  });
 
   return {
     items,
@@ -168,7 +178,12 @@ export async function getTaskForUser(id: string, user: PermissionUser) {
     notFound();
   }
 
-  return task;
+  const crmViolations = await getActiveViolationsForEntity("TASK", task.id);
+  return {
+    ...task,
+    crmViolations,
+    bonusEligibilityStatus: computeBonusEligibilityStatus(crmViolations, false)
+  };
 }
 
 export async function getTaskFormContext(user: PermissionUser) {

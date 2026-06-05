@@ -392,7 +392,8 @@ export const ModelName = {
   Deal: 'Deal',
   CommercialProposal: 'CommercialProposal',
   TaskActivity: 'TaskActivity',
-  AuditLog: 'AuditLog'
+  AuditLog: 'AuditLog',
+  CrmViolation: 'CrmViolation'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -408,7 +409,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "client" | "designer" | "projectObject" | "projectObjectParticipant" | "deal" | "commercialProposal" | "taskActivity" | "auditLog"
+    modelProps: "user" | "client" | "designer" | "projectObject" | "projectObjectParticipant" | "deal" | "commercialProposal" | "taskActivity" | "auditLog" | "crmViolation"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1078,6 +1079,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    CrmViolation: {
+      payload: Prisma.$CrmViolationPayload<ExtArgs>
+      fields: Prisma.CrmViolationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CrmViolationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CrmViolationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CrmViolationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CrmViolationPayload>
+        }
+        findFirst: {
+          args: Prisma.CrmViolationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CrmViolationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CrmViolationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CrmViolationPayload>
+        }
+        findMany: {
+          args: Prisma.CrmViolationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CrmViolationPayload>[]
+        }
+        create: {
+          args: Prisma.CrmViolationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CrmViolationPayload>
+        }
+        createMany: {
+          args: Prisma.CrmViolationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CrmViolationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CrmViolationPayload>[]
+        }
+        delete: {
+          args: Prisma.CrmViolationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CrmViolationPayload>
+        }
+        update: {
+          args: Prisma.CrmViolationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CrmViolationPayload>
+        }
+        deleteMany: {
+          args: Prisma.CrmViolationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CrmViolationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CrmViolationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CrmViolationPayload>[]
+        }
+        upsert: {
+          args: Prisma.CrmViolationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CrmViolationPayload>
+        }
+        aggregate: {
+          args: Prisma.CrmViolationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCrmViolation>
+        }
+        groupBy: {
+          args: Prisma.CrmViolationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CrmViolationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CrmViolationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CrmViolationCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1363,6 +1438,27 @@ export const AuditLogScalarFieldEnum = {
 } as const
 
 export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
+
+
+export const CrmViolationScalarFieldEnum = {
+  id: 'id',
+  entityType: 'entityType',
+  entityId: 'entityId',
+  violationCode: 'violationCode',
+  severity: 'severity',
+  message: 'message',
+  responsibleId: 'responsibleId',
+  detectedAt: 'detectedAt',
+  resolvedAt: 'resolvedAt',
+  resolvedById: 'resolvedById',
+  status: 'status',
+  canAffectBonus: 'canAffectBonus',
+  comment: 'comment',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CrmViolationScalarFieldEnum = (typeof CrmViolationScalarFieldEnum)[keyof typeof CrmViolationScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1964,6 +2060,34 @@ export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'J
 export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
 
 
+
+/**
+ * Reference to a field of type 'CrmViolationSeverity'
+ */
+export type EnumCrmViolationSeverityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CrmViolationSeverity'>
+
+
+
+/**
+ * Reference to a field of type 'CrmViolationSeverity[]'
+ */
+export type ListEnumCrmViolationSeverityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CrmViolationSeverity[]'>
+
+
+
+/**
+ * Reference to a field of type 'CrmViolationStatus'
+ */
+export type EnumCrmViolationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CrmViolationStatus'>
+
+
+
+/**
+ * Reference to a field of type 'CrmViolationStatus[]'
+ */
+export type ListEnumCrmViolationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CrmViolationStatus[]'>
+
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -2083,6 +2207,7 @@ export type GlobalOmitConfig = {
   commercialProposal?: Prisma.CommercialProposalOmit
   taskActivity?: Prisma.TaskActivityOmit
   auditLog?: Prisma.AuditLogOmit
+  crmViolation?: Prisma.CrmViolationOmit
 }
 
 /* Types for Logging */

@@ -23,6 +23,7 @@ import {
   canEditRecord
 } from "@/permissions";
 import { compactString, optionalDate, toAuditValue } from "@/modules/crm/form-utils";
+import { expireViolationsForEntity, syncDealDiscipline, syncProposalDiscipline, syncTaskDiscipline } from "@/modules/crm-discipline/service";
 
 export type ProposalActionState = {
   errors?: Record<string, string[]>;
@@ -255,7 +256,7 @@ async function createFollowUpTask(proposal: CommercialProposal) {
 
   if (existing) return;
 
-  await prisma.taskActivity.create({
+  const task = await prisma.taskActivity.create({
     data: {
       recordType: "TASK",
       actionType: "FOLLOW_UP",
@@ -276,6 +277,8 @@ async function createFollowUpTask(proposal: CommercialProposal) {
       notes: `Follow-up по КП ${proposal.proposalNumber}`
     }
   });
+
+  await syncTaskDiscipline(task.id, proposal.createdById);
 }
 
 export async function createProposalAction(_prevState: ProposalActionState, formData: FormData) {
@@ -331,6 +334,8 @@ export async function createProposalAction(_prevState: ProposalActionState, form
       after: toAuditValue(fileData)
     });
   }
+
+  await syncProposalDiscipline(proposal.id, user.id);
 
   redirect(`/proposals/${proposal.id}?saved=1`);
 }
@@ -432,6 +437,8 @@ export async function updateProposalAction(id: string, _prevState: ProposalActio
     });
   }
 
+  await syncProposalDiscipline(id, user.id);
+
   redirect(`/proposals/${id}?saved=1`);
 }
 
@@ -455,6 +462,8 @@ export async function archiveProposalAction(id: string) {
     before: toAuditValue(before),
     after: toAuditValue(after)
   });
+
+  await expireViolationsForEntity("PROPOSAL", id, user.id);
 
   redirect(`/proposals/${id}?archived=1`);
 }
@@ -531,6 +540,9 @@ export async function createProposalVersionAction(id: string) {
     after: toAuditValue(newProposal)
   });
 
+  await syncProposalDiscipline(source.id, user.id);
+  await syncProposalDiscipline(newProposal.id, user.id);
+
   redirect(`/proposals/${newProposal.id}/edit?version=1`);
 }
 
@@ -558,6 +570,8 @@ export async function moveDealToInvoiceFromProposalAction(id: string) {
     before: { stage: beforeStage, proposalId: proposal.id },
     after: { stage: "INVOICE_OR_ORDER", proposalId: proposal.id }
   });
+
+  await syncDealDiscipline(proposal.dealId, user.id);
 
   redirect(`/proposals/${id}?dealStage=1`);
 }

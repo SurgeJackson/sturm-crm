@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { TaskActivity } from "@/generated/prisma/client";
+import { CrmDisciplineBadge, type CrmViolationView } from "@/components/crm/crm-discipline";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -14,6 +15,7 @@ type TaskRow = TaskActivity & {
   deal?: { id: string; title: string } | null;
   proposal?: { id: string; proposalNumber: string } | null;
   objectParticipant?: { id: string; fullName: string; objectId: string } | null;
+  crmViolations?: CrmViolationView[];
 };
 
 type TaskActivityTableProps = {
@@ -53,6 +55,7 @@ export function TaskActivityTable({ items, emptyText, compact = false }: TaskAct
           <TableHead>Срок / факт</TableHead>
           {!compact ? <TableHead>Связь</TableHead> : null}
           <TableHead>Статус</TableHead>
+          <TableHead>CRM-дисциплина</TableHead>
           {!compact ? <TableHead>Приоритет</TableHead> : null}
           <TableHead />
         </TableRow>
@@ -60,7 +63,7 @@ export function TaskActivityTable({ items, emptyText, compact = false }: TaskAct
       <TableBody>
         {items.length === 0 ? (
           <TableRow>
-            <TableCell colSpan={compact ? 6 : 8} className="h-24 text-center text-sm text-muted-foreground">{emptyText}</TableCell>
+            <TableCell colSpan={compact ? 7 : 9} className="h-24 text-center text-sm text-muted-foreground">{emptyText}</TableCell>
           </TableRow>
         ) : (
           items.map((task) => (
@@ -74,6 +77,7 @@ export function TaskActivityTable({ items, emptyText, compact = false }: TaskAct
               <TableCell className={isOverdue(task) ? "text-warning" : undefined}>{formatRussianDateTime(task.dueAt)}</TableCell>
               {!compact ? <TableCell>{linkedEntity(task)}</TableCell> : null}
               <TableCell><Badge variant={statusVariant(task)}>{taskStatusLabels[task.status]}</Badge></TableCell>
+              <TableCell><CrmDisciplineBadge violations={task.crmViolations ?? []} /></TableCell>
               {!compact ? <TableCell>{taskPriorityLabels[task.priority]}</TableCell> : null}
               <TableCell className="text-right">
                 <Button asChild variant="outline" size="sm">

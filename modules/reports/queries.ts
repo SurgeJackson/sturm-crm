@@ -1,5 +1,6 @@
-import type { Prisma } from "@/generated/prisma/client";
+import type { CrmViolation, Prisma } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
+import { computeBonusEligibilityStatus, crmEntityHref, getActiveViolationsMap, violationAccessWhere, type BonusEligibilityStatus } from "@/modules/crm-discipline/service";
 import { canViewAllData, type PermissionUser } from "@/permissions";
 
 export type ReportSearchParams = {
@@ -18,6 +19,9 @@ export type ReportSearchParams = {
   type?: string;
   actionType?: string;
   severity?: string;
+  entity?: string;
+  violationCode?: string;
+  bonusStatus?: BonusEligibilityStatus;
 };
 
 export type Metric = {
@@ -35,6 +39,9 @@ export type ProblemRow = {
   entity: string;
   title: string;
   href: string;
+  violationCode?: string;
+  canAffectBonus?: boolean;
+  detectedAt?: Date;
 };
 
 const criticalStatuses = new Set(["DONE", "CANCELLED", "CLOSED"]);
@@ -81,6 +88,30 @@ function groupBy<T extends string | null | undefined>(items: T[]) {
     acc[key] = (acc[key] ?? 0) + 1;
     return acc;
   }, {});
+}
+
+function entityLabel(entityType: string) {
+  const labels: Record<string, string> = {
+    CLIENT: "Клиент",
+    DESIGNER: "Дизайнер",
+    OBJECT: "Объект",
+    DEAL: "Сделка",
+    PROPOSAL: "КП",
+    TASK: "Задача"
+  };
+  return labels[entityType] ?? entityType;
+}
+
+function entityArea(entityType: string) {
+  const labels: Record<string, string> = {
+    CLIENT: "Клиенты",
+    DESIGNER: "Дизайнеры",
+    OBJECT: "Объекты",
+    DEAL: "Сделки",
+    PROPOSAL: "КП",
+    TASK: "Задачи"
+  };
+  return labels[entityType] ?? entityType;
 }
 
 function sum(values: Array<number | null>) {
@@ -316,63 +347,90 @@ function scoreRows(problems: ProblemRow[]) {
 }
 
 export async function getCrmDisciplineReport(params: ReportSearchParams, user: PermissionUser) {
-  const owner = ownerWhere(user, canViewAllData(user) ? params.responsibleId : undefined);
-  const sixtyDaysAgo = new Date();
-  sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
-  const fourteenDaysAgo = new Date();
-  fourteenDaysAgo.setDate(fourteenDaysAgo.getDate() - 14);
-  const thinking7 = new Date();
-  thinking7.setDate(thinking7.getDate() - 7);
+  const { from, to } = reportPeriod(params);
+  const filters: Prisma.CrmViolationWhereInput[] = [
+    violationAccessWhere(user),
+    { status: "ACTIVE", detectedAt: periodWhere(from, to) }
+  ];
+  if (canViewAllData(user) && params.responsibleId) filters.push({ responsibleId: params.responsibleId });
+  if (params.entity) filters.push({ entityType: params.entity as never });
+  if (params.violationCode) filters.push({ violationCode: params.violationCode });
+  if (params.severity) filters.push({ severity: params.severity.toUpperCase() as never });
 
-  const [clients, designers, objects, deals, proposals] = await Promise.all([
-    prisma.client.findMany({ where: owner, include: { responsible: { select: { id: true, name: true } } } }),
-    prisma.designer.findMany({ where: owner, include: { responsible: { select: { id: true, name: true } } } }),
-    prisma.projectObject.findMany({ where: owner, include: { responsible: { select: { id: true, name: true } }, participants: { where: { archivedAt: null } }, tasks: { where: { archivedAt: null } } } }),
-    prisma.deal.findMany({ where: owner, include: { responsible: { select: { id: true, name: true } } } }),
-    prisma.commercialProposal.findMany({ where: owner, include: { responsible: { select: { id: true, name: true } } } })
+  const activeWhere: Prisma.CrmViolationWhereInput = { AND: filters };
+  const resolvedWhere: Prisma.CrmViolationWhereInput = {
+    AND: [
+      violationAccessWhere(user),
+      { status: "RESOLVED", resolvedAt: periodWhere(from, to) },
+      ...(canViewAllData(user) && params.responsibleId ? [{ responsibleId: params.responsibleId }] : [])
+    ]
+  };
+  const [violations, resolved] = await Promise.all([
+    prisma.crmViolation.findMany({
+      where: activeWhere,
+      orderBy: [{ severity: "asc" }, { detectedAt: "desc" }],
+      include: { responsible: { select: { id: true, name: true } } }
+    }),
+    prisma.crmViolation.findMany({
+      where: resolvedWhere,
+      orderBy: { resolvedAt: "desc" },
+      select: { resolvedAt: true, violationCode: true, responsible: { select: { id: true, name: true } } }
+    })
   ]);
 
-  const problems: ProblemRow[] = [];
-  const add = (row: ProblemRow) => {
-    if (!params.severity || params.severity === row.severity) problems.push(row);
+  const problems: ProblemRow[] = violations.map((violation) => ({
+    area: entityArea(violation.entityType),
+    issue: violation.message,
+    severity: violation.severity === "CRITICAL" ? "critical" : violation.severity === "MEDIUM" ? "medium" : "light",
+    responsibleId: violation.responsibleId,
+    responsibleName: violation.responsible?.name ?? "Не назначен",
+    entity: entityLabel(violation.entityType),
+    title: violation.entityId,
+    href: crmEntityHref(violation.entityType, violation.entityId),
+    violationCode: violation.violationCode,
+    canAffectBonus: violation.canAffectBonus,
+    detectedAt: violation.detectedAt
+  }));
+
+  const byEmployee = Object.values(violations.reduce<Record<string, { name: string; total: number; critical: number; medium: number; low: number; bonus: number }>>((acc, violation) => {
+    const id = violation.responsibleId ?? "unknown";
+    acc[id] ??= { name: violation.responsible?.name ?? "Не назначен", total: 0, critical: 0, medium: 0, low: 0, bonus: 0 };
+    acc[id].total += 1;
+    if (violation.severity === "CRITICAL") acc[id].critical += 1;
+    if (violation.severity === "MEDIUM") acc[id].medium += 1;
+    if (violation.severity === "LOW") acc[id].low += 1;
+    if (violation.canAffectBonus) acc[id].bonus += 1;
+    return acc;
+  }, {})).sort((a, b) => b.total - a.total);
+
+  const byEntity = Object.entries(groupBy(violations.map((violation) => entityLabel(violation.entityType))))
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => b.count - a.count);
+  const frequent = Object.entries(groupBy(violations.map((violation) => violation.violationCode)))
+    .map(([code, count]) => ({ code, count }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 10);
+  const resolvedDynamics = Object.entries(groupBy(resolved.map((violation) => violation.resolvedAt?.toISOString().slice(0, 10))))
+    .map(([date, count]) => ({ date, count }))
+    .sort((a, b) => a.date.localeCompare(b.date));
+
+  return {
+    period: { from, to },
+    problems,
+    scores: scoreRows(problems),
+    summary: {
+      active: violations.length,
+      critical: violations.filter((violation) => violation.severity === "CRITICAL").length,
+      medium: violations.filter((violation) => violation.severity === "MEDIUM").length,
+      low: violations.filter((violation) => violation.severity === "LOW").length,
+      bonus: violations.filter((violation) => violation.canAffectBonus).length,
+      resolved: resolved.length
+    },
+    byEmployee,
+    byEntity,
+    frequent,
+    resolvedDynamics
   };
-
-  for (const client of clients) {
-    const base = { area: "Клиенты", responsibleId: client.responsibleId, responsibleName: client.responsible.name, entity: "Клиент", title: client.name, href: `/clients/${client.id}` };
-    if (!client.phone && !client.messenger) add({ ...base, issue: "Нет телефона и мессенджера", severity: "critical" });
-    if (client.status === "ACTIVE" && !client.nextContactAt) add({ ...base, issue: "Активный клиент без следующего контакта", severity: "medium" });
-    if (!client.source) add({ ...base, issue: "Не указан источник", severity: "light" });
-  }
-  for (const designer of designers) {
-    const base = { area: "Дизайнеры", responsibleId: designer.responsibleId, responsibleName: designer.responsible.name, entity: "Дизайнер", title: designer.name, href: `/designers/${designer.id}` };
-    if (!designer.nextStepAt || !designer.nextStepText) add({ ...base, issue: "Нет следующего шага", severity: "medium" });
-    if (!designer.lastTouchAt || designer.lastTouchAt < sixtyDaysAgo) add({ ...base, issue: "Нет касаний более 60 дней", severity: "critical" });
-    if (designer.relationshipStage === "NEW_CONTACT" && designer.createdAt < fourteenDaysAgo) add({ ...base, issue: "Новый контакт более 14 дней", severity: "medium" });
-  }
-  for (const object of objects) {
-    const base = { area: "Объекты", responsibleId: object.responsibleId, responsibleName: object.responsible.name, entity: "Объект", title: object.title, href: `/objects/${object.id}` };
-    if (object.status === "ACTIVE" && object.tasks.length === 0) add({ ...base, issue: "Активный объект без задач", severity: "medium" });
-    if (object.status === "FROZEN" && object.tasks.every((task) => task.autoRule !== "FROZEN_OBJECT_RETURN")) add({ ...base, issue: "Замороженный объект без даты возврата", severity: "critical" });
-    if (object.participants.every((participant) => participant.participantType !== "PURCHASE_INFLUENCER")) add({ ...base, issue: "Нет участника закупки", severity: "light" });
-    if (object.participants.every((participant) => participant.participantType !== "IMPLEMENTATION_CONTACT")) add({ ...base, issue: "Нет контактного лица реализации", severity: "light" });
-  }
-  for (const deal of deals) {
-    const base = { area: "Сделки", responsibleId: deal.responsibleId, responsibleName: deal.responsible.name, entity: "Сделка", title: deal.title, href: `/deals/${deal.id}` };
-    if (!["LOST", "COMPLETED"].includes(deal.stage) && (!deal.nextActionAt || !deal.nextActionText)) add({ ...base, issue: "Нет следующего шага", severity: "critical" });
-    if (!deal.potentialAmount) add({ ...base, issue: "Нет суммы", severity: "medium" });
-    if (deal.stage === "WAITING_DECISION" && deal.updatedAt < thinking7) add({ ...base, issue: "Ожидание решения более 7 дней", severity: "medium" });
-    if (deal.stage === "LOST" && !deal.lossReason) add({ ...base, issue: "Проиграна без причины", severity: "critical" });
-  }
-  for (const proposal of proposals) {
-    const base = { area: "КП", responsibleId: proposal.responsibleId, responsibleName: proposal.responsible.name, entity: "КП", title: proposal.proposalNumber, href: `/proposals/${proposal.id}` };
-    if (!proposal.fileUrl) add({ ...base, issue: "Нет файла", severity: "critical" });
-    if (!proposal.sentAt && proposal.status !== "DRAFT") add({ ...base, issue: "Нет даты отправки", severity: "medium" });
-    if (!proposal.nextTouchAt && !["ACCEPTED", "DECLINED", "ARCHIVED"].includes(proposal.status)) add({ ...base, issue: "Нет следующего касания", severity: "critical" });
-    if (proposal.status === "CLIENT_THINKING" && proposal.sentAt && proposal.sentAt < thinking7) add({ ...base, issue: "Клиент думает более 7 дней", severity: "medium" });
-    if (proposal.status === "DECLINED" && !proposal.declineReason) add({ ...base, issue: "Отклонено без причины", severity: "critical" });
-  }
-
-  return { problems, scores: scoreRows(problems) };
 }
 
 export async function getDealsReport(params: ReportSearchParams, user: PermissionUser) {
@@ -615,6 +673,124 @@ export async function getMyReport(user: PermissionUser) {
       { title: "Мой CRM Discipline Score", value: `${ownScore.score}%`, tone: ownScore.score < 60 ? "warning" as const : "secondary" as const }
     ] satisfies Metric[],
     discipline
+  };
+}
+
+export type BonusEligibilityRow = {
+  entityType: "CLIENT" | "OBJECT" | "DEAL" | "PROPOSAL";
+  entity: string;
+  title: string;
+  href: string;
+  responsibleName: string;
+  status: BonusEligibilityStatus;
+  violations: string[];
+  affectsBonus: boolean;
+  detectedAt: Date | null;
+};
+
+function violationMatchesFilters(
+  violations: RawViolation[],
+  params: ReportSearchParams
+) {
+  if (!params.violationCode && !params.severity) return true;
+  return violations.some((violation) => {
+    if (params.violationCode && violation.violationCode !== params.violationCode) return false;
+    if (params.severity && violation.severity !== params.severity.toUpperCase()) return false;
+    return true;
+  });
+}
+
+export async function getBonusEligibilityReport(params: ReportSearchParams, user: PermissionUser) {
+  const { from, to } = reportPeriod(params);
+  const responsibleId = canViewAllData(user) ? params.responsibleId : undefined;
+  const owner = ownerWhere(user, responsibleId);
+  const entityTypes = (params.entity ? [params.entity] : ["DEAL", "PROPOSAL", "CLIENT", "OBJECT"]) as Array<BonusEligibilityRow["entityType"]>;
+  const rows: InternalBonusEligibilityRow[] = [];
+
+  if (entityTypes.includes("DEAL")) {
+    const deals = await prisma.deal.findMany({
+      where: { AND: [owner, { archivedAt: null, createdAt: periodWhere(from, to) }] },
+      include: { responsible: { select: { name: true } } },
+      orderBy: { createdAt: "desc" }
+    });
+    const violations = await getActiveViolationsMap("DEAL", deals.map((deal) => deal.id));
+    rows.push(...deals.map((deal) => bonusRow("DEAL", "Сделка", deal.id, deal.title, deal.responsible.name, violations.get(deal.id) ?? [])));
+  }
+
+  if (entityTypes.includes("PROPOSAL")) {
+    const proposals = await prisma.commercialProposal.findMany({
+      where: { AND: [owner, { archivedAt: null, createdAt: periodWhere(from, to) }] },
+      include: { responsible: { select: { name: true } } },
+      orderBy: { createdAt: "desc" }
+    });
+    const violations = await getActiveViolationsMap("PROPOSAL", proposals.map((proposal) => proposal.id));
+    rows.push(...proposals.map((proposal) => bonusRow("PROPOSAL", "КП", proposal.id, proposal.proposalNumber, proposal.responsible.name, violations.get(proposal.id) ?? [])));
+  }
+
+  if (entityTypes.includes("CLIENT")) {
+    const clients = await prisma.client.findMany({
+      where: { AND: [owner, { archivedAt: null, createdAt: periodWhere(from, to) }] },
+      include: { responsible: { select: { name: true } } },
+      orderBy: { createdAt: "desc" }
+    });
+    const violations = await getActiveViolationsMap("CLIENT", clients.map((client) => client.id));
+    rows.push(...clients.map((client) => bonusRow("CLIENT", "Клиент", client.id, client.name, client.responsible.name, violations.get(client.id) ?? [])));
+  }
+
+  if (entityTypes.includes("OBJECT")) {
+    const objects = await prisma.projectObject.findMany({
+      where: { AND: [owner, { archivedAt: null, createdAt: periodWhere(from, to) }] },
+      include: { responsible: { select: { name: true } } },
+      orderBy: { createdAt: "desc" }
+    });
+    const violations = await getActiveViolationsMap("OBJECT", objects.map((object) => object.id));
+    rows.push(...objects.map((object) => bonusRow("OBJECT", "Объект", object.id, object.title, object.responsible.name, violations.get(object.id) ?? [])));
+  }
+
+  const filtered = rows.filter((row) => {
+    if (params.bonusStatus && row.status !== params.bonusStatus) return false;
+    if (!violationMatchesFilters(row.rawViolations, params)) return false;
+    return true;
+  });
+
+  return {
+    period: { from, to },
+    rows: filtered,
+    metrics: [
+      { title: "Всего записей", value: filtered.length },
+      { title: "Учитываются", value: filtered.filter((row) => row.status === "ELIGIBLE").length, tone: "secondary" as const },
+      { title: "Требуют исправления", value: filtered.filter((row) => row.status === "NEEDS_FIX").length, tone: "warning" as const },
+      { title: "Не учитываются", value: filtered.filter((row) => row.status === "NOT_ELIGIBLE").length, tone: "warning" as const },
+      { title: "С нарушениями премирования", value: filtered.filter((row) => row.affectsBonus).length, tone: "warning" as const }
+    ] satisfies Metric[],
+    byEntity: groupBy(filtered.map((row) => row.entity)),
+    byStatus: groupBy(filtered.map((row) => row.status))
+  };
+}
+
+type RawViolation = Pick<CrmViolation, "violationCode" | "severity" | "message" | "canAffectBonus" | "detectedAt" | "status">;
+type InternalBonusEligibilityRow = BonusEligibilityRow & { rawViolations: RawViolation[] };
+
+function bonusRow(
+  entityType: BonusEligibilityRow["entityType"],
+  entity: string,
+  id: string,
+  title: string,
+  responsibleName: string,
+  violations: RawViolation[]
+): InternalBonusEligibilityRow {
+  const status = computeBonusEligibilityStatus(violations);
+  return {
+    entityType,
+    entity,
+    title,
+    href: crmEntityHref(entityType, id),
+    responsibleName,
+    status,
+    violations: violations.map((violation) => violation.message),
+    affectsBonus: violations.some((violation) => violation.canAffectBonus),
+    detectedAt: violations[0]?.detectedAt ?? null,
+    rawViolations: violations
   };
 }
 

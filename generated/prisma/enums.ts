@@ -232,10 +232,30 @@ export const AuditEntityType = {
   DEAL: 'DEAL',
   PROPOSAL: 'PROPOSAL',
   TASK: 'TASK',
-  USER: 'USER'
+  USER: 'USER',
+  CRM_VIOLATION: 'CRM_VIOLATION'
 } as const
 
 export type AuditEntityType = (typeof AuditEntityType)[keyof typeof AuditEntityType]
+
+
+export const CrmViolationSeverity = {
+  CRITICAL: 'CRITICAL',
+  MEDIUM: 'MEDIUM',
+  LOW: 'LOW'
+} as const
+
+export type CrmViolationSeverity = (typeof CrmViolationSeverity)[keyof typeof CrmViolationSeverity]
+
+
+export const CrmViolationStatus = {
+  ACTIVE: 'ACTIVE',
+  RESOLVED: 'RESOLVED',
+  IGNORED: 'IGNORED',
+  EXPIRED: 'EXPIRED'
+} as const
+
+export type CrmViolationStatus = (typeof CrmViolationStatus)[keyof typeof CrmViolationStatus]
 
 
 export const ObjectType = {

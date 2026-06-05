@@ -13,6 +13,7 @@ import {
   canEditRecord
 } from "@/permissions";
 import { compactString, optionalDate, toAuditValue } from "@/modules/crm/form-utils";
+import { expireViolationsForEntity, syncClientDiscipline } from "@/modules/crm-discipline/service";
 
 export type ClientActionState = {
   errors?: Record<string, string[]>;
@@ -124,6 +125,8 @@ export async function createClientAction(_prevState: ClientActionState, formData
     after: toAuditValue(client)
   });
 
+  await syncClientDiscipline(client.id, user.id);
+
   redirect(`/clients/${client.id}?saved=1`);
 }
 
@@ -192,6 +195,8 @@ export async function updateClientAction(id: string, _prevState: ClientActionSta
     });
   }
 
+  await syncClientDiscipline(id, user.id);
+
   redirect(`/clients/${id}?saved=1`);
 }
 
@@ -229,6 +234,8 @@ export async function archiveClientAction(id: string) {
     before: toAuditValue(before),
     after: toAuditValue(after)
   });
+
+  await expireViolationsForEntity("CLIENT", id, user.id);
 
   redirect(`/clients/${id}?archived=1`);
 }

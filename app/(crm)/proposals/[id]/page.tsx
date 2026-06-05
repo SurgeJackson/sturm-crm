@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Archive, Edit, MessageSquarePlus, Plus } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
+import { CrmDisciplinePanel } from "@/components/crm/crm-discipline";
 import { TaskActivityTable } from "@/components/tasks/task-activity-table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -105,6 +106,15 @@ export default async function ProposalPage({ params, searchParams }: ProposalPag
       {query.archived ? <div className="rounded-md border border-primary p-3 text-sm text-primary">КП архивировано.</div> : null}
       {query.dealStage ? <div className="rounded-md border border-primary p-3 text-sm text-primary">Сделка переведена в стадию “Счет / заказ”.</div> : null}
       {query.error ? <div className="rounded-md border border-destructive p-3 text-sm text-destructive">Действие недоступно или данные не заполнены.</div> : null}
+
+      <CrmDisciplinePanel
+        entityType="PROPOSAL"
+        entityId={proposal.id}
+        editHref={`/proposals/${id}/edit`}
+        returnTo={`/proposals/${id}`}
+        violations={proposal.crmViolations}
+        user={user}
+      />
 
       {proposal.status === "ACCEPTED" && proposal.deal.stage !== "INVOICE_OR_ORDER" ? (
         <Card>

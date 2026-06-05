@@ -19,6 +19,7 @@ import {
   canEditRecord
 } from "@/permissions";
 import { compactString, optionalDate, toAuditValue } from "@/modules/crm/form-utils";
+import { expireViolationsForEntity, syncDealDiscipline } from "@/modules/crm-discipline/service";
 
 export type DealActionState = {
   errors?: Record<string, string[]>;
@@ -210,6 +211,8 @@ export async function createDealAction(_prevState: DealActionState, formData: Fo
     after: toAuditValue(deal)
   });
 
+  await syncDealDiscipline(deal.id, user.id);
+
   redirect(`/deals/${deal.id}?saved=1`);
 }
 
@@ -311,6 +314,8 @@ export async function updateDealAction(id: string, _prevState: DealActionState, 
     });
   }
 
+  await syncDealDiscipline(id, user.id);
+
   redirect(`/deals/${id}?saved=1`);
 }
 
@@ -340,6 +345,8 @@ export async function archiveDealAction(id: string) {
     before: toAuditValue(before),
     after: toAuditValue(after)
   });
+
+  await expireViolationsForEntity("DEAL", id, user.id);
 
   redirect(`/deals/${id}?archived=1`);
 }
@@ -389,6 +396,8 @@ export async function changeDealStageAction(id: string, formData: FormData) {
     before: { stage: before.stage },
     after: { stage: after.stage }
   });
+
+  await syncDealDiscipline(id, user.id);
 
   redirect("/deals/pipeline?saved=1");
 }
@@ -442,6 +451,8 @@ export async function closeDealAsLostAction(id: string, formData: FormData) {
     before: { lossReason: before.lossReason },
     after: { lossReason }
   });
+
+  await syncDealDiscipline(id, user.id);
 
   redirect(`/deals/${id}?lost=1`);
 }

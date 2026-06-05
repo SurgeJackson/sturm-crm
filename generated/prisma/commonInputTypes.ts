@@ -851,6 +851,40 @@ export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
   _max?: Prisma.NestedJsonNullableFilter<$PrismaModel>
 }
 
+export type EnumCrmViolationSeverityFilter<$PrismaModel = never> = {
+  equals?: $Enums.CrmViolationSeverity | Prisma.EnumCrmViolationSeverityFieldRefInput<$PrismaModel>
+  in?: $Enums.CrmViolationSeverity[] | Prisma.ListEnumCrmViolationSeverityFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CrmViolationSeverity[] | Prisma.ListEnumCrmViolationSeverityFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCrmViolationSeverityFilter<$PrismaModel> | $Enums.CrmViolationSeverity
+}
+
+export type EnumCrmViolationStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.CrmViolationStatus | Prisma.EnumCrmViolationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.CrmViolationStatus[] | Prisma.ListEnumCrmViolationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CrmViolationStatus[] | Prisma.ListEnumCrmViolationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCrmViolationStatusFilter<$PrismaModel> | $Enums.CrmViolationStatus
+}
+
+export type EnumCrmViolationSeverityWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.CrmViolationSeverity | Prisma.EnumCrmViolationSeverityFieldRefInput<$PrismaModel>
+  in?: $Enums.CrmViolationSeverity[] | Prisma.ListEnumCrmViolationSeverityFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CrmViolationSeverity[] | Prisma.ListEnumCrmViolationSeverityFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCrmViolationSeverityWithAggregatesFilter<$PrismaModel> | $Enums.CrmViolationSeverity
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumCrmViolationSeverityFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumCrmViolationSeverityFilter<$PrismaModel>
+}
+
+export type EnumCrmViolationStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.CrmViolationStatus | Prisma.EnumCrmViolationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.CrmViolationStatus[] | Prisma.ListEnumCrmViolationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CrmViolationStatus[] | Prisma.ListEnumCrmViolationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCrmViolationStatusWithAggregatesFilter<$PrismaModel> | $Enums.CrmViolationStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumCrmViolationStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumCrmViolationStatusFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -1650,6 +1684,40 @@ export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
   gt?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel>
   gte?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel>
   not?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel> | Prisma.JsonNullValueFilter
+}
+
+export type NestedEnumCrmViolationSeverityFilter<$PrismaModel = never> = {
+  equals?: $Enums.CrmViolationSeverity | Prisma.EnumCrmViolationSeverityFieldRefInput<$PrismaModel>
+  in?: $Enums.CrmViolationSeverity[] | Prisma.ListEnumCrmViolationSeverityFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CrmViolationSeverity[] | Prisma.ListEnumCrmViolationSeverityFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCrmViolationSeverityFilter<$PrismaModel> | $Enums.CrmViolationSeverity
+}
+
+export type NestedEnumCrmViolationStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.CrmViolationStatus | Prisma.EnumCrmViolationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.CrmViolationStatus[] | Prisma.ListEnumCrmViolationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CrmViolationStatus[] | Prisma.ListEnumCrmViolationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCrmViolationStatusFilter<$PrismaModel> | $Enums.CrmViolationStatus
+}
+
+export type NestedEnumCrmViolationSeverityWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.CrmViolationSeverity | Prisma.EnumCrmViolationSeverityFieldRefInput<$PrismaModel>
+  in?: $Enums.CrmViolationSeverity[] | Prisma.ListEnumCrmViolationSeverityFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CrmViolationSeverity[] | Prisma.ListEnumCrmViolationSeverityFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCrmViolationSeverityWithAggregatesFilter<$PrismaModel> | $Enums.CrmViolationSeverity
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumCrmViolationSeverityFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumCrmViolationSeverityFilter<$PrismaModel>
+}
+
+export type NestedEnumCrmViolationStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.CrmViolationStatus | Prisma.EnumCrmViolationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.CrmViolationStatus[] | Prisma.ListEnumCrmViolationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CrmViolationStatus[] | Prisma.ListEnumCrmViolationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCrmViolationStatusWithAggregatesFilter<$PrismaModel> | $Enums.CrmViolationStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumCrmViolationStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumCrmViolationStatusFilter<$PrismaModel>
 }
 
 

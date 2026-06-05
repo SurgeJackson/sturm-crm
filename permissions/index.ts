@@ -60,6 +60,11 @@ export function canViewReports(user?: PermissionUser | null) {
   return leadershipRoles.has(user.role);
 }
 
+export function canIgnoreCrmViolation(user?: PermissionUser | null) {
+  if (!isActive(user)) return false;
+  return leadershipRoles.has(user.role);
+}
+
 export function canCreateClient(user?: PermissionUser | null) {
   if (!isActive(user)) return false;
   return managerRoles.has(user.role);

@@ -238,6 +238,8 @@ export type UserWhereInput = {
   tasksResponsible?: Prisma.TaskActivityListRelationFilter
   tasksCreated?: Prisma.TaskActivityListRelationFilter
   auditLogs?: Prisma.AuditLogListRelationFilter
+  crmViolationsResponsible?: Prisma.CrmViolationListRelationFilter
+  crmViolationsResolved?: Prisma.CrmViolationListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -267,6 +269,8 @@ export type UserOrderByWithRelationInput = {
   tasksResponsible?: Prisma.TaskActivityOrderByRelationAggregateInput
   tasksCreated?: Prisma.TaskActivityOrderByRelationAggregateInput
   auditLogs?: Prisma.AuditLogOrderByRelationAggregateInput
+  crmViolationsResponsible?: Prisma.CrmViolationOrderByRelationAggregateInput
+  crmViolationsResolved?: Prisma.CrmViolationOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -299,6 +303,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   tasksResponsible?: Prisma.TaskActivityListRelationFilter
   tasksCreated?: Prisma.TaskActivityListRelationFilter
   auditLogs?: Prisma.AuditLogListRelationFilter
+  crmViolationsResponsible?: Prisma.CrmViolationListRelationFilter
+  crmViolationsResolved?: Prisma.CrmViolationListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -360,6 +366,8 @@ export type UserCreateInput = {
   tasksResponsible?: Prisma.TaskActivityCreateNestedManyWithoutResponsibleInput
   tasksCreated?: Prisma.TaskActivityCreateNestedManyWithoutCreatedByInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationCreateNestedManyWithoutResolvedByInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -389,6 +397,8 @@ export type UserUncheckedCreateInput = {
   tasksResponsible?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutResponsibleInput
   tasksCreated?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutCreatedByInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResolvedByInput
 }
 
 export type UserUpdateInput = {
@@ -418,6 +428,8 @@ export type UserUpdateInput = {
   tasksResponsible?: Prisma.TaskActivityUpdateManyWithoutResponsibleNestedInput
   tasksCreated?: Prisma.TaskActivityUpdateManyWithoutCreatedByNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUpdateManyWithoutResolvedByNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -447,6 +459,8 @@ export type UserUncheckedUpdateInput = {
   tasksResponsible?: Prisma.TaskActivityUncheckedUpdateManyWithoutResponsibleNestedInput
   tasksCreated?: Prisma.TaskActivityUncheckedUpdateManyWithoutCreatedByNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedUpdateManyWithoutResolvedByNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -789,6 +803,38 @@ export type UserUpdateOneRequiredWithoutAuditLogsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAuditLogsInput, Prisma.UserUpdateWithoutAuditLogsInput>, Prisma.UserUncheckedUpdateWithoutAuditLogsInput>
 }
 
+export type UserCreateNestedOneWithoutCrmViolationsResponsibleInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCrmViolationsResponsibleInput, Prisma.UserUncheckedCreateWithoutCrmViolationsResponsibleInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCrmViolationsResponsibleInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutCrmViolationsResolvedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCrmViolationsResolvedInput, Prisma.UserUncheckedCreateWithoutCrmViolationsResolvedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCrmViolationsResolvedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutCrmViolationsResponsibleNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCrmViolationsResponsibleInput, Prisma.UserUncheckedCreateWithoutCrmViolationsResponsibleInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCrmViolationsResponsibleInput
+  upsert?: Prisma.UserUpsertWithoutCrmViolationsResponsibleInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCrmViolationsResponsibleInput, Prisma.UserUpdateWithoutCrmViolationsResponsibleInput>, Prisma.UserUncheckedUpdateWithoutCrmViolationsResponsibleInput>
+}
+
+export type UserUpdateOneWithoutCrmViolationsResolvedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCrmViolationsResolvedInput, Prisma.UserUncheckedCreateWithoutCrmViolationsResolvedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCrmViolationsResolvedInput
+  upsert?: Prisma.UserUpsertWithoutCrmViolationsResolvedInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCrmViolationsResolvedInput, Prisma.UserUpdateWithoutCrmViolationsResolvedInput>, Prisma.UserUncheckedUpdateWithoutCrmViolationsResolvedInput>
+}
+
 export type UserCreateWithoutClientsResponsibleInput = {
   id?: string
   name: string
@@ -815,6 +861,8 @@ export type UserCreateWithoutClientsResponsibleInput = {
   tasksResponsible?: Prisma.TaskActivityCreateNestedManyWithoutResponsibleInput
   tasksCreated?: Prisma.TaskActivityCreateNestedManyWithoutCreatedByInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationCreateNestedManyWithoutResolvedByInput
 }
 
 export type UserUncheckedCreateWithoutClientsResponsibleInput = {
@@ -843,6 +891,8 @@ export type UserUncheckedCreateWithoutClientsResponsibleInput = {
   tasksResponsible?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutResponsibleInput
   tasksCreated?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutCreatedByInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResolvedByInput
 }
 
 export type UserCreateOrConnectWithoutClientsResponsibleInput = {
@@ -876,6 +926,8 @@ export type UserCreateWithoutClientsCreatedInput = {
   tasksResponsible?: Prisma.TaskActivityCreateNestedManyWithoutResponsibleInput
   tasksCreated?: Prisma.TaskActivityCreateNestedManyWithoutCreatedByInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationCreateNestedManyWithoutResolvedByInput
 }
 
 export type UserUncheckedCreateWithoutClientsCreatedInput = {
@@ -904,6 +956,8 @@ export type UserUncheckedCreateWithoutClientsCreatedInput = {
   tasksResponsible?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutResponsibleInput
   tasksCreated?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutCreatedByInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResolvedByInput
 }
 
 export type UserCreateOrConnectWithoutClientsCreatedInput = {
@@ -948,6 +1002,8 @@ export type UserUpdateWithoutClientsResponsibleInput = {
   tasksResponsible?: Prisma.TaskActivityUpdateManyWithoutResponsibleNestedInput
   tasksCreated?: Prisma.TaskActivityUpdateManyWithoutCreatedByNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUpdateManyWithoutResolvedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutClientsResponsibleInput = {
@@ -976,6 +1032,8 @@ export type UserUncheckedUpdateWithoutClientsResponsibleInput = {
   tasksResponsible?: Prisma.TaskActivityUncheckedUpdateManyWithoutResponsibleNestedInput
   tasksCreated?: Prisma.TaskActivityUncheckedUpdateManyWithoutCreatedByNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedUpdateManyWithoutResolvedByNestedInput
 }
 
 export type UserUpsertWithoutClientsCreatedInput = {
@@ -1015,6 +1073,8 @@ export type UserUpdateWithoutClientsCreatedInput = {
   tasksResponsible?: Prisma.TaskActivityUpdateManyWithoutResponsibleNestedInput
   tasksCreated?: Prisma.TaskActivityUpdateManyWithoutCreatedByNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUpdateManyWithoutResolvedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutClientsCreatedInput = {
@@ -1043,6 +1103,8 @@ export type UserUncheckedUpdateWithoutClientsCreatedInput = {
   tasksResponsible?: Prisma.TaskActivityUncheckedUpdateManyWithoutResponsibleNestedInput
   tasksCreated?: Prisma.TaskActivityUncheckedUpdateManyWithoutCreatedByNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedUpdateManyWithoutResolvedByNestedInput
 }
 
 export type UserCreateWithoutDesignersResponsibleInput = {
@@ -1071,6 +1133,8 @@ export type UserCreateWithoutDesignersResponsibleInput = {
   tasksResponsible?: Prisma.TaskActivityCreateNestedManyWithoutResponsibleInput
   tasksCreated?: Prisma.TaskActivityCreateNestedManyWithoutCreatedByInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationCreateNestedManyWithoutResolvedByInput
 }
 
 export type UserUncheckedCreateWithoutDesignersResponsibleInput = {
@@ -1099,6 +1163,8 @@ export type UserUncheckedCreateWithoutDesignersResponsibleInput = {
   tasksResponsible?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutResponsibleInput
   tasksCreated?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutCreatedByInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResolvedByInput
 }
 
 export type UserCreateOrConnectWithoutDesignersResponsibleInput = {
@@ -1132,6 +1198,8 @@ export type UserCreateWithoutDesignersCreatedInput = {
   tasksResponsible?: Prisma.TaskActivityCreateNestedManyWithoutResponsibleInput
   tasksCreated?: Prisma.TaskActivityCreateNestedManyWithoutCreatedByInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationCreateNestedManyWithoutResolvedByInput
 }
 
 export type UserUncheckedCreateWithoutDesignersCreatedInput = {
@@ -1160,6 +1228,8 @@ export type UserUncheckedCreateWithoutDesignersCreatedInput = {
   tasksResponsible?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutResponsibleInput
   tasksCreated?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutCreatedByInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResolvedByInput
 }
 
 export type UserCreateOrConnectWithoutDesignersCreatedInput = {
@@ -1204,6 +1274,8 @@ export type UserUpdateWithoutDesignersResponsibleInput = {
   tasksResponsible?: Prisma.TaskActivityUpdateManyWithoutResponsibleNestedInput
   tasksCreated?: Prisma.TaskActivityUpdateManyWithoutCreatedByNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUpdateManyWithoutResolvedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDesignersResponsibleInput = {
@@ -1232,6 +1304,8 @@ export type UserUncheckedUpdateWithoutDesignersResponsibleInput = {
   tasksResponsible?: Prisma.TaskActivityUncheckedUpdateManyWithoutResponsibleNestedInput
   tasksCreated?: Prisma.TaskActivityUncheckedUpdateManyWithoutCreatedByNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedUpdateManyWithoutResolvedByNestedInput
 }
 
 export type UserUpsertWithoutDesignersCreatedInput = {
@@ -1271,6 +1345,8 @@ export type UserUpdateWithoutDesignersCreatedInput = {
   tasksResponsible?: Prisma.TaskActivityUpdateManyWithoutResponsibleNestedInput
   tasksCreated?: Prisma.TaskActivityUpdateManyWithoutCreatedByNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUpdateManyWithoutResolvedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDesignersCreatedInput = {
@@ -1299,6 +1375,8 @@ export type UserUncheckedUpdateWithoutDesignersCreatedInput = {
   tasksResponsible?: Prisma.TaskActivityUncheckedUpdateManyWithoutResponsibleNestedInput
   tasksCreated?: Prisma.TaskActivityUncheckedUpdateManyWithoutCreatedByNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedUpdateManyWithoutResolvedByNestedInput
 }
 
 export type UserCreateWithoutObjectsResponsibleInput = {
@@ -1327,6 +1405,8 @@ export type UserCreateWithoutObjectsResponsibleInput = {
   tasksResponsible?: Prisma.TaskActivityCreateNestedManyWithoutResponsibleInput
   tasksCreated?: Prisma.TaskActivityCreateNestedManyWithoutCreatedByInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationCreateNestedManyWithoutResolvedByInput
 }
 
 export type UserUncheckedCreateWithoutObjectsResponsibleInput = {
@@ -1355,6 +1435,8 @@ export type UserUncheckedCreateWithoutObjectsResponsibleInput = {
   tasksResponsible?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutResponsibleInput
   tasksCreated?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutCreatedByInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResolvedByInput
 }
 
 export type UserCreateOrConnectWithoutObjectsResponsibleInput = {
@@ -1388,6 +1470,8 @@ export type UserCreateWithoutObjectsCreatedInput = {
   tasksResponsible?: Prisma.TaskActivityCreateNestedManyWithoutResponsibleInput
   tasksCreated?: Prisma.TaskActivityCreateNestedManyWithoutCreatedByInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationCreateNestedManyWithoutResolvedByInput
 }
 
 export type UserUncheckedCreateWithoutObjectsCreatedInput = {
@@ -1416,6 +1500,8 @@ export type UserUncheckedCreateWithoutObjectsCreatedInput = {
   tasksResponsible?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutResponsibleInput
   tasksCreated?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutCreatedByInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResolvedByInput
 }
 
 export type UserCreateOrConnectWithoutObjectsCreatedInput = {
@@ -1460,6 +1546,8 @@ export type UserUpdateWithoutObjectsResponsibleInput = {
   tasksResponsible?: Prisma.TaskActivityUpdateManyWithoutResponsibleNestedInput
   tasksCreated?: Prisma.TaskActivityUpdateManyWithoutCreatedByNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUpdateManyWithoutResolvedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutObjectsResponsibleInput = {
@@ -1488,6 +1576,8 @@ export type UserUncheckedUpdateWithoutObjectsResponsibleInput = {
   tasksResponsible?: Prisma.TaskActivityUncheckedUpdateManyWithoutResponsibleNestedInput
   tasksCreated?: Prisma.TaskActivityUncheckedUpdateManyWithoutCreatedByNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedUpdateManyWithoutResolvedByNestedInput
 }
 
 export type UserUpsertWithoutObjectsCreatedInput = {
@@ -1527,6 +1617,8 @@ export type UserUpdateWithoutObjectsCreatedInput = {
   tasksResponsible?: Prisma.TaskActivityUpdateManyWithoutResponsibleNestedInput
   tasksCreated?: Prisma.TaskActivityUpdateManyWithoutCreatedByNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUpdateManyWithoutResolvedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutObjectsCreatedInput = {
@@ -1555,6 +1647,8 @@ export type UserUncheckedUpdateWithoutObjectsCreatedInput = {
   tasksResponsible?: Prisma.TaskActivityUncheckedUpdateManyWithoutResponsibleNestedInput
   tasksCreated?: Prisma.TaskActivityUncheckedUpdateManyWithoutCreatedByNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedUpdateManyWithoutResolvedByNestedInput
 }
 
 export type UserCreateWithoutObjectParticipantsResponsibleInput = {
@@ -1583,6 +1677,8 @@ export type UserCreateWithoutObjectParticipantsResponsibleInput = {
   tasksResponsible?: Prisma.TaskActivityCreateNestedManyWithoutResponsibleInput
   tasksCreated?: Prisma.TaskActivityCreateNestedManyWithoutCreatedByInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationCreateNestedManyWithoutResolvedByInput
 }
 
 export type UserUncheckedCreateWithoutObjectParticipantsResponsibleInput = {
@@ -1611,6 +1707,8 @@ export type UserUncheckedCreateWithoutObjectParticipantsResponsibleInput = {
   tasksResponsible?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutResponsibleInput
   tasksCreated?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutCreatedByInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResolvedByInput
 }
 
 export type UserCreateOrConnectWithoutObjectParticipantsResponsibleInput = {
@@ -1644,6 +1742,8 @@ export type UserCreateWithoutObjectParticipantsCreatedInput = {
   tasksResponsible?: Prisma.TaskActivityCreateNestedManyWithoutResponsibleInput
   tasksCreated?: Prisma.TaskActivityCreateNestedManyWithoutCreatedByInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationCreateNestedManyWithoutResolvedByInput
 }
 
 export type UserUncheckedCreateWithoutObjectParticipantsCreatedInput = {
@@ -1672,6 +1772,8 @@ export type UserUncheckedCreateWithoutObjectParticipantsCreatedInput = {
   tasksResponsible?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutResponsibleInput
   tasksCreated?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutCreatedByInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResolvedByInput
 }
 
 export type UserCreateOrConnectWithoutObjectParticipantsCreatedInput = {
@@ -1716,6 +1818,8 @@ export type UserUpdateWithoutObjectParticipantsResponsibleInput = {
   tasksResponsible?: Prisma.TaskActivityUpdateManyWithoutResponsibleNestedInput
   tasksCreated?: Prisma.TaskActivityUpdateManyWithoutCreatedByNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUpdateManyWithoutResolvedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutObjectParticipantsResponsibleInput = {
@@ -1744,6 +1848,8 @@ export type UserUncheckedUpdateWithoutObjectParticipantsResponsibleInput = {
   tasksResponsible?: Prisma.TaskActivityUncheckedUpdateManyWithoutResponsibleNestedInput
   tasksCreated?: Prisma.TaskActivityUncheckedUpdateManyWithoutCreatedByNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedUpdateManyWithoutResolvedByNestedInput
 }
 
 export type UserUpsertWithoutObjectParticipantsCreatedInput = {
@@ -1783,6 +1889,8 @@ export type UserUpdateWithoutObjectParticipantsCreatedInput = {
   tasksResponsible?: Prisma.TaskActivityUpdateManyWithoutResponsibleNestedInput
   tasksCreated?: Prisma.TaskActivityUpdateManyWithoutCreatedByNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUpdateManyWithoutResolvedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutObjectParticipantsCreatedInput = {
@@ -1811,6 +1919,8 @@ export type UserUncheckedUpdateWithoutObjectParticipantsCreatedInput = {
   tasksResponsible?: Prisma.TaskActivityUncheckedUpdateManyWithoutResponsibleNestedInput
   tasksCreated?: Prisma.TaskActivityUncheckedUpdateManyWithoutCreatedByNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedUpdateManyWithoutResolvedByNestedInput
 }
 
 export type UserCreateWithoutDealsResponsibleInput = {
@@ -1839,6 +1949,8 @@ export type UserCreateWithoutDealsResponsibleInput = {
   tasksResponsible?: Prisma.TaskActivityCreateNestedManyWithoutResponsibleInput
   tasksCreated?: Prisma.TaskActivityCreateNestedManyWithoutCreatedByInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationCreateNestedManyWithoutResolvedByInput
 }
 
 export type UserUncheckedCreateWithoutDealsResponsibleInput = {
@@ -1867,6 +1979,8 @@ export type UserUncheckedCreateWithoutDealsResponsibleInput = {
   tasksResponsible?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutResponsibleInput
   tasksCreated?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutCreatedByInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResolvedByInput
 }
 
 export type UserCreateOrConnectWithoutDealsResponsibleInput = {
@@ -1900,6 +2014,8 @@ export type UserCreateWithoutDealsCreatedInput = {
   tasksResponsible?: Prisma.TaskActivityCreateNestedManyWithoutResponsibleInput
   tasksCreated?: Prisma.TaskActivityCreateNestedManyWithoutCreatedByInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationCreateNestedManyWithoutResolvedByInput
 }
 
 export type UserUncheckedCreateWithoutDealsCreatedInput = {
@@ -1928,6 +2044,8 @@ export type UserUncheckedCreateWithoutDealsCreatedInput = {
   tasksResponsible?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutResponsibleInput
   tasksCreated?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutCreatedByInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResolvedByInput
 }
 
 export type UserCreateOrConnectWithoutDealsCreatedInput = {
@@ -1972,6 +2090,8 @@ export type UserUpdateWithoutDealsResponsibleInput = {
   tasksResponsible?: Prisma.TaskActivityUpdateManyWithoutResponsibleNestedInput
   tasksCreated?: Prisma.TaskActivityUpdateManyWithoutCreatedByNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUpdateManyWithoutResolvedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDealsResponsibleInput = {
@@ -2000,6 +2120,8 @@ export type UserUncheckedUpdateWithoutDealsResponsibleInput = {
   tasksResponsible?: Prisma.TaskActivityUncheckedUpdateManyWithoutResponsibleNestedInput
   tasksCreated?: Prisma.TaskActivityUncheckedUpdateManyWithoutCreatedByNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedUpdateManyWithoutResolvedByNestedInput
 }
 
 export type UserUpsertWithoutDealsCreatedInput = {
@@ -2039,6 +2161,8 @@ export type UserUpdateWithoutDealsCreatedInput = {
   tasksResponsible?: Prisma.TaskActivityUpdateManyWithoutResponsibleNestedInput
   tasksCreated?: Prisma.TaskActivityUpdateManyWithoutCreatedByNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUpdateManyWithoutResolvedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDealsCreatedInput = {
@@ -2067,6 +2191,8 @@ export type UserUncheckedUpdateWithoutDealsCreatedInput = {
   tasksResponsible?: Prisma.TaskActivityUncheckedUpdateManyWithoutResponsibleNestedInput
   tasksCreated?: Prisma.TaskActivityUncheckedUpdateManyWithoutCreatedByNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedUpdateManyWithoutResolvedByNestedInput
 }
 
 export type UserCreateWithoutProposalsResponsibleInput = {
@@ -2095,6 +2221,8 @@ export type UserCreateWithoutProposalsResponsibleInput = {
   tasksResponsible?: Prisma.TaskActivityCreateNestedManyWithoutResponsibleInput
   tasksCreated?: Prisma.TaskActivityCreateNestedManyWithoutCreatedByInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationCreateNestedManyWithoutResolvedByInput
 }
 
 export type UserUncheckedCreateWithoutProposalsResponsibleInput = {
@@ -2123,6 +2251,8 @@ export type UserUncheckedCreateWithoutProposalsResponsibleInput = {
   tasksResponsible?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutResponsibleInput
   tasksCreated?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutCreatedByInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResolvedByInput
 }
 
 export type UserCreateOrConnectWithoutProposalsResponsibleInput = {
@@ -2156,6 +2286,8 @@ export type UserCreateWithoutProposalsCreatedInput = {
   tasksResponsible?: Prisma.TaskActivityCreateNestedManyWithoutResponsibleInput
   tasksCreated?: Prisma.TaskActivityCreateNestedManyWithoutCreatedByInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationCreateNestedManyWithoutResolvedByInput
 }
 
 export type UserUncheckedCreateWithoutProposalsCreatedInput = {
@@ -2184,6 +2316,8 @@ export type UserUncheckedCreateWithoutProposalsCreatedInput = {
   tasksResponsible?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutResponsibleInput
   tasksCreated?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutCreatedByInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResolvedByInput
 }
 
 export type UserCreateOrConnectWithoutProposalsCreatedInput = {
@@ -2217,6 +2351,8 @@ export type UserCreateWithoutProposalsUploadedInput = {
   tasksResponsible?: Prisma.TaskActivityCreateNestedManyWithoutResponsibleInput
   tasksCreated?: Prisma.TaskActivityCreateNestedManyWithoutCreatedByInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationCreateNestedManyWithoutResolvedByInput
 }
 
 export type UserUncheckedCreateWithoutProposalsUploadedInput = {
@@ -2245,6 +2381,8 @@ export type UserUncheckedCreateWithoutProposalsUploadedInput = {
   tasksResponsible?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutResponsibleInput
   tasksCreated?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutCreatedByInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResolvedByInput
 }
 
 export type UserCreateOrConnectWithoutProposalsUploadedInput = {
@@ -2289,6 +2427,8 @@ export type UserUpdateWithoutProposalsResponsibleInput = {
   tasksResponsible?: Prisma.TaskActivityUpdateManyWithoutResponsibleNestedInput
   tasksCreated?: Prisma.TaskActivityUpdateManyWithoutCreatedByNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUpdateManyWithoutResolvedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProposalsResponsibleInput = {
@@ -2317,6 +2457,8 @@ export type UserUncheckedUpdateWithoutProposalsResponsibleInput = {
   tasksResponsible?: Prisma.TaskActivityUncheckedUpdateManyWithoutResponsibleNestedInput
   tasksCreated?: Prisma.TaskActivityUncheckedUpdateManyWithoutCreatedByNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedUpdateManyWithoutResolvedByNestedInput
 }
 
 export type UserUpsertWithoutProposalsCreatedInput = {
@@ -2356,6 +2498,8 @@ export type UserUpdateWithoutProposalsCreatedInput = {
   tasksResponsible?: Prisma.TaskActivityUpdateManyWithoutResponsibleNestedInput
   tasksCreated?: Prisma.TaskActivityUpdateManyWithoutCreatedByNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUpdateManyWithoutResolvedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProposalsCreatedInput = {
@@ -2384,6 +2528,8 @@ export type UserUncheckedUpdateWithoutProposalsCreatedInput = {
   tasksResponsible?: Prisma.TaskActivityUncheckedUpdateManyWithoutResponsibleNestedInput
   tasksCreated?: Prisma.TaskActivityUncheckedUpdateManyWithoutCreatedByNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedUpdateManyWithoutResolvedByNestedInput
 }
 
 export type UserUpsertWithoutProposalsUploadedInput = {
@@ -2423,6 +2569,8 @@ export type UserUpdateWithoutProposalsUploadedInput = {
   tasksResponsible?: Prisma.TaskActivityUpdateManyWithoutResponsibleNestedInput
   tasksCreated?: Prisma.TaskActivityUpdateManyWithoutCreatedByNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUpdateManyWithoutResolvedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProposalsUploadedInput = {
@@ -2451,6 +2599,8 @@ export type UserUncheckedUpdateWithoutProposalsUploadedInput = {
   tasksResponsible?: Prisma.TaskActivityUncheckedUpdateManyWithoutResponsibleNestedInput
   tasksCreated?: Prisma.TaskActivityUncheckedUpdateManyWithoutCreatedByNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedUpdateManyWithoutResolvedByNestedInput
 }
 
 export type UserCreateWithoutTasksResponsibleInput = {
@@ -2479,6 +2629,8 @@ export type UserCreateWithoutTasksResponsibleInput = {
   proposalsUploaded?: Prisma.CommercialProposalCreateNestedManyWithoutUploadedByInput
   tasksCreated?: Prisma.TaskActivityCreateNestedManyWithoutCreatedByInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationCreateNestedManyWithoutResolvedByInput
 }
 
 export type UserUncheckedCreateWithoutTasksResponsibleInput = {
@@ -2507,6 +2659,8 @@ export type UserUncheckedCreateWithoutTasksResponsibleInput = {
   proposalsUploaded?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutUploadedByInput
   tasksCreated?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutCreatedByInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResolvedByInput
 }
 
 export type UserCreateOrConnectWithoutTasksResponsibleInput = {
@@ -2540,6 +2694,8 @@ export type UserCreateWithoutTasksCreatedInput = {
   proposalsUploaded?: Prisma.CommercialProposalCreateNestedManyWithoutUploadedByInput
   tasksResponsible?: Prisma.TaskActivityCreateNestedManyWithoutResponsibleInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationCreateNestedManyWithoutResolvedByInput
 }
 
 export type UserUncheckedCreateWithoutTasksCreatedInput = {
@@ -2568,6 +2724,8 @@ export type UserUncheckedCreateWithoutTasksCreatedInput = {
   proposalsUploaded?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutUploadedByInput
   tasksResponsible?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutResponsibleInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResolvedByInput
 }
 
 export type UserCreateOrConnectWithoutTasksCreatedInput = {
@@ -2612,6 +2770,8 @@ export type UserUpdateWithoutTasksResponsibleInput = {
   proposalsUploaded?: Prisma.CommercialProposalUpdateManyWithoutUploadedByNestedInput
   tasksCreated?: Prisma.TaskActivityUpdateManyWithoutCreatedByNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUpdateManyWithoutResolvedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTasksResponsibleInput = {
@@ -2640,6 +2800,8 @@ export type UserUncheckedUpdateWithoutTasksResponsibleInput = {
   proposalsUploaded?: Prisma.CommercialProposalUncheckedUpdateManyWithoutUploadedByNestedInput
   tasksCreated?: Prisma.TaskActivityUncheckedUpdateManyWithoutCreatedByNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedUpdateManyWithoutResolvedByNestedInput
 }
 
 export type UserUpsertWithoutTasksCreatedInput = {
@@ -2679,6 +2841,8 @@ export type UserUpdateWithoutTasksCreatedInput = {
   proposalsUploaded?: Prisma.CommercialProposalUpdateManyWithoutUploadedByNestedInput
   tasksResponsible?: Prisma.TaskActivityUpdateManyWithoutResponsibleNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUpdateManyWithoutResolvedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTasksCreatedInput = {
@@ -2707,6 +2871,8 @@ export type UserUncheckedUpdateWithoutTasksCreatedInput = {
   proposalsUploaded?: Prisma.CommercialProposalUncheckedUpdateManyWithoutUploadedByNestedInput
   tasksResponsible?: Prisma.TaskActivityUncheckedUpdateManyWithoutResponsibleNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedUpdateManyWithoutResolvedByNestedInput
 }
 
 export type UserCreateWithoutAuditLogsInput = {
@@ -2735,6 +2901,8 @@ export type UserCreateWithoutAuditLogsInput = {
   proposalsUploaded?: Prisma.CommercialProposalCreateNestedManyWithoutUploadedByInput
   tasksResponsible?: Prisma.TaskActivityCreateNestedManyWithoutResponsibleInput
   tasksCreated?: Prisma.TaskActivityCreateNestedManyWithoutCreatedByInput
+  crmViolationsResponsible?: Prisma.CrmViolationCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationCreateNestedManyWithoutResolvedByInput
 }
 
 export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -2763,6 +2931,8 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   proposalsUploaded?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutUploadedByInput
   tasksResponsible?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutResponsibleInput
   tasksCreated?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutCreatedByInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResolvedByInput
 }
 
 export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -2807,6 +2977,8 @@ export type UserUpdateWithoutAuditLogsInput = {
   proposalsUploaded?: Prisma.CommercialProposalUpdateManyWithoutUploadedByNestedInput
   tasksResponsible?: Prisma.TaskActivityUpdateManyWithoutResponsibleNestedInput
   tasksCreated?: Prisma.TaskActivityUpdateManyWithoutCreatedByNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUpdateManyWithoutResolvedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -2835,6 +3007,280 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   proposalsUploaded?: Prisma.CommercialProposalUncheckedUpdateManyWithoutUploadedByNestedInput
   tasksResponsible?: Prisma.TaskActivityUncheckedUpdateManyWithoutResponsibleNestedInput
   tasksCreated?: Prisma.TaskActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedUpdateManyWithoutResolvedByNestedInput
+}
+
+export type UserCreateWithoutCrmViolationsResponsibleInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash?: string | null
+  authProviderId?: string | null
+  role: $Enums.UserRole
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lastLoginAt?: Date | string | null
+  clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
+  clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
+  designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
+  designersCreated?: Prisma.DesignerCreateNestedManyWithoutCreatedByInput
+  objectsResponsible?: Prisma.ProjectObjectCreateNestedManyWithoutResponsibleInput
+  objectsCreated?: Prisma.ProjectObjectCreateNestedManyWithoutCreatedByInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantCreateNestedManyWithoutResponsibleInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantCreateNestedManyWithoutCreatedByInput
+  dealsResponsible?: Prisma.DealCreateNestedManyWithoutResponsibleInput
+  dealsCreated?: Prisma.DealCreateNestedManyWithoutCreatedByInput
+  proposalsResponsible?: Prisma.CommercialProposalCreateNestedManyWithoutResponsibleInput
+  proposalsCreated?: Prisma.CommercialProposalCreateNestedManyWithoutCreatedByInput
+  proposalsUploaded?: Prisma.CommercialProposalCreateNestedManyWithoutUploadedByInput
+  tasksResponsible?: Prisma.TaskActivityCreateNestedManyWithoutResponsibleInput
+  tasksCreated?: Prisma.TaskActivityCreateNestedManyWithoutCreatedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  crmViolationsResolved?: Prisma.CrmViolationCreateNestedManyWithoutResolvedByInput
+}
+
+export type UserUncheckedCreateWithoutCrmViolationsResponsibleInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash?: string | null
+  authProviderId?: string | null
+  role: $Enums.UserRole
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lastLoginAt?: Date | string | null
+  clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
+  clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
+  designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
+  designersCreated?: Prisma.DesignerUncheckedCreateNestedManyWithoutCreatedByInput
+  objectsResponsible?: Prisma.ProjectObjectUncheckedCreateNestedManyWithoutResponsibleInput
+  objectsCreated?: Prisma.ProjectObjectUncheckedCreateNestedManyWithoutCreatedByInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUncheckedCreateNestedManyWithoutResponsibleInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUncheckedCreateNestedManyWithoutCreatedByInput
+  dealsResponsible?: Prisma.DealUncheckedCreateNestedManyWithoutResponsibleInput
+  dealsCreated?: Prisma.DealUncheckedCreateNestedManyWithoutCreatedByInput
+  proposalsResponsible?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutResponsibleInput
+  proposalsCreated?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutCreatedByInput
+  proposalsUploaded?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutUploadedByInput
+  tasksResponsible?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutResponsibleInput
+  tasksCreated?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutCreatedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResolvedByInput
+}
+
+export type UserCreateOrConnectWithoutCrmViolationsResponsibleInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCrmViolationsResponsibleInput, Prisma.UserUncheckedCreateWithoutCrmViolationsResponsibleInput>
+}
+
+export type UserCreateWithoutCrmViolationsResolvedInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash?: string | null
+  authProviderId?: string | null
+  role: $Enums.UserRole
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lastLoginAt?: Date | string | null
+  clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
+  clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
+  designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
+  designersCreated?: Prisma.DesignerCreateNestedManyWithoutCreatedByInput
+  objectsResponsible?: Prisma.ProjectObjectCreateNestedManyWithoutResponsibleInput
+  objectsCreated?: Prisma.ProjectObjectCreateNestedManyWithoutCreatedByInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantCreateNestedManyWithoutResponsibleInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantCreateNestedManyWithoutCreatedByInput
+  dealsResponsible?: Prisma.DealCreateNestedManyWithoutResponsibleInput
+  dealsCreated?: Prisma.DealCreateNestedManyWithoutCreatedByInput
+  proposalsResponsible?: Prisma.CommercialProposalCreateNestedManyWithoutResponsibleInput
+  proposalsCreated?: Prisma.CommercialProposalCreateNestedManyWithoutCreatedByInput
+  proposalsUploaded?: Prisma.CommercialProposalCreateNestedManyWithoutUploadedByInput
+  tasksResponsible?: Prisma.TaskActivityCreateNestedManyWithoutResponsibleInput
+  tasksCreated?: Prisma.TaskActivityCreateNestedManyWithoutCreatedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationCreateNestedManyWithoutResponsibleInput
+}
+
+export type UserUncheckedCreateWithoutCrmViolationsResolvedInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash?: string | null
+  authProviderId?: string | null
+  role: $Enums.UserRole
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lastLoginAt?: Date | string | null
+  clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
+  clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
+  designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
+  designersCreated?: Prisma.DesignerUncheckedCreateNestedManyWithoutCreatedByInput
+  objectsResponsible?: Prisma.ProjectObjectUncheckedCreateNestedManyWithoutResponsibleInput
+  objectsCreated?: Prisma.ProjectObjectUncheckedCreateNestedManyWithoutCreatedByInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUncheckedCreateNestedManyWithoutResponsibleInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUncheckedCreateNestedManyWithoutCreatedByInput
+  dealsResponsible?: Prisma.DealUncheckedCreateNestedManyWithoutResponsibleInput
+  dealsCreated?: Prisma.DealUncheckedCreateNestedManyWithoutCreatedByInput
+  proposalsResponsible?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutResponsibleInput
+  proposalsCreated?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutCreatedByInput
+  proposalsUploaded?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutUploadedByInput
+  tasksResponsible?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutResponsibleInput
+  tasksCreated?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutCreatedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResponsibleInput
+}
+
+export type UserCreateOrConnectWithoutCrmViolationsResolvedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCrmViolationsResolvedInput, Prisma.UserUncheckedCreateWithoutCrmViolationsResolvedInput>
+}
+
+export type UserUpsertWithoutCrmViolationsResponsibleInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCrmViolationsResponsibleInput, Prisma.UserUncheckedUpdateWithoutCrmViolationsResponsibleInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCrmViolationsResponsibleInput, Prisma.UserUncheckedCreateWithoutCrmViolationsResponsibleInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCrmViolationsResponsibleInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCrmViolationsResponsibleInput, Prisma.UserUncheckedUpdateWithoutCrmViolationsResponsibleInput>
+}
+
+export type UserUpdateWithoutCrmViolationsResponsibleInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
+  clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
+  designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
+  designersCreated?: Prisma.DesignerUpdateManyWithoutCreatedByNestedInput
+  objectsResponsible?: Prisma.ProjectObjectUpdateManyWithoutResponsibleNestedInput
+  objectsCreated?: Prisma.ProjectObjectUpdateManyWithoutCreatedByNestedInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUpdateManyWithoutResponsibleNestedInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUpdateManyWithoutCreatedByNestedInput
+  dealsResponsible?: Prisma.DealUpdateManyWithoutResponsibleNestedInput
+  dealsCreated?: Prisma.DealUpdateManyWithoutCreatedByNestedInput
+  proposalsResponsible?: Prisma.CommercialProposalUpdateManyWithoutResponsibleNestedInput
+  proposalsCreated?: Prisma.CommercialProposalUpdateManyWithoutCreatedByNestedInput
+  proposalsUploaded?: Prisma.CommercialProposalUpdateManyWithoutUploadedByNestedInput
+  tasksResponsible?: Prisma.TaskActivityUpdateManyWithoutResponsibleNestedInput
+  tasksCreated?: Prisma.TaskActivityUpdateManyWithoutCreatedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUpdateManyWithoutResolvedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCrmViolationsResponsibleInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
+  clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
+  designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
+  designersCreated?: Prisma.DesignerUncheckedUpdateManyWithoutCreatedByNestedInput
+  objectsResponsible?: Prisma.ProjectObjectUncheckedUpdateManyWithoutResponsibleNestedInput
+  objectsCreated?: Prisma.ProjectObjectUncheckedUpdateManyWithoutCreatedByNestedInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUncheckedUpdateManyWithoutResponsibleNestedInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUncheckedUpdateManyWithoutCreatedByNestedInput
+  dealsResponsible?: Prisma.DealUncheckedUpdateManyWithoutResponsibleNestedInput
+  dealsCreated?: Prisma.DealUncheckedUpdateManyWithoutCreatedByNestedInput
+  proposalsResponsible?: Prisma.CommercialProposalUncheckedUpdateManyWithoutResponsibleNestedInput
+  proposalsCreated?: Prisma.CommercialProposalUncheckedUpdateManyWithoutCreatedByNestedInput
+  proposalsUploaded?: Prisma.CommercialProposalUncheckedUpdateManyWithoutUploadedByNestedInput
+  tasksResponsible?: Prisma.TaskActivityUncheckedUpdateManyWithoutResponsibleNestedInput
+  tasksCreated?: Prisma.TaskActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedUpdateManyWithoutResolvedByNestedInput
+}
+
+export type UserUpsertWithoutCrmViolationsResolvedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCrmViolationsResolvedInput, Prisma.UserUncheckedUpdateWithoutCrmViolationsResolvedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCrmViolationsResolvedInput, Prisma.UserUncheckedCreateWithoutCrmViolationsResolvedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCrmViolationsResolvedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCrmViolationsResolvedInput, Prisma.UserUncheckedUpdateWithoutCrmViolationsResolvedInput>
+}
+
+export type UserUpdateWithoutCrmViolationsResolvedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
+  clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
+  designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
+  designersCreated?: Prisma.DesignerUpdateManyWithoutCreatedByNestedInput
+  objectsResponsible?: Prisma.ProjectObjectUpdateManyWithoutResponsibleNestedInput
+  objectsCreated?: Prisma.ProjectObjectUpdateManyWithoutCreatedByNestedInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUpdateManyWithoutResponsibleNestedInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUpdateManyWithoutCreatedByNestedInput
+  dealsResponsible?: Prisma.DealUpdateManyWithoutResponsibleNestedInput
+  dealsCreated?: Prisma.DealUpdateManyWithoutCreatedByNestedInput
+  proposalsResponsible?: Prisma.CommercialProposalUpdateManyWithoutResponsibleNestedInput
+  proposalsCreated?: Prisma.CommercialProposalUpdateManyWithoutCreatedByNestedInput
+  proposalsUploaded?: Prisma.CommercialProposalUpdateManyWithoutUploadedByNestedInput
+  tasksResponsible?: Prisma.TaskActivityUpdateManyWithoutResponsibleNestedInput
+  tasksCreated?: Prisma.TaskActivityUpdateManyWithoutCreatedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUpdateManyWithoutResponsibleNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCrmViolationsResolvedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
+  clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
+  designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
+  designersCreated?: Prisma.DesignerUncheckedUpdateManyWithoutCreatedByNestedInput
+  objectsResponsible?: Prisma.ProjectObjectUncheckedUpdateManyWithoutResponsibleNestedInput
+  objectsCreated?: Prisma.ProjectObjectUncheckedUpdateManyWithoutCreatedByNestedInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUncheckedUpdateManyWithoutResponsibleNestedInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUncheckedUpdateManyWithoutCreatedByNestedInput
+  dealsResponsible?: Prisma.DealUncheckedUpdateManyWithoutResponsibleNestedInput
+  dealsCreated?: Prisma.DealUncheckedUpdateManyWithoutCreatedByNestedInput
+  proposalsResponsible?: Prisma.CommercialProposalUncheckedUpdateManyWithoutResponsibleNestedInput
+  proposalsCreated?: Prisma.CommercialProposalUncheckedUpdateManyWithoutCreatedByNestedInput
+  proposalsUploaded?: Prisma.CommercialProposalUncheckedUpdateManyWithoutUploadedByNestedInput
+  tasksResponsible?: Prisma.TaskActivityUncheckedUpdateManyWithoutResponsibleNestedInput
+  tasksCreated?: Prisma.TaskActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedUpdateManyWithoutResponsibleNestedInput
 }
 
 
@@ -2859,6 +3305,8 @@ export type UserCountOutputType = {
   tasksResponsible: number
   tasksCreated: number
   auditLogs: number
+  crmViolationsResponsible: number
+  crmViolationsResolved: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2878,6 +3326,8 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   tasksResponsible?: boolean | UserCountOutputTypeCountTasksResponsibleArgs
   tasksCreated?: boolean | UserCountOutputTypeCountTasksCreatedArgs
   auditLogs?: boolean | UserCountOutputTypeCountAuditLogsArgs
+  crmViolationsResponsible?: boolean | UserCountOutputTypeCountCrmViolationsResponsibleArgs
+  crmViolationsResolved?: boolean | UserCountOutputTypeCountCrmViolationsResolvedArgs
 }
 
 /**
@@ -3002,6 +3452,20 @@ export type UserCountOutputTypeCountAuditLogsArgs<ExtArgs extends runtime.Types.
   where?: Prisma.AuditLogWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCrmViolationsResponsibleArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CrmViolationWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCrmViolationsResolvedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CrmViolationWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -3030,6 +3494,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   tasksResponsible?: boolean | Prisma.User$tasksResponsibleArgs<ExtArgs>
   tasksCreated?: boolean | Prisma.User$tasksCreatedArgs<ExtArgs>
   auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
+  crmViolationsResponsible?: boolean | Prisma.User$crmViolationsResponsibleArgs<ExtArgs>
+  crmViolationsResolved?: boolean | Prisma.User$crmViolationsResolvedArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -3090,6 +3556,8 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   tasksResponsible?: boolean | Prisma.User$tasksResponsibleArgs<ExtArgs>
   tasksCreated?: boolean | Prisma.User$tasksCreatedArgs<ExtArgs>
   auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
+  crmViolationsResponsible?: boolean | Prisma.User$crmViolationsResponsibleArgs<ExtArgs>
+  crmViolationsResolved?: boolean | Prisma.User$crmViolationsResolvedArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -3114,6 +3582,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     tasksResponsible: Prisma.$TaskActivityPayload<ExtArgs>[]
     tasksCreated: Prisma.$TaskActivityPayload<ExtArgs>[]
     auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
+    crmViolationsResponsible: Prisma.$CrmViolationPayload<ExtArgs>[]
+    crmViolationsResolved: Prisma.$CrmViolationPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -3536,6 +4006,8 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   tasksResponsible<T extends Prisma.User$tasksResponsibleArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$tasksResponsibleArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TaskActivityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   tasksCreated<T extends Prisma.User$tasksCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$tasksCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TaskActivityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   auditLogs<T extends Prisma.User$auditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  crmViolationsResponsible<T extends Prisma.User$crmViolationsResponsibleArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$crmViolationsResponsibleArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CrmViolationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  crmViolationsResolved<T extends Prisma.User$crmViolationsResolvedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$crmViolationsResolvedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CrmViolationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4349,6 +4821,54 @@ export type User$auditLogsArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   distinct?: Prisma.AuditLogScalarFieldEnum | Prisma.AuditLogScalarFieldEnum[]
+}
+
+/**
+ * User.crmViolationsResponsible
+ */
+export type User$crmViolationsResponsibleArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CrmViolation
+   */
+  select?: Prisma.CrmViolationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CrmViolation
+   */
+  omit?: Prisma.CrmViolationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CrmViolationInclude<ExtArgs> | null
+  where?: Prisma.CrmViolationWhereInput
+  orderBy?: Prisma.CrmViolationOrderByWithRelationInput | Prisma.CrmViolationOrderByWithRelationInput[]
+  cursor?: Prisma.CrmViolationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CrmViolationScalarFieldEnum | Prisma.CrmViolationScalarFieldEnum[]
+}
+
+/**
+ * User.crmViolationsResolved
+ */
+export type User$crmViolationsResolvedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CrmViolation
+   */
+  select?: Prisma.CrmViolationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CrmViolation
+   */
+  omit?: Prisma.CrmViolationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CrmViolationInclude<ExtArgs> | null
+  where?: Prisma.CrmViolationWhereInput
+  orderBy?: Prisma.CrmViolationOrderByWithRelationInput | Prisma.CrmViolationOrderByWithRelationInput[]
+  cursor?: Prisma.CrmViolationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CrmViolationScalarFieldEnum | Prisma.CrmViolationScalarFieldEnum[]
 }
 
 /**

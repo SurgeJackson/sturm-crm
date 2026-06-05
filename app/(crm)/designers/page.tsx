@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Plus } from "lucide-react";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
+import { CrmDisciplineBadge } from "@/components/crm/crm-discipline";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -128,6 +129,7 @@ export default async function DesignersPage({ searchParams }: DesignersPageProps
                   <TableHead>Лояльность</TableHead>
                   <TableHead>Ответственный</TableHead>
                   <TableHead>Следующий шаг</TableHead>
+                  <TableHead>CRM-дисциплина</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -146,6 +148,7 @@ export default async function DesignersPage({ searchParams }: DesignersPageProps
                       <span className={isOverdue(designer.nextStepAt) ? "text-destructive" : ""}>{formatRussianDate(designer.nextStepAt)}</span>
                       <div className="text-xs text-muted-foreground">{designer.nextStepText ?? "Не указан"}</div>
                     </TableCell>
+                    <TableCell><CrmDisciplineBadge violations={designer.crmViolations} /></TableCell>
                   </TableRow>
                 ))}
               </TableBody>

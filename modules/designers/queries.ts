@@ -2,6 +2,7 @@ import type { Prisma } from "@/generated/prisma/client";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { taskInclude } from "@/modules/tasks/queries";
+import { computeBonusEligibilityStatus, getActiveViolationsForEntity, getActiveViolationsMap } from "@/modules/crm-discipline/service";
 import { canViewAllData, canViewRecord, type PermissionUser } from "@/permissions";
 
 export type DesignerListSearchParams = {
@@ -65,7 +66,7 @@ export async function getDesigners(params: DesignerListSearchParams, user: Permi
         ? { nextStepAt: "asc" }
         : { createdAt: "desc" };
 
-  const [items, total] = await Promise.all([
+  const [rows, total] = await Promise.all([
     prisma.designer.findMany({
       where,
       orderBy,
@@ -78,6 +79,15 @@ export async function getDesigners(params: DesignerListSearchParams, user: Permi
     }),
     prisma.designer.count({ where })
   ]);
+  const violations = await getActiveViolationsMap("DESIGNER", rows.map((item) => item.id));
+  const items = rows.map((item) => {
+    const crmViolations = violations.get(item.id) ?? [];
+    return {
+      ...item,
+      crmViolations,
+      bonusEligibilityStatus: computeBonusEligibilityStatus(crmViolations, false)
+    };
+  });
 
   return {
     items,
@@ -132,7 +142,12 @@ export async function getDesignerForUser(id: string, user: PermissionUser) {
     notFound();
   }
 
-  return designer;
+  const crmViolations = await getActiveViolationsForEntity("DESIGNER", designer.id);
+  return {
+    ...designer,
+    crmViolations,
+    bonusEligibilityStatus: computeBonusEligibilityStatus(crmViolations, false)
+  };
 }
 
 export async function getDesignerPipeline(user: PermissionUser) {

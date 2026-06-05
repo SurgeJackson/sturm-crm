@@ -24,6 +24,7 @@ import {
   canManageObjectParticipants
 } from "@/permissions";
 import { compactString, optionalDate, toAuditValue } from "@/modules/crm/form-utils";
+import { expireViolationsForEntity, syncDesignerDiscipline, syncObjectDiscipline } from "@/modules/crm-discipline/service";
 
 export type ProjectObjectActionState = {
   errors?: Record<string, string[]>;
@@ -364,6 +365,8 @@ export async function createProjectObjectAction(_prevState: ProjectObjectActionS
     after: toAuditValue(object)
   });
 
+  await syncObjectDiscipline(object.id, user.id);
+
   redirect(`/objects/${object.id}?saved=1`);
 }
 
@@ -443,6 +446,8 @@ export async function updateProjectObjectAction(id: string, _prevState: ProjectO
     await createFrozenObjectReturnTask(after, user.id);
   }
 
+  await syncObjectDiscipline(id, user.id);
+
   redirect(`/objects/${id}?saved=1`);
 }
 
@@ -477,6 +482,8 @@ export async function archiveProjectObjectAction(id: string) {
     before: toAuditValue(before),
     after: toAuditValue(after)
   });
+
+  await expireViolationsForEntity("OBJECT", id, user.id);
 
   redirect(`/objects/${id}?archived=1`);
 }
@@ -630,6 +637,8 @@ export async function moveDesignerToFirstObjectReceivedAction(objectId: string) 
     before: { relationshipStage: beforeStage },
     after: { relationshipStage: "FIRST_OBJECT_RECEIVED" }
   });
+
+  await syncDesignerDiscipline(object.designer.id, user.id);
 
   redirect(`/objects/${objectId}?designerStage=1`);
 }

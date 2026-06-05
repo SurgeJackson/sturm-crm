@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Plus, Search } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
+import { BonusEligibilityBadge, CrmDisciplineBadge } from "@/components/crm/crm-discipline";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -157,12 +158,14 @@ export default async function ObjectsPage({ searchParams }: ObjectsPageProps) {
                 <TableHead>Ответственный</TableHead>
                 <TableHead>Стадия</TableHead>
                 <TableHead>Статус</TableHead>
+                <TableHead>CRM-дисциплина</TableHead>
+                <TableHead>Учет в премии</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {objects.items.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={7} className="h-28 text-center text-sm text-muted-foreground">
+                  <TableCell colSpan={9} className="h-28 text-center text-sm text-muted-foreground">
                     Объекты не найдены.
                   </TableCell>
                 </TableRow>
@@ -191,6 +194,8 @@ export default async function ObjectsPage({ searchParams }: ObjectsPageProps) {
                     <TableCell>{object.responsible.name}</TableCell>
                     <TableCell><Badge variant="outline">{objectStageLabels[object.stage]}</Badge></TableCell>
                     <TableCell><Badge variant={statusVariant(object.status)}>{objectStatusLabels[object.status]}</Badge></TableCell>
+                    <TableCell><CrmDisciplineBadge violations={object.crmViolations} /></TableCell>
+                    <TableCell><BonusEligibilityBadge violations={object.crmViolations} /></TableCell>
                   </TableRow>
                 ))
               )}

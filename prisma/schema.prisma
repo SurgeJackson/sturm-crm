@@ -180,6 +180,20 @@ enum AuditEntityType {
   PROPOSAL
   TASK
   USER
+  CRM_VIOLATION
+}
+
+enum CrmViolationSeverity {
+  CRITICAL
+  MEDIUM
+  LOW
+}
+
+enum CrmViolationStatus {
+  ACTIVE
+  RESOLVED
+  IGNORED
+  EXPIRED
 }
 
 enum ObjectType {
@@ -376,6 +390,8 @@ model User {
   tasksResponsible              TaskActivity[]             @relation("TaskResponsible")
   tasksCreated                  TaskActivity[]             @relation("TaskCreatedBy")
   auditLogs                     AuditLog[]                 @relation("AuditLogUser")
+  crmViolationsResponsible      CrmViolation[]             @relation("CrmViolationResponsible")
+  crmViolationsResolved         CrmViolation[]             @relation("CrmViolationResolvedBy")
 }
 
 model Client {
@@ -655,4 +671,32 @@ model AuditLog {
   createdAt  DateTime        @default(now())
 
   user User @relation("AuditLogUser", fields: [userId], references: [id])
+}
+
+model CrmViolation {
+  id              String               @id @default(cuid())
+  entityType      AuditEntityType
+  entityId        String
+  violationCode   String
+  severity        CrmViolationSeverity
+  message         String
+  responsibleId   String?
+  detectedAt      DateTime             @default(now())
+  resolvedAt      DateTime?
+  resolvedById    String?
+  status          CrmViolationStatus   @default(ACTIVE)
+  canAffectBonus  Boolean              @default(false)
+  comment         String?
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+
+  responsible User? @relation("CrmViolationResponsible", fields: [responsibleId], references: [id])
+  resolvedBy  User? @relation("CrmViolationResolvedBy", fields: [resolvedById], references: [id])
+
+  @@index([entityType, entityId])
+  @@index([violationCode])
+  @@index([severity])
+  @@index([status])
+  @@index([responsibleId])
+  @@index([detectedAt])
 }

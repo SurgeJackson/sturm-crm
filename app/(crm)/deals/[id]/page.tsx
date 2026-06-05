@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Archive, Edit, MessageSquarePlus, Plus } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
+import { CrmDisciplinePanel } from "@/components/crm/crm-discipline";
 import { DealLossDialog } from "@/components/deals/deal-loss-dialog";
 import { TaskActivityTable } from "@/components/tasks/task-activity-table";
 import { Badge } from "@/components/ui/badge";
@@ -98,6 +99,15 @@ export default async function DealPage({ params, searchParams }: DealPageProps) 
       {query.lost ? <div className="rounded-md border border-primary p-3 text-sm text-primary">Сделка закрыта как проигранная.</div> : null}
       {query.error === "lossReason" ? <div className="rounded-md border border-destructive p-3 text-sm text-destructive">Укажите причину проигрыша сделки.</div> : null}
       {query.error && query.error !== "lossReason" ? <div className="rounded-md border border-destructive p-3 text-sm text-destructive">Действие недоступно для вашей роли.</div> : null}
+
+      <CrmDisciplinePanel
+        entityType="DEAL"
+        entityId={deal.id}
+        editHref={`/deals/${id}/edit`}
+        returnTo={`/deals/${id}`}
+        violations={deal.crmViolations}
+        user={user}
+      />
 
       <Tabs defaultValue="main">
         <TabsList className="flex-wrap">

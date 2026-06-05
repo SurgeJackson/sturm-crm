@@ -21,6 +21,7 @@ import {
   canEditRecord
 } from "@/permissions";
 import { compactString, optionalDate, toAuditValue } from "@/modules/crm/form-utils";
+import { expireViolationsForEntity, syncDesignerDiscipline } from "@/modules/crm-discipline/service";
 
 export type DesignerActionState = {
   errors?: Record<string, string[]>;
@@ -174,6 +175,8 @@ export async function createDesignerAction(_prevState: DesignerActionState, form
     after: toAuditValue(designer)
   });
 
+  await syncDesignerDiscipline(designer.id, user.id);
+
   redirect(`/designers/${designer.id}?saved=1`);
 }
 
@@ -242,6 +245,8 @@ export async function updateDesignerAction(id: string, _prevState: DesignerActio
     }
   }
 
+  await syncDesignerDiscipline(id, user.id);
+
   redirect(`/designers/${id}?saved=1`);
 }
 
@@ -279,6 +284,8 @@ export async function archiveDesignerAction(id: string) {
     before: toAuditValue(before),
     after: toAuditValue(after)
   });
+
+  await expireViolationsForEntity("DESIGNER", id, user.id);
 
   redirect(`/designers/${id}?archived=1`);
 }

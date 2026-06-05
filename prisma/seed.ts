@@ -4,6 +4,7 @@ import { PrismaClient, UserRole } from "../generated/prisma/client";
 import bcrypt from "bcryptjs";
 import { mkdir, writeFile } from "fs/promises";
 import path from "path";
+import { runCrmDisciplineCheck } from "../modules/crm-discipline/service";
 
 const adapter = new PrismaPg({
   connectionString: process.env.DATABASE_URL
@@ -742,7 +743,10 @@ async function main() {
     }
   });
 
+  const discipline = await runCrmDisciplineCheck("seed_owner");
+
   console.log("Seed completed");
+  console.log(`CRM discipline check: ${discipline.created} created, ${discipline.resolved} resolved, ${discipline.active} active`);
   console.log(`Demo password: ${DEMO_PASSWORD}`);
 }
 

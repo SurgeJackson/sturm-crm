@@ -15,6 +15,7 @@ import { getCurrentUser } from "@/auth/get-current-user";
 import { writeAuditLog } from "@/lib/audit-log";
 import { prisma } from "@/lib/prisma";
 import { compactString, toAuditValue } from "@/modules/crm/form-utils";
+import { expireViolationsForEntity, syncClientDiscipline, syncDesignerDiscipline, syncTaskDiscipline } from "@/modules/crm-discipline/service";
 import {
   canCancelTask,
   canChangeTaskResponsible,
@@ -283,6 +284,8 @@ async function createNextStep(source: TaskActivity, userId: string) {
     after: toAuditValue(task)
   });
 
+  await syncTaskDiscipline(task.id, userId);
+
   return task;
 }
 
@@ -337,6 +340,9 @@ export async function createTaskAction(_prevState: TaskActionState, formData: Fo
 
   await refreshTouchDates(task);
   await createNextStep(task, user.id);
+  await syncTaskDiscipline(task.id, user.id);
+  if (task.clientId) await syncClientDiscipline(task.clientId, user.id);
+  if (task.designerId) await syncDesignerDiscipline(task.designerId, user.id);
   redirect(`/tasks/${task.id}?saved=1`);
 }
 
@@ -370,6 +376,9 @@ export async function updateTaskAction(id: string, _prevState: TaskActionState, 
 
   await refreshTouchDates(after);
   await createNextStep(after, user.id);
+  await syncTaskDiscipline(after.id, user.id);
+  if (after.clientId) await syncClientDiscipline(after.clientId, user.id);
+  if (after.designerId) await syncDesignerDiscipline(after.designerId, user.id);
   redirect(`/tasks/${after.id}?saved=1`);
 }
 
@@ -393,6 +402,8 @@ export async function cancelTaskAction(id: string) {
     before: toAuditValue(before),
     after: toAuditValue(after)
   });
+
+  await expireViolationsForEntity("TASK", id, user.id);
 
   revalidatePath("/tasks");
   redirect("/tasks?cancelled=1");
@@ -452,6 +463,8 @@ async function createAutomaticTask(input: {
     userId: input.createdById,
     after: toAuditValue(task)
   });
+
+  await syncTaskDiscipline(task.id, input.createdById);
 
   return task;
 }

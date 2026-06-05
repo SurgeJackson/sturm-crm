@@ -109,7 +109,8 @@ export const auditEntityTypeLabels: Record<AuditEntityType, string> = {
   DEAL: "Сделка",
   PROPOSAL: "КП",
   TASK: "Задача",
-  USER: "Пользователь"
+  USER: "Пользователь",
+  CRM_VIOLATION: "Нарушение CRM"
 };
 
 export const clientTypeLabels: Record<ClientType, string> = {

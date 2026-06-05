@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Plus, Search } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
+import { BonusEligibilityBadge, CrmDisciplineBadge } from "@/components/crm/crm-discipline";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -151,12 +152,14 @@ export default async function DealsPage({ searchParams }: DealsPageProps) {
                 <TableHead>Вероятность</TableHead>
                 <TableHead>Сумма</TableHead>
                 <TableHead>Следующее действие</TableHead>
+                <TableHead>CRM-дисциплина</TableHead>
+                <TableHead>Учет в премии</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {deals.items.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={8} className="h-28 text-center text-sm text-muted-foreground">Сделки не найдены.</TableCell>
+                  <TableCell colSpan={10} className="h-28 text-center text-sm text-muted-foreground">Сделки не найдены.</TableCell>
                 </TableRow>
               ) : (
                 deals.items.map((deal) => (
@@ -185,6 +188,8 @@ export default async function DealsPage({ searchParams }: DealsPageProps) {
                       </div>
                       <div className="text-xs text-muted-foreground">{deal.nextActionText || "Нет шага"}</div>
                     </TableCell>
+                    <TableCell><CrmDisciplineBadge violations={deal.crmViolations} /></TableCell>
+                    <TableCell><BonusEligibilityBadge violations={deal.crmViolations} /></TableCell>
                   </TableRow>
                 ))
               )}

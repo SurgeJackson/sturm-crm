@@ -59,7 +59,8 @@ export const ModelName = {
   Deal: 'Deal',
   CommercialProposal: 'CommercialProposal',
   TaskActivity: 'TaskActivity',
-  AuditLog: 'AuditLog'
+  AuditLog: 'AuditLog',
+  CrmViolation: 'CrmViolation'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -324,6 +325,27 @@ export const AuditLogScalarFieldEnum = {
 } as const
 
 export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
+
+
+export const CrmViolationScalarFieldEnum = {
+  id: 'id',
+  entityType: 'entityType',
+  entityId: 'entityId',
+  violationCode: 'violationCode',
+  severity: 'severity',
+  message: 'message',
+  responsibleId: 'responsibleId',
+  detectedAt: 'detectedAt',
+  resolvedAt: 'resolvedAt',
+  resolvedById: 'resolvedById',
+  status: 'status',
+  canAffectBonus: 'canAffectBonus',
+  comment: 'comment',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CrmViolationScalarFieldEnum = (typeof CrmViolationScalarFieldEnum)[keyof typeof CrmViolationScalarFieldEnum]
 
 
 export const SortOrder = {

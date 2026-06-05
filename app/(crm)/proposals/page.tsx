@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Plus, Search } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
+import { BonusEligibilityBadge, CrmDisciplineBadge } from "@/components/crm/crm-discipline";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -137,11 +138,13 @@ export default async function ProposalsPage({ searchParams }: ProposalsPageProps
                 <TableHead>Отправлено</TableHead>
                 <TableHead>Follow-up</TableHead>
                 <TableHead>Файл</TableHead>
+                <TableHead>CRM-дисциплина</TableHead>
+                <TableHead>Учет в премии</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {proposals.items.length === 0 ? (
-                <TableRow><TableCell colSpan={9} className="h-28 text-center text-sm text-muted-foreground">КП не найдены.</TableCell></TableRow>
+                <TableRow><TableCell colSpan={11} className="h-28 text-center text-sm text-muted-foreground">КП не найдены.</TableCell></TableRow>
               ) : (
                 proposals.items.map((proposal) => (
                   <TableRow key={proposal.id}>
@@ -157,6 +160,8 @@ export default async function ProposalsPage({ searchParams }: ProposalsPageProps
                     <TableCell>{formatRussianDate(proposal.sentAt)}</TableCell>
                     <TableCell>{formatRussianDate(proposal.nextTouchAt)}</TableCell>
                     <TableCell>{proposal.fileUrl ? <Link className="hover:underline" href={proposal.fileUrl}>Скачать</Link> : "Нет файла"}</TableCell>
+                    <TableCell><CrmDisciplineBadge violations={proposal.crmViolations} /></TableCell>
+                    <TableCell><BonusEligibilityBadge violations={proposal.crmViolations} /></TableCell>
                   </TableRow>
                 ))
               )}
