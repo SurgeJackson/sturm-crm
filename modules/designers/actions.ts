@@ -5,21 +5,22 @@ import { z } from "zod";
 import type {
   DesignerLoyalty,
   DesignerPotential,
+  EntityStatus,
   DesignerRelationshipStage,
   DesignerRole,
   DesignerSource,
   DesignerSpecialization
 } from "@prisma/client";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { getMongoDb } from "@/db/mongo";
 import { writeAuditLog } from "@/lib/audit-log";
+import { prisma } from "@/lib/prisma";
 import {
   canArchiveRecord,
   canChangeRecordResponsible,
   canCreateDesigner,
   canEditRecord
 } from "@/permissions";
-import { compactString, optionalDate, toAuditValue, toObjectId } from "@/modules/crm/mongo-utils";
+import { compactString, optionalDate, toAuditValue } from "@/modules/crm/form-utils";
 
 export type DesignerActionState = {
   errors?: Record<string, string[]>;
@@ -122,7 +123,7 @@ function toDesignerDocument(data: z.infer<typeof designerSchema>, responsibleId:
     specialization: data.specialization as DesignerSpecialization[],
     projectSegment: data.projectSegment || null,
     source: data.source as DesignerSource,
-    responsibleId: toObjectId(responsibleId),
+    responsibleId,
     relationshipStage: data.relationshipStage as DesignerRelationshipStage,
     potential: data.potential as DesignerPotential,
     loyalty: data.loyalty as DesignerLoyalty,
@@ -133,7 +134,7 @@ function toDesignerDocument(data: z.infer<typeof designerSchema>, responsibleId:
     nextStepText: data.nextStepText,
     comment: data.comment || null,
     notes: data.comment || null,
-    status: data.relationshipStage === "LOST_OR_IRRELEVANT" ? "LOST" : "ACTIVE"
+    status: (data.relationshipStage === "LOST_OR_IRRELEVANT" ? "LOST" : "ACTIVE") as EntityStatus
   };
 }
 
@@ -151,32 +152,29 @@ export async function createDesignerAction(_prevState: DesignerActionState, form
   }
 
   const responsibleId = canChangeRecordResponsible(user) ? parsed.data.responsibleId : user.id;
-  const now = new Date();
-  const db = await getMongoDb();
   const document = {
     ...toDesignerDocument(parsed.data, responsibleId),
     transferredObjectsCount: 0,
     activeObjectsCount: 0,
     proposalsTotalAmount: 0,
     paymentsTotalAmount: 0,
-    createdById: toObjectId(user.id),
-    createdAt: now,
-    updatedAt: now,
+    createdById: user.id,
     archivedAt: null
   };
 
-  const result = await db.collection("Designer").insertOne(document);
-  const entityId = result.insertedId.toString();
+  const designer = await prisma.designer.create({
+    data: document
+  });
 
   await writeAuditLog({
     entityType: "DESIGNER",
-    entityId,
+    entityId: designer.id,
     action: "CREATE",
     userId: user.id,
-    after: toAuditValue({ _id: result.insertedId, ...document })
+    after: toAuditValue(designer)
   });
 
-  redirect(`/designers/${entityId}?saved=1`);
+  redirect(`/designers/${designer.id}?saved=1`);
 }
 
 export async function updateDesignerAction(id: string, _prevState: DesignerActionState, formData: FormData) {
@@ -186,13 +184,11 @@ export async function updateDesignerAction(id: string, _prevState: DesignerActio
     return { message: "Необходима авторизация" };
   }
 
-  const db = await getMongoDb();
-  const _id = toObjectId(id);
-  const before = await db.collection("Designer").findOne({ _id });
+  const before = await prisma.designer.findUnique({ where: { id } });
 
   if (!before || !canEditRecord(user, {
-    createdById: before.createdById?.toString(),
-    responsibleId: before.responsibleId?.toString()
+    createdById: before.createdById,
+    responsibleId: before.responsibleId
   })) {
     return { message: "Недостаточно прав для редактирования дизайнера" };
   }
@@ -205,14 +201,15 @@ export async function updateDesignerAction(id: string, _prevState: DesignerActio
 
   const responsibleId = canChangeRecordResponsible(user)
     ? parsed.data.responsibleId
-    : before.responsibleId.toString();
+    : before.responsibleId;
   const update = {
-    ...toDesignerDocument(parsed.data, responsibleId),
-    updatedAt: new Date()
+    ...toDesignerDocument(parsed.data, responsibleId)
   };
 
-  await db.collection("Designer").updateOne({ _id }, { $set: update });
-  const after = await db.collection("Designer").findOne({ _id });
+  const after = await prisma.designer.update({
+    where: { id },
+    data: update
+  });
 
   await writeAuditLog({
     entityType: "DESIGNER",
@@ -224,7 +221,7 @@ export async function updateDesignerAction(id: string, _prevState: DesignerActio
   });
 
   const trackedFields = [
-    ["responsibleId", "CHANGE_RESPONSIBLE", before.responsibleId?.toString(), responsibleId],
+    ["responsibleId", "CHANGE_RESPONSIBLE", before.responsibleId, responsibleId],
     ["relationshipStage", "CHANGE_RELATIONSHIP_STAGE", before.relationshipStage, parsed.data.relationshipStage],
     ["potential", "CHANGE_POTENTIAL", before.potential, parsed.data.potential],
     ["loyalty", "CHANGE_LOYALTY", before.loyalty, parsed.data.loyalty],
@@ -255,24 +252,24 @@ export async function archiveDesignerAction(id: string) {
     redirect("/login");
   }
 
-  const db = await getMongoDb();
-  const _id = toObjectId(id);
-  const before = await db.collection("Designer").findOne({ _id });
+  const before = await prisma.designer.findUnique({ where: { id } });
 
   if (!before || !canArchiveRecord(user, {
-    createdById: before.createdById?.toString(),
-    responsibleId: before.responsibleId?.toString()
+    createdById: before.createdById,
+    responsibleId: before.responsibleId
   })) {
     redirect(`/designers/${id}?error=archive`);
   }
 
   const update = {
-    status: "ARCHIVED",
+    status: "ARCHIVED" as const,
     archivedAt: new Date(),
     updatedAt: new Date()
   };
-  await db.collection("Designer").updateOne({ _id }, { $set: update });
-  const after = await db.collection("Designer").findOne({ _id });
+  const after = await prisma.designer.update({
+    where: { id },
+    data: update
+  });
 
   await writeAuditLog({
     entityType: "DESIGNER",
@@ -299,26 +296,19 @@ export async function changeDesignerStageAction(id: string, formData: FormData) 
     redirect("/designers/pipeline?error=stage");
   }
 
-  const db = await getMongoDb();
-  const _id = toObjectId(id);
-  const before = await db.collection("Designer").findOne({ _id });
+  const before = await prisma.designer.findUnique({ where: { id } });
 
   if (!before || !canEditRecord(user, {
-    createdById: before.createdById?.toString(),
-    responsibleId: before.responsibleId?.toString()
+    createdById: before.createdById,
+    responsibleId: before.responsibleId
   })) {
     redirect("/designers/pipeline?error=permission");
   }
 
-  await db.collection("Designer").updateOne(
-    { _id },
-    {
-      $set: {
-        relationshipStage: stage,
-        updatedAt: new Date()
-      }
-    }
-  );
+  await prisma.designer.update({
+    where: { id },
+    data: { relationshipStage: stage as DesignerRelationshipStage }
+  });
 
   await writeAuditLog({
     entityType: "DESIGNER",

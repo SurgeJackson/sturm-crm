@@ -8,9 +8,11 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
     "prisma:push": "prisma db push",
     "prisma:seed": "tsx prisma/seed.ts",
-    "seed": "tsx prisma/seed.ts"
+    "seed": "tsx prisma/seed.ts",
+    "test": "vitest run"
   },
   "dependencies": {
     "@hookform/resolvers": "5.4.0",
@@ -25,7 +27,6 @@
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
     "lucide-react": "1.17.0",
-    "mongodb": "7.2.0",
     "next": "16.2.7",
     "next-auth": "4.24.14",
     "react": "19.2.7",
@@ -47,6 +48,7 @@
     "prisma": "6.19.3",
     "tailwindcss": "4.3.0",
     "tsx": "4.22.4",
-    "typescript": "6.0.3"
+    "typescript": "6.0.3",
+    "vitest": "4.1.8"
   }
 }

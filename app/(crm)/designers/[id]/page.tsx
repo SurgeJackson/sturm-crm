@@ -143,7 +143,7 @@ export default async function DesignerPage({ params, searchParams }: DesignerPag
                 <p className="text-sm text-muted-foreground">История пока пустая.</p>
               ) : (
                 auditLogs.map((log) => (
-                  <div key={log._id.toString()} className="rounded-md border p-3 text-sm">
+                  <div key={log.id} className="rounded-md border p-3 text-sm">
                     <div className="flex justify-between gap-3">
                       <span className="font-medium">{log.action}</span>
                       <span className="text-muted-foreground">{formatRussianDate(log.createdAt)}</span>

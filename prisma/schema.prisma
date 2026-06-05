@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -140,7 +140,7 @@ enum AuditEntityType {
 }
 
 model User {
-  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  id             String    @id @default(cuid())
   name           String
   email          String    @unique
   passwordHash   String?
@@ -167,7 +167,7 @@ model User {
 }
 
 model Client {
-  id               String       @id @default(auto()) @map("_id") @db.ObjectId
+  id               String       @id @default(cuid())
   name             String
   clientType       ClientType   @default(INDIVIDUAL)
   phone            String?
@@ -175,11 +175,11 @@ model Client {
   messenger        String?
   city             String?
   source           ClientSource @default(SHOWROOM)
-  linkedDesignerId String?      @db.ObjectId
-  responsibleId    String       @db.ObjectId
+  linkedDesignerId String?
+  responsibleId    String
   status           ClientStatus @default(NEW)
   comment          String?
-  createdById      String       @db.ObjectId
+  createdById      String
   createdAt        DateTime     @default(now())
   updatedAt        DateTime     @updatedAt
   archivedAt       DateTime?
@@ -189,10 +189,11 @@ model Client {
 
   responsible User @relation("ClientResponsible", fields: [responsibleId], references: [id])
   createdBy   User @relation("ClientCreatedBy", fields: [createdById], references: [id])
+  linkedDesigner Designer? @relation("ClientLinkedDesigner", fields: [linkedDesignerId], references: [id])
 }
 
 model Designer {
-  id                     String                    @id @default(auto()) @map("_id") @db.ObjectId
+  id                     String                    @id @default(cuid())
   name                   String
   studio                 String?
   role                   DesignerRole              @default(DESIGNER)
@@ -204,7 +205,7 @@ model Designer {
   specialization         DesignerSpecialization[]
   projectSegment         DesignerProjectSegment?
   source                 DesignerSource            @default(DATABASE)
-  responsibleId          String                    @db.ObjectId
+  responsibleId          String
   relationshipStage      DesignerRelationshipStage @default(NEW_CONTACT)
   potential              DesignerPotential         @default(B)
   loyalty                DesignerLoyalty           @default(NEUTRAL)
@@ -219,7 +220,7 @@ model Designer {
   paymentsTotalAmount     Float                     @default(0)
   comment                String?
   status                 EntityStatus              @default(ACTIVE)
-  createdById            String                    @db.ObjectId
+  createdById            String
   createdAt              DateTime                  @default(now())
   updatedAt              DateTime                  @updatedAt
   archivedAt             DateTime?
@@ -227,14 +228,15 @@ model Designer {
 
   responsible User @relation("DesignerResponsible", fields: [responsibleId], references: [id])
   createdBy   User @relation("DesignerCreatedBy", fields: [createdById], references: [id])
+  linkedClients Client[] @relation("ClientLinkedDesigner")
 }
 
 model ProjectObject {
-  id            String       @id @default(auto()) @map("_id") @db.ObjectId
+  id            String       @id @default(cuid())
   title         String
   status        EntityStatus @default(ACTIVE)
-  responsibleId String       @db.ObjectId
-  createdById   String       @db.ObjectId
+  responsibleId String
+  createdById   String
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
   archivedAt    DateTime?
@@ -245,11 +247,11 @@ model ProjectObject {
 }
 
 model Deal {
-  id            String       @id @default(auto()) @map("_id") @db.ObjectId
+  id            String       @id @default(cuid())
   title         String
   status        EntityStatus @default(ACTIVE)
-  responsibleId String       @db.ObjectId
-  createdById   String       @db.ObjectId
+  responsibleId String
+  createdById   String
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
   archivedAt    DateTime?
@@ -260,11 +262,11 @@ model Deal {
 }
 
 model CommercialProposal {
-  id            String       @id @default(auto()) @map("_id") @db.ObjectId
+  id            String       @id @default(cuid())
   title         String
   status        EntityStatus @default(ACTIVE)
-  responsibleId String       @db.ObjectId
-  createdById   String       @db.ObjectId
+  responsibleId String
+  createdById   String
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
   archivedAt    DateTime?
@@ -275,11 +277,11 @@ model CommercialProposal {
 }
 
 model TaskActivity {
-  id            String     @id @default(auto()) @map("_id") @db.ObjectId
+  id            String     @id @default(cuid())
   title         String
   status        TaskStatus @default(NEW)
-  responsibleId String     @db.ObjectId
-  createdById   String     @db.ObjectId
+  responsibleId String
+  createdById   String
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
   archivedAt    DateTime?
@@ -290,11 +292,11 @@ model TaskActivity {
 }
 
 model AuditLog {
-  id         String          @id @default(auto()) @map("_id") @db.ObjectId
+  id         String          @id @default(cuid())
   entityType AuditEntityType
   entityId   String
   action     String
-  userId     String          @db.ObjectId
+  userId     String
   before     Json?
   after      Json?
   createdAt  DateTime        @default(now())

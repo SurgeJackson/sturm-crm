@@ -4,15 +4,15 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import type { ClientSource, ClientStatus, ClientType } from "@prisma/client";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { getMongoDb } from "@/db/mongo";
 import { writeAuditLog } from "@/lib/audit-log";
+import { prisma } from "@/lib/prisma";
 import {
   canArchiveRecord,
   canChangeRecordResponsible,
   canCreateClient,
   canEditRecord
 } from "@/permissions";
-import { compactString, optionalDate, optionalObjectId, toAuditValue, toObjectId } from "@/modules/crm/mongo-utils";
+import { compactString, optionalDate, toAuditValue } from "@/modules/crm/form-utils";
 
 export type ClientActionState = {
   errors?: Record<string, string[]>;
@@ -82,8 +82,8 @@ function toClientDocument(data: z.infer<typeof clientSchema>, responsibleId: str
     messenger: data.messenger || null,
     city: data.city || null,
     source: data.source as ClientSource,
-    linkedDesignerId: optionalObjectId(data.linkedDesignerId),
-    responsibleId: toObjectId(responsibleId),
+    linkedDesignerId: data.linkedDesignerId || null,
+    responsibleId,
     status: data.status as ClientStatus,
     comment: data.comment || null,
     notes: data.comment || null,
@@ -106,28 +106,25 @@ export async function createClientAction(_prevState: ClientActionState, formData
   }
 
   const responsibleId = canChangeRecordResponsible(user) ? parsed.data.responsibleId : user.id;
-  const now = new Date();
-  const db = await getMongoDb();
   const document = {
     ...toClientDocument(parsed.data, responsibleId),
-    createdById: toObjectId(user.id),
-    createdAt: now,
-    updatedAt: now,
-    archivedAt: parsed.data.status === "ARCHIVED" ? now : null
+    createdById: user.id,
+    archivedAt: parsed.data.status === "ARCHIVED" ? new Date() : null
   };
 
-  const result = await db.collection("Client").insertOne(document);
-  const entityId = result.insertedId.toString();
+  const client = await prisma.client.create({
+    data: document
+  });
 
   await writeAuditLog({
     entityType: "CLIENT",
-    entityId,
+    entityId: client.id,
     action: "CREATE",
     userId: user.id,
-    after: toAuditValue({ _id: result.insertedId, ...document })
+    after: toAuditValue(client)
   });
 
-  redirect(`/clients/${entityId}?saved=1`);
+  redirect(`/clients/${client.id}?saved=1`);
 }
 
 export async function updateClientAction(id: string, _prevState: ClientActionState, formData: FormData) {
@@ -137,13 +134,11 @@ export async function updateClientAction(id: string, _prevState: ClientActionSta
     return { message: "Необходима авторизация" };
   }
 
-  const db = await getMongoDb();
-  const _id = toObjectId(id);
-  const before = await db.collection("Client").findOne({ _id });
+  const before = await prisma.client.findUnique({ where: { id } });
 
   if (!before || !canEditRecord(user, {
-    createdById: before.createdById?.toString(),
-    responsibleId: before.responsibleId?.toString()
+    createdById: before.createdById,
+    responsibleId: before.responsibleId
   })) {
     return { message: "Недостаточно прав для редактирования клиента" };
   }
@@ -156,14 +151,15 @@ export async function updateClientAction(id: string, _prevState: ClientActionSta
 
   const responsibleId = canChangeRecordResponsible(user)
     ? parsed.data.responsibleId
-    : before.responsibleId.toString();
+    : before.responsibleId;
   const update = {
-    ...toClientDocument(parsed.data, responsibleId),
-    updatedAt: new Date()
+    ...toClientDocument(parsed.data, responsibleId)
   };
 
-  await db.collection("Client").updateOne({ _id }, { $set: update });
-  const after = await db.collection("Client").findOne({ _id });
+  const after = await prisma.client.update({
+    where: { id },
+    data: update
+  });
 
   await writeAuditLog({
     entityType: "CLIENT",
@@ -174,13 +170,13 @@ export async function updateClientAction(id: string, _prevState: ClientActionSta
     after: toAuditValue(after)
   });
 
-  if (before.responsibleId?.toString() !== responsibleId) {
+  if (before.responsibleId !== responsibleId) {
     await writeAuditLog({
       entityType: "CLIENT",
       entityId: id,
       action: "CHANGE_RESPONSIBLE",
       userId: user.id,
-      before: { responsibleId: before.responsibleId?.toString() },
+      before: { responsibleId: before.responsibleId },
       after: { responsibleId }
     });
   }
@@ -206,24 +202,24 @@ export async function archiveClientAction(id: string) {
     redirect("/login");
   }
 
-  const db = await getMongoDb();
-  const _id = toObjectId(id);
-  const before = await db.collection("Client").findOne({ _id });
+  const before = await prisma.client.findUnique({ where: { id } });
 
   if (!before || !canArchiveRecord(user, {
-    createdById: before.createdById?.toString(),
-    responsibleId: before.responsibleId?.toString()
+    createdById: before.createdById,
+    responsibleId: before.responsibleId
   })) {
     redirect(`/clients/${id}?error=archive`);
   }
 
   const update = {
-    status: "ARCHIVED",
+    status: "ARCHIVED" as const,
     archivedAt: new Date(),
     updatedAt: new Date()
   };
-  await db.collection("Client").updateOne({ _id }, { $set: update });
-  const after = await db.collection("Client").findOne({ _id });
+  const after = await prisma.client.update({
+    where: { id },
+    data: update
+  });
 
   await writeAuditLog({
     entityType: "CLIENT",

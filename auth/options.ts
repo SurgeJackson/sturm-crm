@@ -3,7 +3,6 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
-import { updateUserLastLoginAt } from "@/db/mongo";
 
 const credentialsSchema = z.object({
   email: z.string().email(),
@@ -45,7 +44,10 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
-        await updateUserLastLoginAt(user.id);
+        await prisma.user.update({
+          where: { id: user.id },
+          data: { lastLoginAt: new Date() }
+        });
 
         return {
           id: user.id,

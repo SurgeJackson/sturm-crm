@@ -1,6 +1,5 @@
-import { ObjectId } from "mongodb";
 import type { AuditEntityType } from "@prisma/client";
-import { getMongoDb } from "@/db/mongo";
+import { prisma } from "@/lib/prisma";
 
 type WriteAuditLogInput = {
   entityType: AuditEntityType;
@@ -19,30 +18,28 @@ export async function writeAuditLog({
   before,
   after
 }: WriteAuditLogInput) {
-  const db = await getMongoDb();
-
-  return db.collection("AuditLog").insertOne({
-    _id: new ObjectId(),
-    entityType,
-    entityId,
-    action,
-    userId: new ObjectId(userId),
-    before: before ?? null,
-    after: after ?? null,
-    createdAt: new Date()
+  return prisma.auditLog.create({
+    data: {
+      entityType,
+      entityId,
+      action,
+      userId,
+      before: before ?? undefined,
+      after: after ?? undefined
+    }
   });
 }
 
 export async function getAuditLogs(entityType: AuditEntityType, entityId: string) {
-  const db = await getMongoDb();
-
-  return db
-    .collection("AuditLog")
-    .find({
+  return prisma.auditLog.findMany({
+    where: {
       entityType,
       entityId
-    })
-    .sort({ createdAt: -1 })
-    .limit(50)
-    .toArray();
+    },
+    orderBy: { createdAt: "desc" },
+    take: 50,
+    include: {
+      user: { select: { id: true, name: true, email: true } }
+    }
+  });
 }

@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: sturm-crm-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: sturm_crm
+      POSTGRES_USER: sturm
+      POSTGRES_PASSWORD: sturm_password
+    ports:
+      - "55432:5432"
+    volumes:
+      - sturm_postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sturm -d sturm_crm"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  sturm_postgres_data:

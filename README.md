@@ -1,6 +1,6 @@
 # STURM CRM
 
-Stage 1: базовый каркас CRM для STURM.
+CRM для STURM: авторизация, роли, dashboard, клиенты, дизайнеры и воронка дизайнеров.
 
 ## Стек
 
@@ -9,23 +9,22 @@ Stage 1: базовый каркас CRM для STURM.
 - Tailwind CSS 4
 - shadcn/ui style components
 - NextAuth credentials auth
-- MongoDB
-- Prisma 6.19.3 для MongoDB schema/client
-- Native MongoDB driver для write-операций на standalone MongoDB
-
-Prisma 7 сейчас является latest, но официальная поддержка MongoDB в Prisma ограничена v6. Поэтому проект использует последнюю совместимую Prisma 6.x.
+- PostgreSQL 18 через `postgres:latest`
+- Prisma ORM
+- Docker Compose для локальной базы
 
 ## Запуск
 
 ```bash
 npm install
+docker compose up -d postgres
 npm run prisma:generate
-npm run prisma:push
+npm run prisma:migrate
 npm run seed
 npm run dev
 ```
 
-Приложение откроется на `http://localhost:3000`.
+Приложение откроется на `http://localhost:3000`. PostgreSQL доступен на `localhost:55432`.
 
 ## Демо-доступ
 
@@ -42,5 +41,6 @@ npm run dev
 ```bash
 npm run typecheck
 npm run lint
+npm run test
 npm run build
 ```
