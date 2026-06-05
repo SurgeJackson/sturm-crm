@@ -5,6 +5,7 @@ import { getCurrentUser } from "@/auth/get-current-user";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { archiveDesignerAction } from "@/modules/designers/actions";
 import { getDesignerForUser } from "@/modules/designers/queries";
@@ -13,7 +14,9 @@ import {
   designerLoyaltyLabels,
   designerPotentialLabels,
   designerRelationshipStageLabels,
-  designerRoleLabels
+  designerRoleLabels,
+  objectStageLabels,
+  objectStatusLabels
 } from "@/lib/constants";
 import { formatRussianDate } from "@/utils/date";
 import { canArchiveRecord, canEditRecord } from "@/permissions";
@@ -125,7 +128,41 @@ export default async function DesignerPage({ params, searchParams }: DesignerPag
           <Card><CardContent className="pt-5 text-sm text-muted-foreground">Касания и задачи будут связаны на следующих этапах.</CardContent></Card>
         </TabsContent>
         <TabsContent value="objects">
-          <Card><CardContent className="pt-5 text-sm text-muted-foreground">Связанные объекты появятся после реализации объектов.</CardContent></Card>
+          <Card>
+            <CardHeader><CardTitle>Переданные объекты</CardTitle></CardHeader>
+            <CardContent className="p-0">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Объект</TableHead>
+                    <TableHead>Клиент</TableHead>
+                    <TableHead>Ответственный</TableHead>
+                    <TableHead>Стадия</TableHead>
+                    <TableHead>Статус</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {designer.projectObjects.length === 0 ? (
+                    <TableRow>
+                      <TableCell colSpan={5} className="h-24 text-center text-sm text-muted-foreground">
+                        Дизайнер пока не передал объекты.
+                      </TableCell>
+                    </TableRow>
+                  ) : (
+                    designer.projectObjects.map((object) => (
+                      <TableRow key={object.id}>
+                        <TableCell><Link className="font-medium hover:underline" href={`/objects/${object.id}`}>{object.title}</Link></TableCell>
+                        <TableCell><Link className="hover:underline" href={`/clients/${object.client.id}`}>{object.client.name}</Link></TableCell>
+                        <TableCell>{object.responsible.name}</TableCell>
+                        <TableCell><Badge variant="outline">{objectStageLabels[object.stage]}</Badge></TableCell>
+                        <TableCell><Badge variant="secondary">{objectStatusLabels[object.status]}</Badge></TableCell>
+                      </TableRow>
+                    ))
+                  )}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
         </TabsContent>
         <TabsContent value="analytics">
           <div className="grid gap-4 md:grid-cols-4">

@@ -92,7 +92,15 @@ export async function getDesignerForUser(id: string, user: PermissionUser) {
     where: { id },
     include: {
       responsible: { select: { id: true, name: true, email: true } },
-      createdBy: { select: { id: true, name: true, email: true } }
+      createdBy: { select: { id: true, name: true, email: true } },
+      projectObjects: {
+        where: { archivedAt: null },
+        orderBy: { createdAt: "desc" },
+        include: {
+          client: { select: { id: true, name: true } },
+          responsible: { select: { id: true, name: true } }
+        }
+      }
     }
   });
 

@@ -139,6 +139,89 @@ enum AuditEntityType {
   USER
 }
 
+enum ObjectType {
+  APARTMENT
+  PRIVATE_HOUSE
+  APARTMENTS_COMPLEX
+  HOTEL
+  APART_HOTEL
+  RESTAURANT
+  OFFICE
+  MEDICAL
+  FITNESS_POOL
+  RESIDENTIAL_COMPLEX
+  COMMERCIAL
+  OTHER
+}
+
+enum ObjectInterestCategory {
+  SANITARY_WARE
+  MIXERS
+  SHOWER_SYSTEMS
+  BATHROOM_FURNITURE
+  ACCESSORIES
+  TILES
+  MIRRORS
+  COMMERCIAL_SANITARY
+  OTHER
+}
+
+enum ObjectStage {
+  NEW_OBJECT
+  INFO_COLLECTION
+  DESIGN_STAGE
+  CALCULATION
+  APPROVAL
+  PURCHASE
+  DELIVERY_IMPLEMENTATION
+  COMPLETED
+  FROZEN
+  LOST
+}
+
+enum ObjectStatus {
+  ACTIVE
+  FROZEN
+  COMPLETED
+  LOST
+  ARCHIVED
+}
+
+enum ProjectObjectParticipantType {
+  PURCHASE_INFLUENCER
+  IMPLEMENTATION_CONTACT
+}
+
+enum InfluenceLevel {
+  HIGH
+  MEDIUM
+  LOW
+}
+
+enum InfluenceType {
+  BUDGET
+  BRAND
+  FINAL_DECISION
+  TECHNICAL_SOLUTION
+  DEADLINES
+  PAYMENT_TERMS
+  SUPPLIER_CHOICE
+  OTHER
+}
+
+enum AttitudeToSturm {
+  LOYAL
+  NEUTRAL
+  AGAINST
+  UNKNOWN
+}
+
+enum ChangeApproval {
+  YES
+  NO
+  PARTIALLY
+}
+
 model User {
   id             String    @id @default(cuid())
   name           String
@@ -151,19 +234,21 @@ model User {
   updatedAt      DateTime  @updatedAt
   lastLoginAt    DateTime?
 
-  clientsResponsible   Client[]             @relation("ClientResponsible")
-  clientsCreated       Client[]             @relation("ClientCreatedBy")
-  designersResponsible Designer[]           @relation("DesignerResponsible")
-  designersCreated     Designer[]           @relation("DesignerCreatedBy")
-  objectsResponsible   ProjectObject[]      @relation("ObjectResponsible")
-  objectsCreated       ProjectObject[]      @relation("ObjectCreatedBy")
-  dealsResponsible     Deal[]               @relation("DealResponsible")
-  dealsCreated         Deal[]               @relation("DealCreatedBy")
-  proposalsResponsible CommercialProposal[] @relation("ProposalResponsible")
-  proposalsCreated     CommercialProposal[] @relation("ProposalCreatedBy")
-  tasksResponsible     TaskActivity[]       @relation("TaskResponsible")
-  tasksCreated         TaskActivity[]       @relation("TaskCreatedBy")
-  auditLogs            AuditLog[]           @relation("AuditLogUser")
+  clientsResponsible            Client[]                   @relation("ClientResponsible")
+  clientsCreated                Client[]                   @relation("ClientCreatedBy")
+  designersResponsible          Designer[]                 @relation("DesignerResponsible")
+  designersCreated              Designer[]                 @relation("DesignerCreatedBy")
+  objectsResponsible            ProjectObject[]            @relation("ObjectResponsible")
+  objectsCreated                ProjectObject[]            @relation("ObjectCreatedBy")
+  objectParticipantsResponsible ProjectObjectParticipant[] @relation("ObjectParticipantResponsible")
+  objectParticipantsCreated     ProjectObjectParticipant[] @relation("ObjectParticipantCreatedBy")
+  dealsResponsible              Deal[]                     @relation("DealResponsible")
+  dealsCreated                  Deal[]                     @relation("DealCreatedBy")
+  proposalsResponsible          CommercialProposal[]       @relation("ProposalResponsible")
+  proposalsCreated              CommercialProposal[]       @relation("ProposalCreatedBy")
+  tasksResponsible              TaskActivity[]             @relation("TaskResponsible")
+  tasksCreated                  TaskActivity[]             @relation("TaskCreatedBy")
+  auditLogs                     AuditLog[]                 @relation("AuditLogUser")
 }
 
 model Client {
@@ -187,108 +272,165 @@ model Client {
   nextContactAt    DateTime?
   notes            String?
 
-  responsible User @relation("ClientResponsible", fields: [responsibleId], references: [id])
-  createdBy   User @relation("ClientCreatedBy", fields: [createdById], references: [id])
-  linkedDesigner Designer? @relation("ClientLinkedDesigner", fields: [linkedDesignerId], references: [id])
+  responsible    User            @relation("ClientResponsible", fields: [responsibleId], references: [id])
+  createdBy      User            @relation("ClientCreatedBy", fields: [createdById], references: [id])
+  linkedDesigner Designer?       @relation("ClientLinkedDesigner", fields: [linkedDesignerId], references: [id])
+  projectObjects ProjectObject[] @relation("ObjectClient")
 }
 
 model Designer {
-  id                     String                    @id @default(cuid())
-  name                   String
-  studio                 String?
-  role                   DesignerRole              @default(DESIGNER)
-  phone                  String?
-  email                  String?
-  messenger              String?
-  website                String?
-  city                   String?
-  specialization         DesignerSpecialization[]
-  projectSegment         DesignerProjectSegment?
-  source                 DesignerSource            @default(DATABASE)
-  responsibleId          String
-  relationshipStage      DesignerRelationshipStage @default(NEW_CONTACT)
-  potential              DesignerPotential         @default(B)
-  loyalty                DesignerLoyalty           @default(NEUTRAL)
-  cooperationTerms       String?
-  firstContactAt         DateTime?
-  lastTouchAt            DateTime?
-  nextStepAt             DateTime?
-  nextStepText           String?
+  id                      String                    @id @default(cuid())
+  name                    String
+  studio                  String?
+  role                    DesignerRole              @default(DESIGNER)
+  phone                   String?
+  email                   String?
+  messenger               String?
+  website                 String?
+  city                    String?
+  specialization          DesignerSpecialization[]
+  projectSegment          DesignerProjectSegment?
+  source                  DesignerSource            @default(DATABASE)
+  responsibleId           String
+  relationshipStage       DesignerRelationshipStage @default(NEW_CONTACT)
+  potential               DesignerPotential         @default(B)
+  loyalty                 DesignerLoyalty           @default(NEUTRAL)
+  cooperationTerms        String?
+  firstContactAt          DateTime?
+  lastTouchAt             DateTime?
+  nextStepAt              DateTime?
+  nextStepText            String?
   transferredObjectsCount Int                       @default(0)
   activeObjectsCount      Int                       @default(0)
   proposalsTotalAmount    Float                     @default(0)
   paymentsTotalAmount     Float                     @default(0)
-  comment                String?
-  status                 EntityStatus              @default(ACTIVE)
-  createdById            String
-  createdAt              DateTime                  @default(now())
-  updatedAt              DateTime                  @updatedAt
-  archivedAt             DateTime?
-  notes                  String?
+  comment                 String?
+  status                  EntityStatus              @default(ACTIVE)
+  createdById             String
+  createdAt               DateTime                  @default(now())
+  updatedAt               DateTime                  @updatedAt
+  archivedAt              DateTime?
+  notes                   String?
 
-  responsible User @relation("DesignerResponsible", fields: [responsibleId], references: [id])
-  createdBy   User @relation("DesignerCreatedBy", fields: [createdById], references: [id])
-  linkedClients Client[] @relation("ClientLinkedDesigner")
+  responsible    User            @relation("DesignerResponsible", fields: [responsibleId], references: [id])
+  createdBy      User            @relation("DesignerCreatedBy", fields: [createdById], references: [id])
+  linkedClients  Client[]        @relation("ClientLinkedDesigner")
+  projectObjects ProjectObject[] @relation("ObjectDesigner")
 }
 
 model ProjectObject {
-  id            String       @id @default(cuid())
-  title         String
-  status        EntityStatus @default(ACTIVE)
-  responsibleId String
-  createdById   String
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
-  archivedAt    DateTime?
-  notes         String?
+  id                    String                   @id @default(cuid())
+  title                 String
+  objectType            ObjectType
+  city                  String
+  region                String?
+  address               String?
+  clientId              String
+  designerId            String?
+  responsibleId         String
+  stage                 ObjectStage              @default(NEW_OBJECT)
+  status                ObjectStatus             @default(ACTIVE)
+  implementationStartAt DateTime?
+  implementationEndAt   DateTime?
+  budget                Float?
+  bathroomsCount        Int?
+  interestCategories    ObjectInterestCategory[]
+  files                 String[]                 @default([])
+  comment               String?
+  createdById           String
+  createdAt             DateTime                 @default(now())
+  updatedAt             DateTime                 @updatedAt
+  archivedAt            DateTime?
+  notes                 String?
 
-  responsible User @relation("ObjectResponsible", fields: [responsibleId], references: [id])
-  createdBy   User @relation("ObjectCreatedBy", fields: [createdById], references: [id])
+  client       Client                     @relation("ObjectClient", fields: [clientId], references: [id])
+  designer     Designer?                  @relation("ObjectDesigner", fields: [designerId], references: [id])
+  responsible  User                       @relation("ObjectResponsible", fields: [responsibleId], references: [id])
+  createdBy    User                       @relation("ObjectCreatedBy", fields: [createdById], references: [id])
+  participants ProjectObjectParticipant[] @relation("ObjectParticipants")
+  deals        Deal[]                     @relation("DealObject")
+  proposals    CommercialProposal[]       @relation("ProposalObject")
+  tasks        TaskActivity[]             @relation("TaskObject")
+}
+
+model ProjectObjectParticipant {
+  id                 String                       @id @default(cuid())
+  objectId           String
+  participantType    ProjectObjectParticipantType
+  fullName           String
+  company            String?
+  role               String
+  phone              String?
+  email              String?
+  messenger          String?
+  responsibleId      String?
+  comment            String?
+  influenceLevel     InfluenceLevel?
+  influenceType      InfluenceType?
+  attitudeToSturm    AttitudeToSturm?
+  decisionFactors    String?
+  responsibilityZone String?
+  canApproveChanges  ChangeApproval?
+  whenToInvolve      String?
+  createdById        String
+  createdAt          DateTime                     @default(now())
+  updatedAt          DateTime                     @updatedAt
+  archivedAt         DateTime?
+
+  object      ProjectObject @relation("ObjectParticipants", fields: [objectId], references: [id])
+  responsible User?         @relation("ObjectParticipantResponsible", fields: [responsibleId], references: [id])
+  createdBy   User          @relation("ObjectParticipantCreatedBy", fields: [createdById], references: [id])
 }
 
 model Deal {
-  id            String       @id @default(cuid())
-  title         String
-  status        EntityStatus @default(ACTIVE)
-  responsibleId String
-  createdById   String
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
-  archivedAt    DateTime?
-  notes         String?
+  id              String       @id @default(cuid())
+  title           String
+  status          EntityStatus @default(ACTIVE)
+  projectObjectId String?
+  responsibleId   String
+  createdById     String
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  archivedAt      DateTime?
+  notes           String?
 
-  responsible User @relation("DealResponsible", fields: [responsibleId], references: [id])
-  createdBy   User @relation("DealCreatedBy", fields: [createdById], references: [id])
+  responsible   User           @relation("DealResponsible", fields: [responsibleId], references: [id])
+  createdBy     User           @relation("DealCreatedBy", fields: [createdById], references: [id])
+  projectObject ProjectObject? @relation("DealObject", fields: [projectObjectId], references: [id])
 }
 
 model CommercialProposal {
-  id            String       @id @default(cuid())
-  title         String
-  status        EntityStatus @default(ACTIVE)
-  responsibleId String
-  createdById   String
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
-  archivedAt    DateTime?
-  notes         String?
+  id              String       @id @default(cuid())
+  title           String
+  status          EntityStatus @default(ACTIVE)
+  projectObjectId String?
+  responsibleId   String
+  createdById     String
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  archivedAt      DateTime?
+  notes           String?
 
-  responsible User @relation("ProposalResponsible", fields: [responsibleId], references: [id])
-  createdBy   User @relation("ProposalCreatedBy", fields: [createdById], references: [id])
+  responsible   User           @relation("ProposalResponsible", fields: [responsibleId], references: [id])
+  createdBy     User           @relation("ProposalCreatedBy", fields: [createdById], references: [id])
+  projectObject ProjectObject? @relation("ProposalObject", fields: [projectObjectId], references: [id])
 }
 
 model TaskActivity {
-  id            String     @id @default(cuid())
-  title         String
-  status        TaskStatus @default(NEW)
-  responsibleId String
-  createdById   String
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
-  archivedAt    DateTime?
-  notes         String?
+  id              String     @id @default(cuid())
+  title           String
+  status          TaskStatus @default(NEW)
+  projectObjectId String?
+  responsibleId   String
+  createdById     String
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  archivedAt      DateTime?
+  notes           String?
 
-  responsible User @relation("TaskResponsible", fields: [responsibleId], references: [id])
-  createdBy   User @relation("TaskCreatedBy", fields: [createdById], references: [id])
+  responsible   User           @relation("TaskResponsible", fields: [responsibleId], references: [id])
+  createdBy     User           @relation("TaskCreatedBy", fields: [createdById], references: [id])
+  projectObject ProjectObject? @relation("TaskObject", fields: [projectObjectId], references: [id])
 }
 
 model AuditLog {

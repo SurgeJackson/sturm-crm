@@ -5,11 +5,12 @@ import { getCurrentUser } from "@/auth/get-current-user";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { archiveClientAction } from "@/modules/clients/actions";
 import { getClientForUser } from "@/modules/clients/queries";
 import { getAuditLogs } from "@/lib/audit-log";
-import { clientSourceLabels, clientStatusLabels, clientTypeLabels } from "@/lib/constants";
+import { clientSourceLabels, clientStatusLabels, clientTypeLabels, objectStageLabels, objectStatusLabels } from "@/lib/constants";
 import { formatRussianDate } from "@/utils/date";
 import { canArchiveRecord, canEditRecord } from "@/permissions";
 
@@ -105,13 +106,50 @@ export default async function ClientPage({ params, searchParams }: ClientPagePro
           </Card>
         </TabsContent>
         <TabsContent value="links">
-          <div className="grid gap-4 md:grid-cols-3">
-            {["Связанные объекты", "Связанные сделки", "Связанные КП"].map((title) => (
-              <Card key={title}>
-                <CardHeader><CardTitle>{title}</CardTitle></CardHeader>
-                <CardContent className="text-sm text-muted-foreground">Будет реализовано на следующих этапах.</CardContent>
-              </Card>
-            ))}
+          <div className="grid gap-4">
+            <Card>
+              <CardHeader><CardTitle>Связанные объекты</CardTitle></CardHeader>
+              <CardContent className="p-0">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Объект</TableHead>
+                      <TableHead>Дизайнер</TableHead>
+                      <TableHead>Ответственный</TableHead>
+                      <TableHead>Стадия</TableHead>
+                      <TableHead>Статус</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {client.projectObjects.length === 0 ? (
+                      <TableRow>
+                        <TableCell colSpan={5} className="h-24 text-center text-sm text-muted-foreground">
+                          У клиента пока нет связанных объектов.
+                        </TableCell>
+                      </TableRow>
+                    ) : (
+                      client.projectObjects.map((object) => (
+                        <TableRow key={object.id}>
+                          <TableCell><Link className="font-medium hover:underline" href={`/objects/${object.id}`}>{object.title}</Link></TableCell>
+                          <TableCell>{object.designer?.name || "Не выбран"}</TableCell>
+                          <TableCell>{object.responsible.name}</TableCell>
+                          <TableCell><Badge variant="outline">{objectStageLabels[object.stage]}</Badge></TableCell>
+                          <TableCell><Badge variant="secondary">{objectStatusLabels[object.status]}</Badge></TableCell>
+                        </TableRow>
+                      ))
+                    )}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+            <div className="grid gap-4 md:grid-cols-2">
+              {["Связанные сделки", "Связанные КП"].map((title) => (
+                <Card key={title}>
+                  <CardHeader><CardTitle>{title}</CardTitle></CardHeader>
+                  <CardContent className="text-sm text-muted-foreground">Будет реализовано на следующих этапах.</CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
         </TabsContent>
         <TabsContent value="audit">

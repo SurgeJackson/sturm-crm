@@ -1,9 +1,12 @@
 import { describe, expect, it } from "vitest";
 import {
   canArchiveRecord,
+  canChangeObjectResponsible,
   canChangeRecordResponsible,
   canEditRecord,
+  canCreateObject,
   canManageUsers,
+  canManageObjectParticipants,
   canViewAllData,
   canViewRecord
 } from "../permissions";
@@ -41,5 +44,24 @@ describe("permissions", () => {
     expect(canManageUsers(administrator)).toBe(true);
     expect(canChangeRecordResponsible(salesLead)).toBe(true);
     expect(canChangeRecordResponsible(projectManager)).toBe(false);
+  });
+
+  it("allows CRM roles to create project objects", () => {
+    expect(canCreateObject(owner)).toBe(true);
+    expect(canCreateObject(salesLead)).toBe(true);
+    expect(canCreateObject(projectManager)).toBe(true);
+    expect(canCreateObject(administrator)).toBe(true);
+  });
+
+  it("keeps object responsible changes on leadership roles", () => {
+    expect(canChangeObjectResponsible(owner)).toBe(true);
+    expect(canChangeObjectResponsible(salesLead)).toBe(true);
+    expect(canChangeObjectResponsible(projectManager)).toBe(false);
+    expect(canChangeObjectResponsible(administrator)).toBe(false);
+  });
+
+  it("allows object participants to be managed by users who can edit the object", () => {
+    expect(canManageObjectParticipants(projectManager, ownRecord)).toBe(true);
+    expect(canManageObjectParticipants(projectManager, foreignRecord)).toBe(false);
   });
 });

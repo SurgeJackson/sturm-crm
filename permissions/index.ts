@@ -75,6 +75,15 @@ export function canCreateObject(user?: PermissionUser | null) {
   return managerRoles.has(user.role);
 }
 
+export function canChangeObjectResponsible(user?: PermissionUser | null) {
+  if (!isActive(user)) return false;
+  return leadershipRoles.has(user.role);
+}
+
+export function canManageObjectParticipants(user: PermissionUser | null | undefined, record: OwnedRecord) {
+  return canEditRecord(user, record);
+}
+
 export function canCreateDeal(user?: PermissionUser | null) {
   if (!isActive(user)) return false;
   return managerRoles.has(user.role);
