@@ -274,6 +274,55 @@ async function refreshDesignerCountersForChange(beforeDesignerId?: string | null
   }
 }
 
+async function createFrozenObjectReturnTask(object: {
+  id: string;
+  title: string;
+  clientId: string;
+  designerId: string | null;
+  responsibleId: string;
+}, userId: string) {
+  const existing = await prisma.taskActivity.findFirst({
+    where: {
+      objectId: object.id,
+      autoRule: "FROZEN_OBJECT_RETURN",
+      archivedAt: null,
+      status: { notIn: ["DONE", "CANCELLED", "CLOSED"] }
+    },
+    select: { id: true }
+  });
+  if (existing) return;
+
+  const dueAt = new Date();
+  dueAt.setDate(dueAt.getDate() + 30);
+
+  const task = await prisma.taskActivity.create({
+    data: {
+      recordType: "TASK",
+      actionType: "FOLLOW_UP",
+      title: `Вернуться к объекту ${object.title}`,
+      description: "Автоматическая задача после заморозки объекта",
+      responsibleId: object.responsibleId,
+      createdById: userId,
+      clientId: object.clientId,
+      designerId: object.designerId,
+      objectId: object.id,
+      status: "NEW",
+      priority: "NORMAL",
+      dueAt,
+      isAutoCreated: true,
+      autoRule: "FROZEN_OBJECT_RETURN"
+    }
+  });
+
+  await writeAuditLog({
+    entityType: "TASK",
+    entityId: task.id,
+    action: "CREATE_AUTO",
+    userId,
+    after: toAuditValue(task)
+  });
+}
+
 export async function createProjectObjectAction(_prevState: ProjectObjectActionState, formData: FormData) {
   const user = await getCurrentUser();
 
@@ -384,6 +433,14 @@ export async function updateProjectObjectAction(id: string, _prevState: ProjectO
         after: { [field]: next }
       });
     }
+  }
+
+  const becameFrozen =
+    (after.status === "FROZEN" || after.stage === "FROZEN") &&
+    before.status !== "FROZEN" &&
+    before.stage !== "FROZEN";
+  if (becameFrozen) {
+    await createFrozenObjectReturnTask(after, user.id);
   }
 
   redirect(`/objects/${id}?saved=1`);

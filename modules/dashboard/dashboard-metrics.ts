@@ -8,9 +8,10 @@ function accessWhere(user: PermissionUser): {
   object: Prisma.ProjectObjectWhereInput;
   deal: Prisma.DealWhereInput;
   proposal: Prisma.CommercialProposalWhereInput;
+  task: Prisma.TaskActivityWhereInput;
 } {
   if (canViewAllData(user)) {
-    return { client: {}, designer: {}, object: {}, deal: {}, proposal: {} };
+    return { client: {}, designer: {}, object: {}, deal: {}, proposal: {}, task: {} };
   }
 
   return {
@@ -18,7 +19,8 @@ function accessWhere(user: PermissionUser): {
     designer: { OR: [{ responsibleId: user.id }, { createdById: user.id }] },
     object: { OR: [{ responsibleId: user.id }, { createdById: user.id }] },
     deal: { OR: [{ responsibleId: user.id }, { createdById: user.id }] },
-    proposal: { OR: [{ responsibleId: user.id }, { createdById: user.id }] }
+    proposal: { OR: [{ responsibleId: user.id }, { createdById: user.id }] },
+    task: { OR: [{ responsibleId: user.id }, { createdById: user.id }] }
   };
 }
 
@@ -31,6 +33,9 @@ export async function getDashboardMetrics(user: PermissionUser) {
   todayStart.setHours(0, 0, 0, 0);
   const todayEnd = new Date();
   todayEnd.setHours(23, 59, 59, 999);
+  const weekEnd = new Date();
+  weekEnd.setDate(weekEnd.getDate() + 7);
+  weekEnd.setHours(23, 59, 59, 999);
   const access = accessWhere(user);
   const activeDealFilter: Prisma.DealWhereInput = { archivedAt: null, stage: { notIn: ["LOST", "COMPLETED"] } };
   const activeProposalFilter: Prisma.CommercialProposalWhereInput = { archivedAt: null, status: { notIn: ["ACCEPTED", "DECLINED", "ARCHIVED"] } };
@@ -42,6 +47,17 @@ export async function getDashboardMetrics(user: PermissionUser) {
     newClients,
     newDesigners,
     overdueTasks,
+    tasksToday,
+    tasksWithoutResult,
+    doneTasksPeriod,
+    touchesPeriod,
+    overdueTasksByResponsible,
+    myTasksToday,
+    myOverdueTasks,
+    myTasksWeek,
+    myRecentTouches,
+    myFollowUps,
+    managerActivity,
     activeObjects,
     newObjects,
     frozenObjects,
@@ -100,7 +116,63 @@ export async function getDashboardMetrics(user: PermissionUser) {
   ] = await Promise.all([
     prisma.client.count({ where: { AND: [access.client, { createdAt: { gte: sevenDaysAgo } }] } }),
     prisma.designer.count({ where: { AND: [access.designer, { createdAt: { gte: sevenDaysAgo } }] } }),
-    prisma.taskActivity.count({ where: { status: "OVERDUE" } }),
+    prisma.taskActivity.count({
+      where: {
+        AND: [
+          access.task,
+          { recordType: "TASK", archivedAt: null, status: { notIn: ["DONE", "CANCELLED", "CLOSED"] }, dueAt: { lt: new Date() } }
+        ]
+      }
+    }),
+    prisma.taskActivity.count({
+      where: {
+        AND: [
+          access.task,
+          { recordType: "TASK", archivedAt: null, status: { notIn: ["DONE", "CANCELLED", "CLOSED"] }, dueAt: { gte: todayStart, lte: todayEnd } }
+        ]
+      }
+    }),
+    prisma.taskActivity.count({ where: { AND: [access.task, { archivedAt: null, result: null }] } }),
+    prisma.taskActivity.count({ where: { AND: [access.task, { recordType: "TASK", status: "DONE", completedAt: { gte: sevenDaysAgo } }] } }),
+    prisma.taskActivity.count({ where: { AND: [access.task, { recordType: "TOUCH", completedAt: { gte: sevenDaysAgo } }] } }),
+    prisma.taskActivity.findMany({
+      where: { AND: [access.task, { recordType: "TASK", archivedAt: null, status: { notIn: ["DONE", "CANCELLED", "CLOSED"] }, dueAt: { lt: new Date() } }] },
+      select: { responsible: { select: { id: true, name: true } } }
+    }),
+    prisma.taskActivity.count({
+      where: {
+        AND: [
+          { responsibleId: user.id },
+          { recordType: "TASK", archivedAt: null, status: { notIn: ["DONE", "CANCELLED", "CLOSED"] }, dueAt: { gte: todayStart, lte: todayEnd } }
+        ]
+      }
+    }),
+    prisma.taskActivity.count({
+      where: {
+        AND: [
+          { responsibleId: user.id },
+          { recordType: "TASK", archivedAt: null, status: { notIn: ["DONE", "CANCELLED", "CLOSED"] }, dueAt: { lt: new Date() } }
+        ]
+      }
+    }),
+    prisma.taskActivity.count({
+      where: {
+        AND: [
+          { responsibleId: user.id },
+          { recordType: "TASK", archivedAt: null, dueAt: { gte: todayStart, lte: weekEnd } }
+        ]
+      }
+    }),
+    prisma.taskActivity.count({ where: { responsibleId: user.id, recordType: "TOUCH", completedAt: { gte: sevenDaysAgo } } }),
+    prisma.taskActivity.count({ where: { responsibleId: user.id, recordType: "TASK", actionType: "FOLLOW_UP", archivedAt: null, status: { notIn: ["DONE", "CANCELLED", "CLOSED"] } } }),
+    prisma.taskActivity.findMany({
+      where: { AND: [access.task, { createdAt: { gte: sevenDaysAgo } }] },
+      select: {
+        recordType: true,
+        status: true,
+        responsible: { select: { id: true, name: true } }
+      }
+    }),
     prisma.projectObject.count({ where: { AND: [access.object, { status: "ACTIVE" }] } }),
     prisma.projectObject.count({ where: { AND: [access.object, { createdAt: { gte: sevenDaysAgo } }] } }),
     prisma.projectObject.count({ where: { AND: [access.object, { OR: [{ status: "FROZEN" }, { stage: "FROZEN" }] }] } }),
@@ -255,10 +327,37 @@ export async function getDashboardMetrics(user: PermissionUser) {
     return acc;
   }, {});
 
+  const overdueTaskResponsibleCounts = overdueTasksByResponsible.reduce<Record<string, { name: string; count: number }>>((acc, task) => {
+    acc[task.responsible.id] = {
+      name: task.responsible.name,
+      count: (acc[task.responsible.id]?.count ?? 0) + 1
+    };
+    return acc;
+  }, {});
+
+  const managerActivityCounts = managerActivity.reduce<Record<string, { name: string; tasks: number; done: number; touches: number }>>((acc, item) => {
+    acc[item.responsible.id] ??= { name: item.responsible.name, tasks: 0, done: 0, touches: 0 };
+    if (item.recordType === "TASK") acc[item.responsible.id].tasks += 1;
+    if (item.status === "DONE" || item.status === "CLOSED") acc[item.responsible.id].done += 1;
+    if (item.recordType === "TOUCH") acc[item.responsible.id].touches += 1;
+    return acc;
+  }, {});
+
   return {
     newClients,
     newDesigners,
     overdueTasks,
+    tasksToday,
+    tasksWithoutResult,
+    doneTasksPeriod,
+    touchesPeriod,
+    overdueTaskResponsibleCounts: Object.values(overdueTaskResponsibleCounts).sort((a, b) => b.count - a.count),
+    myTasksToday,
+    myOverdueTasks,
+    myTasksWeek,
+    myRecentTouches,
+    myFollowUps,
+    managerActivityCounts: Object.values(managerActivityCounts).sort((a, b) => b.tasks + b.touches - (a.tasks + a.touches)),
     activeObjects,
     newObjects,
     frozenObjects,

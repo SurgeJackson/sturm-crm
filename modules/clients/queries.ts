@@ -1,6 +1,7 @@
 import type { Prisma } from "@/generated/prisma/client";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { taskInclude } from "@/modules/tasks/queries";
 import { canViewAllData, canViewRecord, type PermissionUser } from "@/permissions";
 
 export type ClientListSearchParams = {
@@ -106,6 +107,12 @@ export async function getClientForUser(id: string, user: PermissionUser) {
           projectObject: { select: { id: true, title: true } },
           responsible: { select: { id: true, name: true } }
         }
+      },
+      tasks: {
+        where: { archivedAt: null },
+        orderBy: [{ dueAt: "asc" }, { createdAt: "desc" }],
+        take: 30,
+        include: taskInclude()
       }
     }
   });

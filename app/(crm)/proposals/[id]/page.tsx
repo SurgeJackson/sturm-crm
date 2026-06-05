@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Archive, Edit, Plus } from "lucide-react";
+import { Archive, Edit, MessageSquarePlus, Plus } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
+import { TaskActivityTable } from "@/components/tasks/task-activity-table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,7 +20,7 @@ import {
   moveDealToInvoiceFromProposalAction
 } from "@/modules/proposals/actions";
 import { getProposalForUser, getProposalVersionGroup } from "@/modules/proposals/queries";
-import { canArchiveRecord, canEditRecord } from "@/permissions";
+import { canArchiveRecord, canCreateTask, canEditRecord } from "@/permissions";
 import { formatRussianDate } from "@/utils/date";
 
 type ProposalPageProps = {
@@ -211,19 +212,27 @@ export default async function ProposalPage({ params, searchParams }: ProposalPag
 
         <TabsContent value="tasks">
           <Card>
-            <CardHeader><CardTitle>Задачи / касания</CardTitle></CardHeader>
-            <CardContent className="space-y-2 text-sm text-muted-foreground">
-              {proposal.tasks.length === 0 ? (
-                <p>По сделке пока нет задач</p>
-              ) : (
-                proposal.tasks.map((task) => (
-                  <div key={task.id} className="rounded-md border p-3">
-                    <div className="font-medium text-foreground">{task.title}</div>
-                    <div>Ответственный: {task.responsible.name}</div>
-                    <div>Срок: {formatRussianDate(task.dueAt)}</div>
-                  </div>
-                ))
-              )}
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle>Задачи / касания</CardTitle>
+              {canCreateTask(user) ? (
+                <div className="flex flex-wrap gap-2">
+                  <Button asChild variant="outline" size="sm">
+                    <Link href={`/tasks/new?proposalId=${proposal.id}&dealId=${proposal.dealId}&clientId=${proposal.clientId}&objectId=${proposal.objectId}&responsibleId=${proposal.responsibleId}${proposal.designerId ? `&designerId=${proposal.designerId}` : ""}`}>
+                      <Plus className="h-4 w-4" />
+                      Создать задачу
+                    </Link>
+                  </Button>
+                  <Button asChild variant="outline" size="sm">
+                    <Link href={`/tasks/new?recordType=TOUCH&proposalId=${proposal.id}&dealId=${proposal.dealId}&clientId=${proposal.clientId}&objectId=${proposal.objectId}&responsibleId=${proposal.responsibleId}${proposal.designerId ? `&designerId=${proposal.designerId}` : ""}`}>
+                      <MessageSquarePlus className="h-4 w-4" />
+                      Зафиксировать касание
+                    </Link>
+                  </Button>
+                </div>
+              ) : null}
+            </CardHeader>
+            <CardContent className="p-0">
+              <TaskActivityTable items={proposal.tasks} emptyText="По этой сущности пока нет задач" />
             </CardContent>
           </Card>
         </TabsContent>

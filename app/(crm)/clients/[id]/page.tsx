@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Archive, Edit } from "lucide-react";
+import { Archive, Edit, MessageSquarePlus, Plus } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
+import { TaskActivityTable } from "@/components/tasks/task-activity-table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -20,7 +21,7 @@ import {
   objectStatusLabels
 } from "@/lib/constants";
 import { formatRussianDate } from "@/utils/date";
-import { canArchiveRecord, canEditRecord } from "@/permissions";
+import { canArchiveRecord, canCreateTask, canEditRecord } from "@/permissions";
 
 type ClientPageProps = {
   params: Promise<{ id: string }>;
@@ -87,6 +88,7 @@ export default async function ClientPage({ params, searchParams }: ClientPagePro
           <TabsTrigger value="main">Основное</TabsTrigger>
           <TabsTrigger value="comments">Комментарии</TabsTrigger>
           <TabsTrigger value="links">Связи</TabsTrigger>
+          <TabsTrigger value="tasks">Задачи / касания</TabsTrigger>
           <TabsTrigger value="audit">История изменений</TabsTrigger>
         </TabsList>
         <TabsContent value="main">
@@ -217,6 +219,32 @@ export default async function ClientPage({ params, searchParams }: ClientPagePro
               </CardContent>
             </Card>
           </div>
+        </TabsContent>
+        <TabsContent value="tasks">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle>Задачи / касания</CardTitle>
+              {canCreateTask(user) ? (
+                <div className="flex flex-wrap gap-2">
+                  <Button asChild variant="outline" size="sm">
+                    <Link href={`/tasks/new?clientId=${client.id}&responsibleId=${client.responsibleId}`}>
+                      <Plus className="h-4 w-4" />
+                      Создать задачу
+                    </Link>
+                  </Button>
+                  <Button asChild variant="outline" size="sm">
+                    <Link href={`/tasks/new?recordType=TOUCH&clientId=${client.id}&responsibleId=${client.responsibleId}`}>
+                      <MessageSquarePlus className="h-4 w-4" />
+                      Зафиксировать касание
+                    </Link>
+                  </Button>
+                </div>
+              ) : null}
+            </CardHeader>
+            <CardContent className="p-0">
+              <TaskActivityTable items={client.tasks} emptyText="По этой сущности пока нет задач" />
+            </CardContent>
+          </Card>
         </TabsContent>
         <TabsContent value="audit">
           <Card>

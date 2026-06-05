@@ -257,15 +257,22 @@ async function createFollowUpTask(proposal: CommercialProposal) {
 
   await prisma.taskActivity.create({
     data: {
+      recordType: "TASK",
+      actionType: "FOLLOW_UP",
       title: `Связаться по КП ${proposal.proposalNumber}`,
       status: "NEW",
-      projectObjectId: proposal.objectId,
+      priority: "HIGH",
+      objectId: proposal.objectId,
       dealId: proposal.dealId,
       proposalId: proposal.id,
       clientId: proposal.clientId,
+      designerId: proposal.designerId,
       dueAt: proposal.nextTouchAt,
       responsibleId: proposal.responsibleId,
       createdById: proposal.createdById,
+      isAutoCreated: true,
+      autoRule: "PROPOSAL_FOLLOW_UP",
+      description: `Follow-up по КП ${proposal.proposalNumber}`,
       notes: `Follow-up по КП ${proposal.proposalNumber}`
     }
   });

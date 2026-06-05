@@ -127,6 +127,49 @@ enum TaskStatus {
   DONE
   OVERDUE
   CANCELLED
+  RECORDED
+  NEEDS_NEXT_STEP
+  CLOSED
+}
+
+enum TaskRecordType {
+  TASK
+  TOUCH
+}
+
+enum TaskActionType {
+  CALL
+  INCOMING_CALL
+  WHATSAPP
+  TELEGRAM
+  EMAIL
+  SHOWROOM_MEETING
+  OUTSIDE_MEETING
+  PRESENTATION
+  PROPOSAL_SENT
+  FOLLOW_UP
+  REQUEST_PLANS
+  TERMS_APPROVAL
+  SHOWROOM_INVITE
+  EVENT_INVITE
+  INTERNAL_TASK
+  OTHER
+}
+
+enum TaskPriority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
+
+enum TaskAutoRule {
+  PROPOSAL_FOLLOW_UP
+  DESIGNER_REACTIVATION
+  FROZEN_OBJECT_RETURN
+  DEAL_WITHOUT_NEXT_STEP
+  CLIENT_WITHOUT_NEXT_CONTACT
+  OTHER
 }
 
 enum AuditEntityType {
@@ -405,6 +448,7 @@ model Designer {
   projectObjects ProjectObject[]      @relation("ObjectDesigner")
   deals          Deal[]               @relation("DealDesigner")
   proposals      CommercialProposal[] @relation("ProposalDesigner")
+  tasks          TaskActivity[]       @relation("TaskDesigner")
 }
 
 model ProjectObject {
@@ -466,9 +510,10 @@ model ProjectObjectParticipant {
   updatedAt          DateTime                     @updatedAt
   archivedAt         DateTime?
 
-  object      ProjectObject @relation("ObjectParticipants", fields: [objectId], references: [id])
-  responsible User?         @relation("ObjectParticipantResponsible", fields: [responsibleId], references: [id])
-  createdBy   User          @relation("ObjectParticipantCreatedBy", fields: [createdById], references: [id])
+  object      ProjectObject  @relation("ObjectParticipants", fields: [objectId], references: [id])
+  responsible User?          @relation("ObjectParticipantResponsible", fields: [responsibleId], references: [id])
+  createdBy   User           @relation("ObjectParticipantCreatedBy", fields: [createdById], references: [id])
+  tasks       TaskActivity[] @relation("TaskObjectParticipant")
 }
 
 model Deal {
@@ -551,27 +596,52 @@ model CommercialProposal {
 }
 
 model TaskActivity {
-  id              String     @id @default(cuid())
-  title           String
-  status          TaskStatus @default(NEW)
-  projectObjectId String?
-  dealId          String?
-  proposalId      String?
-  clientId        String?
-  dueAt           DateTime?
-  responsibleId   String
-  createdById     String
-  createdAt       DateTime   @default(now())
-  updatedAt       DateTime   @updatedAt
-  archivedAt      DateTime?
-  notes           String?
+  id                  String         @id @default(cuid())
+  recordType          TaskRecordType @default(TASK)
+  actionType          TaskActionType @default(OTHER)
+  title               String
+  description         String?
+  responsibleId       String
+  createdById         String
+  clientId            String?
+  designerId          String?
+  objectId            String?        @map("projectObjectId")
+  dealId              String?
+  proposalId          String?
+  objectParticipantId String?
+  status              TaskStatus     @default(NEW)
+  priority            TaskPriority   @default(NORMAL)
+  dueAt               DateTime?
+  completedAt         DateTime?
+  result              String?
+  nextStepText        String?
+  nextStepAt          DateTime?
+  isAutoCreated       Boolean        @default(false)
+  autoRule            TaskAutoRule?
+  archivedAt          DateTime?
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+  notes               String?
 
-  responsible   User                @relation("TaskResponsible", fields: [responsibleId], references: [id])
-  createdBy     User                @relation("TaskCreatedBy", fields: [createdById], references: [id])
-  projectObject ProjectObject?      @relation("TaskObject", fields: [projectObjectId], references: [id])
-  deal          Deal?               @relation("TaskDeal", fields: [dealId], references: [id])
-  proposal      CommercialProposal? @relation("TaskProposal", fields: [proposalId], references: [id])
-  client        Client?             @relation("TaskClient", fields: [clientId], references: [id])
+  responsible       User                      @relation("TaskResponsible", fields: [responsibleId], references: [id])
+  createdBy         User                      @relation("TaskCreatedBy", fields: [createdById], references: [id])
+  client            Client?                   @relation("TaskClient", fields: [clientId], references: [id])
+  designer          Designer?                 @relation("TaskDesigner", fields: [designerId], references: [id])
+  projectObject     ProjectObject?            @relation("TaskObject", fields: [objectId], references: [id])
+  deal              Deal?                     @relation("TaskDeal", fields: [dealId], references: [id])
+  proposal          CommercialProposal?       @relation("TaskProposal", fields: [proposalId], references: [id])
+  objectParticipant ProjectObjectParticipant? @relation("TaskObjectParticipant", fields: [objectParticipantId], references: [id])
+
+  @@index([recordType])
+  @@index([status])
+  @@index([dueAt])
+  @@index([responsibleId])
+  @@index([clientId])
+  @@index([designerId])
+  @@index([objectId])
+  @@index([dealId])
+  @@index([proposalId])
+  @@index([objectParticipantId])
 }
 
 model AuditLog {

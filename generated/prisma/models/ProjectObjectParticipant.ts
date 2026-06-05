@@ -321,6 +321,7 @@ export type ProjectObjectParticipantWhereInput = {
   object?: Prisma.XOR<Prisma.ProjectObjectScalarRelationFilter, Prisma.ProjectObjectWhereInput>
   responsible?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  tasks?: Prisma.TaskActivityListRelationFilter
 }
 
 export type ProjectObjectParticipantOrderByWithRelationInput = {
@@ -349,6 +350,7 @@ export type ProjectObjectParticipantOrderByWithRelationInput = {
   object?: Prisma.ProjectObjectOrderByWithRelationInput
   responsible?: Prisma.UserOrderByWithRelationInput
   createdBy?: Prisma.UserOrderByWithRelationInput
+  tasks?: Prisma.TaskActivityOrderByRelationAggregateInput
 }
 
 export type ProjectObjectParticipantWhereUniqueInput = Prisma.AtLeast<{
@@ -380,6 +382,7 @@ export type ProjectObjectParticipantWhereUniqueInput = Prisma.AtLeast<{
   object?: Prisma.XOR<Prisma.ProjectObjectScalarRelationFilter, Prisma.ProjectObjectWhereInput>
   responsible?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  tasks?: Prisma.TaskActivityListRelationFilter
 }, "id">
 
 export type ProjectObjectParticipantOrderByWithAggregationInput = {
@@ -461,6 +464,7 @@ export type ProjectObjectParticipantCreateInput = {
   object: Prisma.ProjectObjectCreateNestedOneWithoutParticipantsInput
   responsible?: Prisma.UserCreateNestedOneWithoutObjectParticipantsResponsibleInput
   createdBy: Prisma.UserCreateNestedOneWithoutObjectParticipantsCreatedInput
+  tasks?: Prisma.TaskActivityCreateNestedManyWithoutObjectParticipantInput
 }
 
 export type ProjectObjectParticipantUncheckedCreateInput = {
@@ -486,6 +490,7 @@ export type ProjectObjectParticipantUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   archivedAt?: Date | string | null
+  tasks?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutObjectParticipantInput
 }
 
 export type ProjectObjectParticipantUpdateInput = {
@@ -511,6 +516,7 @@ export type ProjectObjectParticipantUpdateInput = {
   object?: Prisma.ProjectObjectUpdateOneRequiredWithoutParticipantsNestedInput
   responsible?: Prisma.UserUpdateOneWithoutObjectParticipantsResponsibleNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutObjectParticipantsCreatedNestedInput
+  tasks?: Prisma.TaskActivityUpdateManyWithoutObjectParticipantNestedInput
 }
 
 export type ProjectObjectParticipantUncheckedUpdateInput = {
@@ -536,6 +542,7 @@ export type ProjectObjectParticipantUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tasks?: Prisma.TaskActivityUncheckedUpdateManyWithoutObjectParticipantNestedInput
 }
 
 export type ProjectObjectParticipantCreateManyInput = {
@@ -695,6 +702,11 @@ export type ProjectObjectParticipantMinOrderByAggregateInput = {
   archivedAt?: Prisma.SortOrder
 }
 
+export type ProjectObjectParticipantNullableScalarRelationFilter = {
+  is?: Prisma.ProjectObjectParticipantWhereInput | null
+  isNot?: Prisma.ProjectObjectParticipantWhereInput | null
+}
+
 export type ProjectObjectParticipantCreateNestedManyWithoutResponsibleInput = {
   create?: Prisma.XOR<Prisma.ProjectObjectParticipantCreateWithoutResponsibleInput, Prisma.ProjectObjectParticipantUncheckedCreateWithoutResponsibleInput> | Prisma.ProjectObjectParticipantCreateWithoutResponsibleInput[] | Prisma.ProjectObjectParticipantUncheckedCreateWithoutResponsibleInput[]
   connectOrCreate?: Prisma.ProjectObjectParticipantCreateOrConnectWithoutResponsibleInput | Prisma.ProjectObjectParticipantCreateOrConnectWithoutResponsibleInput[]
@@ -841,6 +853,22 @@ export type NullableEnumChangeApprovalFieldUpdateOperationsInput = {
   set?: $Enums.ChangeApproval | null
 }
 
+export type ProjectObjectParticipantCreateNestedOneWithoutTasksInput = {
+  create?: Prisma.XOR<Prisma.ProjectObjectParticipantCreateWithoutTasksInput, Prisma.ProjectObjectParticipantUncheckedCreateWithoutTasksInput>
+  connectOrCreate?: Prisma.ProjectObjectParticipantCreateOrConnectWithoutTasksInput
+  connect?: Prisma.ProjectObjectParticipantWhereUniqueInput
+}
+
+export type ProjectObjectParticipantUpdateOneWithoutTasksNestedInput = {
+  create?: Prisma.XOR<Prisma.ProjectObjectParticipantCreateWithoutTasksInput, Prisma.ProjectObjectParticipantUncheckedCreateWithoutTasksInput>
+  connectOrCreate?: Prisma.ProjectObjectParticipantCreateOrConnectWithoutTasksInput
+  upsert?: Prisma.ProjectObjectParticipantUpsertWithoutTasksInput
+  disconnect?: Prisma.ProjectObjectParticipantWhereInput | boolean
+  delete?: Prisma.ProjectObjectParticipantWhereInput | boolean
+  connect?: Prisma.ProjectObjectParticipantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProjectObjectParticipantUpdateToOneWithWhereWithoutTasksInput, Prisma.ProjectObjectParticipantUpdateWithoutTasksInput>, Prisma.ProjectObjectParticipantUncheckedUpdateWithoutTasksInput>
+}
+
 export type ProjectObjectParticipantCreateWithoutResponsibleInput = {
   id?: string
   participantType: $Enums.ProjectObjectParticipantType
@@ -863,6 +891,7 @@ export type ProjectObjectParticipantCreateWithoutResponsibleInput = {
   archivedAt?: Date | string | null
   object: Prisma.ProjectObjectCreateNestedOneWithoutParticipantsInput
   createdBy: Prisma.UserCreateNestedOneWithoutObjectParticipantsCreatedInput
+  tasks?: Prisma.TaskActivityCreateNestedManyWithoutObjectParticipantInput
 }
 
 export type ProjectObjectParticipantUncheckedCreateWithoutResponsibleInput = {
@@ -887,6 +916,7 @@ export type ProjectObjectParticipantUncheckedCreateWithoutResponsibleInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   archivedAt?: Date | string | null
+  tasks?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutObjectParticipantInput
 }
 
 export type ProjectObjectParticipantCreateOrConnectWithoutResponsibleInput = {
@@ -921,6 +951,7 @@ export type ProjectObjectParticipantCreateWithoutCreatedByInput = {
   archivedAt?: Date | string | null
   object: Prisma.ProjectObjectCreateNestedOneWithoutParticipantsInput
   responsible?: Prisma.UserCreateNestedOneWithoutObjectParticipantsResponsibleInput
+  tasks?: Prisma.TaskActivityCreateNestedManyWithoutObjectParticipantInput
 }
 
 export type ProjectObjectParticipantUncheckedCreateWithoutCreatedByInput = {
@@ -945,6 +976,7 @@ export type ProjectObjectParticipantUncheckedCreateWithoutCreatedByInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   archivedAt?: Date | string | null
+  tasks?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutObjectParticipantInput
 }
 
 export type ProjectObjectParticipantCreateOrConnectWithoutCreatedByInput = {
@@ -1039,6 +1071,7 @@ export type ProjectObjectParticipantCreateWithoutObjectInput = {
   archivedAt?: Date | string | null
   responsible?: Prisma.UserCreateNestedOneWithoutObjectParticipantsResponsibleInput
   createdBy: Prisma.UserCreateNestedOneWithoutObjectParticipantsCreatedInput
+  tasks?: Prisma.TaskActivityCreateNestedManyWithoutObjectParticipantInput
 }
 
 export type ProjectObjectParticipantUncheckedCreateWithoutObjectInput = {
@@ -1063,6 +1096,7 @@ export type ProjectObjectParticipantUncheckedCreateWithoutObjectInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   archivedAt?: Date | string | null
+  tasks?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutObjectParticipantInput
 }
 
 export type ProjectObjectParticipantCreateOrConnectWithoutObjectInput = {
@@ -1089,6 +1123,122 @@ export type ProjectObjectParticipantUpdateWithWhereUniqueWithoutObjectInput = {
 export type ProjectObjectParticipantUpdateManyWithWhereWithoutObjectInput = {
   where: Prisma.ProjectObjectParticipantScalarWhereInput
   data: Prisma.XOR<Prisma.ProjectObjectParticipantUpdateManyMutationInput, Prisma.ProjectObjectParticipantUncheckedUpdateManyWithoutObjectInput>
+}
+
+export type ProjectObjectParticipantCreateWithoutTasksInput = {
+  id?: string
+  participantType: $Enums.ProjectObjectParticipantType
+  fullName: string
+  company?: string | null
+  role: string
+  phone?: string | null
+  email?: string | null
+  messenger?: string | null
+  comment?: string | null
+  influenceLevel?: $Enums.InfluenceLevel | null
+  influenceType?: $Enums.InfluenceType | null
+  attitudeToSturm?: $Enums.AttitudeToSturm | null
+  decisionFactors?: string | null
+  responsibilityZone?: string | null
+  canApproveChanges?: $Enums.ChangeApproval | null
+  whenToInvolve?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  archivedAt?: Date | string | null
+  object: Prisma.ProjectObjectCreateNestedOneWithoutParticipantsInput
+  responsible?: Prisma.UserCreateNestedOneWithoutObjectParticipantsResponsibleInput
+  createdBy: Prisma.UserCreateNestedOneWithoutObjectParticipantsCreatedInput
+}
+
+export type ProjectObjectParticipantUncheckedCreateWithoutTasksInput = {
+  id?: string
+  objectId: string
+  participantType: $Enums.ProjectObjectParticipantType
+  fullName: string
+  company?: string | null
+  role: string
+  phone?: string | null
+  email?: string | null
+  messenger?: string | null
+  responsibleId?: string | null
+  comment?: string | null
+  influenceLevel?: $Enums.InfluenceLevel | null
+  influenceType?: $Enums.InfluenceType | null
+  attitudeToSturm?: $Enums.AttitudeToSturm | null
+  decisionFactors?: string | null
+  responsibilityZone?: string | null
+  canApproveChanges?: $Enums.ChangeApproval | null
+  whenToInvolve?: string | null
+  createdById: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  archivedAt?: Date | string | null
+}
+
+export type ProjectObjectParticipantCreateOrConnectWithoutTasksInput = {
+  where: Prisma.ProjectObjectParticipantWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProjectObjectParticipantCreateWithoutTasksInput, Prisma.ProjectObjectParticipantUncheckedCreateWithoutTasksInput>
+}
+
+export type ProjectObjectParticipantUpsertWithoutTasksInput = {
+  update: Prisma.XOR<Prisma.ProjectObjectParticipantUpdateWithoutTasksInput, Prisma.ProjectObjectParticipantUncheckedUpdateWithoutTasksInput>
+  create: Prisma.XOR<Prisma.ProjectObjectParticipantCreateWithoutTasksInput, Prisma.ProjectObjectParticipantUncheckedCreateWithoutTasksInput>
+  where?: Prisma.ProjectObjectParticipantWhereInput
+}
+
+export type ProjectObjectParticipantUpdateToOneWithWhereWithoutTasksInput = {
+  where?: Prisma.ProjectObjectParticipantWhereInput
+  data: Prisma.XOR<Prisma.ProjectObjectParticipantUpdateWithoutTasksInput, Prisma.ProjectObjectParticipantUncheckedUpdateWithoutTasksInput>
+}
+
+export type ProjectObjectParticipantUpdateWithoutTasksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  participantType?: Prisma.EnumProjectObjectParticipantTypeFieldUpdateOperationsInput | $Enums.ProjectObjectParticipantType
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  company?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  messenger?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  influenceLevel?: Prisma.NullableEnumInfluenceLevelFieldUpdateOperationsInput | $Enums.InfluenceLevel | null
+  influenceType?: Prisma.NullableEnumInfluenceTypeFieldUpdateOperationsInput | $Enums.InfluenceType | null
+  attitudeToSturm?: Prisma.NullableEnumAttitudeToSturmFieldUpdateOperationsInput | $Enums.AttitudeToSturm | null
+  decisionFactors?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  responsibilityZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canApproveChanges?: Prisma.NullableEnumChangeApprovalFieldUpdateOperationsInput | $Enums.ChangeApproval | null
+  whenToInvolve?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  object?: Prisma.ProjectObjectUpdateOneRequiredWithoutParticipantsNestedInput
+  responsible?: Prisma.UserUpdateOneWithoutObjectParticipantsResponsibleNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutObjectParticipantsCreatedNestedInput
+}
+
+export type ProjectObjectParticipantUncheckedUpdateWithoutTasksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  objectId?: Prisma.StringFieldUpdateOperationsInput | string
+  participantType?: Prisma.EnumProjectObjectParticipantTypeFieldUpdateOperationsInput | $Enums.ProjectObjectParticipantType
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  company?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  messenger?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  responsibleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  influenceLevel?: Prisma.NullableEnumInfluenceLevelFieldUpdateOperationsInput | $Enums.InfluenceLevel | null
+  influenceType?: Prisma.NullableEnumInfluenceTypeFieldUpdateOperationsInput | $Enums.InfluenceType | null
+  attitudeToSturm?: Prisma.NullableEnumAttitudeToSturmFieldUpdateOperationsInput | $Enums.AttitudeToSturm | null
+  decisionFactors?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  responsibilityZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canApproveChanges?: Prisma.NullableEnumChangeApprovalFieldUpdateOperationsInput | $Enums.ChangeApproval | null
+  whenToInvolve?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type ProjectObjectParticipantCreateManyResponsibleInput = {
@@ -1161,6 +1311,7 @@ export type ProjectObjectParticipantUpdateWithoutResponsibleInput = {
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   object?: Prisma.ProjectObjectUpdateOneRequiredWithoutParticipantsNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutObjectParticipantsCreatedNestedInput
+  tasks?: Prisma.TaskActivityUpdateManyWithoutObjectParticipantNestedInput
 }
 
 export type ProjectObjectParticipantUncheckedUpdateWithoutResponsibleInput = {
@@ -1185,6 +1336,7 @@ export type ProjectObjectParticipantUncheckedUpdateWithoutResponsibleInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tasks?: Prisma.TaskActivityUncheckedUpdateManyWithoutObjectParticipantNestedInput
 }
 
 export type ProjectObjectParticipantUncheckedUpdateManyWithoutResponsibleInput = {
@@ -1233,6 +1385,7 @@ export type ProjectObjectParticipantUpdateWithoutCreatedByInput = {
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   object?: Prisma.ProjectObjectUpdateOneRequiredWithoutParticipantsNestedInput
   responsible?: Prisma.UserUpdateOneWithoutObjectParticipantsResponsibleNestedInput
+  tasks?: Prisma.TaskActivityUpdateManyWithoutObjectParticipantNestedInput
 }
 
 export type ProjectObjectParticipantUncheckedUpdateWithoutCreatedByInput = {
@@ -1257,6 +1410,7 @@ export type ProjectObjectParticipantUncheckedUpdateWithoutCreatedByInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tasks?: Prisma.TaskActivityUncheckedUpdateManyWithoutObjectParticipantNestedInput
 }
 
 export type ProjectObjectParticipantUncheckedUpdateManyWithoutCreatedByInput = {
@@ -1329,6 +1483,7 @@ export type ProjectObjectParticipantUpdateWithoutObjectInput = {
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   responsible?: Prisma.UserUpdateOneWithoutObjectParticipantsResponsibleNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutObjectParticipantsCreatedNestedInput
+  tasks?: Prisma.TaskActivityUpdateManyWithoutObjectParticipantNestedInput
 }
 
 export type ProjectObjectParticipantUncheckedUpdateWithoutObjectInput = {
@@ -1353,6 +1508,7 @@ export type ProjectObjectParticipantUncheckedUpdateWithoutObjectInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tasks?: Prisma.TaskActivityUncheckedUpdateManyWithoutObjectParticipantNestedInput
 }
 
 export type ProjectObjectParticipantUncheckedUpdateManyWithoutObjectInput = {
@@ -1379,6 +1535,35 @@ export type ProjectObjectParticipantUncheckedUpdateManyWithoutObjectInput = {
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
+
+/**
+ * Count Type ProjectObjectParticipantCountOutputType
+ */
+
+export type ProjectObjectParticipantCountOutputType = {
+  tasks: number
+}
+
+export type ProjectObjectParticipantCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  tasks?: boolean | ProjectObjectParticipantCountOutputTypeCountTasksArgs
+}
+
+/**
+ * ProjectObjectParticipantCountOutputType without action
+ */
+export type ProjectObjectParticipantCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ProjectObjectParticipantCountOutputType
+   */
+  select?: Prisma.ProjectObjectParticipantCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * ProjectObjectParticipantCountOutputType without action
+ */
+export type ProjectObjectParticipantCountOutputTypeCountTasksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TaskActivityWhereInput
+}
 
 
 export type ProjectObjectParticipantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1407,6 +1592,8 @@ export type ProjectObjectParticipantSelect<ExtArgs extends runtime.Types.Extensi
   object?: boolean | Prisma.ProjectObjectDefaultArgs<ExtArgs>
   responsible?: boolean | Prisma.ProjectObjectParticipant$responsibleArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  tasks?: boolean | Prisma.ProjectObjectParticipant$tasksArgs<ExtArgs>
+  _count?: boolean | Prisma.ProjectObjectParticipantCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["projectObjectParticipant"]>
 
 export type ProjectObjectParticipantSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1495,6 +1682,8 @@ export type ProjectObjectParticipantInclude<ExtArgs extends runtime.Types.Extens
   object?: boolean | Prisma.ProjectObjectDefaultArgs<ExtArgs>
   responsible?: boolean | Prisma.ProjectObjectParticipant$responsibleArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  tasks?: boolean | Prisma.ProjectObjectParticipant$tasksArgs<ExtArgs>
+  _count?: boolean | Prisma.ProjectObjectParticipantCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ProjectObjectParticipantIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   object?: boolean | Prisma.ProjectObjectDefaultArgs<ExtArgs>
@@ -1513,6 +1702,7 @@ export type $ProjectObjectParticipantPayload<ExtArgs extends runtime.Types.Exten
     object: Prisma.$ProjectObjectPayload<ExtArgs>
     responsible: Prisma.$UserPayload<ExtArgs> | null
     createdBy: Prisma.$UserPayload<ExtArgs>
+    tasks: Prisma.$TaskActivityPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1934,6 +2124,7 @@ export interface Prisma__ProjectObjectParticipantClient<T, Null = never, ExtArgs
   object<T extends Prisma.ProjectObjectDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProjectObjectDefaultArgs<ExtArgs>>): Prisma.Prisma__ProjectObjectClient<runtime.Types.Result.GetResult<Prisma.$ProjectObjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   responsible<T extends Prisma.ProjectObjectParticipant$responsibleArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProjectObjectParticipant$responsibleArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   createdBy<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  tasks<T extends Prisma.ProjectObjectParticipant$tasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProjectObjectParticipant$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TaskActivityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2402,6 +2593,30 @@ export type ProjectObjectParticipant$responsibleArgs<ExtArgs extends runtime.Typ
    */
   include?: Prisma.UserInclude<ExtArgs> | null
   where?: Prisma.UserWhereInput
+}
+
+/**
+ * ProjectObjectParticipant.tasks
+ */
+export type ProjectObjectParticipant$tasksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TaskActivity
+   */
+  select?: Prisma.TaskActivitySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TaskActivity
+   */
+  omit?: Prisma.TaskActivityOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TaskActivityInclude<ExtArgs> | null
+  where?: Prisma.TaskActivityWhereInput
+  orderBy?: Prisma.TaskActivityOrderByWithRelationInput | Prisma.TaskActivityOrderByWithRelationInput[]
+  cursor?: Prisma.TaskActivityWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TaskActivityScalarFieldEnum | Prisma.TaskActivityScalarFieldEnum[]
 }
 
 /**

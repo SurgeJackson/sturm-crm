@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Archive, Edit } from "lucide-react";
+import { Archive, Edit, MessageSquarePlus, Plus } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
 import { DealLossDialog } from "@/components/deals/deal-loss-dialog";
+import { TaskActivityTable } from "@/components/tasks/task-activity-table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,7 +20,7 @@ import {
 } from "@/lib/constants";
 import { archiveDealAction, closeDealAsLostAction } from "@/modules/deals/actions";
 import { getDealForUser } from "@/modules/deals/queries";
-import { canArchiveRecord, canCloseDealAsLost, canEditRecord } from "@/permissions";
+import { canArchiveRecord, canCloseDealAsLost, canCreateTask, canEditRecord } from "@/permissions";
 import { formatRussianDate } from "@/utils/date";
 
 type DealPageProps = {
@@ -187,13 +188,25 @@ export default async function DealPage({ params, searchParams }: DealPageProps) 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle>Задачи / касания</CardTitle>
-              <div className="flex gap-2">
-                <Button asChild variant="outline" size="sm"><Link href="/tasks">Создать задачу</Link></Button>
-                <Button asChild variant="outline" size="sm"><Link href="/tasks">Зафиксировать касание</Link></Button>
-              </div>
+              {canCreateTask(user) ? (
+                <div className="flex flex-wrap gap-2">
+                  <Button asChild variant="outline" size="sm">
+                    <Link href={`/tasks/new?dealId=${deal.id}&clientId=${deal.clientId}&objectId=${deal.objectId}&responsibleId=${deal.responsibleId}${deal.designerId ? `&designerId=${deal.designerId}` : ""}`}>
+                      <Plus className="h-4 w-4" />
+                      Создать задачу
+                    </Link>
+                  </Button>
+                  <Button asChild variant="outline" size="sm">
+                    <Link href={`/tasks/new?recordType=TOUCH&dealId=${deal.id}&clientId=${deal.clientId}&objectId=${deal.objectId}&responsibleId=${deal.responsibleId}${deal.designerId ? `&designerId=${deal.designerId}` : ""}`}>
+                      <MessageSquarePlus className="h-4 w-4" />
+                      Зафиксировать касание
+                    </Link>
+                  </Button>
+                </div>
+              ) : null}
             </CardHeader>
-            <CardContent className="text-sm text-muted-foreground">
-              {deal.tasks.length === 0 ? "По сделке пока нет задач" : "Связанные задачи подготовлены к отображению."}
+            <CardContent className="p-0">
+              <TaskActivityTable items={deal.tasks} emptyText="По этой сущности пока нет задач" />
             </CardContent>
           </Card>
         </TabsContent>

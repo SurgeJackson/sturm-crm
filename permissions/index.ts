@@ -122,6 +122,20 @@ export function canCreateTask(user?: PermissionUser | null) {
   return managerRoles.has(user.role);
 }
 
+export function canCreateTouch(user?: PermissionUser | null) {
+  return canCreateTask(user);
+}
+
+export function canChangeTaskResponsible(user?: PermissionUser | null) {
+  return canChangeResponsible(user);
+}
+
+export function canCancelTask(user: PermissionUser | null | undefined, record: OwnedRecord) {
+  if (!isActive(user)) return false;
+  if (leadershipRoles.has(user.role)) return true;
+  return Boolean(user.id && (record.createdById === user.id || record.responsibleId === user.id));
+}
+
 export function canViewRecord(user: PermissionUser | null | undefined, record: OwnedRecord) {
   if (!isActive(user)) return false;
   if (canViewAllData(user)) return true;

@@ -16,7 +16,12 @@ import {
   objectTypeLabels,
   proposalDeclineReasonLabels,
   projectObjectParticipantTypeLabels,
-  recipientTypeLabels
+  recipientTypeLabels,
+  taskActionTypeLabels,
+  taskAutoRuleLabels,
+  taskPriorityLabels,
+  taskRecordTypeLabels,
+  taskStatusLabels
 } from "../lib/constants";
 
 describe("project object labels", () => {
@@ -50,5 +55,13 @@ describe("project object labels", () => {
     expect(commercialProposalStatusLabels.NEEDS_RECALCULATION).toBe("Требуется пересчет");
     expect(recipientTypeLabels.PURCHASE_INFLUENCER).toBe("Влияющий на закупку");
     expect(proposalDeclineReasonLabels.DESIGNER_NOT_SUPPORT).toBe("Дизайнер не поддержал");
+  });
+
+  it("contains Russian labels for Stage 6 task and touch enums", () => {
+    expect(taskRecordTypeLabels.TOUCH).toBe("Касание");
+    expect(taskActionTypeLabels.SHOWROOM_MEETING).toBe("Встреча в шоуруме");
+    expect(taskStatusLabels.NEEDS_NEXT_STEP).toBe("Нужен следующий шаг");
+    expect(taskPriorityLabels.URGENT).toBe("Срочный");
+    expect(taskAutoRuleLabels.DESIGNER_REACTIVATION).toBe("Реактивация дизайнера");
   });
 });

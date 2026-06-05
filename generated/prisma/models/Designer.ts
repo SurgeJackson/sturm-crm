@@ -446,6 +446,7 @@ export type DesignerWhereInput = {
   projectObjects?: Prisma.ProjectObjectListRelationFilter
   deals?: Prisma.DealListRelationFilter
   proposals?: Prisma.CommercialProposalListRelationFilter
+  tasks?: Prisma.TaskActivityListRelationFilter
 }
 
 export type DesignerOrderByWithRelationInput = {
@@ -487,6 +488,7 @@ export type DesignerOrderByWithRelationInput = {
   projectObjects?: Prisma.ProjectObjectOrderByRelationAggregateInput
   deals?: Prisma.DealOrderByRelationAggregateInput
   proposals?: Prisma.CommercialProposalOrderByRelationAggregateInput
+  tasks?: Prisma.TaskActivityOrderByRelationAggregateInput
 }
 
 export type DesignerWhereUniqueInput = Prisma.AtLeast<{
@@ -531,6 +533,7 @@ export type DesignerWhereUniqueInput = Prisma.AtLeast<{
   projectObjects?: Prisma.ProjectObjectListRelationFilter
   deals?: Prisma.DealListRelationFilter
   proposals?: Prisma.CommercialProposalListRelationFilter
+  tasks?: Prisma.TaskActivityListRelationFilter
 }, "id">
 
 export type DesignerOrderByWithAggregationInput = {
@@ -648,6 +651,7 @@ export type DesignerCreateInput = {
   projectObjects?: Prisma.ProjectObjectCreateNestedManyWithoutDesignerInput
   deals?: Prisma.DealCreateNestedManyWithoutDesignerInput
   proposals?: Prisma.CommercialProposalCreateNestedManyWithoutDesignerInput
+  tasks?: Prisma.TaskActivityCreateNestedManyWithoutDesignerInput
 }
 
 export type DesignerUncheckedCreateInput = {
@@ -687,6 +691,7 @@ export type DesignerUncheckedCreateInput = {
   projectObjects?: Prisma.ProjectObjectUncheckedCreateNestedManyWithoutDesignerInput
   deals?: Prisma.DealUncheckedCreateNestedManyWithoutDesignerInput
   proposals?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutDesignerInput
+  tasks?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutDesignerInput
 }
 
 export type DesignerUpdateInput = {
@@ -726,6 +731,7 @@ export type DesignerUpdateInput = {
   projectObjects?: Prisma.ProjectObjectUpdateManyWithoutDesignerNestedInput
   deals?: Prisma.DealUpdateManyWithoutDesignerNestedInput
   proposals?: Prisma.CommercialProposalUpdateManyWithoutDesignerNestedInput
+  tasks?: Prisma.TaskActivityUpdateManyWithoutDesignerNestedInput
 }
 
 export type DesignerUncheckedUpdateInput = {
@@ -765,6 +771,7 @@ export type DesignerUncheckedUpdateInput = {
   projectObjects?: Prisma.ProjectObjectUncheckedUpdateManyWithoutDesignerNestedInput
   deals?: Prisma.DealUncheckedUpdateManyWithoutDesignerNestedInput
   proposals?: Prisma.CommercialProposalUncheckedUpdateManyWithoutDesignerNestedInput
+  tasks?: Prisma.TaskActivityUncheckedUpdateManyWithoutDesignerNestedInput
 }
 
 export type DesignerCreateManyInput = {
@@ -1211,6 +1218,22 @@ export type DesignerUpdateOneWithoutProposalsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.DesignerUpdateToOneWithWhereWithoutProposalsInput, Prisma.DesignerUpdateWithoutProposalsInput>, Prisma.DesignerUncheckedUpdateWithoutProposalsInput>
 }
 
+export type DesignerCreateNestedOneWithoutTasksInput = {
+  create?: Prisma.XOR<Prisma.DesignerCreateWithoutTasksInput, Prisma.DesignerUncheckedCreateWithoutTasksInput>
+  connectOrCreate?: Prisma.DesignerCreateOrConnectWithoutTasksInput
+  connect?: Prisma.DesignerWhereUniqueInput
+}
+
+export type DesignerUpdateOneWithoutTasksNestedInput = {
+  create?: Prisma.XOR<Prisma.DesignerCreateWithoutTasksInput, Prisma.DesignerUncheckedCreateWithoutTasksInput>
+  connectOrCreate?: Prisma.DesignerCreateOrConnectWithoutTasksInput
+  upsert?: Prisma.DesignerUpsertWithoutTasksInput
+  disconnect?: Prisma.DesignerWhereInput | boolean
+  delete?: Prisma.DesignerWhereInput | boolean
+  connect?: Prisma.DesignerWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.DesignerUpdateToOneWithWhereWithoutTasksInput, Prisma.DesignerUpdateWithoutTasksInput>, Prisma.DesignerUncheckedUpdateWithoutTasksInput>
+}
+
 export type DesignerCreateWithoutResponsibleInput = {
   id?: string
   name: string
@@ -1247,6 +1270,7 @@ export type DesignerCreateWithoutResponsibleInput = {
   projectObjects?: Prisma.ProjectObjectCreateNestedManyWithoutDesignerInput
   deals?: Prisma.DealCreateNestedManyWithoutDesignerInput
   proposals?: Prisma.CommercialProposalCreateNestedManyWithoutDesignerInput
+  tasks?: Prisma.TaskActivityCreateNestedManyWithoutDesignerInput
 }
 
 export type DesignerUncheckedCreateWithoutResponsibleInput = {
@@ -1285,6 +1309,7 @@ export type DesignerUncheckedCreateWithoutResponsibleInput = {
   projectObjects?: Prisma.ProjectObjectUncheckedCreateNestedManyWithoutDesignerInput
   deals?: Prisma.DealUncheckedCreateNestedManyWithoutDesignerInput
   proposals?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutDesignerInput
+  tasks?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutDesignerInput
 }
 
 export type DesignerCreateOrConnectWithoutResponsibleInput = {
@@ -1333,6 +1358,7 @@ export type DesignerCreateWithoutCreatedByInput = {
   projectObjects?: Prisma.ProjectObjectCreateNestedManyWithoutDesignerInput
   deals?: Prisma.DealCreateNestedManyWithoutDesignerInput
   proposals?: Prisma.CommercialProposalCreateNestedManyWithoutDesignerInput
+  tasks?: Prisma.TaskActivityCreateNestedManyWithoutDesignerInput
 }
 
 export type DesignerUncheckedCreateWithoutCreatedByInput = {
@@ -1371,6 +1397,7 @@ export type DesignerUncheckedCreateWithoutCreatedByInput = {
   projectObjects?: Prisma.ProjectObjectUncheckedCreateNestedManyWithoutDesignerInput
   deals?: Prisma.DealUncheckedCreateNestedManyWithoutDesignerInput
   proposals?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutDesignerInput
+  tasks?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutDesignerInput
 }
 
 export type DesignerCreateOrConnectWithoutCreatedByInput = {
@@ -1489,6 +1516,7 @@ export type DesignerCreateWithoutLinkedClientsInput = {
   projectObjects?: Prisma.ProjectObjectCreateNestedManyWithoutDesignerInput
   deals?: Prisma.DealCreateNestedManyWithoutDesignerInput
   proposals?: Prisma.CommercialProposalCreateNestedManyWithoutDesignerInput
+  tasks?: Prisma.TaskActivityCreateNestedManyWithoutDesignerInput
 }
 
 export type DesignerUncheckedCreateWithoutLinkedClientsInput = {
@@ -1527,6 +1555,7 @@ export type DesignerUncheckedCreateWithoutLinkedClientsInput = {
   projectObjects?: Prisma.ProjectObjectUncheckedCreateNestedManyWithoutDesignerInput
   deals?: Prisma.DealUncheckedCreateNestedManyWithoutDesignerInput
   proposals?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutDesignerInput
+  tasks?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutDesignerInput
 }
 
 export type DesignerCreateOrConnectWithoutLinkedClientsInput = {
@@ -1581,6 +1610,7 @@ export type DesignerUpdateWithoutLinkedClientsInput = {
   projectObjects?: Prisma.ProjectObjectUpdateManyWithoutDesignerNestedInput
   deals?: Prisma.DealUpdateManyWithoutDesignerNestedInput
   proposals?: Prisma.CommercialProposalUpdateManyWithoutDesignerNestedInput
+  tasks?: Prisma.TaskActivityUpdateManyWithoutDesignerNestedInput
 }
 
 export type DesignerUncheckedUpdateWithoutLinkedClientsInput = {
@@ -1619,6 +1649,7 @@ export type DesignerUncheckedUpdateWithoutLinkedClientsInput = {
   projectObjects?: Prisma.ProjectObjectUncheckedUpdateManyWithoutDesignerNestedInput
   deals?: Prisma.DealUncheckedUpdateManyWithoutDesignerNestedInput
   proposals?: Prisma.CommercialProposalUncheckedUpdateManyWithoutDesignerNestedInput
+  tasks?: Prisma.TaskActivityUncheckedUpdateManyWithoutDesignerNestedInput
 }
 
 export type DesignerCreateWithoutProjectObjectsInput = {
@@ -1657,6 +1688,7 @@ export type DesignerCreateWithoutProjectObjectsInput = {
   linkedClients?: Prisma.ClientCreateNestedManyWithoutLinkedDesignerInput
   deals?: Prisma.DealCreateNestedManyWithoutDesignerInput
   proposals?: Prisma.CommercialProposalCreateNestedManyWithoutDesignerInput
+  tasks?: Prisma.TaskActivityCreateNestedManyWithoutDesignerInput
 }
 
 export type DesignerUncheckedCreateWithoutProjectObjectsInput = {
@@ -1695,6 +1727,7 @@ export type DesignerUncheckedCreateWithoutProjectObjectsInput = {
   linkedClients?: Prisma.ClientUncheckedCreateNestedManyWithoutLinkedDesignerInput
   deals?: Prisma.DealUncheckedCreateNestedManyWithoutDesignerInput
   proposals?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutDesignerInput
+  tasks?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutDesignerInput
 }
 
 export type DesignerCreateOrConnectWithoutProjectObjectsInput = {
@@ -1749,6 +1782,7 @@ export type DesignerUpdateWithoutProjectObjectsInput = {
   linkedClients?: Prisma.ClientUpdateManyWithoutLinkedDesignerNestedInput
   deals?: Prisma.DealUpdateManyWithoutDesignerNestedInput
   proposals?: Prisma.CommercialProposalUpdateManyWithoutDesignerNestedInput
+  tasks?: Prisma.TaskActivityUpdateManyWithoutDesignerNestedInput
 }
 
 export type DesignerUncheckedUpdateWithoutProjectObjectsInput = {
@@ -1787,6 +1821,7 @@ export type DesignerUncheckedUpdateWithoutProjectObjectsInput = {
   linkedClients?: Prisma.ClientUncheckedUpdateManyWithoutLinkedDesignerNestedInput
   deals?: Prisma.DealUncheckedUpdateManyWithoutDesignerNestedInput
   proposals?: Prisma.CommercialProposalUncheckedUpdateManyWithoutDesignerNestedInput
+  tasks?: Prisma.TaskActivityUncheckedUpdateManyWithoutDesignerNestedInput
 }
 
 export type DesignerCreateWithoutDealsInput = {
@@ -1825,6 +1860,7 @@ export type DesignerCreateWithoutDealsInput = {
   linkedClients?: Prisma.ClientCreateNestedManyWithoutLinkedDesignerInput
   projectObjects?: Prisma.ProjectObjectCreateNestedManyWithoutDesignerInput
   proposals?: Prisma.CommercialProposalCreateNestedManyWithoutDesignerInput
+  tasks?: Prisma.TaskActivityCreateNestedManyWithoutDesignerInput
 }
 
 export type DesignerUncheckedCreateWithoutDealsInput = {
@@ -1863,6 +1899,7 @@ export type DesignerUncheckedCreateWithoutDealsInput = {
   linkedClients?: Prisma.ClientUncheckedCreateNestedManyWithoutLinkedDesignerInput
   projectObjects?: Prisma.ProjectObjectUncheckedCreateNestedManyWithoutDesignerInput
   proposals?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutDesignerInput
+  tasks?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutDesignerInput
 }
 
 export type DesignerCreateOrConnectWithoutDealsInput = {
@@ -1917,6 +1954,7 @@ export type DesignerUpdateWithoutDealsInput = {
   linkedClients?: Prisma.ClientUpdateManyWithoutLinkedDesignerNestedInput
   projectObjects?: Prisma.ProjectObjectUpdateManyWithoutDesignerNestedInput
   proposals?: Prisma.CommercialProposalUpdateManyWithoutDesignerNestedInput
+  tasks?: Prisma.TaskActivityUpdateManyWithoutDesignerNestedInput
 }
 
 export type DesignerUncheckedUpdateWithoutDealsInput = {
@@ -1955,6 +1993,7 @@ export type DesignerUncheckedUpdateWithoutDealsInput = {
   linkedClients?: Prisma.ClientUncheckedUpdateManyWithoutLinkedDesignerNestedInput
   projectObjects?: Prisma.ProjectObjectUncheckedUpdateManyWithoutDesignerNestedInput
   proposals?: Prisma.CommercialProposalUncheckedUpdateManyWithoutDesignerNestedInput
+  tasks?: Prisma.TaskActivityUncheckedUpdateManyWithoutDesignerNestedInput
 }
 
 export type DesignerCreateWithoutProposalsInput = {
@@ -1993,6 +2032,7 @@ export type DesignerCreateWithoutProposalsInput = {
   linkedClients?: Prisma.ClientCreateNestedManyWithoutLinkedDesignerInput
   projectObjects?: Prisma.ProjectObjectCreateNestedManyWithoutDesignerInput
   deals?: Prisma.DealCreateNestedManyWithoutDesignerInput
+  tasks?: Prisma.TaskActivityCreateNestedManyWithoutDesignerInput
 }
 
 export type DesignerUncheckedCreateWithoutProposalsInput = {
@@ -2031,6 +2071,7 @@ export type DesignerUncheckedCreateWithoutProposalsInput = {
   linkedClients?: Prisma.ClientUncheckedCreateNestedManyWithoutLinkedDesignerInput
   projectObjects?: Prisma.ProjectObjectUncheckedCreateNestedManyWithoutDesignerInput
   deals?: Prisma.DealUncheckedCreateNestedManyWithoutDesignerInput
+  tasks?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutDesignerInput
 }
 
 export type DesignerCreateOrConnectWithoutProposalsInput = {
@@ -2085,6 +2126,7 @@ export type DesignerUpdateWithoutProposalsInput = {
   linkedClients?: Prisma.ClientUpdateManyWithoutLinkedDesignerNestedInput
   projectObjects?: Prisma.ProjectObjectUpdateManyWithoutDesignerNestedInput
   deals?: Prisma.DealUpdateManyWithoutDesignerNestedInput
+  tasks?: Prisma.TaskActivityUpdateManyWithoutDesignerNestedInput
 }
 
 export type DesignerUncheckedUpdateWithoutProposalsInput = {
@@ -2123,6 +2165,179 @@ export type DesignerUncheckedUpdateWithoutProposalsInput = {
   linkedClients?: Prisma.ClientUncheckedUpdateManyWithoutLinkedDesignerNestedInput
   projectObjects?: Prisma.ProjectObjectUncheckedUpdateManyWithoutDesignerNestedInput
   deals?: Prisma.DealUncheckedUpdateManyWithoutDesignerNestedInput
+  tasks?: Prisma.TaskActivityUncheckedUpdateManyWithoutDesignerNestedInput
+}
+
+export type DesignerCreateWithoutTasksInput = {
+  id?: string
+  name: string
+  studio?: string | null
+  role?: $Enums.DesignerRole
+  phone?: string | null
+  email?: string | null
+  messenger?: string | null
+  website?: string | null
+  city?: string | null
+  specialization?: Prisma.DesignerCreatespecializationInput | $Enums.DesignerSpecialization[]
+  projectSegment?: $Enums.DesignerProjectSegment | null
+  source?: $Enums.DesignerSource
+  relationshipStage?: $Enums.DesignerRelationshipStage
+  potential?: $Enums.DesignerPotential
+  loyalty?: $Enums.DesignerLoyalty
+  cooperationTerms?: string | null
+  firstContactAt?: Date | string | null
+  lastTouchAt?: Date | string | null
+  nextStepAt?: Date | string | null
+  nextStepText?: string | null
+  transferredObjectsCount?: number
+  activeObjectsCount?: number
+  proposalsTotalAmount?: number
+  paymentsTotalAmount?: number
+  comment?: string | null
+  status?: $Enums.EntityStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  archivedAt?: Date | string | null
+  notes?: string | null
+  responsible: Prisma.UserCreateNestedOneWithoutDesignersResponsibleInput
+  createdBy: Prisma.UserCreateNestedOneWithoutDesignersCreatedInput
+  linkedClients?: Prisma.ClientCreateNestedManyWithoutLinkedDesignerInput
+  projectObjects?: Prisma.ProjectObjectCreateNestedManyWithoutDesignerInput
+  deals?: Prisma.DealCreateNestedManyWithoutDesignerInput
+  proposals?: Prisma.CommercialProposalCreateNestedManyWithoutDesignerInput
+}
+
+export type DesignerUncheckedCreateWithoutTasksInput = {
+  id?: string
+  name: string
+  studio?: string | null
+  role?: $Enums.DesignerRole
+  phone?: string | null
+  email?: string | null
+  messenger?: string | null
+  website?: string | null
+  city?: string | null
+  specialization?: Prisma.DesignerCreatespecializationInput | $Enums.DesignerSpecialization[]
+  projectSegment?: $Enums.DesignerProjectSegment | null
+  source?: $Enums.DesignerSource
+  responsibleId: string
+  relationshipStage?: $Enums.DesignerRelationshipStage
+  potential?: $Enums.DesignerPotential
+  loyalty?: $Enums.DesignerLoyalty
+  cooperationTerms?: string | null
+  firstContactAt?: Date | string | null
+  lastTouchAt?: Date | string | null
+  nextStepAt?: Date | string | null
+  nextStepText?: string | null
+  transferredObjectsCount?: number
+  activeObjectsCount?: number
+  proposalsTotalAmount?: number
+  paymentsTotalAmount?: number
+  comment?: string | null
+  status?: $Enums.EntityStatus
+  createdById: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  archivedAt?: Date | string | null
+  notes?: string | null
+  linkedClients?: Prisma.ClientUncheckedCreateNestedManyWithoutLinkedDesignerInput
+  projectObjects?: Prisma.ProjectObjectUncheckedCreateNestedManyWithoutDesignerInput
+  deals?: Prisma.DealUncheckedCreateNestedManyWithoutDesignerInput
+  proposals?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutDesignerInput
+}
+
+export type DesignerCreateOrConnectWithoutTasksInput = {
+  where: Prisma.DesignerWhereUniqueInput
+  create: Prisma.XOR<Prisma.DesignerCreateWithoutTasksInput, Prisma.DesignerUncheckedCreateWithoutTasksInput>
+}
+
+export type DesignerUpsertWithoutTasksInput = {
+  update: Prisma.XOR<Prisma.DesignerUpdateWithoutTasksInput, Prisma.DesignerUncheckedUpdateWithoutTasksInput>
+  create: Prisma.XOR<Prisma.DesignerCreateWithoutTasksInput, Prisma.DesignerUncheckedCreateWithoutTasksInput>
+  where?: Prisma.DesignerWhereInput
+}
+
+export type DesignerUpdateToOneWithWhereWithoutTasksInput = {
+  where?: Prisma.DesignerWhereInput
+  data: Prisma.XOR<Prisma.DesignerUpdateWithoutTasksInput, Prisma.DesignerUncheckedUpdateWithoutTasksInput>
+}
+
+export type DesignerUpdateWithoutTasksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  studio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumDesignerRoleFieldUpdateOperationsInput | $Enums.DesignerRole
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  messenger?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  specialization?: Prisma.DesignerUpdatespecializationInput | $Enums.DesignerSpecialization[]
+  projectSegment?: Prisma.NullableEnumDesignerProjectSegmentFieldUpdateOperationsInput | $Enums.DesignerProjectSegment | null
+  source?: Prisma.EnumDesignerSourceFieldUpdateOperationsInput | $Enums.DesignerSource
+  relationshipStage?: Prisma.EnumDesignerRelationshipStageFieldUpdateOperationsInput | $Enums.DesignerRelationshipStage
+  potential?: Prisma.EnumDesignerPotentialFieldUpdateOperationsInput | $Enums.DesignerPotential
+  loyalty?: Prisma.EnumDesignerLoyaltyFieldUpdateOperationsInput | $Enums.DesignerLoyalty
+  cooperationTerms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstContactAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastTouchAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  nextStepAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  nextStepText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transferredObjectsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  activeObjectsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  proposalsTotalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  paymentsTotalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumEntityStatusFieldUpdateOperationsInput | $Enums.EntityStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  responsible?: Prisma.UserUpdateOneRequiredWithoutDesignersResponsibleNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutDesignersCreatedNestedInput
+  linkedClients?: Prisma.ClientUpdateManyWithoutLinkedDesignerNestedInput
+  projectObjects?: Prisma.ProjectObjectUpdateManyWithoutDesignerNestedInput
+  deals?: Prisma.DealUpdateManyWithoutDesignerNestedInput
+  proposals?: Prisma.CommercialProposalUpdateManyWithoutDesignerNestedInput
+}
+
+export type DesignerUncheckedUpdateWithoutTasksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  studio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumDesignerRoleFieldUpdateOperationsInput | $Enums.DesignerRole
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  messenger?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  specialization?: Prisma.DesignerUpdatespecializationInput | $Enums.DesignerSpecialization[]
+  projectSegment?: Prisma.NullableEnumDesignerProjectSegmentFieldUpdateOperationsInput | $Enums.DesignerProjectSegment | null
+  source?: Prisma.EnumDesignerSourceFieldUpdateOperationsInput | $Enums.DesignerSource
+  responsibleId?: Prisma.StringFieldUpdateOperationsInput | string
+  relationshipStage?: Prisma.EnumDesignerRelationshipStageFieldUpdateOperationsInput | $Enums.DesignerRelationshipStage
+  potential?: Prisma.EnumDesignerPotentialFieldUpdateOperationsInput | $Enums.DesignerPotential
+  loyalty?: Prisma.EnumDesignerLoyaltyFieldUpdateOperationsInput | $Enums.DesignerLoyalty
+  cooperationTerms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstContactAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastTouchAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  nextStepAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  nextStepText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transferredObjectsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  activeObjectsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  proposalsTotalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  paymentsTotalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumEntityStatusFieldUpdateOperationsInput | $Enums.EntityStatus
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  linkedClients?: Prisma.ClientUncheckedUpdateManyWithoutLinkedDesignerNestedInput
+  projectObjects?: Prisma.ProjectObjectUncheckedUpdateManyWithoutDesignerNestedInput
+  deals?: Prisma.DealUncheckedUpdateManyWithoutDesignerNestedInput
+  proposals?: Prisma.CommercialProposalUncheckedUpdateManyWithoutDesignerNestedInput
 }
 
 export type DesignerCreateManyResponsibleInput = {
@@ -2229,6 +2444,7 @@ export type DesignerUpdateWithoutResponsibleInput = {
   projectObjects?: Prisma.ProjectObjectUpdateManyWithoutDesignerNestedInput
   deals?: Prisma.DealUpdateManyWithoutDesignerNestedInput
   proposals?: Prisma.CommercialProposalUpdateManyWithoutDesignerNestedInput
+  tasks?: Prisma.TaskActivityUpdateManyWithoutDesignerNestedInput
 }
 
 export type DesignerUncheckedUpdateWithoutResponsibleInput = {
@@ -2267,6 +2483,7 @@ export type DesignerUncheckedUpdateWithoutResponsibleInput = {
   projectObjects?: Prisma.ProjectObjectUncheckedUpdateManyWithoutDesignerNestedInput
   deals?: Prisma.DealUncheckedUpdateManyWithoutDesignerNestedInput
   proposals?: Prisma.CommercialProposalUncheckedUpdateManyWithoutDesignerNestedInput
+  tasks?: Prisma.TaskActivityUncheckedUpdateManyWithoutDesignerNestedInput
 }
 
 export type DesignerUncheckedUpdateManyWithoutResponsibleInput = {
@@ -2339,6 +2556,7 @@ export type DesignerUpdateWithoutCreatedByInput = {
   projectObjects?: Prisma.ProjectObjectUpdateManyWithoutDesignerNestedInput
   deals?: Prisma.DealUpdateManyWithoutDesignerNestedInput
   proposals?: Prisma.CommercialProposalUpdateManyWithoutDesignerNestedInput
+  tasks?: Prisma.TaskActivityUpdateManyWithoutDesignerNestedInput
 }
 
 export type DesignerUncheckedUpdateWithoutCreatedByInput = {
@@ -2377,6 +2595,7 @@ export type DesignerUncheckedUpdateWithoutCreatedByInput = {
   projectObjects?: Prisma.ProjectObjectUncheckedUpdateManyWithoutDesignerNestedInput
   deals?: Prisma.DealUncheckedUpdateManyWithoutDesignerNestedInput
   proposals?: Prisma.CommercialProposalUncheckedUpdateManyWithoutDesignerNestedInput
+  tasks?: Prisma.TaskActivityUncheckedUpdateManyWithoutDesignerNestedInput
 }
 
 export type DesignerUncheckedUpdateManyWithoutCreatedByInput = {
@@ -2423,6 +2642,7 @@ export type DesignerCountOutputType = {
   projectObjects: number
   deals: number
   proposals: number
+  tasks: number
 }
 
 export type DesignerCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2430,6 +2650,7 @@ export type DesignerCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensio
   projectObjects?: boolean | DesignerCountOutputTypeCountProjectObjectsArgs
   deals?: boolean | DesignerCountOutputTypeCountDealsArgs
   proposals?: boolean | DesignerCountOutputTypeCountProposalsArgs
+  tasks?: boolean | DesignerCountOutputTypeCountTasksArgs
 }
 
 /**
@@ -2468,6 +2689,13 @@ export type DesignerCountOutputTypeCountDealsArgs<ExtArgs extends runtime.Types.
  */
 export type DesignerCountOutputTypeCountProposalsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.CommercialProposalWhereInput
+}
+
+/**
+ * DesignerCountOutputType without action
+ */
+export type DesignerCountOutputTypeCountTasksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TaskActivityWhereInput
 }
 
 
@@ -2510,6 +2738,7 @@ export type DesignerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   projectObjects?: boolean | Prisma.Designer$projectObjectsArgs<ExtArgs>
   deals?: boolean | Prisma.Designer$dealsArgs<ExtArgs>
   proposals?: boolean | Prisma.Designer$proposalsArgs<ExtArgs>
+  tasks?: boolean | Prisma.Designer$tasksArgs<ExtArgs>
   _count?: boolean | Prisma.DesignerCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["designer"]>
 
@@ -2630,6 +2859,7 @@ export type DesignerInclude<ExtArgs extends runtime.Types.Extensions.InternalArg
   projectObjects?: boolean | Prisma.Designer$projectObjectsArgs<ExtArgs>
   deals?: boolean | Prisma.Designer$dealsArgs<ExtArgs>
   proposals?: boolean | Prisma.Designer$proposalsArgs<ExtArgs>
+  tasks?: boolean | Prisma.Designer$tasksArgs<ExtArgs>
   _count?: boolean | Prisma.DesignerCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type DesignerIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2650,6 +2880,7 @@ export type $DesignerPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     projectObjects: Prisma.$ProjectObjectPayload<ExtArgs>[]
     deals: Prisma.$DealPayload<ExtArgs>[]
     proposals: Prisma.$CommercialProposalPayload<ExtArgs>[]
+    tasks: Prisma.$TaskActivityPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -3084,6 +3315,7 @@ export interface Prisma__DesignerClient<T, Null = never, ExtArgs extends runtime
   projectObjects<T extends Prisma.Designer$projectObjectsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Designer$projectObjectsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProjectObjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   deals<T extends Prisma.Designer$dealsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Designer$dealsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DealPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   proposals<T extends Prisma.Designer$proposalsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Designer$proposalsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommercialProposalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  tasks<T extends Prisma.Designer$tasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Designer$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TaskActivityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3639,6 +3871,30 @@ export type Designer$proposalsArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   distinct?: Prisma.CommercialProposalScalarFieldEnum | Prisma.CommercialProposalScalarFieldEnum[]
+}
+
+/**
+ * Designer.tasks
+ */
+export type Designer$tasksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TaskActivity
+   */
+  select?: Prisma.TaskActivitySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TaskActivity
+   */
+  omit?: Prisma.TaskActivityOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TaskActivityInclude<ExtArgs> | null
+  where?: Prisma.TaskActivityWhereInput
+  orderBy?: Prisma.TaskActivityOrderByWithRelationInput | Prisma.TaskActivityOrderByWithRelationInput[]
+  cursor?: Prisma.TaskActivityWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TaskActivityScalarFieldEnum | Prisma.TaskActivityScalarFieldEnum[]
 }
 
 /**

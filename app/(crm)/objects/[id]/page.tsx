@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Archive, Edit, Plus } from "lucide-react";
+import { Archive, Edit, MessageSquarePlus, Plus } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
+import { TaskActivityTable } from "@/components/tasks/task-activity-table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -27,7 +28,7 @@ import {
   moveDesignerToFirstObjectReceivedAction
 } from "@/modules/objects/actions";
 import { getProjectObjectForUser } from "@/modules/objects/queries";
-import { canArchiveRecord, canEditRecord, canManageObjectParticipants } from "@/permissions";
+import { canArchiveRecord, canCreateTask, canEditRecord, canManageObjectParticipants } from "@/permissions";
 import { formatRussianDate } from "@/utils/date";
 
 type ObjectPageProps = {
@@ -399,13 +400,25 @@ export default async function ObjectPage({ params, searchParams }: ObjectPagePro
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle>Задачи / касания</CardTitle>
-              <div className="flex gap-2">
-                <Button asChild variant="outline" size="sm"><Link href="/tasks">Создать задачу</Link></Button>
-                <Button asChild variant="outline" size="sm"><Link href="/tasks">Зафиксировать касание</Link></Button>
-              </div>
+              {canCreateTask(user) ? (
+                <div className="flex flex-wrap gap-2">
+                  <Button asChild variant="outline" size="sm">
+                    <Link href={`/tasks/new?objectId=${projectObject.id}&clientId=${projectObject.clientId}&responsibleId=${projectObject.responsibleId}${projectObject.designerId ? `&designerId=${projectObject.designerId}` : ""}`}>
+                      <Plus className="h-4 w-4" />
+                      Создать задачу
+                    </Link>
+                  </Button>
+                  <Button asChild variant="outline" size="sm">
+                    <Link href={`/tasks/new?recordType=TOUCH&objectId=${projectObject.id}&clientId=${projectObject.clientId}&responsibleId=${projectObject.responsibleId}${projectObject.designerId ? `&designerId=${projectObject.designerId}` : ""}`}>
+                      <MessageSquarePlus className="h-4 w-4" />
+                      Зафиксировать касание
+                    </Link>
+                  </Button>
+                </div>
+              ) : null}
             </CardHeader>
-            <CardContent className="text-sm text-muted-foreground">
-              {projectObject.tasks.length === 0 ? "По объекту пока нет задач" : "Связанные задачи подготовлены к отображению."}
+            <CardContent className="p-0">
+              <TaskActivityTable items={projectObject.tasks} emptyText="По этой сущности пока нет задач" />
             </CardContent>
           </Card>
         </TabsContent>

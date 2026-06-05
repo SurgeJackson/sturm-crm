@@ -24,7 +24,12 @@ import {
   objectTypeLabels,
   projectObjectParticipantTypeLabels,
   proposalDeclineReasonLabels,
-  recipientTypeLabels
+  recipientTypeLabels,
+  taskActionTypeLabels,
+  taskAutoRuleLabels,
+  taskPriorityLabels,
+  taskRecordTypeLabels,
+  taskStatusLabels
 } from "@/lib/constants";
 
 export function toOptions<T extends string>(labels: Record<T, string>) {
@@ -60,3 +65,8 @@ export const dealLossReasonOptions = toOptions(dealLossReasonLabels);
 export const commercialProposalStatusOptions = toOptions(commercialProposalStatusLabels);
 export const recipientTypeOptions = toOptions(recipientTypeLabels);
 export const proposalDeclineReasonOptions = toOptions(proposalDeclineReasonLabels);
+export const taskRecordTypeOptions = toOptions(taskRecordTypeLabels);
+export const taskActionTypeOptions = toOptions(taskActionTypeLabels);
+export const taskStatusOptions = toOptions(taskStatusLabels);
+export const taskPriorityOptions = toOptions(taskPriorityLabels);
+export const taskAutoRuleOptions = toOptions(taskAutoRuleLabels);

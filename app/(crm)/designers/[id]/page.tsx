@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Archive, Edit } from "lucide-react";
+import { Archive, Edit, MessageSquarePlus, Plus } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
+import { TaskActivityTable } from "@/components/tasks/task-activity-table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -21,7 +22,7 @@ import {
   objectStatusLabels
 } from "@/lib/constants";
 import { formatRussianDate } from "@/utils/date";
-import { canArchiveRecord, canEditRecord } from "@/permissions";
+import { canArchiveRecord, canCreateTask, canEditRecord } from "@/permissions";
 
 type DesignerPageProps = {
   params: Promise<{ id: string }>;
@@ -129,7 +130,30 @@ export default async function DesignerPage({ params, searchParams }: DesignerPag
           </Card>
         </TabsContent>
         <TabsContent value="touches">
-          <Card><CardContent className="pt-5 text-sm text-muted-foreground">Касания и задачи будут связаны на следующих этапах.</CardContent></Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle>Касания и задачи</CardTitle>
+              {canCreateTask(user) ? (
+                <div className="flex flex-wrap gap-2">
+                  <Button asChild variant="outline" size="sm">
+                    <Link href={`/tasks/new?designerId=${designer.id}&responsibleId=${designer.responsibleId}`}>
+                      <Plus className="h-4 w-4" />
+                      Создать задачу
+                    </Link>
+                  </Button>
+                  <Button asChild variant="outline" size="sm">
+                    <Link href={`/tasks/new?recordType=TOUCH&designerId=${designer.id}&responsibleId=${designer.responsibleId}`}>
+                      <MessageSquarePlus className="h-4 w-4" />
+                      Зафиксировать касание
+                    </Link>
+                  </Button>
+                </div>
+              ) : null}
+            </CardHeader>
+            <CardContent className="p-0">
+              <TaskActivityTable items={designer.tasks} emptyText="По этой сущности пока нет задач" />
+            </CardContent>
+          </Card>
         </TabsContent>
         <TabsContent value="objects">
           <Card>

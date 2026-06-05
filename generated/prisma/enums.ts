@@ -164,10 +164,65 @@ export const TaskStatus = {
   WAITING: 'WAITING',
   DONE: 'DONE',
   OVERDUE: 'OVERDUE',
-  CANCELLED: 'CANCELLED'
+  CANCELLED: 'CANCELLED',
+  RECORDED: 'RECORDED',
+  NEEDS_NEXT_STEP: 'NEEDS_NEXT_STEP',
+  CLOSED: 'CLOSED'
 } as const
 
 export type TaskStatus = (typeof TaskStatus)[keyof typeof TaskStatus]
+
+
+export const TaskRecordType = {
+  TASK: 'TASK',
+  TOUCH: 'TOUCH'
+} as const
+
+export type TaskRecordType = (typeof TaskRecordType)[keyof typeof TaskRecordType]
+
+
+export const TaskActionType = {
+  CALL: 'CALL',
+  INCOMING_CALL: 'INCOMING_CALL',
+  WHATSAPP: 'WHATSAPP',
+  TELEGRAM: 'TELEGRAM',
+  EMAIL: 'EMAIL',
+  SHOWROOM_MEETING: 'SHOWROOM_MEETING',
+  OUTSIDE_MEETING: 'OUTSIDE_MEETING',
+  PRESENTATION: 'PRESENTATION',
+  PROPOSAL_SENT: 'PROPOSAL_SENT',
+  FOLLOW_UP: 'FOLLOW_UP',
+  REQUEST_PLANS: 'REQUEST_PLANS',
+  TERMS_APPROVAL: 'TERMS_APPROVAL',
+  SHOWROOM_INVITE: 'SHOWROOM_INVITE',
+  EVENT_INVITE: 'EVENT_INVITE',
+  INTERNAL_TASK: 'INTERNAL_TASK',
+  OTHER: 'OTHER'
+} as const
+
+export type TaskActionType = (typeof TaskActionType)[keyof typeof TaskActionType]
+
+
+export const TaskPriority = {
+  LOW: 'LOW',
+  NORMAL: 'NORMAL',
+  HIGH: 'HIGH',
+  URGENT: 'URGENT'
+} as const
+
+export type TaskPriority = (typeof TaskPriority)[keyof typeof TaskPriority]
+
+
+export const TaskAutoRule = {
+  PROPOSAL_FOLLOW_UP: 'PROPOSAL_FOLLOW_UP',
+  DESIGNER_REACTIVATION: 'DESIGNER_REACTIVATION',
+  FROZEN_OBJECT_RETURN: 'FROZEN_OBJECT_RETURN',
+  DEAL_WITHOUT_NEXT_STEP: 'DEAL_WITHOUT_NEXT_STEP',
+  CLIENT_WITHOUT_NEXT_CONTACT: 'CLIENT_WITHOUT_NEXT_CONTACT',
+  OTHER: 'OTHER'
+} as const
+
+export type TaskAutoRule = (typeof TaskAutoRule)[keyof typeof TaskAutoRule]
 
 
 export const AuditEntityType = {

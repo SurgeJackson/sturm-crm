@@ -21,7 +21,16 @@ export default async function DashboardPage() {
   const cards = [
     { title: "Новые клиенты за 7 дней", value: metrics.newClients, icon: UsersRound, variant: "default" as const },
     { title: "Новые дизайнеры за 7 дней", value: metrics.newDesigners, icon: UsersRound, variant: "secondary" as const },
+    { title: "Задачи на сегодня", value: metrics.tasksToday, icon: CheckSquare, variant: "warning" as const },
     { title: "Просроченные задачи", value: metrics.overdueTasks, icon: AlertTriangle, variant: "warning" as const },
+    { title: "Задачи без результата", value: metrics.tasksWithoutResult, icon: AlertTriangle, variant: "outline" as const },
+    { title: "Выполнено задач за 7 дней", value: metrics.doneTasksPeriod, icon: CheckSquare, variant: "secondary" as const },
+    { title: "Касания за 7 дней", value: metrics.touchesPeriod, icon: CheckSquare, variant: "secondary" as const },
+    { title: "Мои задачи на сегодня", value: metrics.myTasksToday, icon: CheckSquare, variant: "warning" as const },
+    { title: "Мои просроченные задачи", value: metrics.myOverdueTasks, icon: AlertTriangle, variant: "warning" as const },
+    { title: "Мои задачи на неделю", value: metrics.myTasksWeek, icon: CheckSquare, variant: "outline" as const },
+    { title: "Мои последние касания", value: metrics.myRecentTouches, icon: CheckSquare, variant: "outline" as const },
+    { title: "Мои follow-up по КП", value: metrics.myFollowUps, icon: FileText, variant: "outline" as const },
     { title: "Дизайнеры без следующего шага", value: metrics.designersWithoutNextStep, icon: AlertTriangle, variant: "warning" as const },
     { title: "Дизайнеры без касаний 60+ дней", value: metrics.designersWithoutTouch60, icon: UsersRound, variant: "outline" as const },
     { title: "Клиенты без следующего контакта", value: metrics.clientsWithoutNextContact, icon: UsersRound, variant: "outline" as const },
@@ -100,6 +109,46 @@ export default async function DashboardPage() {
       </div>
 
       <div className="grid gap-4 xl:grid-cols-3">
+        <Card>
+          <CardHeader>
+            <CardTitle>Просроченные задачи по сотрудникам</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            {metrics.overdueTaskResponsibleCounts.length === 0 ? (
+              <p className="text-sm text-muted-foreground">Просроченных задач нет.</p>
+            ) : (
+              metrics.overdueTaskResponsibleCounts.map((item) => (
+                <div key={item.name} className="flex items-center justify-between rounded-md border p-3 text-sm">
+                  <span>{item.name}</span>
+                  <Badge variant="warning">{item.count}</Badge>
+                </div>
+              ))
+            )}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Активность менеджеров за 7 дней</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            {metrics.managerActivityCounts.length === 0 ? (
+              <p className="text-sm text-muted-foreground">Активности пока нет.</p>
+            ) : (
+              metrics.managerActivityCounts.map((item) => (
+                <div key={item.name} className="rounded-md border p-3 text-sm">
+                  <div className="font-medium">{item.name}</div>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    <Badge variant="outline">Задачи: {item.tasks}</Badge>
+                    <Badge variant="secondary">Выполнено: {item.done}</Badge>
+                    <Badge variant="outline">Касания: {item.touches}</Badge>
+                  </div>
+                </div>
+              ))
+            )}
+          </CardContent>
+        </Card>
+
         <Card>
           <CardHeader>
             <CardTitle>Сделки по стадиям</CardTitle>

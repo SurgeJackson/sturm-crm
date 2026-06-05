@@ -26,52 +26,88 @@ export type AggregateTaskActivity = {
 
 export type TaskActivityMinAggregateOutputType = {
   id: string | null
+  recordType: $Enums.TaskRecordType | null
+  actionType: $Enums.TaskActionType | null
   title: string | null
-  status: $Enums.TaskStatus | null
-  projectObjectId: string | null
-  dealId: string | null
-  proposalId: string | null
-  clientId: string | null
-  dueAt: Date | null
+  description: string | null
   responsibleId: string | null
   createdById: string | null
+  clientId: string | null
+  designerId: string | null
+  objectId: string | null
+  dealId: string | null
+  proposalId: string | null
+  objectParticipantId: string | null
+  status: $Enums.TaskStatus | null
+  priority: $Enums.TaskPriority | null
+  dueAt: Date | null
+  completedAt: Date | null
+  result: string | null
+  nextStepText: string | null
+  nextStepAt: Date | null
+  isAutoCreated: boolean | null
+  autoRule: $Enums.TaskAutoRule | null
+  archivedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
-  archivedAt: Date | null
   notes: string | null
 }
 
 export type TaskActivityMaxAggregateOutputType = {
   id: string | null
+  recordType: $Enums.TaskRecordType | null
+  actionType: $Enums.TaskActionType | null
   title: string | null
-  status: $Enums.TaskStatus | null
-  projectObjectId: string | null
-  dealId: string | null
-  proposalId: string | null
-  clientId: string | null
-  dueAt: Date | null
+  description: string | null
   responsibleId: string | null
   createdById: string | null
+  clientId: string | null
+  designerId: string | null
+  objectId: string | null
+  dealId: string | null
+  proposalId: string | null
+  objectParticipantId: string | null
+  status: $Enums.TaskStatus | null
+  priority: $Enums.TaskPriority | null
+  dueAt: Date | null
+  completedAt: Date | null
+  result: string | null
+  nextStepText: string | null
+  nextStepAt: Date | null
+  isAutoCreated: boolean | null
+  autoRule: $Enums.TaskAutoRule | null
+  archivedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
-  archivedAt: Date | null
   notes: string | null
 }
 
 export type TaskActivityCountAggregateOutputType = {
   id: number
+  recordType: number
+  actionType: number
   title: number
-  status: number
-  projectObjectId: number
-  dealId: number
-  proposalId: number
-  clientId: number
-  dueAt: number
+  description: number
   responsibleId: number
   createdById: number
+  clientId: number
+  designerId: number
+  objectId: number
+  dealId: number
+  proposalId: number
+  objectParticipantId: number
+  status: number
+  priority: number
+  dueAt: number
+  completedAt: number
+  result: number
+  nextStepText: number
+  nextStepAt: number
+  isAutoCreated: number
+  autoRule: number
+  archivedAt: number
   createdAt: number
   updatedAt: number
-  archivedAt: number
   notes: number
   _all: number
 }
@@ -79,52 +115,88 @@ export type TaskActivityCountAggregateOutputType = {
 
 export type TaskActivityMinAggregateInputType = {
   id?: true
+  recordType?: true
+  actionType?: true
   title?: true
-  status?: true
-  projectObjectId?: true
-  dealId?: true
-  proposalId?: true
-  clientId?: true
-  dueAt?: true
+  description?: true
   responsibleId?: true
   createdById?: true
+  clientId?: true
+  designerId?: true
+  objectId?: true
+  dealId?: true
+  proposalId?: true
+  objectParticipantId?: true
+  status?: true
+  priority?: true
+  dueAt?: true
+  completedAt?: true
+  result?: true
+  nextStepText?: true
+  nextStepAt?: true
+  isAutoCreated?: true
+  autoRule?: true
+  archivedAt?: true
   createdAt?: true
   updatedAt?: true
-  archivedAt?: true
   notes?: true
 }
 
 export type TaskActivityMaxAggregateInputType = {
   id?: true
+  recordType?: true
+  actionType?: true
   title?: true
-  status?: true
-  projectObjectId?: true
-  dealId?: true
-  proposalId?: true
-  clientId?: true
-  dueAt?: true
+  description?: true
   responsibleId?: true
   createdById?: true
+  clientId?: true
+  designerId?: true
+  objectId?: true
+  dealId?: true
+  proposalId?: true
+  objectParticipantId?: true
+  status?: true
+  priority?: true
+  dueAt?: true
+  completedAt?: true
+  result?: true
+  nextStepText?: true
+  nextStepAt?: true
+  isAutoCreated?: true
+  autoRule?: true
+  archivedAt?: true
   createdAt?: true
   updatedAt?: true
-  archivedAt?: true
   notes?: true
 }
 
 export type TaskActivityCountAggregateInputType = {
   id?: true
+  recordType?: true
+  actionType?: true
   title?: true
-  status?: true
-  projectObjectId?: true
-  dealId?: true
-  proposalId?: true
-  clientId?: true
-  dueAt?: true
+  description?: true
   responsibleId?: true
   createdById?: true
+  clientId?: true
+  designerId?: true
+  objectId?: true
+  dealId?: true
+  proposalId?: true
+  objectParticipantId?: true
+  status?: true
+  priority?: true
+  dueAt?: true
+  completedAt?: true
+  result?: true
+  nextStepText?: true
+  nextStepAt?: true
+  isAutoCreated?: true
+  autoRule?: true
+  archivedAt?: true
   createdAt?: true
   updatedAt?: true
-  archivedAt?: true
   notes?: true
   _all?: true
 }
@@ -203,18 +275,30 @@ export type TaskActivityGroupByArgs<ExtArgs extends runtime.Types.Extensions.Int
 
 export type TaskActivityGroupByOutputType = {
   id: string
+  recordType: $Enums.TaskRecordType
+  actionType: $Enums.TaskActionType
   title: string
-  status: $Enums.TaskStatus
-  projectObjectId: string | null
-  dealId: string | null
-  proposalId: string | null
-  clientId: string | null
-  dueAt: Date | null
+  description: string | null
   responsibleId: string
   createdById: string
+  clientId: string | null
+  designerId: string | null
+  objectId: string | null
+  dealId: string | null
+  proposalId: string | null
+  objectParticipantId: string | null
+  status: $Enums.TaskStatus
+  priority: $Enums.TaskPriority
+  dueAt: Date | null
+  completedAt: Date | null
+  result: string | null
+  nextStepText: string | null
+  nextStepAt: Date | null
+  isAutoCreated: boolean
+  autoRule: $Enums.TaskAutoRule | null
+  archivedAt: Date | null
   createdAt: Date
   updatedAt: Date
-  archivedAt: Date | null
   notes: string | null
   _count: TaskActivityCountAggregateOutputType | null
   _min: TaskActivityMinAggregateOutputType | null
@@ -241,48 +325,76 @@ export type TaskActivityWhereInput = {
   OR?: Prisma.TaskActivityWhereInput[]
   NOT?: Prisma.TaskActivityWhereInput | Prisma.TaskActivityWhereInput[]
   id?: Prisma.StringFilter<"TaskActivity"> | string
+  recordType?: Prisma.EnumTaskRecordTypeFilter<"TaskActivity"> | $Enums.TaskRecordType
+  actionType?: Prisma.EnumTaskActionTypeFilter<"TaskActivity"> | $Enums.TaskActionType
   title?: Prisma.StringFilter<"TaskActivity"> | string
-  status?: Prisma.EnumTaskStatusFilter<"TaskActivity"> | $Enums.TaskStatus
-  projectObjectId?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
-  dealId?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
-  proposalId?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
-  clientId?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
-  dueAt?: Prisma.DateTimeNullableFilter<"TaskActivity"> | Date | string | null
+  description?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
   responsibleId?: Prisma.StringFilter<"TaskActivity"> | string
   createdById?: Prisma.StringFilter<"TaskActivity"> | string
+  clientId?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
+  designerId?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
+  objectId?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
+  dealId?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
+  proposalId?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
+  objectParticipantId?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
+  status?: Prisma.EnumTaskStatusFilter<"TaskActivity"> | $Enums.TaskStatus
+  priority?: Prisma.EnumTaskPriorityFilter<"TaskActivity"> | $Enums.TaskPriority
+  dueAt?: Prisma.DateTimeNullableFilter<"TaskActivity"> | Date | string | null
+  completedAt?: Prisma.DateTimeNullableFilter<"TaskActivity"> | Date | string | null
+  result?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
+  nextStepText?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
+  nextStepAt?: Prisma.DateTimeNullableFilter<"TaskActivity"> | Date | string | null
+  isAutoCreated?: Prisma.BoolFilter<"TaskActivity"> | boolean
+  autoRule?: Prisma.EnumTaskAutoRuleNullableFilter<"TaskActivity"> | $Enums.TaskAutoRule | null
+  archivedAt?: Prisma.DateTimeNullableFilter<"TaskActivity"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"TaskActivity"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TaskActivity"> | Date | string
-  archivedAt?: Prisma.DateTimeNullableFilter<"TaskActivity"> | Date | string | null
   notes?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
   responsible?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  client?: Prisma.XOR<Prisma.ClientNullableScalarRelationFilter, Prisma.ClientWhereInput> | null
+  designer?: Prisma.XOR<Prisma.DesignerNullableScalarRelationFilter, Prisma.DesignerWhereInput> | null
   projectObject?: Prisma.XOR<Prisma.ProjectObjectNullableScalarRelationFilter, Prisma.ProjectObjectWhereInput> | null
   deal?: Prisma.XOR<Prisma.DealNullableScalarRelationFilter, Prisma.DealWhereInput> | null
   proposal?: Prisma.XOR<Prisma.CommercialProposalNullableScalarRelationFilter, Prisma.CommercialProposalWhereInput> | null
-  client?: Prisma.XOR<Prisma.ClientNullableScalarRelationFilter, Prisma.ClientWhereInput> | null
+  objectParticipant?: Prisma.XOR<Prisma.ProjectObjectParticipantNullableScalarRelationFilter, Prisma.ProjectObjectParticipantWhereInput> | null
 }
 
 export type TaskActivityOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  recordType?: Prisma.SortOrder
+  actionType?: Prisma.SortOrder
   title?: Prisma.SortOrder
-  status?: Prisma.SortOrder
-  projectObjectId?: Prisma.SortOrderInput | Prisma.SortOrder
-  dealId?: Prisma.SortOrderInput | Prisma.SortOrder
-  proposalId?: Prisma.SortOrderInput | Prisma.SortOrder
-  clientId?: Prisma.SortOrderInput | Prisma.SortOrder
-  dueAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
   responsibleId?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
+  clientId?: Prisma.SortOrderInput | Prisma.SortOrder
+  designerId?: Prisma.SortOrderInput | Prisma.SortOrder
+  objectId?: Prisma.SortOrderInput | Prisma.SortOrder
+  dealId?: Prisma.SortOrderInput | Prisma.SortOrder
+  proposalId?: Prisma.SortOrderInput | Prisma.SortOrder
+  objectParticipantId?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
+  priority?: Prisma.SortOrder
+  dueAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  result?: Prisma.SortOrderInput | Prisma.SortOrder
+  nextStepText?: Prisma.SortOrderInput | Prisma.SortOrder
+  nextStepAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  isAutoCreated?: Prisma.SortOrder
+  autoRule?: Prisma.SortOrderInput | Prisma.SortOrder
+  archivedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  archivedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   responsible?: Prisma.UserOrderByWithRelationInput
   createdBy?: Prisma.UserOrderByWithRelationInput
+  client?: Prisma.ClientOrderByWithRelationInput
+  designer?: Prisma.DesignerOrderByWithRelationInput
   projectObject?: Prisma.ProjectObjectOrderByWithRelationInput
   deal?: Prisma.DealOrderByWithRelationInput
   proposal?: Prisma.CommercialProposalOrderByWithRelationInput
-  client?: Prisma.ClientOrderByWithRelationInput
+  objectParticipant?: Prisma.ProjectObjectParticipantOrderByWithRelationInput
 }
 
 export type TaskActivityWhereUniqueInput = Prisma.AtLeast<{
@@ -290,41 +402,67 @@ export type TaskActivityWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.TaskActivityWhereInput | Prisma.TaskActivityWhereInput[]
   OR?: Prisma.TaskActivityWhereInput[]
   NOT?: Prisma.TaskActivityWhereInput | Prisma.TaskActivityWhereInput[]
+  recordType?: Prisma.EnumTaskRecordTypeFilter<"TaskActivity"> | $Enums.TaskRecordType
+  actionType?: Prisma.EnumTaskActionTypeFilter<"TaskActivity"> | $Enums.TaskActionType
   title?: Prisma.StringFilter<"TaskActivity"> | string
-  status?: Prisma.EnumTaskStatusFilter<"TaskActivity"> | $Enums.TaskStatus
-  projectObjectId?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
-  dealId?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
-  proposalId?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
-  clientId?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
-  dueAt?: Prisma.DateTimeNullableFilter<"TaskActivity"> | Date | string | null
+  description?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
   responsibleId?: Prisma.StringFilter<"TaskActivity"> | string
   createdById?: Prisma.StringFilter<"TaskActivity"> | string
+  clientId?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
+  designerId?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
+  objectId?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
+  dealId?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
+  proposalId?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
+  objectParticipantId?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
+  status?: Prisma.EnumTaskStatusFilter<"TaskActivity"> | $Enums.TaskStatus
+  priority?: Prisma.EnumTaskPriorityFilter<"TaskActivity"> | $Enums.TaskPriority
+  dueAt?: Prisma.DateTimeNullableFilter<"TaskActivity"> | Date | string | null
+  completedAt?: Prisma.DateTimeNullableFilter<"TaskActivity"> | Date | string | null
+  result?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
+  nextStepText?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
+  nextStepAt?: Prisma.DateTimeNullableFilter<"TaskActivity"> | Date | string | null
+  isAutoCreated?: Prisma.BoolFilter<"TaskActivity"> | boolean
+  autoRule?: Prisma.EnumTaskAutoRuleNullableFilter<"TaskActivity"> | $Enums.TaskAutoRule | null
+  archivedAt?: Prisma.DateTimeNullableFilter<"TaskActivity"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"TaskActivity"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TaskActivity"> | Date | string
-  archivedAt?: Prisma.DateTimeNullableFilter<"TaskActivity"> | Date | string | null
   notes?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
   responsible?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  client?: Prisma.XOR<Prisma.ClientNullableScalarRelationFilter, Prisma.ClientWhereInput> | null
+  designer?: Prisma.XOR<Prisma.DesignerNullableScalarRelationFilter, Prisma.DesignerWhereInput> | null
   projectObject?: Prisma.XOR<Prisma.ProjectObjectNullableScalarRelationFilter, Prisma.ProjectObjectWhereInput> | null
   deal?: Prisma.XOR<Prisma.DealNullableScalarRelationFilter, Prisma.DealWhereInput> | null
   proposal?: Prisma.XOR<Prisma.CommercialProposalNullableScalarRelationFilter, Prisma.CommercialProposalWhereInput> | null
-  client?: Prisma.XOR<Prisma.ClientNullableScalarRelationFilter, Prisma.ClientWhereInput> | null
+  objectParticipant?: Prisma.XOR<Prisma.ProjectObjectParticipantNullableScalarRelationFilter, Prisma.ProjectObjectParticipantWhereInput> | null
 }, "id">
 
 export type TaskActivityOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  recordType?: Prisma.SortOrder
+  actionType?: Prisma.SortOrder
   title?: Prisma.SortOrder
-  status?: Prisma.SortOrder
-  projectObjectId?: Prisma.SortOrderInput | Prisma.SortOrder
-  dealId?: Prisma.SortOrderInput | Prisma.SortOrder
-  proposalId?: Prisma.SortOrderInput | Prisma.SortOrder
-  clientId?: Prisma.SortOrderInput | Prisma.SortOrder
-  dueAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
   responsibleId?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
+  clientId?: Prisma.SortOrderInput | Prisma.SortOrder
+  designerId?: Prisma.SortOrderInput | Prisma.SortOrder
+  objectId?: Prisma.SortOrderInput | Prisma.SortOrder
+  dealId?: Prisma.SortOrderInput | Prisma.SortOrder
+  proposalId?: Prisma.SortOrderInput | Prisma.SortOrder
+  objectParticipantId?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
+  priority?: Prisma.SortOrder
+  dueAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  result?: Prisma.SortOrderInput | Prisma.SortOrder
+  nextStepText?: Prisma.SortOrderInput | Prisma.SortOrder
+  nextStepAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  isAutoCreated?: Prisma.SortOrder
+  autoRule?: Prisma.SortOrderInput | Prisma.SortOrder
+  archivedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  archivedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.TaskActivityCountOrderByAggregateInput
   _max?: Prisma.TaskActivityMaxOrderByAggregateInput
@@ -336,131 +474,225 @@ export type TaskActivityScalarWhereWithAggregatesInput = {
   OR?: Prisma.TaskActivityScalarWhereWithAggregatesInput[]
   NOT?: Prisma.TaskActivityScalarWhereWithAggregatesInput | Prisma.TaskActivityScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"TaskActivity"> | string
+  recordType?: Prisma.EnumTaskRecordTypeWithAggregatesFilter<"TaskActivity"> | $Enums.TaskRecordType
+  actionType?: Prisma.EnumTaskActionTypeWithAggregatesFilter<"TaskActivity"> | $Enums.TaskActionType
   title?: Prisma.StringWithAggregatesFilter<"TaskActivity"> | string
-  status?: Prisma.EnumTaskStatusWithAggregatesFilter<"TaskActivity"> | $Enums.TaskStatus
-  projectObjectId?: Prisma.StringNullableWithAggregatesFilter<"TaskActivity"> | string | null
-  dealId?: Prisma.StringNullableWithAggregatesFilter<"TaskActivity"> | string | null
-  proposalId?: Prisma.StringNullableWithAggregatesFilter<"TaskActivity"> | string | null
-  clientId?: Prisma.StringNullableWithAggregatesFilter<"TaskActivity"> | string | null
-  dueAt?: Prisma.DateTimeNullableWithAggregatesFilter<"TaskActivity"> | Date | string | null
+  description?: Prisma.StringNullableWithAggregatesFilter<"TaskActivity"> | string | null
   responsibleId?: Prisma.StringWithAggregatesFilter<"TaskActivity"> | string
   createdById?: Prisma.StringWithAggregatesFilter<"TaskActivity"> | string
+  clientId?: Prisma.StringNullableWithAggregatesFilter<"TaskActivity"> | string | null
+  designerId?: Prisma.StringNullableWithAggregatesFilter<"TaskActivity"> | string | null
+  objectId?: Prisma.StringNullableWithAggregatesFilter<"TaskActivity"> | string | null
+  dealId?: Prisma.StringNullableWithAggregatesFilter<"TaskActivity"> | string | null
+  proposalId?: Prisma.StringNullableWithAggregatesFilter<"TaskActivity"> | string | null
+  objectParticipantId?: Prisma.StringNullableWithAggregatesFilter<"TaskActivity"> | string | null
+  status?: Prisma.EnumTaskStatusWithAggregatesFilter<"TaskActivity"> | $Enums.TaskStatus
+  priority?: Prisma.EnumTaskPriorityWithAggregatesFilter<"TaskActivity"> | $Enums.TaskPriority
+  dueAt?: Prisma.DateTimeNullableWithAggregatesFilter<"TaskActivity"> | Date | string | null
+  completedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"TaskActivity"> | Date | string | null
+  result?: Prisma.StringNullableWithAggregatesFilter<"TaskActivity"> | string | null
+  nextStepText?: Prisma.StringNullableWithAggregatesFilter<"TaskActivity"> | string | null
+  nextStepAt?: Prisma.DateTimeNullableWithAggregatesFilter<"TaskActivity"> | Date | string | null
+  isAutoCreated?: Prisma.BoolWithAggregatesFilter<"TaskActivity"> | boolean
+  autoRule?: Prisma.EnumTaskAutoRuleNullableWithAggregatesFilter<"TaskActivity"> | $Enums.TaskAutoRule | null
+  archivedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"TaskActivity"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"TaskActivity"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"TaskActivity"> | Date | string
-  archivedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"TaskActivity"> | Date | string | null
   notes?: Prisma.StringNullableWithAggregatesFilter<"TaskActivity"> | string | null
 }
 
 export type TaskActivityCreateInput = {
   id?: string
+  recordType?: $Enums.TaskRecordType
+  actionType?: $Enums.TaskActionType
   title: string
+  description?: string | null
   status?: $Enums.TaskStatus
+  priority?: $Enums.TaskPriority
   dueAt?: Date | string | null
+  completedAt?: Date | string | null
+  result?: string | null
+  nextStepText?: string | null
+  nextStepAt?: Date | string | null
+  isAutoCreated?: boolean
+  autoRule?: $Enums.TaskAutoRule | null
+  archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  archivedAt?: Date | string | null
   notes?: string | null
   responsible: Prisma.UserCreateNestedOneWithoutTasksResponsibleInput
   createdBy: Prisma.UserCreateNestedOneWithoutTasksCreatedInput
+  client?: Prisma.ClientCreateNestedOneWithoutTasksInput
+  designer?: Prisma.DesignerCreateNestedOneWithoutTasksInput
   projectObject?: Prisma.ProjectObjectCreateNestedOneWithoutTasksInput
   deal?: Prisma.DealCreateNestedOneWithoutTasksInput
   proposal?: Prisma.CommercialProposalCreateNestedOneWithoutTasksInput
-  client?: Prisma.ClientCreateNestedOneWithoutTasksInput
+  objectParticipant?: Prisma.ProjectObjectParticipantCreateNestedOneWithoutTasksInput
 }
 
 export type TaskActivityUncheckedCreateInput = {
   id?: string
+  recordType?: $Enums.TaskRecordType
+  actionType?: $Enums.TaskActionType
   title: string
-  status?: $Enums.TaskStatus
-  projectObjectId?: string | null
-  dealId?: string | null
-  proposalId?: string | null
-  clientId?: string | null
-  dueAt?: Date | string | null
+  description?: string | null
   responsibleId: string
   createdById: string
+  clientId?: string | null
+  designerId?: string | null
+  objectId?: string | null
+  dealId?: string | null
+  proposalId?: string | null
+  objectParticipantId?: string | null
+  status?: $Enums.TaskStatus
+  priority?: $Enums.TaskPriority
+  dueAt?: Date | string | null
+  completedAt?: Date | string | null
+  result?: string | null
+  nextStepText?: string | null
+  nextStepAt?: Date | string | null
+  isAutoCreated?: boolean
+  autoRule?: $Enums.TaskAutoRule | null
+  archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  archivedAt?: Date | string | null
   notes?: string | null
 }
 
 export type TaskActivityUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  recordType?: Prisma.EnumTaskRecordTypeFieldUpdateOperationsInput | $Enums.TaskRecordType
+  actionType?: Prisma.EnumTaskActionTypeFieldUpdateOperationsInput | $Enums.TaskActionType
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
   dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isAutoCreated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  autoRule?: Prisma.NullableEnumTaskAutoRuleFieldUpdateOperationsInput | $Enums.TaskAutoRule | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   responsible?: Prisma.UserUpdateOneRequiredWithoutTasksResponsibleNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutTasksCreatedNestedInput
+  client?: Prisma.ClientUpdateOneWithoutTasksNestedInput
+  designer?: Prisma.DesignerUpdateOneWithoutTasksNestedInput
   projectObject?: Prisma.ProjectObjectUpdateOneWithoutTasksNestedInput
   deal?: Prisma.DealUpdateOneWithoutTasksNestedInput
   proposal?: Prisma.CommercialProposalUpdateOneWithoutTasksNestedInput
-  client?: Prisma.ClientUpdateOneWithoutTasksNestedInput
+  objectParticipant?: Prisma.ProjectObjectParticipantUpdateOneWithoutTasksNestedInput
 }
 
 export type TaskActivityUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  recordType?: Prisma.EnumTaskRecordTypeFieldUpdateOperationsInput | $Enums.TaskRecordType
+  actionType?: Prisma.EnumTaskActionTypeFieldUpdateOperationsInput | $Enums.TaskActionType
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
-  projectObjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  dealId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  proposalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  clientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   responsibleId?: Prisma.StringFieldUpdateOperationsInput | string
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  clientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  designerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dealId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proposalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectParticipantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isAutoCreated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  autoRule?: Prisma.NullableEnumTaskAutoRuleFieldUpdateOperationsInput | $Enums.TaskAutoRule | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TaskActivityCreateManyInput = {
   id?: string
+  recordType?: $Enums.TaskRecordType
+  actionType?: $Enums.TaskActionType
   title: string
-  status?: $Enums.TaskStatus
-  projectObjectId?: string | null
-  dealId?: string | null
-  proposalId?: string | null
-  clientId?: string | null
-  dueAt?: Date | string | null
+  description?: string | null
   responsibleId: string
   createdById: string
+  clientId?: string | null
+  designerId?: string | null
+  objectId?: string | null
+  dealId?: string | null
+  proposalId?: string | null
+  objectParticipantId?: string | null
+  status?: $Enums.TaskStatus
+  priority?: $Enums.TaskPriority
+  dueAt?: Date | string | null
+  completedAt?: Date | string | null
+  result?: string | null
+  nextStepText?: string | null
+  nextStepAt?: Date | string | null
+  isAutoCreated?: boolean
+  autoRule?: $Enums.TaskAutoRule | null
+  archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  archivedAt?: Date | string | null
   notes?: string | null
 }
 
 export type TaskActivityUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  recordType?: Prisma.EnumTaskRecordTypeFieldUpdateOperationsInput | $Enums.TaskRecordType
+  actionType?: Prisma.EnumTaskActionTypeFieldUpdateOperationsInput | $Enums.TaskActionType
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
   dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isAutoCreated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  autoRule?: Prisma.NullableEnumTaskAutoRuleFieldUpdateOperationsInput | $Enums.TaskAutoRule | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TaskActivityUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  recordType?: Prisma.EnumTaskRecordTypeFieldUpdateOperationsInput | $Enums.TaskRecordType
+  actionType?: Prisma.EnumTaskActionTypeFieldUpdateOperationsInput | $Enums.TaskActionType
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
-  projectObjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  dealId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  proposalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  clientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   responsibleId?: Prisma.StringFieldUpdateOperationsInput | string
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  clientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  designerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dealId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proposalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectParticipantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isAutoCreated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  autoRule?: Prisma.NullableEnumTaskAutoRuleFieldUpdateOperationsInput | $Enums.TaskAutoRule | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
@@ -476,52 +708,88 @@ export type TaskActivityOrderByRelationAggregateInput = {
 
 export type TaskActivityCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  recordType?: Prisma.SortOrder
+  actionType?: Prisma.SortOrder
   title?: Prisma.SortOrder
-  status?: Prisma.SortOrder
-  projectObjectId?: Prisma.SortOrder
-  dealId?: Prisma.SortOrder
-  proposalId?: Prisma.SortOrder
-  clientId?: Prisma.SortOrder
-  dueAt?: Prisma.SortOrder
+  description?: Prisma.SortOrder
   responsibleId?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
+  clientId?: Prisma.SortOrder
+  designerId?: Prisma.SortOrder
+  objectId?: Prisma.SortOrder
+  dealId?: Prisma.SortOrder
+  proposalId?: Prisma.SortOrder
+  objectParticipantId?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  priority?: Prisma.SortOrder
+  dueAt?: Prisma.SortOrder
+  completedAt?: Prisma.SortOrder
+  result?: Prisma.SortOrder
+  nextStepText?: Prisma.SortOrder
+  nextStepAt?: Prisma.SortOrder
+  isAutoCreated?: Prisma.SortOrder
+  autoRule?: Prisma.SortOrder
+  archivedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  archivedAt?: Prisma.SortOrder
   notes?: Prisma.SortOrder
 }
 
 export type TaskActivityMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  recordType?: Prisma.SortOrder
+  actionType?: Prisma.SortOrder
   title?: Prisma.SortOrder
-  status?: Prisma.SortOrder
-  projectObjectId?: Prisma.SortOrder
-  dealId?: Prisma.SortOrder
-  proposalId?: Prisma.SortOrder
-  clientId?: Prisma.SortOrder
-  dueAt?: Prisma.SortOrder
+  description?: Prisma.SortOrder
   responsibleId?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
+  clientId?: Prisma.SortOrder
+  designerId?: Prisma.SortOrder
+  objectId?: Prisma.SortOrder
+  dealId?: Prisma.SortOrder
+  proposalId?: Prisma.SortOrder
+  objectParticipantId?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  priority?: Prisma.SortOrder
+  dueAt?: Prisma.SortOrder
+  completedAt?: Prisma.SortOrder
+  result?: Prisma.SortOrder
+  nextStepText?: Prisma.SortOrder
+  nextStepAt?: Prisma.SortOrder
+  isAutoCreated?: Prisma.SortOrder
+  autoRule?: Prisma.SortOrder
+  archivedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  archivedAt?: Prisma.SortOrder
   notes?: Prisma.SortOrder
 }
 
 export type TaskActivityMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  recordType?: Prisma.SortOrder
+  actionType?: Prisma.SortOrder
   title?: Prisma.SortOrder
-  status?: Prisma.SortOrder
-  projectObjectId?: Prisma.SortOrder
-  dealId?: Prisma.SortOrder
-  proposalId?: Prisma.SortOrder
-  clientId?: Prisma.SortOrder
-  dueAt?: Prisma.SortOrder
+  description?: Prisma.SortOrder
   responsibleId?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
+  clientId?: Prisma.SortOrder
+  designerId?: Prisma.SortOrder
+  objectId?: Prisma.SortOrder
+  dealId?: Prisma.SortOrder
+  proposalId?: Prisma.SortOrder
+  objectParticipantId?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  priority?: Prisma.SortOrder
+  dueAt?: Prisma.SortOrder
+  completedAt?: Prisma.SortOrder
+  result?: Prisma.SortOrder
+  nextStepText?: Prisma.SortOrder
+  nextStepAt?: Prisma.SortOrder
+  isAutoCreated?: Prisma.SortOrder
+  autoRule?: Prisma.SortOrder
+  archivedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  archivedAt?: Prisma.SortOrder
   notes?: Prisma.SortOrder
 }
 
@@ -651,6 +919,48 @@ export type TaskActivityUncheckedUpdateManyWithoutClientNestedInput = {
   deleteMany?: Prisma.TaskActivityScalarWhereInput | Prisma.TaskActivityScalarWhereInput[]
 }
 
+export type TaskActivityCreateNestedManyWithoutDesignerInput = {
+  create?: Prisma.XOR<Prisma.TaskActivityCreateWithoutDesignerInput, Prisma.TaskActivityUncheckedCreateWithoutDesignerInput> | Prisma.TaskActivityCreateWithoutDesignerInput[] | Prisma.TaskActivityUncheckedCreateWithoutDesignerInput[]
+  connectOrCreate?: Prisma.TaskActivityCreateOrConnectWithoutDesignerInput | Prisma.TaskActivityCreateOrConnectWithoutDesignerInput[]
+  createMany?: Prisma.TaskActivityCreateManyDesignerInputEnvelope
+  connect?: Prisma.TaskActivityWhereUniqueInput | Prisma.TaskActivityWhereUniqueInput[]
+}
+
+export type TaskActivityUncheckedCreateNestedManyWithoutDesignerInput = {
+  create?: Prisma.XOR<Prisma.TaskActivityCreateWithoutDesignerInput, Prisma.TaskActivityUncheckedCreateWithoutDesignerInput> | Prisma.TaskActivityCreateWithoutDesignerInput[] | Prisma.TaskActivityUncheckedCreateWithoutDesignerInput[]
+  connectOrCreate?: Prisma.TaskActivityCreateOrConnectWithoutDesignerInput | Prisma.TaskActivityCreateOrConnectWithoutDesignerInput[]
+  createMany?: Prisma.TaskActivityCreateManyDesignerInputEnvelope
+  connect?: Prisma.TaskActivityWhereUniqueInput | Prisma.TaskActivityWhereUniqueInput[]
+}
+
+export type TaskActivityUpdateManyWithoutDesignerNestedInput = {
+  create?: Prisma.XOR<Prisma.TaskActivityCreateWithoutDesignerInput, Prisma.TaskActivityUncheckedCreateWithoutDesignerInput> | Prisma.TaskActivityCreateWithoutDesignerInput[] | Prisma.TaskActivityUncheckedCreateWithoutDesignerInput[]
+  connectOrCreate?: Prisma.TaskActivityCreateOrConnectWithoutDesignerInput | Prisma.TaskActivityCreateOrConnectWithoutDesignerInput[]
+  upsert?: Prisma.TaskActivityUpsertWithWhereUniqueWithoutDesignerInput | Prisma.TaskActivityUpsertWithWhereUniqueWithoutDesignerInput[]
+  createMany?: Prisma.TaskActivityCreateManyDesignerInputEnvelope
+  set?: Prisma.TaskActivityWhereUniqueInput | Prisma.TaskActivityWhereUniqueInput[]
+  disconnect?: Prisma.TaskActivityWhereUniqueInput | Prisma.TaskActivityWhereUniqueInput[]
+  delete?: Prisma.TaskActivityWhereUniqueInput | Prisma.TaskActivityWhereUniqueInput[]
+  connect?: Prisma.TaskActivityWhereUniqueInput | Prisma.TaskActivityWhereUniqueInput[]
+  update?: Prisma.TaskActivityUpdateWithWhereUniqueWithoutDesignerInput | Prisma.TaskActivityUpdateWithWhereUniqueWithoutDesignerInput[]
+  updateMany?: Prisma.TaskActivityUpdateManyWithWhereWithoutDesignerInput | Prisma.TaskActivityUpdateManyWithWhereWithoutDesignerInput[]
+  deleteMany?: Prisma.TaskActivityScalarWhereInput | Prisma.TaskActivityScalarWhereInput[]
+}
+
+export type TaskActivityUncheckedUpdateManyWithoutDesignerNestedInput = {
+  create?: Prisma.XOR<Prisma.TaskActivityCreateWithoutDesignerInput, Prisma.TaskActivityUncheckedCreateWithoutDesignerInput> | Prisma.TaskActivityCreateWithoutDesignerInput[] | Prisma.TaskActivityUncheckedCreateWithoutDesignerInput[]
+  connectOrCreate?: Prisma.TaskActivityCreateOrConnectWithoutDesignerInput | Prisma.TaskActivityCreateOrConnectWithoutDesignerInput[]
+  upsert?: Prisma.TaskActivityUpsertWithWhereUniqueWithoutDesignerInput | Prisma.TaskActivityUpsertWithWhereUniqueWithoutDesignerInput[]
+  createMany?: Prisma.TaskActivityCreateManyDesignerInputEnvelope
+  set?: Prisma.TaskActivityWhereUniqueInput | Prisma.TaskActivityWhereUniqueInput[]
+  disconnect?: Prisma.TaskActivityWhereUniqueInput | Prisma.TaskActivityWhereUniqueInput[]
+  delete?: Prisma.TaskActivityWhereUniqueInput | Prisma.TaskActivityWhereUniqueInput[]
+  connect?: Prisma.TaskActivityWhereUniqueInput | Prisma.TaskActivityWhereUniqueInput[]
+  update?: Prisma.TaskActivityUpdateWithWhereUniqueWithoutDesignerInput | Prisma.TaskActivityUpdateWithWhereUniqueWithoutDesignerInput[]
+  updateMany?: Prisma.TaskActivityUpdateManyWithWhereWithoutDesignerInput | Prisma.TaskActivityUpdateManyWithWhereWithoutDesignerInput[]
+  deleteMany?: Prisma.TaskActivityScalarWhereInput | Prisma.TaskActivityScalarWhereInput[]
+}
+
 export type TaskActivityCreateNestedManyWithoutProjectObjectInput = {
   create?: Prisma.XOR<Prisma.TaskActivityCreateWithoutProjectObjectInput, Prisma.TaskActivityUncheckedCreateWithoutProjectObjectInput> | Prisma.TaskActivityCreateWithoutProjectObjectInput[] | Prisma.TaskActivityUncheckedCreateWithoutProjectObjectInput[]
   connectOrCreate?: Prisma.TaskActivityCreateOrConnectWithoutProjectObjectInput | Prisma.TaskActivityCreateOrConnectWithoutProjectObjectInput[]
@@ -690,6 +1000,48 @@ export type TaskActivityUncheckedUpdateManyWithoutProjectObjectNestedInput = {
   connect?: Prisma.TaskActivityWhereUniqueInput | Prisma.TaskActivityWhereUniqueInput[]
   update?: Prisma.TaskActivityUpdateWithWhereUniqueWithoutProjectObjectInput | Prisma.TaskActivityUpdateWithWhereUniqueWithoutProjectObjectInput[]
   updateMany?: Prisma.TaskActivityUpdateManyWithWhereWithoutProjectObjectInput | Prisma.TaskActivityUpdateManyWithWhereWithoutProjectObjectInput[]
+  deleteMany?: Prisma.TaskActivityScalarWhereInput | Prisma.TaskActivityScalarWhereInput[]
+}
+
+export type TaskActivityCreateNestedManyWithoutObjectParticipantInput = {
+  create?: Prisma.XOR<Prisma.TaskActivityCreateWithoutObjectParticipantInput, Prisma.TaskActivityUncheckedCreateWithoutObjectParticipantInput> | Prisma.TaskActivityCreateWithoutObjectParticipantInput[] | Prisma.TaskActivityUncheckedCreateWithoutObjectParticipantInput[]
+  connectOrCreate?: Prisma.TaskActivityCreateOrConnectWithoutObjectParticipantInput | Prisma.TaskActivityCreateOrConnectWithoutObjectParticipantInput[]
+  createMany?: Prisma.TaskActivityCreateManyObjectParticipantInputEnvelope
+  connect?: Prisma.TaskActivityWhereUniqueInput | Prisma.TaskActivityWhereUniqueInput[]
+}
+
+export type TaskActivityUncheckedCreateNestedManyWithoutObjectParticipantInput = {
+  create?: Prisma.XOR<Prisma.TaskActivityCreateWithoutObjectParticipantInput, Prisma.TaskActivityUncheckedCreateWithoutObjectParticipantInput> | Prisma.TaskActivityCreateWithoutObjectParticipantInput[] | Prisma.TaskActivityUncheckedCreateWithoutObjectParticipantInput[]
+  connectOrCreate?: Prisma.TaskActivityCreateOrConnectWithoutObjectParticipantInput | Prisma.TaskActivityCreateOrConnectWithoutObjectParticipantInput[]
+  createMany?: Prisma.TaskActivityCreateManyObjectParticipantInputEnvelope
+  connect?: Prisma.TaskActivityWhereUniqueInput | Prisma.TaskActivityWhereUniqueInput[]
+}
+
+export type TaskActivityUpdateManyWithoutObjectParticipantNestedInput = {
+  create?: Prisma.XOR<Prisma.TaskActivityCreateWithoutObjectParticipantInput, Prisma.TaskActivityUncheckedCreateWithoutObjectParticipantInput> | Prisma.TaskActivityCreateWithoutObjectParticipantInput[] | Prisma.TaskActivityUncheckedCreateWithoutObjectParticipantInput[]
+  connectOrCreate?: Prisma.TaskActivityCreateOrConnectWithoutObjectParticipantInput | Prisma.TaskActivityCreateOrConnectWithoutObjectParticipantInput[]
+  upsert?: Prisma.TaskActivityUpsertWithWhereUniqueWithoutObjectParticipantInput | Prisma.TaskActivityUpsertWithWhereUniqueWithoutObjectParticipantInput[]
+  createMany?: Prisma.TaskActivityCreateManyObjectParticipantInputEnvelope
+  set?: Prisma.TaskActivityWhereUniqueInput | Prisma.TaskActivityWhereUniqueInput[]
+  disconnect?: Prisma.TaskActivityWhereUniqueInput | Prisma.TaskActivityWhereUniqueInput[]
+  delete?: Prisma.TaskActivityWhereUniqueInput | Prisma.TaskActivityWhereUniqueInput[]
+  connect?: Prisma.TaskActivityWhereUniqueInput | Prisma.TaskActivityWhereUniqueInput[]
+  update?: Prisma.TaskActivityUpdateWithWhereUniqueWithoutObjectParticipantInput | Prisma.TaskActivityUpdateWithWhereUniqueWithoutObjectParticipantInput[]
+  updateMany?: Prisma.TaskActivityUpdateManyWithWhereWithoutObjectParticipantInput | Prisma.TaskActivityUpdateManyWithWhereWithoutObjectParticipantInput[]
+  deleteMany?: Prisma.TaskActivityScalarWhereInput | Prisma.TaskActivityScalarWhereInput[]
+}
+
+export type TaskActivityUncheckedUpdateManyWithoutObjectParticipantNestedInput = {
+  create?: Prisma.XOR<Prisma.TaskActivityCreateWithoutObjectParticipantInput, Prisma.TaskActivityUncheckedCreateWithoutObjectParticipantInput> | Prisma.TaskActivityCreateWithoutObjectParticipantInput[] | Prisma.TaskActivityUncheckedCreateWithoutObjectParticipantInput[]
+  connectOrCreate?: Prisma.TaskActivityCreateOrConnectWithoutObjectParticipantInput | Prisma.TaskActivityCreateOrConnectWithoutObjectParticipantInput[]
+  upsert?: Prisma.TaskActivityUpsertWithWhereUniqueWithoutObjectParticipantInput | Prisma.TaskActivityUpsertWithWhereUniqueWithoutObjectParticipantInput[]
+  createMany?: Prisma.TaskActivityCreateManyObjectParticipantInputEnvelope
+  set?: Prisma.TaskActivityWhereUniqueInput | Prisma.TaskActivityWhereUniqueInput[]
+  disconnect?: Prisma.TaskActivityWhereUniqueInput | Prisma.TaskActivityWhereUniqueInput[]
+  delete?: Prisma.TaskActivityWhereUniqueInput | Prisma.TaskActivityWhereUniqueInput[]
+  connect?: Prisma.TaskActivityWhereUniqueInput | Prisma.TaskActivityWhereUniqueInput[]
+  update?: Prisma.TaskActivityUpdateWithWhereUniqueWithoutObjectParticipantInput | Prisma.TaskActivityUpdateWithWhereUniqueWithoutObjectParticipantInput[]
+  updateMany?: Prisma.TaskActivityUpdateManyWithWhereWithoutObjectParticipantInput | Prisma.TaskActivityUpdateManyWithWhereWithoutObjectParticipantInput[]
   deleteMany?: Prisma.TaskActivityScalarWhereInput | Prisma.TaskActivityScalarWhereInput[]
 }
 
@@ -777,39 +1129,79 @@ export type TaskActivityUncheckedUpdateManyWithoutProposalNestedInput = {
   deleteMany?: Prisma.TaskActivityScalarWhereInput | Prisma.TaskActivityScalarWhereInput[]
 }
 
+export type EnumTaskRecordTypeFieldUpdateOperationsInput = {
+  set?: $Enums.TaskRecordType
+}
+
+export type EnumTaskActionTypeFieldUpdateOperationsInput = {
+  set?: $Enums.TaskActionType
+}
+
 export type EnumTaskStatusFieldUpdateOperationsInput = {
   set?: $Enums.TaskStatus
 }
 
+export type EnumTaskPriorityFieldUpdateOperationsInput = {
+  set?: $Enums.TaskPriority
+}
+
+export type NullableEnumTaskAutoRuleFieldUpdateOperationsInput = {
+  set?: $Enums.TaskAutoRule | null
+}
+
 export type TaskActivityCreateWithoutResponsibleInput = {
   id?: string
+  recordType?: $Enums.TaskRecordType
+  actionType?: $Enums.TaskActionType
   title: string
+  description?: string | null
   status?: $Enums.TaskStatus
+  priority?: $Enums.TaskPriority
   dueAt?: Date | string | null
+  completedAt?: Date | string | null
+  result?: string | null
+  nextStepText?: string | null
+  nextStepAt?: Date | string | null
+  isAutoCreated?: boolean
+  autoRule?: $Enums.TaskAutoRule | null
+  archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  archivedAt?: Date | string | null
   notes?: string | null
   createdBy: Prisma.UserCreateNestedOneWithoutTasksCreatedInput
+  client?: Prisma.ClientCreateNestedOneWithoutTasksInput
+  designer?: Prisma.DesignerCreateNestedOneWithoutTasksInput
   projectObject?: Prisma.ProjectObjectCreateNestedOneWithoutTasksInput
   deal?: Prisma.DealCreateNestedOneWithoutTasksInput
   proposal?: Prisma.CommercialProposalCreateNestedOneWithoutTasksInput
-  client?: Prisma.ClientCreateNestedOneWithoutTasksInput
+  objectParticipant?: Prisma.ProjectObjectParticipantCreateNestedOneWithoutTasksInput
 }
 
 export type TaskActivityUncheckedCreateWithoutResponsibleInput = {
   id?: string
+  recordType?: $Enums.TaskRecordType
+  actionType?: $Enums.TaskActionType
   title: string
-  status?: $Enums.TaskStatus
-  projectObjectId?: string | null
+  description?: string | null
+  createdById: string
+  clientId?: string | null
+  designerId?: string | null
+  objectId?: string | null
   dealId?: string | null
   proposalId?: string | null
-  clientId?: string | null
+  objectParticipantId?: string | null
+  status?: $Enums.TaskStatus
+  priority?: $Enums.TaskPriority
   dueAt?: Date | string | null
-  createdById: string
+  completedAt?: Date | string | null
+  result?: string | null
+  nextStepText?: string | null
+  nextStepAt?: Date | string | null
+  isAutoCreated?: boolean
+  autoRule?: $Enums.TaskAutoRule | null
+  archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  archivedAt?: Date | string | null
   notes?: string | null
 }
 
@@ -825,33 +1217,57 @@ export type TaskActivityCreateManyResponsibleInputEnvelope = {
 
 export type TaskActivityCreateWithoutCreatedByInput = {
   id?: string
+  recordType?: $Enums.TaskRecordType
+  actionType?: $Enums.TaskActionType
   title: string
+  description?: string | null
   status?: $Enums.TaskStatus
+  priority?: $Enums.TaskPriority
   dueAt?: Date | string | null
+  completedAt?: Date | string | null
+  result?: string | null
+  nextStepText?: string | null
+  nextStepAt?: Date | string | null
+  isAutoCreated?: boolean
+  autoRule?: $Enums.TaskAutoRule | null
+  archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  archivedAt?: Date | string | null
   notes?: string | null
   responsible: Prisma.UserCreateNestedOneWithoutTasksResponsibleInput
+  client?: Prisma.ClientCreateNestedOneWithoutTasksInput
+  designer?: Prisma.DesignerCreateNestedOneWithoutTasksInput
   projectObject?: Prisma.ProjectObjectCreateNestedOneWithoutTasksInput
   deal?: Prisma.DealCreateNestedOneWithoutTasksInput
   proposal?: Prisma.CommercialProposalCreateNestedOneWithoutTasksInput
-  client?: Prisma.ClientCreateNestedOneWithoutTasksInput
+  objectParticipant?: Prisma.ProjectObjectParticipantCreateNestedOneWithoutTasksInput
 }
 
 export type TaskActivityUncheckedCreateWithoutCreatedByInput = {
   id?: string
+  recordType?: $Enums.TaskRecordType
+  actionType?: $Enums.TaskActionType
   title: string
-  status?: $Enums.TaskStatus
-  projectObjectId?: string | null
+  description?: string | null
+  responsibleId: string
+  clientId?: string | null
+  designerId?: string | null
+  objectId?: string | null
   dealId?: string | null
   proposalId?: string | null
-  clientId?: string | null
+  objectParticipantId?: string | null
+  status?: $Enums.TaskStatus
+  priority?: $Enums.TaskPriority
   dueAt?: Date | string | null
-  responsibleId: string
+  completedAt?: Date | string | null
+  result?: string | null
+  nextStepText?: string | null
+  nextStepAt?: Date | string | null
+  isAutoCreated?: boolean
+  autoRule?: $Enums.TaskAutoRule | null
+  archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  archivedAt?: Date | string | null
   notes?: string | null
 }
 
@@ -886,18 +1302,30 @@ export type TaskActivityScalarWhereInput = {
   OR?: Prisma.TaskActivityScalarWhereInput[]
   NOT?: Prisma.TaskActivityScalarWhereInput | Prisma.TaskActivityScalarWhereInput[]
   id?: Prisma.StringFilter<"TaskActivity"> | string
+  recordType?: Prisma.EnumTaskRecordTypeFilter<"TaskActivity"> | $Enums.TaskRecordType
+  actionType?: Prisma.EnumTaskActionTypeFilter<"TaskActivity"> | $Enums.TaskActionType
   title?: Prisma.StringFilter<"TaskActivity"> | string
-  status?: Prisma.EnumTaskStatusFilter<"TaskActivity"> | $Enums.TaskStatus
-  projectObjectId?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
-  dealId?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
-  proposalId?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
-  clientId?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
-  dueAt?: Prisma.DateTimeNullableFilter<"TaskActivity"> | Date | string | null
+  description?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
   responsibleId?: Prisma.StringFilter<"TaskActivity"> | string
   createdById?: Prisma.StringFilter<"TaskActivity"> | string
+  clientId?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
+  designerId?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
+  objectId?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
+  dealId?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
+  proposalId?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
+  objectParticipantId?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
+  status?: Prisma.EnumTaskStatusFilter<"TaskActivity"> | $Enums.TaskStatus
+  priority?: Prisma.EnumTaskPriorityFilter<"TaskActivity"> | $Enums.TaskPriority
+  dueAt?: Prisma.DateTimeNullableFilter<"TaskActivity"> | Date | string | null
+  completedAt?: Prisma.DateTimeNullableFilter<"TaskActivity"> | Date | string | null
+  result?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
+  nextStepText?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
+  nextStepAt?: Prisma.DateTimeNullableFilter<"TaskActivity"> | Date | string | null
+  isAutoCreated?: Prisma.BoolFilter<"TaskActivity"> | boolean
+  autoRule?: Prisma.EnumTaskAutoRuleNullableFilter<"TaskActivity"> | $Enums.TaskAutoRule | null
+  archivedAt?: Prisma.DateTimeNullableFilter<"TaskActivity"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"TaskActivity"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TaskActivity"> | Date | string
-  archivedAt?: Prisma.DateTimeNullableFilter<"TaskActivity"> | Date | string | null
   notes?: Prisma.StringNullableFilter<"TaskActivity"> | string | null
 }
 
@@ -919,33 +1347,57 @@ export type TaskActivityUpdateManyWithWhereWithoutCreatedByInput = {
 
 export type TaskActivityCreateWithoutClientInput = {
   id?: string
+  recordType?: $Enums.TaskRecordType
+  actionType?: $Enums.TaskActionType
   title: string
+  description?: string | null
   status?: $Enums.TaskStatus
+  priority?: $Enums.TaskPriority
   dueAt?: Date | string | null
+  completedAt?: Date | string | null
+  result?: string | null
+  nextStepText?: string | null
+  nextStepAt?: Date | string | null
+  isAutoCreated?: boolean
+  autoRule?: $Enums.TaskAutoRule | null
+  archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  archivedAt?: Date | string | null
   notes?: string | null
   responsible: Prisma.UserCreateNestedOneWithoutTasksResponsibleInput
   createdBy: Prisma.UserCreateNestedOneWithoutTasksCreatedInput
+  designer?: Prisma.DesignerCreateNestedOneWithoutTasksInput
   projectObject?: Prisma.ProjectObjectCreateNestedOneWithoutTasksInput
   deal?: Prisma.DealCreateNestedOneWithoutTasksInput
   proposal?: Prisma.CommercialProposalCreateNestedOneWithoutTasksInput
+  objectParticipant?: Prisma.ProjectObjectParticipantCreateNestedOneWithoutTasksInput
 }
 
 export type TaskActivityUncheckedCreateWithoutClientInput = {
   id?: string
+  recordType?: $Enums.TaskRecordType
+  actionType?: $Enums.TaskActionType
   title: string
-  status?: $Enums.TaskStatus
-  projectObjectId?: string | null
-  dealId?: string | null
-  proposalId?: string | null
-  dueAt?: Date | string | null
+  description?: string | null
   responsibleId: string
   createdById: string
+  designerId?: string | null
+  objectId?: string | null
+  dealId?: string | null
+  proposalId?: string | null
+  objectParticipantId?: string | null
+  status?: $Enums.TaskStatus
+  priority?: $Enums.TaskPriority
+  dueAt?: Date | string | null
+  completedAt?: Date | string | null
+  result?: string | null
+  nextStepText?: string | null
+  nextStepAt?: Date | string | null
+  isAutoCreated?: boolean
+  autoRule?: $Enums.TaskAutoRule | null
+  archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  archivedAt?: Date | string | null
   notes?: string | null
 }
 
@@ -975,35 +1427,141 @@ export type TaskActivityUpdateManyWithWhereWithoutClientInput = {
   data: Prisma.XOR<Prisma.TaskActivityUpdateManyMutationInput, Prisma.TaskActivityUncheckedUpdateManyWithoutClientInput>
 }
 
-export type TaskActivityCreateWithoutProjectObjectInput = {
+export type TaskActivityCreateWithoutDesignerInput = {
   id?: string
+  recordType?: $Enums.TaskRecordType
+  actionType?: $Enums.TaskActionType
   title: string
+  description?: string | null
   status?: $Enums.TaskStatus
+  priority?: $Enums.TaskPriority
   dueAt?: Date | string | null
+  completedAt?: Date | string | null
+  result?: string | null
+  nextStepText?: string | null
+  nextStepAt?: Date | string | null
+  isAutoCreated?: boolean
+  autoRule?: $Enums.TaskAutoRule | null
+  archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  archivedAt?: Date | string | null
   notes?: string | null
   responsible: Prisma.UserCreateNestedOneWithoutTasksResponsibleInput
   createdBy: Prisma.UserCreateNestedOneWithoutTasksCreatedInput
+  client?: Prisma.ClientCreateNestedOneWithoutTasksInput
+  projectObject?: Prisma.ProjectObjectCreateNestedOneWithoutTasksInput
   deal?: Prisma.DealCreateNestedOneWithoutTasksInput
   proposal?: Prisma.CommercialProposalCreateNestedOneWithoutTasksInput
+  objectParticipant?: Prisma.ProjectObjectParticipantCreateNestedOneWithoutTasksInput
+}
+
+export type TaskActivityUncheckedCreateWithoutDesignerInput = {
+  id?: string
+  recordType?: $Enums.TaskRecordType
+  actionType?: $Enums.TaskActionType
+  title: string
+  description?: string | null
+  responsibleId: string
+  createdById: string
+  clientId?: string | null
+  objectId?: string | null
+  dealId?: string | null
+  proposalId?: string | null
+  objectParticipantId?: string | null
+  status?: $Enums.TaskStatus
+  priority?: $Enums.TaskPriority
+  dueAt?: Date | string | null
+  completedAt?: Date | string | null
+  result?: string | null
+  nextStepText?: string | null
+  nextStepAt?: Date | string | null
+  isAutoCreated?: boolean
+  autoRule?: $Enums.TaskAutoRule | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  notes?: string | null
+}
+
+export type TaskActivityCreateOrConnectWithoutDesignerInput = {
+  where: Prisma.TaskActivityWhereUniqueInput
+  create: Prisma.XOR<Prisma.TaskActivityCreateWithoutDesignerInput, Prisma.TaskActivityUncheckedCreateWithoutDesignerInput>
+}
+
+export type TaskActivityCreateManyDesignerInputEnvelope = {
+  data: Prisma.TaskActivityCreateManyDesignerInput | Prisma.TaskActivityCreateManyDesignerInput[]
+  skipDuplicates?: boolean
+}
+
+export type TaskActivityUpsertWithWhereUniqueWithoutDesignerInput = {
+  where: Prisma.TaskActivityWhereUniqueInput
+  update: Prisma.XOR<Prisma.TaskActivityUpdateWithoutDesignerInput, Prisma.TaskActivityUncheckedUpdateWithoutDesignerInput>
+  create: Prisma.XOR<Prisma.TaskActivityCreateWithoutDesignerInput, Prisma.TaskActivityUncheckedCreateWithoutDesignerInput>
+}
+
+export type TaskActivityUpdateWithWhereUniqueWithoutDesignerInput = {
+  where: Prisma.TaskActivityWhereUniqueInput
+  data: Prisma.XOR<Prisma.TaskActivityUpdateWithoutDesignerInput, Prisma.TaskActivityUncheckedUpdateWithoutDesignerInput>
+}
+
+export type TaskActivityUpdateManyWithWhereWithoutDesignerInput = {
+  where: Prisma.TaskActivityScalarWhereInput
+  data: Prisma.XOR<Prisma.TaskActivityUpdateManyMutationInput, Prisma.TaskActivityUncheckedUpdateManyWithoutDesignerInput>
+}
+
+export type TaskActivityCreateWithoutProjectObjectInput = {
+  id?: string
+  recordType?: $Enums.TaskRecordType
+  actionType?: $Enums.TaskActionType
+  title: string
+  description?: string | null
+  status?: $Enums.TaskStatus
+  priority?: $Enums.TaskPriority
+  dueAt?: Date | string | null
+  completedAt?: Date | string | null
+  result?: string | null
+  nextStepText?: string | null
+  nextStepAt?: Date | string | null
+  isAutoCreated?: boolean
+  autoRule?: $Enums.TaskAutoRule | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  notes?: string | null
+  responsible: Prisma.UserCreateNestedOneWithoutTasksResponsibleInput
+  createdBy: Prisma.UserCreateNestedOneWithoutTasksCreatedInput
   client?: Prisma.ClientCreateNestedOneWithoutTasksInput
+  designer?: Prisma.DesignerCreateNestedOneWithoutTasksInput
+  deal?: Prisma.DealCreateNestedOneWithoutTasksInput
+  proposal?: Prisma.CommercialProposalCreateNestedOneWithoutTasksInput
+  objectParticipant?: Prisma.ProjectObjectParticipantCreateNestedOneWithoutTasksInput
 }
 
 export type TaskActivityUncheckedCreateWithoutProjectObjectInput = {
   id?: string
+  recordType?: $Enums.TaskRecordType
+  actionType?: $Enums.TaskActionType
   title: string
-  status?: $Enums.TaskStatus
-  dealId?: string | null
-  proposalId?: string | null
-  clientId?: string | null
-  dueAt?: Date | string | null
+  description?: string | null
   responsibleId: string
   createdById: string
+  clientId?: string | null
+  designerId?: string | null
+  dealId?: string | null
+  proposalId?: string | null
+  objectParticipantId?: string | null
+  status?: $Enums.TaskStatus
+  priority?: $Enums.TaskPriority
+  dueAt?: Date | string | null
+  completedAt?: Date | string | null
+  result?: string | null
+  nextStepText?: string | null
+  nextStepAt?: Date | string | null
+  isAutoCreated?: boolean
+  autoRule?: $Enums.TaskAutoRule | null
+  archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  archivedAt?: Date | string | null
   notes?: string | null
 }
 
@@ -1033,35 +1591,141 @@ export type TaskActivityUpdateManyWithWhereWithoutProjectObjectInput = {
   data: Prisma.XOR<Prisma.TaskActivityUpdateManyMutationInput, Prisma.TaskActivityUncheckedUpdateManyWithoutProjectObjectInput>
 }
 
-export type TaskActivityCreateWithoutDealInput = {
+export type TaskActivityCreateWithoutObjectParticipantInput = {
   id?: string
+  recordType?: $Enums.TaskRecordType
+  actionType?: $Enums.TaskActionType
   title: string
+  description?: string | null
   status?: $Enums.TaskStatus
+  priority?: $Enums.TaskPriority
   dueAt?: Date | string | null
+  completedAt?: Date | string | null
+  result?: string | null
+  nextStepText?: string | null
+  nextStepAt?: Date | string | null
+  isAutoCreated?: boolean
+  autoRule?: $Enums.TaskAutoRule | null
+  archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  archivedAt?: Date | string | null
   notes?: string | null
   responsible: Prisma.UserCreateNestedOneWithoutTasksResponsibleInput
   createdBy: Prisma.UserCreateNestedOneWithoutTasksCreatedInput
+  client?: Prisma.ClientCreateNestedOneWithoutTasksInput
+  designer?: Prisma.DesignerCreateNestedOneWithoutTasksInput
+  projectObject?: Prisma.ProjectObjectCreateNestedOneWithoutTasksInput
+  deal?: Prisma.DealCreateNestedOneWithoutTasksInput
+  proposal?: Prisma.CommercialProposalCreateNestedOneWithoutTasksInput
+}
+
+export type TaskActivityUncheckedCreateWithoutObjectParticipantInput = {
+  id?: string
+  recordType?: $Enums.TaskRecordType
+  actionType?: $Enums.TaskActionType
+  title: string
+  description?: string | null
+  responsibleId: string
+  createdById: string
+  clientId?: string | null
+  designerId?: string | null
+  objectId?: string | null
+  dealId?: string | null
+  proposalId?: string | null
+  status?: $Enums.TaskStatus
+  priority?: $Enums.TaskPriority
+  dueAt?: Date | string | null
+  completedAt?: Date | string | null
+  result?: string | null
+  nextStepText?: string | null
+  nextStepAt?: Date | string | null
+  isAutoCreated?: boolean
+  autoRule?: $Enums.TaskAutoRule | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  notes?: string | null
+}
+
+export type TaskActivityCreateOrConnectWithoutObjectParticipantInput = {
+  where: Prisma.TaskActivityWhereUniqueInput
+  create: Prisma.XOR<Prisma.TaskActivityCreateWithoutObjectParticipantInput, Prisma.TaskActivityUncheckedCreateWithoutObjectParticipantInput>
+}
+
+export type TaskActivityCreateManyObjectParticipantInputEnvelope = {
+  data: Prisma.TaskActivityCreateManyObjectParticipantInput | Prisma.TaskActivityCreateManyObjectParticipantInput[]
+  skipDuplicates?: boolean
+}
+
+export type TaskActivityUpsertWithWhereUniqueWithoutObjectParticipantInput = {
+  where: Prisma.TaskActivityWhereUniqueInput
+  update: Prisma.XOR<Prisma.TaskActivityUpdateWithoutObjectParticipantInput, Prisma.TaskActivityUncheckedUpdateWithoutObjectParticipantInput>
+  create: Prisma.XOR<Prisma.TaskActivityCreateWithoutObjectParticipantInput, Prisma.TaskActivityUncheckedCreateWithoutObjectParticipantInput>
+}
+
+export type TaskActivityUpdateWithWhereUniqueWithoutObjectParticipantInput = {
+  where: Prisma.TaskActivityWhereUniqueInput
+  data: Prisma.XOR<Prisma.TaskActivityUpdateWithoutObjectParticipantInput, Prisma.TaskActivityUncheckedUpdateWithoutObjectParticipantInput>
+}
+
+export type TaskActivityUpdateManyWithWhereWithoutObjectParticipantInput = {
+  where: Prisma.TaskActivityScalarWhereInput
+  data: Prisma.XOR<Prisma.TaskActivityUpdateManyMutationInput, Prisma.TaskActivityUncheckedUpdateManyWithoutObjectParticipantInput>
+}
+
+export type TaskActivityCreateWithoutDealInput = {
+  id?: string
+  recordType?: $Enums.TaskRecordType
+  actionType?: $Enums.TaskActionType
+  title: string
+  description?: string | null
+  status?: $Enums.TaskStatus
+  priority?: $Enums.TaskPriority
+  dueAt?: Date | string | null
+  completedAt?: Date | string | null
+  result?: string | null
+  nextStepText?: string | null
+  nextStepAt?: Date | string | null
+  isAutoCreated?: boolean
+  autoRule?: $Enums.TaskAutoRule | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  notes?: string | null
+  responsible: Prisma.UserCreateNestedOneWithoutTasksResponsibleInput
+  createdBy: Prisma.UserCreateNestedOneWithoutTasksCreatedInput
+  client?: Prisma.ClientCreateNestedOneWithoutTasksInput
+  designer?: Prisma.DesignerCreateNestedOneWithoutTasksInput
   projectObject?: Prisma.ProjectObjectCreateNestedOneWithoutTasksInput
   proposal?: Prisma.CommercialProposalCreateNestedOneWithoutTasksInput
-  client?: Prisma.ClientCreateNestedOneWithoutTasksInput
+  objectParticipant?: Prisma.ProjectObjectParticipantCreateNestedOneWithoutTasksInput
 }
 
 export type TaskActivityUncheckedCreateWithoutDealInput = {
   id?: string
+  recordType?: $Enums.TaskRecordType
+  actionType?: $Enums.TaskActionType
   title: string
-  status?: $Enums.TaskStatus
-  projectObjectId?: string | null
-  proposalId?: string | null
-  clientId?: string | null
-  dueAt?: Date | string | null
+  description?: string | null
   responsibleId: string
   createdById: string
+  clientId?: string | null
+  designerId?: string | null
+  objectId?: string | null
+  proposalId?: string | null
+  objectParticipantId?: string | null
+  status?: $Enums.TaskStatus
+  priority?: $Enums.TaskPriority
+  dueAt?: Date | string | null
+  completedAt?: Date | string | null
+  result?: string | null
+  nextStepText?: string | null
+  nextStepAt?: Date | string | null
+  isAutoCreated?: boolean
+  autoRule?: $Enums.TaskAutoRule | null
+  archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  archivedAt?: Date | string | null
   notes?: string | null
 }
 
@@ -1093,33 +1757,57 @@ export type TaskActivityUpdateManyWithWhereWithoutDealInput = {
 
 export type TaskActivityCreateWithoutProposalInput = {
   id?: string
+  recordType?: $Enums.TaskRecordType
+  actionType?: $Enums.TaskActionType
   title: string
+  description?: string | null
   status?: $Enums.TaskStatus
+  priority?: $Enums.TaskPriority
   dueAt?: Date | string | null
+  completedAt?: Date | string | null
+  result?: string | null
+  nextStepText?: string | null
+  nextStepAt?: Date | string | null
+  isAutoCreated?: boolean
+  autoRule?: $Enums.TaskAutoRule | null
+  archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  archivedAt?: Date | string | null
   notes?: string | null
   responsible: Prisma.UserCreateNestedOneWithoutTasksResponsibleInput
   createdBy: Prisma.UserCreateNestedOneWithoutTasksCreatedInput
+  client?: Prisma.ClientCreateNestedOneWithoutTasksInput
+  designer?: Prisma.DesignerCreateNestedOneWithoutTasksInput
   projectObject?: Prisma.ProjectObjectCreateNestedOneWithoutTasksInput
   deal?: Prisma.DealCreateNestedOneWithoutTasksInput
-  client?: Prisma.ClientCreateNestedOneWithoutTasksInput
+  objectParticipant?: Prisma.ProjectObjectParticipantCreateNestedOneWithoutTasksInput
 }
 
 export type TaskActivityUncheckedCreateWithoutProposalInput = {
   id?: string
+  recordType?: $Enums.TaskRecordType
+  actionType?: $Enums.TaskActionType
   title: string
-  status?: $Enums.TaskStatus
-  projectObjectId?: string | null
-  dealId?: string | null
-  clientId?: string | null
-  dueAt?: Date | string | null
+  description?: string | null
   responsibleId: string
   createdById: string
+  clientId?: string | null
+  designerId?: string | null
+  objectId?: string | null
+  dealId?: string | null
+  objectParticipantId?: string | null
+  status?: $Enums.TaskStatus
+  priority?: $Enums.TaskPriority
+  dueAt?: Date | string | null
+  completedAt?: Date | string | null
+  result?: string | null
+  nextStepText?: string | null
+  nextStepAt?: Date | string | null
+  isAutoCreated?: boolean
+  autoRule?: $Enums.TaskAutoRule | null
+  archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  archivedAt?: Date | string | null
   notes?: string | null
 }
 
@@ -1151,385 +1839,897 @@ export type TaskActivityUpdateManyWithWhereWithoutProposalInput = {
 
 export type TaskActivityCreateManyResponsibleInput = {
   id?: string
+  recordType?: $Enums.TaskRecordType
+  actionType?: $Enums.TaskActionType
   title: string
-  status?: $Enums.TaskStatus
-  projectObjectId?: string | null
+  description?: string | null
+  createdById: string
+  clientId?: string | null
+  designerId?: string | null
+  objectId?: string | null
   dealId?: string | null
   proposalId?: string | null
-  clientId?: string | null
+  objectParticipantId?: string | null
+  status?: $Enums.TaskStatus
+  priority?: $Enums.TaskPriority
   dueAt?: Date | string | null
-  createdById: string
+  completedAt?: Date | string | null
+  result?: string | null
+  nextStepText?: string | null
+  nextStepAt?: Date | string | null
+  isAutoCreated?: boolean
+  autoRule?: $Enums.TaskAutoRule | null
+  archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  archivedAt?: Date | string | null
   notes?: string | null
 }
 
 export type TaskActivityCreateManyCreatedByInput = {
   id?: string
+  recordType?: $Enums.TaskRecordType
+  actionType?: $Enums.TaskActionType
   title: string
-  status?: $Enums.TaskStatus
-  projectObjectId?: string | null
+  description?: string | null
+  responsibleId: string
+  clientId?: string | null
+  designerId?: string | null
+  objectId?: string | null
   dealId?: string | null
   proposalId?: string | null
-  clientId?: string | null
+  objectParticipantId?: string | null
+  status?: $Enums.TaskStatus
+  priority?: $Enums.TaskPriority
   dueAt?: Date | string | null
-  responsibleId: string
+  completedAt?: Date | string | null
+  result?: string | null
+  nextStepText?: string | null
+  nextStepAt?: Date | string | null
+  isAutoCreated?: boolean
+  autoRule?: $Enums.TaskAutoRule | null
+  archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  archivedAt?: Date | string | null
   notes?: string | null
 }
 
 export type TaskActivityUpdateWithoutResponsibleInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  recordType?: Prisma.EnumTaskRecordTypeFieldUpdateOperationsInput | $Enums.TaskRecordType
+  actionType?: Prisma.EnumTaskActionTypeFieldUpdateOperationsInput | $Enums.TaskActionType
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
   dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isAutoCreated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  autoRule?: Prisma.NullableEnumTaskAutoRuleFieldUpdateOperationsInput | $Enums.TaskAutoRule | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdBy?: Prisma.UserUpdateOneRequiredWithoutTasksCreatedNestedInput
+  client?: Prisma.ClientUpdateOneWithoutTasksNestedInput
+  designer?: Prisma.DesignerUpdateOneWithoutTasksNestedInput
   projectObject?: Prisma.ProjectObjectUpdateOneWithoutTasksNestedInput
   deal?: Prisma.DealUpdateOneWithoutTasksNestedInput
   proposal?: Prisma.CommercialProposalUpdateOneWithoutTasksNestedInput
-  client?: Prisma.ClientUpdateOneWithoutTasksNestedInput
+  objectParticipant?: Prisma.ProjectObjectParticipantUpdateOneWithoutTasksNestedInput
 }
 
 export type TaskActivityUncheckedUpdateWithoutResponsibleInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  recordType?: Prisma.EnumTaskRecordTypeFieldUpdateOperationsInput | $Enums.TaskRecordType
+  actionType?: Prisma.EnumTaskActionTypeFieldUpdateOperationsInput | $Enums.TaskActionType
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
-  projectObjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  clientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  designerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dealId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   proposalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  clientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectParticipantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
   dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isAutoCreated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  autoRule?: Prisma.NullableEnumTaskAutoRuleFieldUpdateOperationsInput | $Enums.TaskAutoRule | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TaskActivityUncheckedUpdateManyWithoutResponsibleInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  recordType?: Prisma.EnumTaskRecordTypeFieldUpdateOperationsInput | $Enums.TaskRecordType
+  actionType?: Prisma.EnumTaskActionTypeFieldUpdateOperationsInput | $Enums.TaskActionType
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
-  projectObjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  clientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  designerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dealId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   proposalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  clientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectParticipantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
   dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isAutoCreated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  autoRule?: Prisma.NullableEnumTaskAutoRuleFieldUpdateOperationsInput | $Enums.TaskAutoRule | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TaskActivityUpdateWithoutCreatedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  recordType?: Prisma.EnumTaskRecordTypeFieldUpdateOperationsInput | $Enums.TaskRecordType
+  actionType?: Prisma.EnumTaskActionTypeFieldUpdateOperationsInput | $Enums.TaskActionType
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
   dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isAutoCreated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  autoRule?: Prisma.NullableEnumTaskAutoRuleFieldUpdateOperationsInput | $Enums.TaskAutoRule | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   responsible?: Prisma.UserUpdateOneRequiredWithoutTasksResponsibleNestedInput
+  client?: Prisma.ClientUpdateOneWithoutTasksNestedInput
+  designer?: Prisma.DesignerUpdateOneWithoutTasksNestedInput
   projectObject?: Prisma.ProjectObjectUpdateOneWithoutTasksNestedInput
   deal?: Prisma.DealUpdateOneWithoutTasksNestedInput
   proposal?: Prisma.CommercialProposalUpdateOneWithoutTasksNestedInput
-  client?: Prisma.ClientUpdateOneWithoutTasksNestedInput
+  objectParticipant?: Prisma.ProjectObjectParticipantUpdateOneWithoutTasksNestedInput
 }
 
 export type TaskActivityUncheckedUpdateWithoutCreatedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  recordType?: Prisma.EnumTaskRecordTypeFieldUpdateOperationsInput | $Enums.TaskRecordType
+  actionType?: Prisma.EnumTaskActionTypeFieldUpdateOperationsInput | $Enums.TaskActionType
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
-  projectObjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  responsibleId?: Prisma.StringFieldUpdateOperationsInput | string
+  clientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  designerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dealId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   proposalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  clientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectParticipantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
   dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  responsibleId?: Prisma.StringFieldUpdateOperationsInput | string
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isAutoCreated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  autoRule?: Prisma.NullableEnumTaskAutoRuleFieldUpdateOperationsInput | $Enums.TaskAutoRule | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TaskActivityUncheckedUpdateManyWithoutCreatedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  recordType?: Prisma.EnumTaskRecordTypeFieldUpdateOperationsInput | $Enums.TaskRecordType
+  actionType?: Prisma.EnumTaskActionTypeFieldUpdateOperationsInput | $Enums.TaskActionType
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
-  projectObjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  responsibleId?: Prisma.StringFieldUpdateOperationsInput | string
+  clientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  designerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dealId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   proposalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  clientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectParticipantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
   dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  responsibleId?: Prisma.StringFieldUpdateOperationsInput | string
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isAutoCreated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  autoRule?: Prisma.NullableEnumTaskAutoRuleFieldUpdateOperationsInput | $Enums.TaskAutoRule | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TaskActivityCreateManyClientInput = {
   id?: string
+  recordType?: $Enums.TaskRecordType
+  actionType?: $Enums.TaskActionType
   title: string
-  status?: $Enums.TaskStatus
-  projectObjectId?: string | null
-  dealId?: string | null
-  proposalId?: string | null
-  dueAt?: Date | string | null
+  description?: string | null
   responsibleId: string
   createdById: string
+  designerId?: string | null
+  objectId?: string | null
+  dealId?: string | null
+  proposalId?: string | null
+  objectParticipantId?: string | null
+  status?: $Enums.TaskStatus
+  priority?: $Enums.TaskPriority
+  dueAt?: Date | string | null
+  completedAt?: Date | string | null
+  result?: string | null
+  nextStepText?: string | null
+  nextStepAt?: Date | string | null
+  isAutoCreated?: boolean
+  autoRule?: $Enums.TaskAutoRule | null
+  archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  archivedAt?: Date | string | null
   notes?: string | null
 }
 
 export type TaskActivityUpdateWithoutClientInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  recordType?: Prisma.EnumTaskRecordTypeFieldUpdateOperationsInput | $Enums.TaskRecordType
+  actionType?: Prisma.EnumTaskActionTypeFieldUpdateOperationsInput | $Enums.TaskActionType
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
   dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isAutoCreated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  autoRule?: Prisma.NullableEnumTaskAutoRuleFieldUpdateOperationsInput | $Enums.TaskAutoRule | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   responsible?: Prisma.UserUpdateOneRequiredWithoutTasksResponsibleNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutTasksCreatedNestedInput
+  designer?: Prisma.DesignerUpdateOneWithoutTasksNestedInput
   projectObject?: Prisma.ProjectObjectUpdateOneWithoutTasksNestedInput
   deal?: Prisma.DealUpdateOneWithoutTasksNestedInput
   proposal?: Prisma.CommercialProposalUpdateOneWithoutTasksNestedInput
+  objectParticipant?: Prisma.ProjectObjectParticipantUpdateOneWithoutTasksNestedInput
 }
 
 export type TaskActivityUncheckedUpdateWithoutClientInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  recordType?: Prisma.EnumTaskRecordTypeFieldUpdateOperationsInput | $Enums.TaskRecordType
+  actionType?: Prisma.EnumTaskActionTypeFieldUpdateOperationsInput | $Enums.TaskActionType
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
-  projectObjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  dealId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  proposalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   responsibleId?: Prisma.StringFieldUpdateOperationsInput | string
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  designerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dealId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proposalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectParticipantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isAutoCreated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  autoRule?: Prisma.NullableEnumTaskAutoRuleFieldUpdateOperationsInput | $Enums.TaskAutoRule | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TaskActivityUncheckedUpdateManyWithoutClientInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  recordType?: Prisma.EnumTaskRecordTypeFieldUpdateOperationsInput | $Enums.TaskRecordType
+  actionType?: Prisma.EnumTaskActionTypeFieldUpdateOperationsInput | $Enums.TaskActionType
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
-  projectObjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  dealId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  proposalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   responsibleId?: Prisma.StringFieldUpdateOperationsInput | string
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  designerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dealId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proposalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectParticipantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isAutoCreated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  autoRule?: Prisma.NullableEnumTaskAutoRuleFieldUpdateOperationsInput | $Enums.TaskAutoRule | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type TaskActivityCreateManyDesignerInput = {
+  id?: string
+  recordType?: $Enums.TaskRecordType
+  actionType?: $Enums.TaskActionType
+  title: string
+  description?: string | null
+  responsibleId: string
+  createdById: string
+  clientId?: string | null
+  objectId?: string | null
+  dealId?: string | null
+  proposalId?: string | null
+  objectParticipantId?: string | null
+  status?: $Enums.TaskStatus
+  priority?: $Enums.TaskPriority
+  dueAt?: Date | string | null
+  completedAt?: Date | string | null
+  result?: string | null
+  nextStepText?: string | null
+  nextStepAt?: Date | string | null
+  isAutoCreated?: boolean
+  autoRule?: $Enums.TaskAutoRule | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  notes?: string | null
+}
+
+export type TaskActivityUpdateWithoutDesignerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  recordType?: Prisma.EnumTaskRecordTypeFieldUpdateOperationsInput | $Enums.TaskRecordType
+  actionType?: Prisma.EnumTaskActionTypeFieldUpdateOperationsInput | $Enums.TaskActionType
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isAutoCreated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  autoRule?: Prisma.NullableEnumTaskAutoRuleFieldUpdateOperationsInput | $Enums.TaskAutoRule | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  responsible?: Prisma.UserUpdateOneRequiredWithoutTasksResponsibleNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutTasksCreatedNestedInput
+  client?: Prisma.ClientUpdateOneWithoutTasksNestedInput
+  projectObject?: Prisma.ProjectObjectUpdateOneWithoutTasksNestedInput
+  deal?: Prisma.DealUpdateOneWithoutTasksNestedInput
+  proposal?: Prisma.CommercialProposalUpdateOneWithoutTasksNestedInput
+  objectParticipant?: Prisma.ProjectObjectParticipantUpdateOneWithoutTasksNestedInput
+}
+
+export type TaskActivityUncheckedUpdateWithoutDesignerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  recordType?: Prisma.EnumTaskRecordTypeFieldUpdateOperationsInput | $Enums.TaskRecordType
+  actionType?: Prisma.EnumTaskActionTypeFieldUpdateOperationsInput | $Enums.TaskActionType
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  responsibleId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  clientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dealId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proposalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectParticipantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isAutoCreated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  autoRule?: Prisma.NullableEnumTaskAutoRuleFieldUpdateOperationsInput | $Enums.TaskAutoRule | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type TaskActivityUncheckedUpdateManyWithoutDesignerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  recordType?: Prisma.EnumTaskRecordTypeFieldUpdateOperationsInput | $Enums.TaskRecordType
+  actionType?: Prisma.EnumTaskActionTypeFieldUpdateOperationsInput | $Enums.TaskActionType
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  responsibleId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  clientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dealId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proposalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectParticipantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isAutoCreated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  autoRule?: Prisma.NullableEnumTaskAutoRuleFieldUpdateOperationsInput | $Enums.TaskAutoRule | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TaskActivityCreateManyProjectObjectInput = {
   id?: string
+  recordType?: $Enums.TaskRecordType
+  actionType?: $Enums.TaskActionType
   title: string
-  status?: $Enums.TaskStatus
-  dealId?: string | null
-  proposalId?: string | null
-  clientId?: string | null
-  dueAt?: Date | string | null
+  description?: string | null
   responsibleId: string
   createdById: string
+  clientId?: string | null
+  designerId?: string | null
+  dealId?: string | null
+  proposalId?: string | null
+  objectParticipantId?: string | null
+  status?: $Enums.TaskStatus
+  priority?: $Enums.TaskPriority
+  dueAt?: Date | string | null
+  completedAt?: Date | string | null
+  result?: string | null
+  nextStepText?: string | null
+  nextStepAt?: Date | string | null
+  isAutoCreated?: boolean
+  autoRule?: $Enums.TaskAutoRule | null
+  archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  archivedAt?: Date | string | null
   notes?: string | null
 }
 
 export type TaskActivityUpdateWithoutProjectObjectInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  recordType?: Prisma.EnumTaskRecordTypeFieldUpdateOperationsInput | $Enums.TaskRecordType
+  actionType?: Prisma.EnumTaskActionTypeFieldUpdateOperationsInput | $Enums.TaskActionType
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
   dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isAutoCreated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  autoRule?: Prisma.NullableEnumTaskAutoRuleFieldUpdateOperationsInput | $Enums.TaskAutoRule | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   responsible?: Prisma.UserUpdateOneRequiredWithoutTasksResponsibleNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutTasksCreatedNestedInput
+  client?: Prisma.ClientUpdateOneWithoutTasksNestedInput
+  designer?: Prisma.DesignerUpdateOneWithoutTasksNestedInput
   deal?: Prisma.DealUpdateOneWithoutTasksNestedInput
   proposal?: Prisma.CommercialProposalUpdateOneWithoutTasksNestedInput
-  client?: Prisma.ClientUpdateOneWithoutTasksNestedInput
+  objectParticipant?: Prisma.ProjectObjectParticipantUpdateOneWithoutTasksNestedInput
 }
 
 export type TaskActivityUncheckedUpdateWithoutProjectObjectInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  recordType?: Prisma.EnumTaskRecordTypeFieldUpdateOperationsInput | $Enums.TaskRecordType
+  actionType?: Prisma.EnumTaskActionTypeFieldUpdateOperationsInput | $Enums.TaskActionType
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
-  dealId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  proposalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  clientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   responsibleId?: Prisma.StringFieldUpdateOperationsInput | string
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  clientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  designerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dealId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proposalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectParticipantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isAutoCreated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  autoRule?: Prisma.NullableEnumTaskAutoRuleFieldUpdateOperationsInput | $Enums.TaskAutoRule | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TaskActivityUncheckedUpdateManyWithoutProjectObjectInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  recordType?: Prisma.EnumTaskRecordTypeFieldUpdateOperationsInput | $Enums.TaskRecordType
+  actionType?: Prisma.EnumTaskActionTypeFieldUpdateOperationsInput | $Enums.TaskActionType
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
-  dealId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  proposalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  clientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   responsibleId?: Prisma.StringFieldUpdateOperationsInput | string
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  clientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  designerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dealId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proposalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectParticipantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isAutoCreated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  autoRule?: Prisma.NullableEnumTaskAutoRuleFieldUpdateOperationsInput | $Enums.TaskAutoRule | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type TaskActivityCreateManyObjectParticipantInput = {
+  id?: string
+  recordType?: $Enums.TaskRecordType
+  actionType?: $Enums.TaskActionType
+  title: string
+  description?: string | null
+  responsibleId: string
+  createdById: string
+  clientId?: string | null
+  designerId?: string | null
+  objectId?: string | null
+  dealId?: string | null
+  proposalId?: string | null
+  status?: $Enums.TaskStatus
+  priority?: $Enums.TaskPriority
+  dueAt?: Date | string | null
+  completedAt?: Date | string | null
+  result?: string | null
+  nextStepText?: string | null
+  nextStepAt?: Date | string | null
+  isAutoCreated?: boolean
+  autoRule?: $Enums.TaskAutoRule | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  notes?: string | null
+}
+
+export type TaskActivityUpdateWithoutObjectParticipantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  recordType?: Prisma.EnumTaskRecordTypeFieldUpdateOperationsInput | $Enums.TaskRecordType
+  actionType?: Prisma.EnumTaskActionTypeFieldUpdateOperationsInput | $Enums.TaskActionType
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isAutoCreated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  autoRule?: Prisma.NullableEnumTaskAutoRuleFieldUpdateOperationsInput | $Enums.TaskAutoRule | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  responsible?: Prisma.UserUpdateOneRequiredWithoutTasksResponsibleNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutTasksCreatedNestedInput
+  client?: Prisma.ClientUpdateOneWithoutTasksNestedInput
+  designer?: Prisma.DesignerUpdateOneWithoutTasksNestedInput
+  projectObject?: Prisma.ProjectObjectUpdateOneWithoutTasksNestedInput
+  deal?: Prisma.DealUpdateOneWithoutTasksNestedInput
+  proposal?: Prisma.CommercialProposalUpdateOneWithoutTasksNestedInput
+}
+
+export type TaskActivityUncheckedUpdateWithoutObjectParticipantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  recordType?: Prisma.EnumTaskRecordTypeFieldUpdateOperationsInput | $Enums.TaskRecordType
+  actionType?: Prisma.EnumTaskActionTypeFieldUpdateOperationsInput | $Enums.TaskActionType
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  responsibleId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  clientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  designerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dealId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proposalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isAutoCreated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  autoRule?: Prisma.NullableEnumTaskAutoRuleFieldUpdateOperationsInput | $Enums.TaskAutoRule | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type TaskActivityUncheckedUpdateManyWithoutObjectParticipantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  recordType?: Prisma.EnumTaskRecordTypeFieldUpdateOperationsInput | $Enums.TaskRecordType
+  actionType?: Prisma.EnumTaskActionTypeFieldUpdateOperationsInput | $Enums.TaskActionType
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  responsibleId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  clientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  designerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dealId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proposalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isAutoCreated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  autoRule?: Prisma.NullableEnumTaskAutoRuleFieldUpdateOperationsInput | $Enums.TaskAutoRule | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TaskActivityCreateManyDealInput = {
   id?: string
+  recordType?: $Enums.TaskRecordType
+  actionType?: $Enums.TaskActionType
   title: string
-  status?: $Enums.TaskStatus
-  projectObjectId?: string | null
-  proposalId?: string | null
-  clientId?: string | null
-  dueAt?: Date | string | null
+  description?: string | null
   responsibleId: string
   createdById: string
+  clientId?: string | null
+  designerId?: string | null
+  objectId?: string | null
+  proposalId?: string | null
+  objectParticipantId?: string | null
+  status?: $Enums.TaskStatus
+  priority?: $Enums.TaskPriority
+  dueAt?: Date | string | null
+  completedAt?: Date | string | null
+  result?: string | null
+  nextStepText?: string | null
+  nextStepAt?: Date | string | null
+  isAutoCreated?: boolean
+  autoRule?: $Enums.TaskAutoRule | null
+  archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  archivedAt?: Date | string | null
   notes?: string | null
 }
 
 export type TaskActivityUpdateWithoutDealInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  recordType?: Prisma.EnumTaskRecordTypeFieldUpdateOperationsInput | $Enums.TaskRecordType
+  actionType?: Prisma.EnumTaskActionTypeFieldUpdateOperationsInput | $Enums.TaskActionType
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
   dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isAutoCreated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  autoRule?: Prisma.NullableEnumTaskAutoRuleFieldUpdateOperationsInput | $Enums.TaskAutoRule | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   responsible?: Prisma.UserUpdateOneRequiredWithoutTasksResponsibleNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutTasksCreatedNestedInput
+  client?: Prisma.ClientUpdateOneWithoutTasksNestedInput
+  designer?: Prisma.DesignerUpdateOneWithoutTasksNestedInput
   projectObject?: Prisma.ProjectObjectUpdateOneWithoutTasksNestedInput
   proposal?: Prisma.CommercialProposalUpdateOneWithoutTasksNestedInput
-  client?: Prisma.ClientUpdateOneWithoutTasksNestedInput
+  objectParticipant?: Prisma.ProjectObjectParticipantUpdateOneWithoutTasksNestedInput
 }
 
 export type TaskActivityUncheckedUpdateWithoutDealInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  recordType?: Prisma.EnumTaskRecordTypeFieldUpdateOperationsInput | $Enums.TaskRecordType
+  actionType?: Prisma.EnumTaskActionTypeFieldUpdateOperationsInput | $Enums.TaskActionType
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
-  projectObjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  proposalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  clientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   responsibleId?: Prisma.StringFieldUpdateOperationsInput | string
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  clientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  designerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proposalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectParticipantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isAutoCreated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  autoRule?: Prisma.NullableEnumTaskAutoRuleFieldUpdateOperationsInput | $Enums.TaskAutoRule | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TaskActivityUncheckedUpdateManyWithoutDealInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  recordType?: Prisma.EnumTaskRecordTypeFieldUpdateOperationsInput | $Enums.TaskRecordType
+  actionType?: Prisma.EnumTaskActionTypeFieldUpdateOperationsInput | $Enums.TaskActionType
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
-  projectObjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  proposalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  clientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   responsibleId?: Prisma.StringFieldUpdateOperationsInput | string
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  clientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  designerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proposalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectParticipantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isAutoCreated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  autoRule?: Prisma.NullableEnumTaskAutoRuleFieldUpdateOperationsInput | $Enums.TaskAutoRule | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TaskActivityCreateManyProposalInput = {
   id?: string
+  recordType?: $Enums.TaskRecordType
+  actionType?: $Enums.TaskActionType
   title: string
-  status?: $Enums.TaskStatus
-  projectObjectId?: string | null
-  dealId?: string | null
-  clientId?: string | null
-  dueAt?: Date | string | null
+  description?: string | null
   responsibleId: string
   createdById: string
+  clientId?: string | null
+  designerId?: string | null
+  objectId?: string | null
+  dealId?: string | null
+  objectParticipantId?: string | null
+  status?: $Enums.TaskStatus
+  priority?: $Enums.TaskPriority
+  dueAt?: Date | string | null
+  completedAt?: Date | string | null
+  result?: string | null
+  nextStepText?: string | null
+  nextStepAt?: Date | string | null
+  isAutoCreated?: boolean
+  autoRule?: $Enums.TaskAutoRule | null
+  archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  archivedAt?: Date | string | null
   notes?: string | null
 }
 
 export type TaskActivityUpdateWithoutProposalInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  recordType?: Prisma.EnumTaskRecordTypeFieldUpdateOperationsInput | $Enums.TaskRecordType
+  actionType?: Prisma.EnumTaskActionTypeFieldUpdateOperationsInput | $Enums.TaskActionType
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
   dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isAutoCreated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  autoRule?: Prisma.NullableEnumTaskAutoRuleFieldUpdateOperationsInput | $Enums.TaskAutoRule | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   responsible?: Prisma.UserUpdateOneRequiredWithoutTasksResponsibleNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutTasksCreatedNestedInput
+  client?: Prisma.ClientUpdateOneWithoutTasksNestedInput
+  designer?: Prisma.DesignerUpdateOneWithoutTasksNestedInput
   projectObject?: Prisma.ProjectObjectUpdateOneWithoutTasksNestedInput
   deal?: Prisma.DealUpdateOneWithoutTasksNestedInput
-  client?: Prisma.ClientUpdateOneWithoutTasksNestedInput
+  objectParticipant?: Prisma.ProjectObjectParticipantUpdateOneWithoutTasksNestedInput
 }
 
 export type TaskActivityUncheckedUpdateWithoutProposalInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  recordType?: Prisma.EnumTaskRecordTypeFieldUpdateOperationsInput | $Enums.TaskRecordType
+  actionType?: Prisma.EnumTaskActionTypeFieldUpdateOperationsInput | $Enums.TaskActionType
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
-  projectObjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  dealId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  clientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   responsibleId?: Prisma.StringFieldUpdateOperationsInput | string
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  clientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  designerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dealId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectParticipantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isAutoCreated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  autoRule?: Prisma.NullableEnumTaskAutoRuleFieldUpdateOperationsInput | $Enums.TaskAutoRule | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TaskActivityUncheckedUpdateManyWithoutProposalInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  recordType?: Prisma.EnumTaskRecordTypeFieldUpdateOperationsInput | $Enums.TaskRecordType
+  actionType?: Prisma.EnumTaskActionTypeFieldUpdateOperationsInput | $Enums.TaskActionType
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
-  projectObjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  dealId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  clientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   responsibleId?: Prisma.StringFieldUpdateOperationsInput | string
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  clientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  designerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dealId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectParticipantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  result?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextStepAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isAutoCreated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  autoRule?: Prisma.NullableEnumTaskAutoRuleFieldUpdateOperationsInput | $Enums.TaskAutoRule | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
@@ -1537,114 +2737,174 @@ export type TaskActivityUncheckedUpdateManyWithoutProposalInput = {
 
 export type TaskActivitySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  recordType?: boolean
+  actionType?: boolean
   title?: boolean
-  status?: boolean
-  projectObjectId?: boolean
-  dealId?: boolean
-  proposalId?: boolean
-  clientId?: boolean
-  dueAt?: boolean
+  description?: boolean
   responsibleId?: boolean
   createdById?: boolean
+  clientId?: boolean
+  designerId?: boolean
+  objectId?: boolean
+  dealId?: boolean
+  proposalId?: boolean
+  objectParticipantId?: boolean
+  status?: boolean
+  priority?: boolean
+  dueAt?: boolean
+  completedAt?: boolean
+  result?: boolean
+  nextStepText?: boolean
+  nextStepAt?: boolean
+  isAutoCreated?: boolean
+  autoRule?: boolean
+  archivedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  archivedAt?: boolean
   notes?: boolean
   responsible?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  client?: boolean | Prisma.TaskActivity$clientArgs<ExtArgs>
+  designer?: boolean | Prisma.TaskActivity$designerArgs<ExtArgs>
   projectObject?: boolean | Prisma.TaskActivity$projectObjectArgs<ExtArgs>
   deal?: boolean | Prisma.TaskActivity$dealArgs<ExtArgs>
   proposal?: boolean | Prisma.TaskActivity$proposalArgs<ExtArgs>
-  client?: boolean | Prisma.TaskActivity$clientArgs<ExtArgs>
+  objectParticipant?: boolean | Prisma.TaskActivity$objectParticipantArgs<ExtArgs>
 }, ExtArgs["result"]["taskActivity"]>
 
 export type TaskActivitySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  recordType?: boolean
+  actionType?: boolean
   title?: boolean
-  status?: boolean
-  projectObjectId?: boolean
-  dealId?: boolean
-  proposalId?: boolean
-  clientId?: boolean
-  dueAt?: boolean
+  description?: boolean
   responsibleId?: boolean
   createdById?: boolean
+  clientId?: boolean
+  designerId?: boolean
+  objectId?: boolean
+  dealId?: boolean
+  proposalId?: boolean
+  objectParticipantId?: boolean
+  status?: boolean
+  priority?: boolean
+  dueAt?: boolean
+  completedAt?: boolean
+  result?: boolean
+  nextStepText?: boolean
+  nextStepAt?: boolean
+  isAutoCreated?: boolean
+  autoRule?: boolean
+  archivedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  archivedAt?: boolean
   notes?: boolean
   responsible?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  client?: boolean | Prisma.TaskActivity$clientArgs<ExtArgs>
+  designer?: boolean | Prisma.TaskActivity$designerArgs<ExtArgs>
   projectObject?: boolean | Prisma.TaskActivity$projectObjectArgs<ExtArgs>
   deal?: boolean | Prisma.TaskActivity$dealArgs<ExtArgs>
   proposal?: boolean | Prisma.TaskActivity$proposalArgs<ExtArgs>
-  client?: boolean | Prisma.TaskActivity$clientArgs<ExtArgs>
+  objectParticipant?: boolean | Prisma.TaskActivity$objectParticipantArgs<ExtArgs>
 }, ExtArgs["result"]["taskActivity"]>
 
 export type TaskActivitySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  recordType?: boolean
+  actionType?: boolean
   title?: boolean
-  status?: boolean
-  projectObjectId?: boolean
-  dealId?: boolean
-  proposalId?: boolean
-  clientId?: boolean
-  dueAt?: boolean
+  description?: boolean
   responsibleId?: boolean
   createdById?: boolean
+  clientId?: boolean
+  designerId?: boolean
+  objectId?: boolean
+  dealId?: boolean
+  proposalId?: boolean
+  objectParticipantId?: boolean
+  status?: boolean
+  priority?: boolean
+  dueAt?: boolean
+  completedAt?: boolean
+  result?: boolean
+  nextStepText?: boolean
+  nextStepAt?: boolean
+  isAutoCreated?: boolean
+  autoRule?: boolean
+  archivedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  archivedAt?: boolean
   notes?: boolean
   responsible?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  client?: boolean | Prisma.TaskActivity$clientArgs<ExtArgs>
+  designer?: boolean | Prisma.TaskActivity$designerArgs<ExtArgs>
   projectObject?: boolean | Prisma.TaskActivity$projectObjectArgs<ExtArgs>
   deal?: boolean | Prisma.TaskActivity$dealArgs<ExtArgs>
   proposal?: boolean | Prisma.TaskActivity$proposalArgs<ExtArgs>
-  client?: boolean | Prisma.TaskActivity$clientArgs<ExtArgs>
+  objectParticipant?: boolean | Prisma.TaskActivity$objectParticipantArgs<ExtArgs>
 }, ExtArgs["result"]["taskActivity"]>
 
 export type TaskActivitySelectScalar = {
   id?: boolean
+  recordType?: boolean
+  actionType?: boolean
   title?: boolean
-  status?: boolean
-  projectObjectId?: boolean
-  dealId?: boolean
-  proposalId?: boolean
-  clientId?: boolean
-  dueAt?: boolean
+  description?: boolean
   responsibleId?: boolean
   createdById?: boolean
+  clientId?: boolean
+  designerId?: boolean
+  objectId?: boolean
+  dealId?: boolean
+  proposalId?: boolean
+  objectParticipantId?: boolean
+  status?: boolean
+  priority?: boolean
+  dueAt?: boolean
+  completedAt?: boolean
+  result?: boolean
+  nextStepText?: boolean
+  nextStepAt?: boolean
+  isAutoCreated?: boolean
+  autoRule?: boolean
+  archivedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  archivedAt?: boolean
   notes?: boolean
 }
 
-export type TaskActivityOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "status" | "projectObjectId" | "dealId" | "proposalId" | "clientId" | "dueAt" | "responsibleId" | "createdById" | "createdAt" | "updatedAt" | "archivedAt" | "notes", ExtArgs["result"]["taskActivity"]>
+export type TaskActivityOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "recordType" | "actionType" | "title" | "description" | "responsibleId" | "createdById" | "clientId" | "designerId" | "objectId" | "dealId" | "proposalId" | "objectParticipantId" | "status" | "priority" | "dueAt" | "completedAt" | "result" | "nextStepText" | "nextStepAt" | "isAutoCreated" | "autoRule" | "archivedAt" | "createdAt" | "updatedAt" | "notes", ExtArgs["result"]["taskActivity"]>
 export type TaskActivityInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   responsible?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  client?: boolean | Prisma.TaskActivity$clientArgs<ExtArgs>
+  designer?: boolean | Prisma.TaskActivity$designerArgs<ExtArgs>
   projectObject?: boolean | Prisma.TaskActivity$projectObjectArgs<ExtArgs>
   deal?: boolean | Prisma.TaskActivity$dealArgs<ExtArgs>
   proposal?: boolean | Prisma.TaskActivity$proposalArgs<ExtArgs>
-  client?: boolean | Prisma.TaskActivity$clientArgs<ExtArgs>
+  objectParticipant?: boolean | Prisma.TaskActivity$objectParticipantArgs<ExtArgs>
 }
 export type TaskActivityIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   responsible?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  client?: boolean | Prisma.TaskActivity$clientArgs<ExtArgs>
+  designer?: boolean | Prisma.TaskActivity$designerArgs<ExtArgs>
   projectObject?: boolean | Prisma.TaskActivity$projectObjectArgs<ExtArgs>
   deal?: boolean | Prisma.TaskActivity$dealArgs<ExtArgs>
   proposal?: boolean | Prisma.TaskActivity$proposalArgs<ExtArgs>
-  client?: boolean | Prisma.TaskActivity$clientArgs<ExtArgs>
+  objectParticipant?: boolean | Prisma.TaskActivity$objectParticipantArgs<ExtArgs>
 }
 export type TaskActivityIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   responsible?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  client?: boolean | Prisma.TaskActivity$clientArgs<ExtArgs>
+  designer?: boolean | Prisma.TaskActivity$designerArgs<ExtArgs>
   projectObject?: boolean | Prisma.TaskActivity$projectObjectArgs<ExtArgs>
   deal?: boolean | Prisma.TaskActivity$dealArgs<ExtArgs>
   proposal?: boolean | Prisma.TaskActivity$proposalArgs<ExtArgs>
-  client?: boolean | Prisma.TaskActivity$clientArgs<ExtArgs>
+  objectParticipant?: boolean | Prisma.TaskActivity$objectParticipantArgs<ExtArgs>
 }
 
 export type $TaskActivityPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1652,25 +2912,39 @@ export type $TaskActivityPayload<ExtArgs extends runtime.Types.Extensions.Intern
   objects: {
     responsible: Prisma.$UserPayload<ExtArgs>
     createdBy: Prisma.$UserPayload<ExtArgs>
+    client: Prisma.$ClientPayload<ExtArgs> | null
+    designer: Prisma.$DesignerPayload<ExtArgs> | null
     projectObject: Prisma.$ProjectObjectPayload<ExtArgs> | null
     deal: Prisma.$DealPayload<ExtArgs> | null
     proposal: Prisma.$CommercialProposalPayload<ExtArgs> | null
-    client: Prisma.$ClientPayload<ExtArgs> | null
+    objectParticipant: Prisma.$ProjectObjectParticipantPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    recordType: $Enums.TaskRecordType
+    actionType: $Enums.TaskActionType
     title: string
-    status: $Enums.TaskStatus
-    projectObjectId: string | null
-    dealId: string | null
-    proposalId: string | null
-    clientId: string | null
-    dueAt: Date | null
+    description: string | null
     responsibleId: string
     createdById: string
+    clientId: string | null
+    designerId: string | null
+    objectId: string | null
+    dealId: string | null
+    proposalId: string | null
+    objectParticipantId: string | null
+    status: $Enums.TaskStatus
+    priority: $Enums.TaskPriority
+    dueAt: Date | null
+    completedAt: Date | null
+    result: string | null
+    nextStepText: string | null
+    nextStepAt: Date | null
+    isAutoCreated: boolean
+    autoRule: $Enums.TaskAutoRule | null
+    archivedAt: Date | null
     createdAt: Date
     updatedAt: Date
-    archivedAt: Date | null
     notes: string | null
   }, ExtArgs["result"]["taskActivity"]>
   composites: {}
@@ -2068,10 +3342,12 @@ export interface Prisma__TaskActivityClient<T, Null = never, ExtArgs extends run
   readonly [Symbol.toStringTag]: "PrismaPromise"
   responsible<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   createdBy<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  client<T extends Prisma.TaskActivity$clientArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TaskActivity$clientArgs<ExtArgs>>): Prisma.Prisma__ClientClient<runtime.Types.Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  designer<T extends Prisma.TaskActivity$designerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TaskActivity$designerArgs<ExtArgs>>): Prisma.Prisma__DesignerClient<runtime.Types.Result.GetResult<Prisma.$DesignerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   projectObject<T extends Prisma.TaskActivity$projectObjectArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TaskActivity$projectObjectArgs<ExtArgs>>): Prisma.Prisma__ProjectObjectClient<runtime.Types.Result.GetResult<Prisma.$ProjectObjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   deal<T extends Prisma.TaskActivity$dealArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TaskActivity$dealArgs<ExtArgs>>): Prisma.Prisma__DealClient<runtime.Types.Result.GetResult<Prisma.$DealPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   proposal<T extends Prisma.TaskActivity$proposalArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TaskActivity$proposalArgs<ExtArgs>>): Prisma.Prisma__CommercialProposalClient<runtime.Types.Result.GetResult<Prisma.$CommercialProposalPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  client<T extends Prisma.TaskActivity$clientArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TaskActivity$clientArgs<ExtArgs>>): Prisma.Prisma__ClientClient<runtime.Types.Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  objectParticipant<T extends Prisma.TaskActivity$objectParticipantArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TaskActivity$objectParticipantArgs<ExtArgs>>): Prisma.Prisma__ProjectObjectParticipantClient<runtime.Types.Result.GetResult<Prisma.$ProjectObjectParticipantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2102,18 +3378,30 @@ export interface Prisma__TaskActivityClient<T, Null = never, ExtArgs extends run
  */
 export interface TaskActivityFieldRefs {
   readonly id: Prisma.FieldRef<"TaskActivity", 'String'>
+  readonly recordType: Prisma.FieldRef<"TaskActivity", 'TaskRecordType'>
+  readonly actionType: Prisma.FieldRef<"TaskActivity", 'TaskActionType'>
   readonly title: Prisma.FieldRef<"TaskActivity", 'String'>
-  readonly status: Prisma.FieldRef<"TaskActivity", 'TaskStatus'>
-  readonly projectObjectId: Prisma.FieldRef<"TaskActivity", 'String'>
-  readonly dealId: Prisma.FieldRef<"TaskActivity", 'String'>
-  readonly proposalId: Prisma.FieldRef<"TaskActivity", 'String'>
-  readonly clientId: Prisma.FieldRef<"TaskActivity", 'String'>
-  readonly dueAt: Prisma.FieldRef<"TaskActivity", 'DateTime'>
+  readonly description: Prisma.FieldRef<"TaskActivity", 'String'>
   readonly responsibleId: Prisma.FieldRef<"TaskActivity", 'String'>
   readonly createdById: Prisma.FieldRef<"TaskActivity", 'String'>
+  readonly clientId: Prisma.FieldRef<"TaskActivity", 'String'>
+  readonly designerId: Prisma.FieldRef<"TaskActivity", 'String'>
+  readonly objectId: Prisma.FieldRef<"TaskActivity", 'String'>
+  readonly dealId: Prisma.FieldRef<"TaskActivity", 'String'>
+  readonly proposalId: Prisma.FieldRef<"TaskActivity", 'String'>
+  readonly objectParticipantId: Prisma.FieldRef<"TaskActivity", 'String'>
+  readonly status: Prisma.FieldRef<"TaskActivity", 'TaskStatus'>
+  readonly priority: Prisma.FieldRef<"TaskActivity", 'TaskPriority'>
+  readonly dueAt: Prisma.FieldRef<"TaskActivity", 'DateTime'>
+  readonly completedAt: Prisma.FieldRef<"TaskActivity", 'DateTime'>
+  readonly result: Prisma.FieldRef<"TaskActivity", 'String'>
+  readonly nextStepText: Prisma.FieldRef<"TaskActivity", 'String'>
+  readonly nextStepAt: Prisma.FieldRef<"TaskActivity", 'DateTime'>
+  readonly isAutoCreated: Prisma.FieldRef<"TaskActivity", 'Boolean'>
+  readonly autoRule: Prisma.FieldRef<"TaskActivity", 'TaskAutoRule'>
+  readonly archivedAt: Prisma.FieldRef<"TaskActivity", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"TaskActivity", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"TaskActivity", 'DateTime'>
-  readonly archivedAt: Prisma.FieldRef<"TaskActivity", 'DateTime'>
   readonly notes: Prisma.FieldRef<"TaskActivity", 'String'>
 }
     
@@ -2516,6 +3804,44 @@ export type TaskActivityDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.
 }
 
 /**
+ * TaskActivity.client
+ */
+export type TaskActivity$clientArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Client
+   */
+  select?: Prisma.ClientSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Client
+   */
+  omit?: Prisma.ClientOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ClientInclude<ExtArgs> | null
+  where?: Prisma.ClientWhereInput
+}
+
+/**
+ * TaskActivity.designer
+ */
+export type TaskActivity$designerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Designer
+   */
+  select?: Prisma.DesignerSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Designer
+   */
+  omit?: Prisma.DesignerOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DesignerInclude<ExtArgs> | null
+  where?: Prisma.DesignerWhereInput
+}
+
+/**
  * TaskActivity.projectObject
  */
 export type TaskActivity$projectObjectArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2573,22 +3899,22 @@ export type TaskActivity$proposalArgs<ExtArgs extends runtime.Types.Extensions.I
 }
 
 /**
- * TaskActivity.client
+ * TaskActivity.objectParticipant
  */
-export type TaskActivity$clientArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type TaskActivity$objectParticipantArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Client
+   * Select specific fields to fetch from the ProjectObjectParticipant
    */
-  select?: Prisma.ClientSelect<ExtArgs> | null
+  select?: Prisma.ProjectObjectParticipantSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Client
+   * Omit specific fields from the ProjectObjectParticipant
    */
-  omit?: Prisma.ClientOmit<ExtArgs> | null
+  omit?: Prisma.ProjectObjectParticipantOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ClientInclude<ExtArgs> | null
-  where?: Prisma.ClientWhereInput
+  include?: Prisma.ProjectObjectParticipantInclude<ExtArgs> | null
+  where?: Prisma.ProjectObjectParticipantWhereInput
 }
 
 /**

@@ -7,7 +7,11 @@ import {
   canChangeProposalResponsible,
   canChangeProposalStatus,
   canChangeRecordResponsible,
+  canChangeTaskResponsible,
   canCloseDealAsLost,
+  canCreateTask,
+  canCreateTouch,
+  canCancelTask,
   canCreateDeal,
   canCreateObject,
   canCreateProposal,
@@ -96,5 +100,20 @@ describe("permissions", () => {
     expect(canChangeProposalResponsible(projectManager)).toBe(false);
     expect(canChangeProposalFinancials(administrator)).toBe(false);
     expect(canChangeProposalStatus(administrator)).toBe(false);
+  });
+
+  it("allows CRM roles to create tasks and touches with responsible changes restricted", () => {
+    expect(canCreateTask(owner)).toBe(true);
+    expect(canCreateTask(projectManager)).toBe(true);
+    expect(canCreateTouch(administrator)).toBe(true);
+    expect(canChangeTaskResponsible(salesLead)).toBe(true);
+    expect(canChangeTaskResponsible(projectManager)).toBe(false);
+  });
+
+  it("allows task cancellation for leadership and task owners", () => {
+    expect(canCancelTask(owner, foreignRecord)).toBe(true);
+    expect(canCancelTask(salesLead, foreignRecord)).toBe(true);
+    expect(canCancelTask(projectManager, ownRecord)).toBe(true);
+    expect(canCancelTask(projectManager, foreignRecord)).toBe(false);
   });
 });
