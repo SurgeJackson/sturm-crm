@@ -1,10 +1,13 @@
 import { describe, expect, it } from "vitest";
 import {
   canArchiveRecord,
+  canChangeDealResponsible,
   canChangeObjectResponsible,
   canChangeRecordResponsible,
-  canEditRecord,
+  canCloseDealAsLost,
+  canCreateDeal,
   canCreateObject,
+  canEditRecord,
   canManageUsers,
   canManageObjectParticipants,
   canViewAllData,
@@ -53,6 +56,13 @@ describe("permissions", () => {
     expect(canCreateObject(administrator)).toBe(true);
   });
 
+  it("allows CRM roles to create deals", () => {
+    expect(canCreateDeal(owner)).toBe(true);
+    expect(canCreateDeal(salesLead)).toBe(true);
+    expect(canCreateDeal(projectManager)).toBe(true);
+    expect(canCreateDeal(administrator)).toBe(true);
+  });
+
   it("keeps object responsible changes on leadership roles", () => {
     expect(canChangeObjectResponsible(owner)).toBe(true);
     expect(canChangeObjectResponsible(salesLead)).toBe(true);
@@ -63,5 +73,14 @@ describe("permissions", () => {
   it("allows object participants to be managed by users who can edit the object", () => {
     expect(canManageObjectParticipants(projectManager, ownRecord)).toBe(true);
     expect(canManageObjectParticipants(projectManager, foreignRecord)).toBe(false);
+  });
+
+  it("uses elevated deal responsible rules and blocks administrators from closing lost deals", () => {
+    expect(canChangeDealResponsible(owner)).toBe(true);
+    expect(canChangeDealResponsible(salesLead)).toBe(true);
+    expect(canChangeDealResponsible(projectManager)).toBe(false);
+    expect(canCloseDealAsLost(owner)).toBe(true);
+    expect(canCloseDealAsLost(projectManager)).toBe(true);
+    expect(canCloseDealAsLost(administrator)).toBe(false);
   });
 });

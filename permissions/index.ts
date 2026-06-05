@@ -89,6 +89,15 @@ export function canCreateDeal(user?: PermissionUser | null) {
   return managerRoles.has(user.role);
 }
 
+export function canChangeDealResponsible(user?: PermissionUser | null) {
+  return canChangeResponsible(user);
+}
+
+export function canCloseDealAsLost(user?: PermissionUser | null) {
+  if (!isActive(user)) return false;
+  return user.role !== "ADMINISTRATOR";
+}
+
 export function canCreateProposal(user?: PermissionUser | null) {
   if (!isActive(user)) return false;
   return managerRoles.has(user.role);

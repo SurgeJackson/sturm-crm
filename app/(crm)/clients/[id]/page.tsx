@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { archiveClientAction } from "@/modules/clients/actions";
 import { getClientForUser } from "@/modules/clients/queries";
 import { getAuditLogs } from "@/lib/audit-log";
-import { clientSourceLabels, clientStatusLabels, clientTypeLabels, objectStageLabels, objectStatusLabels } from "@/lib/constants";
+import { clientSourceLabels, clientStatusLabels, clientTypeLabels, dealStageLabels, objectStageLabels, objectStatusLabels } from "@/lib/constants";
 import { formatRussianDate } from "@/utils/date";
 import { canArchiveRecord, canEditRecord } from "@/permissions";
 
@@ -142,14 +142,43 @@ export default async function ClientPage({ params, searchParams }: ClientPagePro
                 </Table>
               </CardContent>
             </Card>
-            <div className="grid gap-4 md:grid-cols-2">
-              {["Связанные сделки", "Связанные КП"].map((title) => (
-                <Card key={title}>
-                  <CardHeader><CardTitle>{title}</CardTitle></CardHeader>
-                  <CardContent className="text-sm text-muted-foreground">Будет реализовано на следующих этапах.</CardContent>
-                </Card>
-              ))}
-            </div>
+            <Card>
+              <CardHeader><CardTitle>Связанные сделки</CardTitle></CardHeader>
+              <CardContent className="p-0">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Сделка</TableHead>
+                      <TableHead>Объект</TableHead>
+                      <TableHead>Стадия</TableHead>
+                      <TableHead>Сумма</TableHead>
+                      <TableHead>Ответственный</TableHead>
+                      <TableHead>Следующее действие</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {client.deals.length === 0 ? (
+                      <TableRow><TableCell colSpan={6} className="h-24 text-center text-sm text-muted-foreground">У клиента пока нет связанных сделок.</TableCell></TableRow>
+                    ) : (
+                      client.deals.map((deal) => (
+                        <TableRow key={deal.id}>
+                          <TableCell><Link className="font-medium hover:underline" href={`/deals/${deal.id}`}>{deal.title}</Link></TableCell>
+                          <TableCell><Link className="hover:underline" href={`/objects/${deal.projectObject.id}`}>{deal.projectObject.title}</Link></TableCell>
+                          <TableCell><Badge variant="outline">{dealStageLabels[deal.stage]}</Badge></TableCell>
+                          <TableCell>{deal.potentialAmount ? `${deal.potentialAmount.toLocaleString("ru-RU")} ₽` : "Без суммы"}</TableCell>
+                          <TableCell>{deal.responsible.name}</TableCell>
+                          <TableCell>{formatRussianDate(deal.nextActionAt)}</TableCell>
+                        </TableRow>
+                      ))
+                    )}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader><CardTitle>Связанные КП</CardTitle></CardHeader>
+              <CardContent className="text-sm text-muted-foreground">Будет реализовано на следующем этапе.</CardContent>
+            </Card>
           </div>
         </TabsContent>
         <TabsContent value="audit">

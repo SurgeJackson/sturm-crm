@@ -116,7 +116,10 @@ export async function getProjectObjectForUser(id: string, user: PermissionUser) 
       deals: {
         where: { archivedAt: null },
         orderBy: { createdAt: "desc" },
-        take: 20
+        take: 20,
+        include: {
+          responsible: { select: { id: true, name: true } }
+        }
       },
       proposals: {
         where: { archivedAt: null },

@@ -89,6 +89,14 @@ export async function getClientForUser(id: string, user: PermissionUser) {
           designer: { select: { id: true, name: true, studio: true } },
           responsible: { select: { id: true, name: true } }
         }
+      },
+      deals: {
+        where: { archivedAt: null },
+        orderBy: { createdAt: "desc" },
+        include: {
+          projectObject: { select: { id: true, title: true } },
+          responsible: { select: { id: true, name: true } }
+        }
       }
     }
   });

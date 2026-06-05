@@ -4,7 +4,7 @@ import { getCurrentUser } from "@/auth/get-current-user";
 import { getDashboardMetrics } from "@/modules/dashboard/dashboard-metrics";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { designerRelationshipStageLabels, objectStageLabels } from "@/lib/constants";
+import { dealLossReasonLabels, dealStageLabels, designerRelationshipStageLabels, objectStageLabels } from "@/lib/constants";
 
 export default async function DashboardPage() {
   const user = await getCurrentUser();
@@ -26,6 +26,19 @@ export default async function DashboardPage() {
     { title: "Объекты без ответственного", value: metrics.objectsWithoutResponsible, icon: AlertTriangle, variant: "outline" as const },
     { title: "Объекты без клиента", value: metrics.objectsWithoutClient, icon: AlertTriangle, variant: "outline" as const },
     { title: "Объекты от дизайнеров", value: metrics.objectsFromDesigners, icon: UserRound, variant: "default" as const },
+    { title: "Новые сделки за 7 дней", value: metrics.newDeals, icon: BriefcaseBusiness, variant: "default" as const },
+    { title: "Активные сделки", value: metrics.activeDeals, icon: BriefcaseBusiness, variant: "secondary" as const },
+    { title: "Сумма активных сделок", value: `${metrics.activeDealsAmount.toLocaleString("ru-RU")} ₽`, icon: BriefcaseBusiness, variant: "default" as const },
+    { title: "Сделки без следующего шага", value: metrics.dealsWithoutNextStep, icon: AlertTriangle, variant: "warning" as const },
+    { title: "Просроченные следующие действия", value: metrics.overdueNextActionDeals, icon: AlertTriangle, variant: "warning" as const },
+    { title: "Сделки в ожидании решения", value: metrics.waitingDecisionDeals, icon: CheckSquare, variant: "outline" as const },
+    { title: "Проигранные за 7 дней", value: metrics.lostDealsPeriod, icon: AlertTriangle, variant: "warning" as const },
+    { title: "Мои активные сделки", value: metrics.myActiveDeals, icon: BriefcaseBusiness, variant: "outline" as const },
+    { title: "Мои сделки без шага", value: metrics.myDealsWithoutNextStep, icon: AlertTriangle, variant: "outline" as const },
+    { title: "Мои просроченные действия", value: metrics.myOverdueNextActionDeals, icon: AlertTriangle, variant: "warning" as const },
+    { title: "Мои сделки ждут решения", value: metrics.myWaitingDecisionDeals, icon: CheckSquare, variant: "outline" as const },
+    { title: "Мои КП в работе", value: metrics.myProposalInProgressDeals, icon: FileText, variant: "outline" as const },
+    { title: "Мои проигранные за 7 дней", value: metrics.myLostDealsPeriod, icon: AlertTriangle, variant: "outline" as const },
     { title: "Дизайнеры с потенциалом A", value: metrics.potentialADesigners, icon: BriefcaseBusiness, variant: "default" as const },
     { title: "Дизайнеры в статусе Спящий", value: metrics.sleepingDesigners, icon: FileText, variant: "secondary" as const },
     { title: "Мои клиенты", value: metrics.myClients, icon: UsersRound, variant: "outline" as const },
@@ -63,6 +76,62 @@ export default async function DashboardPage() {
             </Card>
           );
         })}
+      </div>
+
+      <div className="grid gap-4 xl:grid-cols-3">
+        <Card>
+          <CardHeader>
+            <CardTitle>Сделки по стадиям</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            {Object.entries(metrics.dealsByStage).length === 0 ? (
+              <p className="text-sm text-muted-foreground">Пока нет сделок.</p>
+            ) : (
+              Object.entries(metrics.dealsByStage).map(([stage, count]) => (
+                <div key={stage} className="flex items-center justify-between rounded-md border p-3 text-sm">
+                  <span>{dealStageLabels[stage as keyof typeof dealStageLabels]}</span>
+                  <Badge variant="secondary">{count}</Badge>
+                </div>
+              ))
+            )}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Причины проигрышей</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            {Object.entries(metrics.dealLossReasons).length === 0 ? (
+              <p className="text-sm text-muted-foreground">Пока нет проигранных сделок.</p>
+            ) : (
+              Object.entries(metrics.dealLossReasons).map(([reason, count]) => (
+                <div key={reason} className="flex items-center justify-between rounded-md border p-3 text-sm">
+                  <span>{dealLossReasonLabels[reason as keyof typeof dealLossReasonLabels]}</span>
+                  <Badge variant="warning">{count}</Badge>
+                </div>
+              ))
+            )}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Сделки по ответственным</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            {metrics.dealResponsibleCounts.length === 0 ? (
+              <p className="text-sm text-muted-foreground">Пока нет сделок.</p>
+            ) : (
+              metrics.dealResponsibleCounts.map((item) => (
+                <div key={item.name} className="flex items-center justify-between rounded-md border p-3 text-sm">
+                  <span>{item.name}</span>
+                  <Badge variant="secondary">{item.count}</Badge>
+                </div>
+              ))
+            )}
+          </CardContent>
+        </Card>
       </div>
 
       <Card>

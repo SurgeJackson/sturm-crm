@@ -11,6 +11,8 @@ import { getAuditLogs } from "@/lib/audit-log";
 import {
   attitudeToSturmLabels,
   changeApprovalLabels,
+  dealProbabilityLabels,
+  dealStageLabels,
   influenceLevelLabels,
   influenceTypeLabels,
   objectInterestCategoryLabels,
@@ -316,7 +318,44 @@ export default async function ObjectPage({ params, searchParams }: ObjectPagePro
         </TabsContent>
 
         <TabsContent value="deals">
-          <Card><CardContent className="pt-5 text-sm text-muted-foreground">{projectObject.deals.length === 0 ? "По объекту пока нет сделок" : "Связанные сделки подготовлены к отображению."}</CardContent></Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle>Сделки</CardTitle>
+              <Button asChild size="sm">
+                <Link href={`/deals/new?objectId=${id}`}>Создать сделку по объекту</Link>
+              </Button>
+            </CardHeader>
+            <CardContent className="p-0">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Сделка</TableHead>
+                    <TableHead>Стадия</TableHead>
+                    <TableHead>Сумма</TableHead>
+                    <TableHead>Вероятность</TableHead>
+                    <TableHead>Ответственный</TableHead>
+                    <TableHead>Следующее действие</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {projectObject.deals.length === 0 ? (
+                    <TableRow><TableCell colSpan={6} className="h-24 text-center text-sm text-muted-foreground">По объекту пока нет сделок</TableCell></TableRow>
+                  ) : (
+                    projectObject.deals.map((deal) => (
+                      <TableRow key={deal.id}>
+                        <TableCell><Link className="font-medium hover:underline" href={`/deals/${deal.id}`}>{deal.title}</Link></TableCell>
+                        <TableCell><Badge variant="outline">{dealStageLabels[deal.stage]}</Badge></TableCell>
+                        <TableCell>{deal.potentialAmount ? `${deal.potentialAmount.toLocaleString("ru-RU")} ₽` : "Без суммы"}</TableCell>
+                        <TableCell>{deal.probability ? dealProbabilityLabels[deal.probability] : "Не выбрана"}</TableCell>
+                        <TableCell>{deal.responsible.name}</TableCell>
+                        <TableCell>{formatRussianDate(deal.nextActionAt)}</TableCell>
+                      </TableRow>
+                    ))
+                  )}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
         </TabsContent>
         <TabsContent value="proposals">
           <Card><CardContent className="pt-5 text-sm text-muted-foreground">{projectObject.proposals.length === 0 ? "По объекту пока нет КП" : "Связанные КП подготовлены к отображению."}</CardContent></Card>

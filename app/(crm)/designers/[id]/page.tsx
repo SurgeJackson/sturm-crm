@@ -15,6 +15,7 @@ import {
   designerPotentialLabels,
   designerRelationshipStageLabels,
   designerRoleLabels,
+  dealStageLabels,
   objectStageLabels,
   objectStatusLabels
 } from "@/lib/constants";
@@ -88,6 +89,7 @@ export default async function DesignerPage({ params, searchParams }: DesignerPag
           <TabsTrigger value="pipeline">Воронка / отношения</TabsTrigger>
           <TabsTrigger value="touches">Касания и задачи</TabsTrigger>
           <TabsTrigger value="objects">Связанные объекты</TabsTrigger>
+          <TabsTrigger value="deals">Связанные сделки</TabsTrigger>
           <TabsTrigger value="analytics">Аналитика</TabsTrigger>
           <TabsTrigger value="audit">История изменений</TabsTrigger>
         </TabsList>
@@ -156,6 +158,43 @@ export default async function DesignerPage({ params, searchParams }: DesignerPag
                         <TableCell>{object.responsible.name}</TableCell>
                         <TableCell><Badge variant="outline">{objectStageLabels[object.stage]}</Badge></TableCell>
                         <TableCell><Badge variant="secondary">{objectStatusLabels[object.status]}</Badge></TableCell>
+                      </TableRow>
+                    ))
+                  )}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+        </TabsContent>
+        <TabsContent value="deals">
+          <Card>
+            <CardHeader><CardTitle>Связанные сделки</CardTitle></CardHeader>
+            <CardContent className="p-0">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Сделка</TableHead>
+                    <TableHead>Объект</TableHead>
+                    <TableHead>Стадия</TableHead>
+                    <TableHead>Сумма</TableHead>
+                    <TableHead>Ответственный</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {designer.deals.length === 0 ? (
+                    <TableRow>
+                      <TableCell colSpan={5} className="h-24 text-center text-sm text-muted-foreground">
+                        У дизайнера пока нет связанных сделок.
+                      </TableCell>
+                    </TableRow>
+                  ) : (
+                    designer.deals.map((deal) => (
+                      <TableRow key={deal.id}>
+                        <TableCell><Link className="font-medium hover:underline" href={`/deals/${deal.id}`}>{deal.title}</Link></TableCell>
+                        <TableCell><Link className="hover:underline" href={`/objects/${deal.projectObject.id}`}>{deal.projectObject.title}</Link></TableCell>
+                        <TableCell><Badge variant="outline">{dealStageLabels[deal.stage]}</Badge></TableCell>
+                        <TableCell>{deal.potentialAmount ? `${deal.potentialAmount.toLocaleString("ru-RU")} ₽` : "Без суммы"}</TableCell>
+                        <TableCell>{deal.responsible.name}</TableCell>
                       </TableRow>
                     ))
                   )}

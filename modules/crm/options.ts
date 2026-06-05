@@ -4,6 +4,10 @@ import {
   clientTypeLabels,
   attitudeToSturmLabels,
   changeApprovalLabels,
+  dealLossReasonLabels,
+  dealProbabilityLabels,
+  dealSourceLabels,
+  dealStageLabels,
   designerLoyaltyLabels,
   designerPotentialLabels,
   designerProjectSegmentLabels,
@@ -46,3 +50,7 @@ export const influenceLevelOptions = toOptions(influenceLevelLabels);
 export const influenceTypeOptions = toOptions(influenceTypeLabels);
 export const attitudeToSturmOptions = toOptions(attitudeToSturmLabels);
 export const changeApprovalOptions = toOptions(changeApprovalLabels);
+export const dealStageOptions = toOptions(dealStageLabels);
+export const dealProbabilityOptions = toOptions(dealProbabilityLabels);
+export const dealSourceOptions = toOptions(dealSourceLabels);
+export const dealLossReasonOptions = toOptions(dealLossReasonLabels);

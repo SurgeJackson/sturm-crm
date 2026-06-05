@@ -222,6 +222,55 @@ enum ChangeApproval {
   PARTIALLY
 }
 
+enum DealStage {
+  NEW_REQUEST
+  QUALIFICATION
+  SELECTION
+  PROPOSAL_IN_PROGRESS
+  PROPOSAL_SENT
+  WAITING_DECISION
+  NEGOTIATION
+  INVOICE_OR_ORDER
+  PAID
+  IN_DELIVERY
+  COMPLETED
+  LOST
+}
+
+enum DealProbability {
+  LOW
+  MEDIUM
+  HIGH
+  VERY_HIGH
+}
+
+enum DealSource {
+  DESIGNER
+  SHOWROOM
+  WEBSITE
+  PHONE
+  RECOMMENDATION
+  REPEAT_CLIENT
+  COMMERCIAL_PROJECT
+  OTHER
+}
+
+enum DealLossReason {
+  PRICE
+  DEADLINES
+  COMPETITOR
+  CHINA
+  SELF_PURCHASE
+  CLIENT_DISAPPEARED
+  ASSORTMENT
+  PAYMENT_TERMS
+  DELIVERY_TERMS
+  DESIGNER_NOT_SUPPORT
+  PROCUREMENT_CHOSE_OTHER
+  PROJECT_FROZEN
+  OTHER
+}
+
 model User {
   id             String    @id @default(cuid())
   name           String
@@ -276,6 +325,7 @@ model Client {
   createdBy      User            @relation("ClientCreatedBy", fields: [createdById], references: [id])
   linkedDesigner Designer?       @relation("ClientLinkedDesigner", fields: [linkedDesignerId], references: [id])
   projectObjects ProjectObject[] @relation("ObjectClient")
+  deals          Deal[]          @relation("DealClient")
 }
 
 model Designer {
@@ -316,6 +366,7 @@ model Designer {
   createdBy      User            @relation("DesignerCreatedBy", fields: [createdById], references: [id])
   linkedClients  Client[]        @relation("ClientLinkedDesigner")
   projectObjects ProjectObject[] @relation("ObjectDesigner")
+  deals          Deal[]          @relation("DealDesigner")
 }
 
 model ProjectObject {
@@ -383,20 +434,35 @@ model ProjectObjectParticipant {
 }
 
 model Deal {
-  id              String       @id @default(cuid())
+  id              String           @id @default(cuid())
   title           String
-  status          EntityStatus @default(ACTIVE)
-  projectObjectId String?
+  clientId        String
+  objectId        String
+  designerId      String?
   responsibleId   String
+  stage           DealStage        @default(NEW_REQUEST)
+  potentialAmount Float?
+  probability     DealProbability?
+  nextActionAt    DateTime?
+  nextActionText  String?
+  source          DealSource
+  lossReason      DealLossReason?
+  lossComment     String?
+  comment         String?
   createdById     String
-  createdAt       DateTime     @default(now())
-  updatedAt       DateTime     @updatedAt
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
   archivedAt      DateTime?
+  closedAt        DateTime?
   notes           String?
 
-  responsible   User           @relation("DealResponsible", fields: [responsibleId], references: [id])
-  createdBy     User           @relation("DealCreatedBy", fields: [createdById], references: [id])
-  projectObject ProjectObject? @relation("DealObject", fields: [projectObjectId], references: [id])
+  client        Client               @relation("DealClient", fields: [clientId], references: [id])
+  projectObject ProjectObject        @relation("DealObject", fields: [objectId], references: [id])
+  designer      Designer?            @relation("DealDesigner", fields: [designerId], references: [id])
+  responsible   User                 @relation("DealResponsible", fields: [responsibleId], references: [id])
+  createdBy     User                 @relation("DealCreatedBy", fields: [createdById], references: [id])
+  proposals     CommercialProposal[] @relation("ProposalDeal")
+  tasks         TaskActivity[]       @relation("TaskDeal")
 }
 
 model CommercialProposal {
@@ -404,6 +470,7 @@ model CommercialProposal {
   title           String
   status          EntityStatus @default(ACTIVE)
   projectObjectId String?
+  dealId          String?
   responsibleId   String
   createdById     String
   createdAt       DateTime     @default(now())
@@ -414,6 +481,7 @@ model CommercialProposal {
   responsible   User           @relation("ProposalResponsible", fields: [responsibleId], references: [id])
   createdBy     User           @relation("ProposalCreatedBy", fields: [createdById], references: [id])
   projectObject ProjectObject? @relation("ProposalObject", fields: [projectObjectId], references: [id])
+  deal          Deal?          @relation("ProposalDeal", fields: [dealId], references: [id])
 }
 
 model TaskActivity {
@@ -421,6 +489,7 @@ model TaskActivity {
   title           String
   status          TaskStatus @default(NEW)
   projectObjectId String?
+  dealId          String?
   responsibleId   String
   createdById     String
   createdAt       DateTime   @default(now())
@@ -431,6 +500,7 @@ model TaskActivity {
   responsible   User           @relation("TaskResponsible", fields: [responsibleId], references: [id])
   createdBy     User           @relation("TaskCreatedBy", fields: [createdById], references: [id])
   projectObject ProjectObject? @relation("TaskObject", fields: [projectObjectId], references: [id])
+  deal          Deal?          @relation("TaskDeal", fields: [dealId], references: [id])
 }
 
 model AuditLog {
