@@ -1,0 +1,172 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  OWNER
+  SALES_LEAD
+  STORE_MANAGER
+  PROJECT_MANAGER
+  ADMINISTRATOR
+}
+
+enum EntityStatus {
+  ACTIVE
+  ARCHIVED
+  LOST
+  SLEEPING
+}
+
+enum TaskStatus {
+  NEW
+  IN_PROGRESS
+  WAITING
+  DONE
+  OVERDUE
+  CANCELLED
+}
+
+enum AuditEntityType {
+  CLIENT
+  DESIGNER
+  OBJECT
+  DEAL
+  PROPOSAL
+  TASK
+  USER
+}
+
+model User {
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  email          String    @unique
+  passwordHash   String?
+  authProviderId String?
+  role           UserRole
+  isActive       Boolean   @default(true)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  lastLoginAt    DateTime?
+
+  clientsResponsible   Client[]             @relation("ClientResponsible")
+  clientsCreated       Client[]             @relation("ClientCreatedBy")
+  designersResponsible Designer[]           @relation("DesignerResponsible")
+  designersCreated     Designer[]           @relation("DesignerCreatedBy")
+  objectsResponsible   ProjectObject[]      @relation("ObjectResponsible")
+  objectsCreated       ProjectObject[]      @relation("ObjectCreatedBy")
+  dealsResponsible     Deal[]               @relation("DealResponsible")
+  dealsCreated         Deal[]               @relation("DealCreatedBy")
+  proposalsResponsible CommercialProposal[] @relation("ProposalResponsible")
+  proposalsCreated     CommercialProposal[] @relation("ProposalCreatedBy")
+  tasksResponsible     TaskActivity[]       @relation("TaskResponsible")
+  tasksCreated         TaskActivity[]       @relation("TaskCreatedBy")
+  auditLogs            AuditLog[]           @relation("AuditLogUser")
+}
+
+model Client {
+  id            String       @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  status        EntityStatus @default(ACTIVE)
+  responsibleId String       @db.ObjectId
+  createdById   String       @db.ObjectId
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  archivedAt    DateTime?
+  notes         String?
+
+  responsible User @relation("ClientResponsible", fields: [responsibleId], references: [id])
+  createdBy   User @relation("ClientCreatedBy", fields: [createdById], references: [id])
+}
+
+model Designer {
+  id            String       @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  status        EntityStatus @default(ACTIVE)
+  responsibleId String       @db.ObjectId
+  createdById   String       @db.ObjectId
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  archivedAt    DateTime?
+  notes         String?
+
+  responsible User @relation("DesignerResponsible", fields: [responsibleId], references: [id])
+  createdBy   User @relation("DesignerCreatedBy", fields: [createdById], references: [id])
+}
+
+model ProjectObject {
+  id            String       @id @default(auto()) @map("_id") @db.ObjectId
+  title         String
+  status        EntityStatus @default(ACTIVE)
+  responsibleId String       @db.ObjectId
+  createdById   String       @db.ObjectId
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  archivedAt    DateTime?
+  notes         String?
+
+  responsible User @relation("ObjectResponsible", fields: [responsibleId], references: [id])
+  createdBy   User @relation("ObjectCreatedBy", fields: [createdById], references: [id])
+}
+
+model Deal {
+  id            String       @id @default(auto()) @map("_id") @db.ObjectId
+  title         String
+  status        EntityStatus @default(ACTIVE)
+  responsibleId String       @db.ObjectId
+  createdById   String       @db.ObjectId
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  archivedAt    DateTime?
+  notes         String?
+
+  responsible User @relation("DealResponsible", fields: [responsibleId], references: [id])
+  createdBy   User @relation("DealCreatedBy", fields: [createdById], references: [id])
+}
+
+model CommercialProposal {
+  id            String       @id @default(auto()) @map("_id") @db.ObjectId
+  title         String
+  status        EntityStatus @default(ACTIVE)
+  responsibleId String       @db.ObjectId
+  createdById   String       @db.ObjectId
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  archivedAt    DateTime?
+  notes         String?
+
+  responsible User @relation("ProposalResponsible", fields: [responsibleId], references: [id])
+  createdBy   User @relation("ProposalCreatedBy", fields: [createdById], references: [id])
+}
+
+model TaskActivity {
+  id            String     @id @default(auto()) @map("_id") @db.ObjectId
+  title         String
+  status        TaskStatus @default(NEW)
+  responsibleId String     @db.ObjectId
+  createdById   String     @db.ObjectId
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  archivedAt    DateTime?
+  notes         String?
+
+  responsible User @relation("TaskResponsible", fields: [responsibleId], references: [id])
+  createdBy   User @relation("TaskCreatedBy", fields: [createdById], references: [id])
+}
+
+model AuditLog {
+  id         String          @id @default(auto()) @map("_id") @db.ObjectId
+  entityType AuditEntityType
+  entityId   String
+  action     String
+  userId     String          @db.ObjectId
+  before     Json?
+  after      Json?
+  createdAt  DateTime        @default(now())
+
+  user User @relation("AuditLogUser", fields: [userId], references: [id])
+}
