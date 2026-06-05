@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import type { ClientSource, ClientStatus, ClientType } from "@prisma/client";
+import type { ClientSource, ClientStatus, ClientType } from "@/generated/prisma/client";
 import { getCurrentUser } from "@/auth/get-current-user";
 import { writeAuditLog } from "@/lib/audit-log";
 import { prisma } from "@/lib/prisma";

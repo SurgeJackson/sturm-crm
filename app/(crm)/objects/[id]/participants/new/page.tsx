@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import type { ProjectObjectParticipantType } from "@prisma/client";
+import type { ProjectObjectParticipantType } from "@/generated/prisma/client";
 import { getCurrentUser } from "@/auth/get-current-user";
 import { ProjectObjectParticipantForm } from "@/components/objects/project-object-participant-form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";

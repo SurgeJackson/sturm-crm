@@ -1,4 +1,4 @@
-import { AuditEntityType, EntityStatus, TaskStatus, UserRole } from "@prisma/client";
+import { AuditEntityType, EntityStatus, TaskStatus, UserRole } from "@/generated/prisma/client";
 
 export const crmRoles = UserRole;
 export const crmEntityStatuses = EntityStatus;

@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import type { Designer, User } from "@prisma/client";
+import type { Designer, User } from "@/generated/prisma/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";

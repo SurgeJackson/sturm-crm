@@ -1,4 +1,4 @@
-import type { Prisma } from "@prisma/client";
+import type { Prisma } from "@/generated/prisma/client";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { canViewAllData, canViewRecord, type PermissionUser } from "@/permissions";
@@ -105,6 +105,15 @@ export async function getDesignerForUser(id: string, user: PermissionUser) {
         where: { archivedAt: null },
         orderBy: { createdAt: "desc" },
         include: {
+          projectObject: { select: { id: true, title: true } },
+          responsible: { select: { id: true, name: true } }
+        }
+      },
+      proposals: {
+        where: { archivedAt: null },
+        orderBy: { createdAt: "desc" },
+        include: {
+          deal: { select: { id: true, title: true } },
           projectObject: { select: { id: true, title: true } },
           responsible: { select: { id: true, name: true } }
         }

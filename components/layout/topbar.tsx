@@ -2,7 +2,7 @@
 
 import { signOut } from "next-auth/react";
 import { LogOut, UserCircle } from "lucide-react";
-import type { UserRole } from "@prisma/client";
+import type { UserRole } from "@/generated/prisma/client";
 import { roleLabels } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import {

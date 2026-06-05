@@ -10,7 +10,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { archiveClientAction } from "@/modules/clients/actions";
 import { getClientForUser } from "@/modules/clients/queries";
 import { getAuditLogs } from "@/lib/audit-log";
-import { clientSourceLabels, clientStatusLabels, clientTypeLabels, dealStageLabels, objectStageLabels, objectStatusLabels } from "@/lib/constants";
+import {
+  clientSourceLabels,
+  clientStatusLabels,
+  clientTypeLabels,
+  commercialProposalStatusLabels,
+  dealStageLabels,
+  objectStageLabels,
+  objectStatusLabels
+} from "@/lib/constants";
 import { formatRussianDate } from "@/utils/date";
 import { canArchiveRecord, canEditRecord } from "@/permissions";
 
@@ -177,7 +185,36 @@ export default async function ClientPage({ params, searchParams }: ClientPagePro
             </Card>
             <Card>
               <CardHeader><CardTitle>Связанные КП</CardTitle></CardHeader>
-              <CardContent className="text-sm text-muted-foreground">Будет реализовано на следующем этапе.</CardContent>
+              <CardContent className="p-0">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>КП</TableHead>
+                      <TableHead>Сделка</TableHead>
+                      <TableHead>Объект</TableHead>
+                      <TableHead>Статус</TableHead>
+                      <TableHead>Сумма</TableHead>
+                      <TableHead>Follow-up</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {client.proposals.length === 0 ? (
+                      <TableRow><TableCell colSpan={6} className="h-24 text-center text-sm text-muted-foreground">По клиенту пока нет КП</TableCell></TableRow>
+                    ) : (
+                      client.proposals.map((proposal) => (
+                        <TableRow key={proposal.id}>
+                          <TableCell><Link className="font-medium hover:underline" href={`/proposals/${proposal.id}`}>{proposal.proposalNumber}</Link></TableCell>
+                          <TableCell><Link className="hover:underline" href={`/deals/${proposal.deal.id}`}>{proposal.deal.title}</Link></TableCell>
+                          <TableCell><Link className="hover:underline" href={`/objects/${proposal.projectObject.id}`}>{proposal.projectObject.title}</Link></TableCell>
+                          <TableCell><Badge variant="outline">{commercialProposalStatusLabels[proposal.status]}</Badge></TableCell>
+                          <TableCell>{proposal.amount.toLocaleString("ru-RU")} ₽</TableCell>
+                          <TableCell>{formatRussianDate(proposal.nextTouchAt)}</TableCell>
+                        </TableRow>
+                      ))
+                    )}
+                  </TableBody>
+                </Table>
+              </CardContent>
             </Card>
           </div>
         </TabsContent>

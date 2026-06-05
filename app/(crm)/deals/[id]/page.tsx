@@ -6,6 +6,7 @@ import { DealLossDialog } from "@/components/deals/deal-loss-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getAuditLogs } from "@/lib/audit-log";
 import {
@@ -13,7 +14,8 @@ import {
   dealProbabilityLabels,
   dealProbabilityPercent,
   dealSourceLabels,
-  dealStageLabels
+  dealStageLabels,
+  commercialProposalStatusLabels
 } from "@/lib/constants";
 import { archiveDealAction, closeDealAsLostAction } from "@/modules/deals/actions";
 import { getDealForUser } from "@/modules/deals/queries";
@@ -138,9 +140,45 @@ export default async function DealPage({ params, searchParams }: DealPageProps) 
 
         <TabsContent value="proposals">
           <Card>
-            <CardHeader><CardTitle>КП</CardTitle></CardHeader>
-            <CardContent className="text-sm text-muted-foreground">
-              {deal.proposals.length === 0 ? "По сделке пока нет КП" : "Связанные КП подготовлены к отображению."}
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle>КП</CardTitle>
+              <Button asChild size="sm">
+                <Link href={`/proposals/new?dealId=${id}`}>Создать КП по сделке</Link>
+              </Button>
+            </CardHeader>
+            <CardContent className="p-0">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Номер</TableHead>
+                    <TableHead>Версия</TableHead>
+                    <TableHead>Статус</TableHead>
+                    <TableHead>Сумма</TableHead>
+                    <TableHead>Отправлено</TableHead>
+                    <TableHead>Follow-up</TableHead>
+                    <TableHead>Файл</TableHead>
+                    <TableHead>Ответственный</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {deal.proposals.length === 0 ? (
+                    <TableRow><TableCell colSpan={8} className="h-24 text-center text-sm text-muted-foreground">По сделке пока нет КП</TableCell></TableRow>
+                  ) : (
+                    deal.proposals.map((proposal) => (
+                      <TableRow key={proposal.id}>
+                        <TableCell><Link className="font-medium hover:underline" href={`/proposals/${proposal.id}`}>{proposal.proposalNumber}</Link></TableCell>
+                        <TableCell>v{proposal.version}</TableCell>
+                        <TableCell><Badge variant="outline">{commercialProposalStatusLabels[proposal.status]}</Badge></TableCell>
+                        <TableCell>{proposal.amount.toLocaleString("ru-RU")} ₽</TableCell>
+                        <TableCell>{formatRussianDate(proposal.sentAt)}</TableCell>
+                        <TableCell>{formatRussianDate(proposal.nextTouchAt)}</TableCell>
+                        <TableCell>{proposal.fileUrl ? <Link className="hover:underline" href={proposal.fileUrl}>Скачать</Link> : "Нет файла"}</TableCell>
+                        <TableCell>{proposal.responsible.name}</TableCell>
+                      </TableRow>
+                    ))
+                  )}
+                </TableBody>
+              </Table>
             </CardContent>
           </Card>
         </TabsContent>

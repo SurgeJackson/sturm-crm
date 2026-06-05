@@ -1,4 +1,4 @@
-import type { Prisma } from "@prisma/client";
+import type { Prisma } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { canViewAllData, type PermissionUser } from "@/permissions";
 
@@ -7,16 +7,18 @@ function accessWhere(user: PermissionUser): {
   designer: Prisma.DesignerWhereInput;
   object: Prisma.ProjectObjectWhereInput;
   deal: Prisma.DealWhereInput;
+  proposal: Prisma.CommercialProposalWhereInput;
 } {
   if (canViewAllData(user)) {
-    return { client: {}, designer: {}, object: {}, deal: {} };
+    return { client: {}, designer: {}, object: {}, deal: {}, proposal: {} };
   }
 
   return {
     client: { OR: [{ responsibleId: user.id }, { createdById: user.id }] },
     designer: { OR: [{ responsibleId: user.id }, { createdById: user.id }] },
     object: { OR: [{ responsibleId: user.id }, { createdById: user.id }] },
-    deal: { OR: [{ responsibleId: user.id }, { createdById: user.id }] }
+    deal: { OR: [{ responsibleId: user.id }, { createdById: user.id }] },
+    proposal: { OR: [{ responsibleId: user.id }, { createdById: user.id }] }
   };
 }
 
@@ -31,7 +33,10 @@ export async function getDashboardMetrics(user: PermissionUser) {
   todayEnd.setHours(23, 59, 59, 999);
   const access = accessWhere(user);
   const activeDealFilter: Prisma.DealWhereInput = { archivedAt: null, stage: { notIn: ["LOST", "COMPLETED"] } };
+  const activeProposalFilter: Prisma.CommercialProposalWhereInput = { archivedAt: null, status: { notIn: ["ACCEPTED", "DECLINED", "ARCHIVED"] } };
   const myAccess = { OR: [{ responsibleId: user.id }, { createdById: user.id }] };
+  const thinkingThreshold = new Date();
+  thinkingThreshold.setDate(thinkingThreshold.getDate() - 7);
 
   const [
     newClients,
@@ -46,6 +51,20 @@ export async function getDashboardMetrics(user: PermissionUser) {
     objectsWithoutClient,
     objectsFromDesigners,
     activeProposals,
+    newProposals,
+    newProposalsAmount,
+    proposalNoFollowUp,
+    proposalNoFile,
+    proposalThinking7,
+    acceptedProposalsPeriod,
+    declinedProposalsPeriod,
+    activeProposalsAmount,
+    myProposals,
+    myProposalNoFollowUp,
+    myProposalThinking,
+    myProposalOverdueFollowUp,
+    myAcceptedProposals,
+    myDeclinedProposals,
     activeDeals,
     newDeals,
     activeDealsAmount,
@@ -74,7 +93,10 @@ export async function getDashboardMetrics(user: PermissionUser) {
     topDesignersByObjects,
     activeDealsByStage,
     lostDealReasons,
-    dealsByResponsible
+    dealsByResponsible,
+    proposalsByStatus,
+    proposalDeclineReasons,
+    proposalsByResponsible
   ] = await Promise.all([
     prisma.client.count({ where: { AND: [access.client, { createdAt: { gte: sevenDaysAgo } }] } }),
     prisma.designer.count({ where: { AND: [access.designer, { createdAt: { gte: sevenDaysAgo } }] } }),
@@ -87,7 +109,21 @@ export async function getDashboardMetrics(user: PermissionUser) {
     prisma.projectObject.count({ where: { AND: [access.object, { responsibleId: "" }] } }),
     prisma.projectObject.count({ where: { AND: [access.object, { clientId: "" }] } }),
     prisma.projectObject.count({ where: { AND: [access.object, { designerId: { not: null } }] } }),
-    prisma.commercialProposal.count({ where: { status: "ACTIVE" } }),
+    prisma.commercialProposal.count({ where: { AND: [access.proposal, activeProposalFilter] } }),
+    prisma.commercialProposal.count({ where: { AND: [access.proposal, { createdAt: { gte: sevenDaysAgo } }] } }),
+    prisma.commercialProposal.aggregate({ where: { AND: [access.proposal, { createdAt: { gte: sevenDaysAgo } }] }, _sum: { amount: true } }),
+    prisma.commercialProposal.count({ where: { AND: [access.proposal, activeProposalFilter, { nextTouchAt: null }] } }),
+    prisma.commercialProposal.count({ where: { AND: [access.proposal, { fileUrl: null }] } }),
+    prisma.commercialProposal.count({ where: { AND: [access.proposal, { status: "CLIENT_THINKING", sentAt: { lt: thinkingThreshold } }] } }),
+    prisma.commercialProposal.count({ where: { AND: [access.proposal, { status: "ACCEPTED", updatedAt: { gte: sevenDaysAgo } }] } }),
+    prisma.commercialProposal.count({ where: { AND: [access.proposal, { status: "DECLINED", updatedAt: { gte: sevenDaysAgo } }] } }),
+    prisma.commercialProposal.aggregate({ where: { AND: [access.proposal, activeProposalFilter] }, _sum: { amount: true } }),
+    prisma.commercialProposal.count({ where: { AND: [myAccess, { archivedAt: null }] } }),
+    prisma.commercialProposal.count({ where: { AND: [myAccess, activeProposalFilter, { nextTouchAt: null }] } }),
+    prisma.commercialProposal.count({ where: { AND: [myAccess, { status: "CLIENT_THINKING", sentAt: { lt: thinkingThreshold } }] } }),
+    prisma.commercialProposal.count({ where: { AND: [myAccess, activeProposalFilter, { nextTouchAt: { lt: new Date() } }] } }),
+    prisma.commercialProposal.count({ where: { AND: [myAccess, { status: "ACCEPTED" }] } }),
+    prisma.commercialProposal.count({ where: { AND: [myAccess, { status: "DECLINED" }] } }),
     prisma.deal.count({ where: { AND: [access.deal, activeDealFilter] } }),
     prisma.deal.count({ where: { AND: [access.deal, { createdAt: { gte: sevenDaysAgo } }] } }),
     prisma.deal.aggregate({ where: { AND: [access.deal, activeDealFilter] }, _sum: { potentialAmount: true } }),
@@ -155,6 +191,21 @@ export async function getDashboardMetrics(user: PermissionUser) {
       select: {
         responsible: { select: { id: true, name: true } }
       }
+    }),
+    prisma.commercialProposal.findMany({
+      where: access.proposal,
+      select: { status: true }
+    }),
+    prisma.commercialProposal.findMany({
+      where: { AND: [access.proposal, { status: "DECLINED", declineReason: { not: null } }] },
+      select: { declineReason: true }
+    }),
+    prisma.commercialProposal.findMany({
+      where: access.proposal,
+      select: {
+        amount: true,
+        responsible: { select: { id: true, name: true } }
+      }
     })
   ]);
 
@@ -186,6 +237,24 @@ export async function getDashboardMetrics(user: PermissionUser) {
     return acc;
   }, {});
 
+  const proposalStatusCounts = proposalsByStatus.reduce<Record<string, number>>((acc, proposal) => {
+    acc[proposal.status] = (acc[proposal.status] ?? 0) + 1;
+    return acc;
+  }, {});
+
+  const proposalDeclineReasonCounts = proposalDeclineReasons.reduce<Record<string, number>>((acc, proposal) => {
+    if (proposal.declineReason) acc[proposal.declineReason] = (acc[proposal.declineReason] ?? 0) + 1;
+    return acc;
+  }, {});
+
+  const proposalResponsibleAmounts = proposalsByResponsible.reduce<Record<string, { name: string; amount: number }>>((acc, proposal) => {
+    acc[proposal.responsible.id] = {
+      name: proposal.responsible.name,
+      amount: (acc[proposal.responsible.id]?.amount ?? 0) + proposal.amount
+    };
+    return acc;
+  }, {});
+
   return {
     newClients,
     newDesigners,
@@ -201,6 +270,23 @@ export async function getDashboardMetrics(user: PermissionUser) {
     objectsByStage,
     topDesignersByObjects,
     activeProposals,
+    newProposals,
+    newProposalsAmount: newProposalsAmount._sum.amount ?? 0,
+    proposalNoFollowUp,
+    proposalNoFile,
+    proposalThinking7,
+    acceptedProposalsPeriod,
+    declinedProposalsPeriod,
+    activeProposalsAmount: activeProposalsAmount._sum.amount ?? 0,
+    proposalStatusCounts,
+    proposalDeclineReasonCounts,
+    proposalResponsibleAmounts: Object.values(proposalResponsibleAmounts).sort((a, b) => b.amount - a.amount),
+    myProposals,
+    myProposalNoFollowUp,
+    myProposalThinking,
+    myProposalOverdueFollowUp,
+    myAcceptedProposals,
+    myDeclinedProposals,
     activeDeals,
     newDeals,
     activeDealsAmount: activeDealsAmount._sum.potentialAmount ?? 0,

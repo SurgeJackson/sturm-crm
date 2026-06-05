@@ -1,7 +1,14 @@
-import { PrismaClient, UserRole } from "@prisma/client";
+import "dotenv/config";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaClient, UserRole } from "../generated/prisma/client";
 import bcrypt from "bcryptjs";
+import { mkdir, writeFile } from "fs/promises";
+import path from "path";
 
-const prisma = new PrismaClient();
+const adapter = new PrismaPg({
+  connectionString: process.env.DATABASE_URL
+});
+const prisma = new PrismaClient({ adapter });
 const DEMO_PASSWORD = "Sturm12345";
 
 const users = [
@@ -40,6 +47,10 @@ const users = [
 async function main() {
   const now = new Date();
   const passwordHash = await bcrypt.hash(DEMO_PASSWORD, 12);
+  const year = now.getFullYear();
+  const uploadsDir = path.join(process.cwd(), "public", "uploads", "proposals");
+  await mkdir(uploadsDir, { recursive: true });
+  await writeFile(path.join(uploadsDir, "seed-kp.pdf"), Buffer.from("Seed commercial proposal file"));
 
   for (const user of users) {
     await prisma.user.upsert({
@@ -124,7 +135,7 @@ async function main() {
       nextStepText: "Позвонить и договориться о встрече",
       transferredObjectsCount: 1,
       activeObjectsCount: 1,
-      proposalsTotalAmount: 0,
+      proposalsTotalAmount: 4050000,
       paymentsTotalAmount: 0,
       archivedAt: null,
       comment: "Seed-запись для проверки dashboard",
@@ -155,7 +166,7 @@ async function main() {
       nextStepText: "Позвонить и договориться о встрече",
       transferredObjectsCount: 1,
       activeObjectsCount: 1,
-      proposalsTotalAmount: 0,
+      proposalsTotalAmount: 4050000,
       paymentsTotalAmount: 0,
       createdById: "seed_owner",
       archivedAt: null,
@@ -392,6 +403,240 @@ async function main() {
       archivedAt: null,
       closedAt: now,
       notes: "Seed-проигрыш для проверки причин"
+    }
+  });
+
+  await prisma.commercialProposal.upsert({
+    where: { id: "seed_proposal_sanitary_v1" },
+    update: {
+      proposalNumber: `КП-${year}-0001`,
+      dealId: "seed_deal_apartments_sanitary",
+      clientId: "seed_client_showroom",
+      objectId: "seed_project_object_apartments",
+      designerId: "seed_designer_north",
+      responsibleId: "seed_owner",
+      version: 1,
+      parentProposalId: null,
+      amount: 1850000,
+      discountPercent: 7,
+      discountAmount: 139250,
+      status: "SENT",
+      recipientType: "CLIENT",
+      recipientName: "Клиент шоурума",
+      recipientContact: "client@example.com",
+      approvalRequiredFrom: "Анна Собственник",
+      sentAt: new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000),
+      nextTouchAt: new Date(now.getTime() + 2 * 24 * 60 * 60 * 1000),
+      fileUrl: "/uploads/proposals/seed-kp.pdf",
+      fileName: "seed-kp.pdf",
+      fileSize: 29,
+      fileMimeType: "application/pdf",
+      uploadedById: "seed_owner",
+      uploadedAt: now,
+      declineReason: null,
+      declineComment: null,
+      comment: "Seed КП для проверки отправки и follow-up",
+      archivedAt: null,
+      notes: "Seed КП для проверки отправки и follow-up"
+    },
+    create: {
+      id: "seed_proposal_sanitary_v1",
+      proposalNumber: `КП-${year}-0001`,
+      dealId: "seed_deal_apartments_sanitary",
+      clientId: "seed_client_showroom",
+      objectId: "seed_project_object_apartments",
+      designerId: "seed_designer_north",
+      responsibleId: "seed_owner",
+      version: 1,
+      parentProposalId: null,
+      amount: 1850000,
+      discountPercent: 7,
+      discountAmount: 139250,
+      status: "SENT",
+      recipientType: "CLIENT",
+      recipientName: "Клиент шоурума",
+      recipientContact: "client@example.com",
+      approvalRequiredFrom: "Анна Собственник",
+      sentAt: new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000),
+      nextTouchAt: new Date(now.getTime() + 2 * 24 * 60 * 60 * 1000),
+      fileUrl: "/uploads/proposals/seed-kp.pdf",
+      fileName: "seed-kp.pdf",
+      fileSize: 29,
+      fileMimeType: "application/pdf",
+      uploadedById: "seed_owner",
+      uploadedAt: now,
+      declineReason: null,
+      declineComment: null,
+      comment: "Seed КП для проверки отправки и follow-up",
+      createdById: "seed_owner",
+      archivedAt: null,
+      notes: "Seed КП для проверки отправки и follow-up"
+    }
+  });
+
+  await prisma.commercialProposal.upsert({
+    where: { id: "seed_proposal_sanitary_v2" },
+    update: {
+      proposalNumber: `КП-${year}-0002`,
+      dealId: "seed_deal_apartments_sanitary",
+      clientId: "seed_client_showroom",
+      objectId: "seed_project_object_apartments",
+      designerId: "seed_designer_north",
+      responsibleId: "seed_owner",
+      version: 2,
+      parentProposalId: "seed_proposal_sanitary_v1",
+      amount: 2200000,
+      discountPercent: 5,
+      discountAmount: 115000,
+      status: "CLIENT_THINKING",
+      recipientType: "CLIENT",
+      recipientName: "Клиент шоурума",
+      recipientContact: "client@example.com",
+      approvalRequiredFrom: "Анна Собственник",
+      sentAt: new Date(now.getTime() - 8 * 24 * 60 * 60 * 1000),
+      nextTouchAt: new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000),
+      fileUrl: "/uploads/proposals/seed-kp.pdf",
+      fileName: "seed-kp.pdf",
+      fileSize: 29,
+      fileMimeType: "application/pdf",
+      uploadedById: "seed_owner",
+      uploadedAt: now,
+      declineReason: null,
+      declineComment: null,
+      comment: "Seed версия КП: клиент думает больше 7 дней",
+      archivedAt: null,
+      notes: "Seed версия КП: клиент думает больше 7 дней"
+    },
+    create: {
+      id: "seed_proposal_sanitary_v2",
+      proposalNumber: `КП-${year}-0002`,
+      dealId: "seed_deal_apartments_sanitary",
+      clientId: "seed_client_showroom",
+      objectId: "seed_project_object_apartments",
+      designerId: "seed_designer_north",
+      responsibleId: "seed_owner",
+      version: 2,
+      parentProposalId: "seed_proposal_sanitary_v1",
+      amount: 2200000,
+      discountPercent: 5,
+      discountAmount: 115000,
+      status: "CLIENT_THINKING",
+      recipientType: "CLIENT",
+      recipientName: "Клиент шоурума",
+      recipientContact: "client@example.com",
+      approvalRequiredFrom: "Анна Собственник",
+      sentAt: new Date(now.getTime() - 8 * 24 * 60 * 60 * 1000),
+      nextTouchAt: new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000),
+      fileUrl: "/uploads/proposals/seed-kp.pdf",
+      fileName: "seed-kp.pdf",
+      fileSize: 29,
+      fileMimeType: "application/pdf",
+      uploadedById: "seed_owner",
+      uploadedAt: now,
+      declineReason: null,
+      declineComment: null,
+      comment: "Seed версия КП: клиент думает больше 7 дней",
+      createdById: "seed_owner",
+      archivedAt: null,
+      notes: "Seed версия КП: клиент думает больше 7 дней"
+    }
+  });
+
+  await prisma.commercialProposal.upsert({
+    where: { id: "seed_proposal_accessories_declined" },
+    update: {
+      proposalNumber: `КП-${year}-0003`,
+      dealId: "seed_deal_apartments_accessories_lost",
+      clientId: "seed_client_showroom",
+      objectId: "seed_project_object_apartments",
+      designerId: "seed_designer_north",
+      responsibleId: "seed_sales_lead",
+      version: 1,
+      parentProposalId: null,
+      amount: 320000,
+      discountPercent: null,
+      discountAmount: null,
+      status: "DECLINED",
+      recipientType: "CLIENT",
+      recipientName: "Клиент шоурума",
+      recipientContact: "client@example.com",
+      approvalRequiredFrom: null,
+      sentAt: new Date(now.getTime() - 4 * 24 * 60 * 60 * 1000),
+      nextTouchAt: null,
+      fileUrl: "/uploads/proposals/seed-kp.pdf",
+      fileName: "seed-kp.pdf",
+      fileSize: 29,
+      fileMimeType: "application/pdf",
+      uploadedById: "seed_sales_lead",
+      uploadedAt: now,
+      declineReason: "PRICE",
+      declineComment: "Клиент выбрал более дешевый комплект",
+      comment: "Seed отклоненное КП",
+      archivedAt: null,
+      notes: "Seed отклоненное КП"
+    },
+    create: {
+      id: "seed_proposal_accessories_declined",
+      proposalNumber: `КП-${year}-0003`,
+      dealId: "seed_deal_apartments_accessories_lost",
+      clientId: "seed_client_showroom",
+      objectId: "seed_project_object_apartments",
+      designerId: "seed_designer_north",
+      responsibleId: "seed_sales_lead",
+      version: 1,
+      parentProposalId: null,
+      amount: 320000,
+      discountPercent: null,
+      discountAmount: null,
+      status: "DECLINED",
+      recipientType: "CLIENT",
+      recipientName: "Клиент шоурума",
+      recipientContact: "client@example.com",
+      approvalRequiredFrom: null,
+      sentAt: new Date(now.getTime() - 4 * 24 * 60 * 60 * 1000),
+      nextTouchAt: null,
+      fileUrl: "/uploads/proposals/seed-kp.pdf",
+      fileName: "seed-kp.pdf",
+      fileSize: 29,
+      fileMimeType: "application/pdf",
+      uploadedById: "seed_sales_lead",
+      uploadedAt: now,
+      declineReason: "PRICE",
+      declineComment: "Клиент выбрал более дешевый комплект",
+      comment: "Seed отклоненное КП",
+      createdById: "seed_owner",
+      archivedAt: null,
+      notes: "Seed отклоненное КП"
+    }
+  });
+
+  await prisma.taskActivity.upsert({
+    where: { id: "seed_task_proposal_followup" },
+    update: {
+      title: `Связаться по КП КП-${year}-0001`,
+      status: "NEW",
+      projectObjectId: "seed_project_object_apartments",
+      dealId: "seed_deal_apartments_sanitary",
+      proposalId: "seed_proposal_sanitary_v1",
+      clientId: "seed_client_showroom",
+      dueAt: new Date(now.getTime() + 2 * 24 * 60 * 60 * 1000),
+      responsibleId: "seed_owner",
+      archivedAt: null,
+      notes: "Seed follow-up по отправленному КП"
+    },
+    create: {
+      id: "seed_task_proposal_followup",
+      title: `Связаться по КП КП-${year}-0001`,
+      status: "NEW",
+      projectObjectId: "seed_project_object_apartments",
+      dealId: "seed_deal_apartments_sanitary",
+      proposalId: "seed_proposal_sanitary_v1",
+      clientId: "seed_client_showroom",
+      dueAt: new Date(now.getTime() + 2 * 24 * 60 * 60 * 1000),
+      responsibleId: "seed_owner",
+      createdById: "seed_owner",
+      archivedAt: null,
+      notes: "Seed follow-up по отправленному КП"
     }
   });
 

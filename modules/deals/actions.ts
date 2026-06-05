@@ -7,7 +7,7 @@ import type {
   DealProbability,
   DealSource,
   DealStage
-} from "@prisma/client";
+} from "@/generated/prisma/client";
 import { getCurrentUser } from "@/auth/get-current-user";
 import { writeAuditLog } from "@/lib/audit-log";
 import { prisma } from "@/lib/prisma";

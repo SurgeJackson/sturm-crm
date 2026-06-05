@@ -4,6 +4,7 @@ import {
   clientTypeLabels,
   attitudeToSturmLabels,
   changeApprovalLabels,
+  commercialProposalStatusLabels,
   dealLossReasonLabels,
   dealProbabilityLabels,
   dealSourceLabels,
@@ -21,7 +22,9 @@ import {
   objectStageLabels,
   objectStatusLabels,
   objectTypeLabels,
-  projectObjectParticipantTypeLabels
+  projectObjectParticipantTypeLabels,
+  proposalDeclineReasonLabels,
+  recipientTypeLabels
 } from "@/lib/constants";
 
 export function toOptions<T extends string>(labels: Record<T, string>) {
@@ -54,3 +57,6 @@ export const dealStageOptions = toOptions(dealStageLabels);
 export const dealProbabilityOptions = toOptions(dealProbabilityLabels);
 export const dealSourceOptions = toOptions(dealSourceLabels);
 export const dealLossReasonOptions = toOptions(dealLossReasonLabels);
+export const commercialProposalStatusOptions = toOptions(commercialProposalStatusLabels);
+export const recipientTypeOptions = toOptions(recipientTypeLabels);
+export const proposalDeclineReasonOptions = toOptions(proposalDeclineReasonLabels);

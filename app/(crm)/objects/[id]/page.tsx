@@ -13,6 +13,7 @@ import {
   changeApprovalLabels,
   dealProbabilityLabels,
   dealStageLabels,
+  commercialProposalStatusLabels,
   influenceLevelLabels,
   influenceTypeLabels,
   objectInterestCategoryLabels,
@@ -358,7 +359,41 @@ export default async function ObjectPage({ params, searchParams }: ObjectPagePro
           </Card>
         </TabsContent>
         <TabsContent value="proposals">
-          <Card><CardContent className="pt-5 text-sm text-muted-foreground">{projectObject.proposals.length === 0 ? "По объекту пока нет КП" : "Связанные КП подготовлены к отображению."}</CardContent></Card>
+          <Card>
+            <CardHeader><CardTitle>КП</CardTitle></CardHeader>
+            <CardContent className="p-0">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>КП</TableHead>
+                    <TableHead>Сделка</TableHead>
+                    <TableHead>Статус</TableHead>
+                    <TableHead>Сумма</TableHead>
+                    <TableHead>Версия</TableHead>
+                    <TableHead>Follow-up</TableHead>
+                    <TableHead>Ответственный</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {projectObject.proposals.length === 0 ? (
+                    <TableRow><TableCell colSpan={7} className="h-24 text-center text-sm text-muted-foreground">По объекту пока нет КП</TableCell></TableRow>
+                  ) : (
+                    projectObject.proposals.map((proposal) => (
+                      <TableRow key={proposal.id}>
+                        <TableCell><Link className="font-medium hover:underline" href={`/proposals/${proposal.id}`}>{proposal.proposalNumber}</Link></TableCell>
+                        <TableCell><Link className="hover:underline" href={`/deals/${proposal.deal.id}`}>{proposal.deal.title}</Link></TableCell>
+                        <TableCell><Badge variant="outline">{commercialProposalStatusLabels[proposal.status]}</Badge></TableCell>
+                        <TableCell>{proposal.amount.toLocaleString("ru-RU")} ₽</TableCell>
+                        <TableCell>v{proposal.version}</TableCell>
+                        <TableCell>{formatRussianDate(proposal.nextTouchAt)}</TableCell>
+                        <TableCell>{proposal.responsible.name}</TableCell>
+                      </TableRow>
+                    ))
+                  )}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
         </TabsContent>
         <TabsContent value="tasks">
           <Card>

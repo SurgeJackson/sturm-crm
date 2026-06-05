@@ -1,4 +1,4 @@
-import type { AuditEntityType } from "@prisma/client";
+import type { AuditEntityType } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 
 type WriteAuditLogInput = {

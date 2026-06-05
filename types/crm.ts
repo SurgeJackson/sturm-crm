@@ -11,7 +11,7 @@ import type {
   EntityStatus,
   TaskStatus,
   UserRole
-} from "@prisma/client";
+} from "@/generated/prisma/client";
 
 export type CrmUser = {
   id: string;

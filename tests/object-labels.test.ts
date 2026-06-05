@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   attitudeToSturmLabels,
   changeApprovalLabels,
+  commercialProposalStatusLabels,
   dealLossReasonLabels,
   dealProbabilityLabels,
   dealProbabilityPercent,
@@ -13,7 +14,9 @@ import {
   objectStageLabels,
   objectStatusLabels,
   objectTypeLabels,
-  projectObjectParticipantTypeLabels
+  proposalDeclineReasonLabels,
+  projectObjectParticipantTypeLabels,
+  recipientTypeLabels
 } from "../lib/constants";
 
 describe("project object labels", () => {
@@ -40,5 +43,12 @@ describe("project object labels", () => {
     expect(dealProbabilityPercent.VERY_HIGH).toBe(90);
     expect(dealSourceLabels.COMMERCIAL_PROJECT).toBe("Коммерческий проект");
     expect(dealLossReasonLabels.PROJECT_FROZEN).toBe("Проект заморожен");
+  });
+
+  it("contains Russian labels for Stage 5 proposal enums", () => {
+    expect(commercialProposalStatusLabels.CLIENT_THINKING).toBe("Клиент думает");
+    expect(commercialProposalStatusLabels.NEEDS_RECALCULATION).toBe("Требуется пересчет");
+    expect(recipientTypeLabels.PURCHASE_INFLUENCER).toBe("Влияющий на закупку");
+    expect(proposalDeclineReasonLabels.DESIGNER_NOT_SUPPORT).toBe("Дизайнер не поддержал");
   });
 });

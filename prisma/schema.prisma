@@ -1,10 +1,10 @@
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 enum UserRole {
@@ -271,6 +271,40 @@ enum DealLossReason {
   OTHER
 }
 
+enum CommercialProposalStatus {
+  DRAFT
+  INTERNAL_REVIEW
+  SENT
+  CLIENT_THINKING
+  NEEDS_RECALCULATION
+  NEW_VERSION_CREATED
+  ACCEPTED
+  DECLINED
+  ARCHIVED
+}
+
+enum RecipientType {
+  CLIENT
+  DESIGNER
+  PURCHASE_INFLUENCER
+  IMPLEMENTATION_CONTACT
+  OTHER
+}
+
+enum ProposalDeclineReason {
+  PRICE
+  DEADLINES
+  ASSORTMENT
+  COMPETITOR
+  CHINA
+  SELF_PURCHASE
+  PROJECT_FROZEN
+  CLIENT_DISAPPEARED
+  DESIGNER_NOT_SUPPORT
+  PROCUREMENT_CHOSE_OTHER
+  OTHER
+}
+
 model User {
   id             String    @id @default(cuid())
   name           String
@@ -295,6 +329,7 @@ model User {
   dealsCreated                  Deal[]                     @relation("DealCreatedBy")
   proposalsResponsible          CommercialProposal[]       @relation("ProposalResponsible")
   proposalsCreated              CommercialProposal[]       @relation("ProposalCreatedBy")
+  proposalsUploaded             CommercialProposal[]       @relation("ProposalUploadedBy")
   tasksResponsible              TaskActivity[]             @relation("TaskResponsible")
   tasksCreated                  TaskActivity[]             @relation("TaskCreatedBy")
   auditLogs                     AuditLog[]                 @relation("AuditLogUser")
@@ -321,11 +356,13 @@ model Client {
   nextContactAt    DateTime?
   notes            String?
 
-  responsible    User            @relation("ClientResponsible", fields: [responsibleId], references: [id])
-  createdBy      User            @relation("ClientCreatedBy", fields: [createdById], references: [id])
-  linkedDesigner Designer?       @relation("ClientLinkedDesigner", fields: [linkedDesignerId], references: [id])
-  projectObjects ProjectObject[] @relation("ObjectClient")
-  deals          Deal[]          @relation("DealClient")
+  responsible    User                 @relation("ClientResponsible", fields: [responsibleId], references: [id])
+  createdBy      User                 @relation("ClientCreatedBy", fields: [createdById], references: [id])
+  linkedDesigner Designer?            @relation("ClientLinkedDesigner", fields: [linkedDesignerId], references: [id])
+  projectObjects ProjectObject[]      @relation("ObjectClient")
+  deals          Deal[]               @relation("DealClient")
+  proposals      CommercialProposal[] @relation("ProposalClient")
+  tasks          TaskActivity[]       @relation("TaskClient")
 }
 
 model Designer {
@@ -362,11 +399,12 @@ model Designer {
   archivedAt              DateTime?
   notes                   String?
 
-  responsible    User            @relation("DesignerResponsible", fields: [responsibleId], references: [id])
-  createdBy      User            @relation("DesignerCreatedBy", fields: [createdById], references: [id])
-  linkedClients  Client[]        @relation("ClientLinkedDesigner")
-  projectObjects ProjectObject[] @relation("ObjectDesigner")
-  deals          Deal[]          @relation("DealDesigner")
+  responsible    User                 @relation("DesignerResponsible", fields: [responsibleId], references: [id])
+  createdBy      User                 @relation("DesignerCreatedBy", fields: [createdById], references: [id])
+  linkedClients  Client[]             @relation("ClientLinkedDesigner")
+  projectObjects ProjectObject[]      @relation("ObjectDesigner")
+  deals          Deal[]               @relation("DealDesigner")
+  proposals      CommercialProposal[] @relation("ProposalDesigner")
 }
 
 model ProjectObject {
@@ -466,22 +504,50 @@ model Deal {
 }
 
 model CommercialProposal {
-  id              String       @id @default(cuid())
-  title           String
-  status          EntityStatus @default(ACTIVE)
-  projectObjectId String?
-  dealId          String?
-  responsibleId   String
-  createdById     String
-  createdAt       DateTime     @default(now())
-  updatedAt       DateTime     @updatedAt
-  archivedAt      DateTime?
-  notes           String?
+  id                   String                   @id @default(cuid())
+  proposalNumber       String                   @unique
+  dealId               String
+  clientId             String
+  objectId             String
+  designerId           String?
+  responsibleId        String
+  version              Int                      @default(1)
+  parentProposalId     String?
+  amount               Float
+  discountPercent      Float?
+  discountAmount       Float?
+  status               CommercialProposalStatus @default(DRAFT)
+  recipientType        RecipientType?
+  recipientName        String?
+  recipientContact     String?
+  approvalRequiredFrom String?
+  sentAt               DateTime?
+  nextTouchAt          DateTime?
+  fileUrl              String?
+  fileName             String?
+  fileSize             Int?
+  fileMimeType         String?
+  uploadedById         String?
+  uploadedAt           DateTime?
+  declineReason        ProposalDeclineReason?
+  declineComment       String?
+  comment              String?
+  createdById          String
+  createdAt            DateTime                 @default(now())
+  updatedAt            DateTime                 @updatedAt
+  archivedAt           DateTime?
+  notes                String?
 
-  responsible   User           @relation("ProposalResponsible", fields: [responsibleId], references: [id])
-  createdBy     User           @relation("ProposalCreatedBy", fields: [createdById], references: [id])
-  projectObject ProjectObject? @relation("ProposalObject", fields: [projectObjectId], references: [id])
-  deal          Deal?          @relation("ProposalDeal", fields: [dealId], references: [id])
+  deal          Deal                 @relation("ProposalDeal", fields: [dealId], references: [id])
+  client        Client               @relation("ProposalClient", fields: [clientId], references: [id])
+  projectObject ProjectObject        @relation("ProposalObject", fields: [objectId], references: [id])
+  designer      Designer?            @relation("ProposalDesigner", fields: [designerId], references: [id])
+  responsible   User                 @relation("ProposalResponsible", fields: [responsibleId], references: [id])
+  createdBy     User                 @relation("ProposalCreatedBy", fields: [createdById], references: [id])
+  uploadedBy    User?                @relation("ProposalUploadedBy", fields: [uploadedById], references: [id])
+  parent        CommercialProposal?  @relation("ProposalVersions", fields: [parentProposalId], references: [id])
+  versions      CommercialProposal[] @relation("ProposalVersions")
+  tasks         TaskActivity[]       @relation("TaskProposal")
 }
 
 model TaskActivity {
@@ -490,6 +556,9 @@ model TaskActivity {
   status          TaskStatus @default(NEW)
   projectObjectId String?
   dealId          String?
+  proposalId      String?
+  clientId        String?
+  dueAt           DateTime?
   responsibleId   String
   createdById     String
   createdAt       DateTime   @default(now())
@@ -497,10 +566,12 @@ model TaskActivity {
   archivedAt      DateTime?
   notes           String?
 
-  responsible   User           @relation("TaskResponsible", fields: [responsibleId], references: [id])
-  createdBy     User           @relation("TaskCreatedBy", fields: [createdById], references: [id])
-  projectObject ProjectObject? @relation("TaskObject", fields: [projectObjectId], references: [id])
-  deal          Deal?          @relation("TaskDeal", fields: [dealId], references: [id])
+  responsible   User                @relation("TaskResponsible", fields: [responsibleId], references: [id])
+  createdBy     User                @relation("TaskCreatedBy", fields: [createdById], references: [id])
+  projectObject ProjectObject?      @relation("TaskObject", fields: [projectObjectId], references: [id])
+  deal          Deal?               @relation("TaskDeal", fields: [dealId], references: [id])
+  proposal      CommercialProposal? @relation("TaskProposal", fields: [proposalId], references: [id])
+  client        Client?             @relation("TaskClient", fields: [clientId], references: [id])
 }
 
 model AuditLog {

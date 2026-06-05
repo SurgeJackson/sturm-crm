@@ -3,10 +3,14 @@ import {
   canArchiveRecord,
   canChangeDealResponsible,
   canChangeObjectResponsible,
+  canChangeProposalFinancials,
+  canChangeProposalResponsible,
+  canChangeProposalStatus,
   canChangeRecordResponsible,
   canCloseDealAsLost,
   canCreateDeal,
   canCreateObject,
+  canCreateProposal,
   canEditRecord,
   canManageUsers,
   canManageObjectParticipants,
@@ -82,5 +86,15 @@ describe("permissions", () => {
     expect(canCloseDealAsLost(owner)).toBe(true);
     expect(canCloseDealAsLost(projectManager)).toBe(true);
     expect(canCloseDealAsLost(administrator)).toBe(false);
+  });
+
+  it("blocks administrators from final proposal creation and strategic proposal changes", () => {
+    expect(canCreateProposal(owner)).toBe(true);
+    expect(canCreateProposal(projectManager)).toBe(true);
+    expect(canCreateProposal(administrator)).toBe(false);
+    expect(canChangeProposalResponsible(salesLead)).toBe(true);
+    expect(canChangeProposalResponsible(projectManager)).toBe(false);
+    expect(canChangeProposalFinancials(administrator)).toBe(false);
+    expect(canChangeProposalStatus(administrator)).toBe(false);
   });
 });

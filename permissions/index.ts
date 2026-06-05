@@ -1,4 +1,4 @@
-import type { UserRole } from "@prisma/client";
+import type { UserRole } from "@/generated/prisma/client";
 
 export type PermissionUser = {
   id?: string;
@@ -100,7 +100,21 @@ export function canCloseDealAsLost(user?: PermissionUser | null) {
 
 export function canCreateProposal(user?: PermissionUser | null) {
   if (!isActive(user)) return false;
-  return managerRoles.has(user.role);
+  return managerRoles.has(user.role) && user.role !== "ADMINISTRATOR";
+}
+
+export function canChangeProposalResponsible(user?: PermissionUser | null) {
+  return canChangeResponsible(user);
+}
+
+export function canChangeProposalFinancials(user?: PermissionUser | null) {
+  if (!isActive(user)) return false;
+  return user.role !== "ADMINISTRATOR";
+}
+
+export function canChangeProposalStatus(user?: PermissionUser | null) {
+  if (!isActive(user)) return false;
+  return user.role !== "ADMINISTRATOR";
 }
 
 export function canCreateTask(user?: PermissionUser | null) {

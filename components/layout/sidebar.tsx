@@ -13,7 +13,7 @@ import {
   UserRound,
   UsersRound
 } from "lucide-react";
-import type { UserRole } from "@prisma/client";
+import type { UserRole } from "@/generated/prisma/client";
 import { cn } from "@/lib/utils";
 import { canAccessSettings, canViewReports } from "@/permissions";
 

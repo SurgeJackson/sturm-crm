@@ -4,7 +4,14 @@ import { getCurrentUser } from "@/auth/get-current-user";
 import { getDashboardMetrics } from "@/modules/dashboard/dashboard-metrics";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { dealLossReasonLabels, dealStageLabels, designerRelationshipStageLabels, objectStageLabels } from "@/lib/constants";
+import {
+  commercialProposalStatusLabels,
+  dealLossReasonLabels,
+  dealStageLabels,
+  designerRelationshipStageLabels,
+  objectStageLabels,
+  proposalDeclineReasonLabels
+} from "@/lib/constants";
 
 export default async function DashboardPage() {
   const user = await getCurrentUser();
@@ -39,14 +46,28 @@ export default async function DashboardPage() {
     { title: "Мои сделки ждут решения", value: metrics.myWaitingDecisionDeals, icon: CheckSquare, variant: "outline" as const },
     { title: "Мои КП в работе", value: metrics.myProposalInProgressDeals, icon: FileText, variant: "outline" as const },
     { title: "Мои проигранные за 7 дней", value: metrics.myLostDealsPeriod, icon: AlertTriangle, variant: "outline" as const },
+    { title: "Новые КП за 7 дней", value: metrics.newProposals, icon: FileText, variant: "default" as const },
+    { title: "Сумма новых КП", value: `${metrics.newProposalsAmount.toLocaleString("ru-RU")} ₽`, icon: FileText, variant: "default" as const },
+    { title: "Активные КП", value: metrics.activeProposals, icon: FileText, variant: "secondary" as const },
+    { title: "Сумма активных КП", value: `${metrics.activeProposalsAmount.toLocaleString("ru-RU")} ₽`, icon: FileText, variant: "default" as const },
+    { title: "КП без follow-up", value: metrics.proposalNoFollowUp, icon: AlertTriangle, variant: "warning" as const },
+    { title: "КП без файла", value: metrics.proposalNoFile, icon: AlertTriangle, variant: "warning" as const },
+    { title: "Клиент думает 7+ дней", value: metrics.proposalThinking7, icon: AlertTriangle, variant: "warning" as const },
+    { title: "Принятые КП за 7 дней", value: metrics.acceptedProposalsPeriod, icon: CheckSquare, variant: "secondary" as const },
+    { title: "Отклоненные КП за 7 дней", value: metrics.declinedProposalsPeriod, icon: AlertTriangle, variant: "outline" as const },
+    { title: "Мои КП", value: metrics.myProposals, icon: FileText, variant: "outline" as const },
+    { title: "Мои КП без follow-up", value: metrics.myProposalNoFollowUp, icon: AlertTriangle, variant: "outline" as const },
+    { title: "Мои КП думают", value: metrics.myProposalThinking, icon: AlertTriangle, variant: "outline" as const },
+    { title: "Мой просроченный follow-up", value: metrics.myProposalOverdueFollowUp, icon: AlertTriangle, variant: "warning" as const },
+    { title: "Мои принятые КП", value: metrics.myAcceptedProposals, icon: CheckSquare, variant: "outline" as const },
+    { title: "Мои отклоненные КП", value: metrics.myDeclinedProposals, icon: AlertTriangle, variant: "outline" as const },
     { title: "Дизайнеры с потенциалом A", value: metrics.potentialADesigners, icon: BriefcaseBusiness, variant: "default" as const },
     { title: "Дизайнеры в статусе Спящий", value: metrics.sleepingDesigners, icon: FileText, variant: "secondary" as const },
     { title: "Мои клиенты", value: metrics.myClients, icon: UsersRound, variant: "outline" as const },
     { title: "Мои дизайнеры", value: metrics.myDesigners, icon: UsersRound, variant: "outline" as const },
     { title: "Мои шаги на сегодня", value: metrics.myDesignersToday, icon: CheckSquare, variant: "warning" as const },
     { title: "Мои дизайнеры без шага", value: metrics.myDesignersWithoutNextStep, icon: AlertTriangle, variant: "outline" as const },
-    { title: "Мои клиенты без контакта", value: metrics.myClientsWithoutNextContact, icon: UsersRound, variant: "outline" as const },
-    { title: "Активные КП", value: metrics.activeProposals, icon: CheckSquare, variant: "default" as const }
+    { title: "Мои клиенты без контакта", value: metrics.myClientsWithoutNextContact, icon: UsersRound, variant: "outline" as const }
   ];
 
   return (
@@ -151,6 +172,54 @@ export default async function DashboardPage() {
           )}
         </CardContent>
       </Card>
+
+      <div className="grid gap-4 xl:grid-cols-3">
+        <Card>
+          <CardHeader><CardTitle>КП по статусам</CardTitle></CardHeader>
+          <CardContent className="space-y-2">
+            {Object.entries(metrics.proposalStatusCounts).length === 0 ? (
+              <p className="text-sm text-muted-foreground">Пока нет КП.</p>
+            ) : (
+              Object.entries(metrics.proposalStatusCounts).map(([status, count]) => (
+                <div key={status} className="flex items-center justify-between rounded-md border p-3 text-sm">
+                  <span>{commercialProposalStatusLabels[status as keyof typeof commercialProposalStatusLabels]}</span>
+                  <Badge variant="secondary">{count}</Badge>
+                </div>
+              ))
+            )}
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader><CardTitle>Причины отклонения КП</CardTitle></CardHeader>
+          <CardContent className="space-y-2">
+            {Object.entries(metrics.proposalDeclineReasonCounts).length === 0 ? (
+              <p className="text-sm text-muted-foreground">Пока нет отклоненных КП.</p>
+            ) : (
+              Object.entries(metrics.proposalDeclineReasonCounts).map(([reason, count]) => (
+                <div key={reason} className="flex items-center justify-between rounded-md border p-3 text-sm">
+                  <span>{proposalDeclineReasonLabels[reason as keyof typeof proposalDeclineReasonLabels]}</span>
+                  <Badge variant="warning">{count}</Badge>
+                </div>
+              ))
+            )}
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader><CardTitle>Сумма КП по ответственным</CardTitle></CardHeader>
+          <CardContent className="space-y-2">
+            {metrics.proposalResponsibleAmounts.length === 0 ? (
+              <p className="text-sm text-muted-foreground">Пока нет КП.</p>
+            ) : (
+              metrics.proposalResponsibleAmounts.map((item) => (
+                <div key={item.name} className="flex items-center justify-between rounded-md border p-3 text-sm">
+                  <span>{item.name}</span>
+                  <Badge variant="secondary">{item.amount.toLocaleString("ru-RU")} ₽</Badge>
+                </div>
+              ))
+            )}
+          </CardContent>
+        </Card>
+      </div>
 
       <div className="grid gap-4 xl:grid-cols-2">
         <Card>
