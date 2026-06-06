@@ -82,6 +82,17 @@ export function groupBy<T extends string | null | undefined>(items: T[]) {
   }, {});
 }
 
+export function groupCountRows<T extends Record<string, unknown>>(
+  rows: Array<T & { _count: { _all: number } }>,
+  key: keyof T
+) {
+  return rows.reduce<Record<string, number>>((acc, row) => {
+    const value = row[key];
+    acc[value == null ? "Не указано" : String(value)] = row._count._all;
+    return acc;
+  }, {});
+}
+
 export function countBy<T>(items: T[], keySelector: (item: T) => string | null | undefined) {
   return groupBy(items.map(keySelector));
 }

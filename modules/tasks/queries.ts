@@ -11,6 +11,8 @@ import {
   taskAccessWhere
 } from "@/modules/crm/access-where";
 import { dateOnlyRange, weekRange } from "@/modules/crm/date-ranges";
+import { closedTaskStatuses } from "@/modules/crm/domain-constants";
+import { pageFromParam, paginatedResult } from "@/modules/crm/pagination";
 import {
   clientNameSelect,
   dealTitleSelect,
@@ -19,7 +21,8 @@ import {
   proposalNumberSelect,
   userSummarySelect
 } from "@/modules/crm/selects";
-import { computeBonusEligibilityStatus, getActiveViolationsForEntity, getActiveViolationsMap } from "@/modules/crm-discipline/service";
+import { withCrmViolations } from "@/modules/crm/violation-enrichment";
+import { computeBonusEligibilityStatus, getActiveViolationsForEntity } from "@/modules/crm-discipline/service";
 import { canViewRecord, type PermissionUser } from "@/permissions";
 
 export type TaskListSearchParams = {
@@ -59,7 +62,7 @@ export function activeTaskWhere(now = new Date()): Prisma.TaskActivityWhereInput
   return {
     recordType: "TASK",
     archivedAt: null,
-    status: { notIn: ["DONE", "CANCELLED", "CLOSED"] },
+    status: { notIn: closedTaskStatuses },
     dueAt: { lt: now }
   };
 }
@@ -89,7 +92,7 @@ function linkedEntityWhere(entityType?: string, entityId?: string): Prisma.TaskA
 }
 
 export async function getTasks(params: TaskListSearchParams, user: PermissionUser) {
-  const page = Math.max(Number(params.page ?? "1") || 1, 1);
+  const page = pageFromParam(params.page);
   const now = new Date();
   const filters: Prisma.TaskActivityWhereInput[] = [taskAccessWhere(user), { archivedAt: null }];
 
@@ -130,23 +133,8 @@ export async function getTasks(params: TaskListSearchParams, user: PermissionUse
     }),
     prisma.taskActivity.count({ where })
   ]);
-  const violations = await getActiveViolationsMap("TASK", rows.map((item) => item.id));
-  const items = rows.map((item) => {
-    const crmViolations = violations.get(item.id) ?? [];
-    return {
-      ...item,
-      crmViolations,
-      bonusEligibilityStatus: computeBonusEligibilityStatus(crmViolations, false)
-    };
-  });
-
-  return {
-    items,
-    total,
-    page,
-    pageSize: PAGE_SIZE,
-    pageCount: Math.max(Math.ceil(total / PAGE_SIZE), 1)
-  };
+  const items = await withCrmViolations("TASK", rows, false);
+  return paginatedResult(items, total, page, PAGE_SIZE);
 }
 
 export async function getTaskForUser(id: string, user: PermissionUser) {

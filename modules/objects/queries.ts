@@ -2,9 +2,11 @@ import type { Prisma } from "@/generated/prisma/client";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { objectAccessWhere } from "@/modules/crm/access-where";
+import { pageFromParam, paginatedResult } from "@/modules/crm/pagination";
 import { userSummarySelect } from "@/modules/crm/selects";
+import { withCrmViolations } from "@/modules/crm/violation-enrichment";
 import { taskInclude } from "@/modules/tasks/queries";
-import { computeBonusEligibilityStatus, getActiveViolationsForEntity, getActiveViolationsMap } from "@/modules/crm-discipline/service";
+import { computeBonusEligibilityStatus, getActiveViolationsForEntity } from "@/modules/crm-discipline/service";
 import { canViewRecord, type PermissionUser } from "@/permissions";
 
 export type ObjectListSearchParams = {
@@ -29,7 +31,7 @@ const PAGE_SIZE = 20;
 export { objectAccessWhere };
 
 export async function getProjectObjects(params: ObjectListSearchParams, user: PermissionUser) {
-  const page = Math.max(Number(params.page ?? "1") || 1, 1);
+  const page = pageFromParam(params.page);
   const filters: Prisma.ProjectObjectWhereInput[] = [objectAccessWhere(user)];
 
   if (params.q) {
@@ -78,23 +80,8 @@ export async function getProjectObjects(params: ObjectListSearchParams, user: Pe
     }),
     prisma.projectObject.count({ where })
   ]);
-  const violations = await getActiveViolationsMap("OBJECT", rows.map((item) => item.id));
-  const items = rows.map((item) => {
-    const crmViolations = violations.get(item.id) ?? [];
-    return {
-      ...item,
-      crmViolations,
-      bonusEligibilityStatus: computeBonusEligibilityStatus(crmViolations)
-    };
-  });
-
-  return {
-    items,
-    total,
-    page,
-    pageSize: PAGE_SIZE,
-    pageCount: Math.max(Math.ceil(total / PAGE_SIZE), 1)
-  };
+  const items = await withCrmViolations("OBJECT", rows);
+  return paginatedResult(items, total, page, PAGE_SIZE);
 }
 
 export async function getProjectObjectForUser(id: string, user: PermissionUser) {

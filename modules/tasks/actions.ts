@@ -3,9 +3,8 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { writeAuditLog } from "@/lib/audit-log";
 import { prisma } from "@/lib/prisma";
-import { toAuditValue } from "@/modules/crm/form-utils";
+import { writeEntityAuditLog } from "@/modules/crm/audit-helpers";
 import { expireViolationsForEntity } from "@/modules/crm-discipline/service";
 import { parseTaskForm, toTaskDocument } from "@/modules/tasks/form";
 import { resolveTaskLinks } from "@/modules/tasks/link-resolver";
@@ -44,12 +43,12 @@ export async function createTaskAction(_prevState: TaskActionState, formData: Fo
     }
   });
 
-  await writeAuditLog({
+  await writeEntityAuditLog({
     entityType: "TASK",
     entityId: task.id,
     action: task.recordType === "TOUCH" ? "CREATE_TOUCH" : "CREATE_TASK",
     userId: user.id,
-    after: toAuditValue(task)
+    after: task
   });
 
   await refreshTouchDates(task);
@@ -77,13 +76,13 @@ export async function updateTaskAction(id: string, _prevState: TaskActionState, 
     data: document
   });
 
-  await writeAuditLog({
+  await writeEntityAuditLog({
     entityType: "TASK",
     entityId: after.id,
     action: after.status === "DONE" && before.status !== "DONE" ? "CLOSE_TASK" : "UPDATE",
     userId: user.id,
-    before: toAuditValue(before),
-    after: toAuditValue(after)
+    before,
+    after
   });
 
   await refreshTouchDates(after);
@@ -104,13 +103,13 @@ export async function cancelTaskAction(id: string) {
     data: { status: "CANCELLED", archivedAt: new Date() }
   });
 
-  await writeAuditLog({
+  await writeEntityAuditLog({
     entityType: "TASK",
     entityId: id,
     action: "CANCEL",
     userId: user.id,
-    before: toAuditValue(before),
-    after: toAuditValue(after)
+    before,
+    after
   });
 
   await expireViolationsForEntity("TASK", id, user.id);

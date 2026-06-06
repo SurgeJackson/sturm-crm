@@ -2,7 +2,6 @@
 
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { writeAuditLog } from "@/lib/audit-log";
 import { prisma } from "@/lib/prisma";
 import {
   canArchiveRecord,
@@ -10,8 +9,7 @@ import {
   canCreateClient,
   canEditRecord
 } from "@/permissions";
-import { writeTrackedFieldAuditLogs } from "@/modules/crm/audit-helpers";
-import { toAuditValue } from "@/modules/crm/form-utils";
+import { writeEntityAuditLog, writeTrackedFieldAuditLogs } from "@/modules/crm/audit-helpers";
 import { expireViolationsForEntity, syncClientDiscipline } from "@/modules/crm-discipline/service";
 import { parseClientForm, toClientDocument } from "@/modules/clients/form";
 
@@ -44,12 +42,12 @@ export async function createClientAction(_prevState: ClientActionState, formData
     data: document
   });
 
-  await writeAuditLog({
+  await writeEntityAuditLog({
     entityType: "CLIENT",
     entityId: client.id,
     action: "CREATE",
     userId: user.id,
-    after: toAuditValue(client)
+    after: client
   });
 
   await syncClientDiscipline(client.id, user.id);
@@ -91,13 +89,13 @@ export async function updateClientAction(id: string, _prevState: ClientActionSta
     data: update
   });
 
-  await writeAuditLog({
+  await writeEntityAuditLog({
     entityType: "CLIENT",
     entityId: id,
     action: "UPDATE",
     userId: user.id,
-    before: toAuditValue(before),
-    after: toAuditValue(after)
+    before,
+    after
   });
 
   await writeTrackedFieldAuditLogs({
@@ -141,13 +139,13 @@ export async function archiveClientAction(id: string) {
     data: update
   });
 
-  await writeAuditLog({
+  await writeEntityAuditLog({
     entityType: "CLIENT",
     entityId: id,
     action: "ARCHIVE",
     userId: user.id,
-    before: toAuditValue(before),
-    after: toAuditValue(after)
+    before,
+    after
   });
 
   await expireViolationsForEntity("CLIENT", id, user.id);

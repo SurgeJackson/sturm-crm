@@ -2,7 +2,6 @@
 
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { writeAuditLog } from "@/lib/audit-log";
 import { prisma } from "@/lib/prisma";
 import {
   canArchiveRecord,
@@ -11,8 +10,7 @@ import {
   canEditRecord,
   canManageObjectParticipants
 } from "@/permissions";
-import { writeTrackedFieldAuditLogs } from "@/modules/crm/audit-helpers";
-import { toAuditValue } from "@/modules/crm/form-utils";
+import { writeEntityAuditLog, writeTrackedFieldAuditLogs } from "@/modules/crm/audit-helpers";
 import { expireViolationsForEntity, syncDesignerDiscipline, syncObjectDiscipline } from "@/modules/crm-discipline/service";
 import {
   parseObjectForm,
@@ -69,12 +67,12 @@ export async function createProjectObjectAction(_prevState: ProjectObjectActionS
 
   await refreshDesignerObjectCounters(object.designerId);
 
-  await writeAuditLog({
+  await writeEntityAuditLog({
     entityType: "OBJECT",
     entityId: object.id,
     action: "CREATE",
     userId: user.id,
-    after: toAuditValue(object)
+    after: object
   });
 
   await syncObjectDiscipline(object.id, user.id);
@@ -120,13 +118,13 @@ export async function updateProjectObjectAction(id: string, _prevState: ProjectO
 
   await refreshDesignerCountersForChange(before.designerId, after.designerId);
 
-  await writeAuditLog({
+  await writeEntityAuditLog({
     entityType: "OBJECT",
     entityId: id,
     action: "UPDATE",
     userId: user.id,
-    before: toAuditValue(before),
-    after: toAuditValue(after)
+    before,
+    after
   });
 
   const trackedFields = [
@@ -180,13 +178,13 @@ export async function archiveProjectObjectAction(id: string) {
 
   await refreshDesignerObjectCounters(after.designerId);
 
-  await writeAuditLog({
+  await writeEntityAuditLog({
     entityType: "OBJECT",
     entityId: id,
     action: "ARCHIVE",
     userId: user.id,
-    before: toAuditValue(before),
-    after: toAuditValue(after)
+    before,
+    after
   });
 
   await expireViolationsForEntity("OBJECT", id, user.id);
@@ -225,12 +223,12 @@ export async function createProjectObjectParticipantAction(
     }
   });
 
-  await writeAuditLog({
+  await writeEntityAuditLog({
     entityType: "OBJECT",
     entityId: objectId,
     action: "ADD_PARTICIPANT",
     userId: user.id,
-    after: toAuditValue(participant)
+    after: participant
   });
 
   redirect(`/objects/${objectId}?participantSaved=1`);
@@ -268,13 +266,13 @@ export async function updateProjectObjectParticipantAction(
     data: toParticipantDocument(parsed.data)
   });
 
-  await writeAuditLog({
+  await writeEntityAuditLog({
     entityType: "OBJECT",
     entityId: objectId,
     action: "UPDATE_PARTICIPANT",
     userId: user.id,
-    before: toAuditValue(before),
-    after: toAuditValue(after)
+    before,
+    after
   });
 
   redirect(`/objects/${objectId}?participantSaved=1`);
@@ -301,13 +299,13 @@ export async function archiveProjectObjectParticipantAction(objectId: string, pa
     data: { archivedAt: new Date() }
   });
 
-  await writeAuditLog({
+  await writeEntityAuditLog({
     entityType: "OBJECT",
     entityId: objectId,
     action: "ARCHIVE_PARTICIPANT",
     userId: user.id,
-    before: toAuditValue(before),
-    after: toAuditValue(after)
+    before,
+    after
   });
 
   redirect(`/objects/${objectId}?participantArchived=1`);
@@ -335,7 +333,7 @@ export async function moveDesignerToFirstObjectReceivedAction(objectId: string) 
     data: { relationshipStage: "FIRST_OBJECT_RECEIVED" }
   });
 
-  await writeAuditLog({
+  await writeEntityAuditLog({
     entityType: "DESIGNER",
     entityId: object.designer.id,
     action: "CHANGE_RELATIONSHIP_STAGE",

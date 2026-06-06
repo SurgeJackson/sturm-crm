@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { ownerRecordWhere } from "@/modules/crm/access-where";
 import { daysAgo, dayRange } from "@/modules/crm/date-ranges";
+import { closedProposalStatuses, closedTaskStatuses } from "@/modules/crm/domain-constants";
 import type { PermissionUser } from "@/permissions";
 import { periodWhere, type Metric } from "./common";
 import { getCrmDisciplineReport } from "./crm-discipline";
@@ -13,14 +14,14 @@ export async function getMyReport(user: PermissionUser) {
   const [discipline, tasksToday, overdueTasks, doneTasks, clients, designers, objects, deals, proposals, proposalsNoFollowUp, designersNoTouch, clientsNoContact] = await Promise.all([
     getCrmDisciplineReport({}, user),
     prisma.taskActivity.count({ where: { responsibleId: user.id, recordType: "TASK", archivedAt: null, dueAt: periodWhere(today.start, today.end) } }),
-    prisma.taskActivity.count({ where: { responsibleId: user.id, recordType: "TASK", archivedAt: null, dueAt: { lt: now }, status: { notIn: ["DONE", "CANCELLED", "CLOSED"] } } }),
+    prisma.taskActivity.count({ where: { responsibleId: user.id, recordType: "TASK", archivedAt: null, dueAt: { lt: now }, status: { notIn: closedTaskStatuses } } }),
     prisma.taskActivity.count({ where: { responsibleId: user.id, recordType: "TASK", status: "DONE" } }),
     prisma.client.count({ where: own }),
     prisma.designer.count({ where: own }),
     prisma.projectObject.count({ where: own }),
     prisma.deal.count({ where: own }),
     prisma.commercialProposal.count({ where: own }),
-    prisma.commercialProposal.count({ where: { responsibleId: user.id, nextTouchAt: null, status: { notIn: ["ACCEPTED", "DECLINED", "ARCHIVED"] } } }),
+    prisma.commercialProposal.count({ where: { responsibleId: user.id, nextTouchAt: null, status: { notIn: closedProposalStatuses } } }),
     prisma.designer.count({ where: { responsibleId: user.id, OR: [{ lastTouchAt: null }, { lastTouchAt: { lt: sixtyDaysAgo } }] } }),
     prisma.client.count({ where: { responsibleId: user.id, status: "ACTIVE", nextContactAt: null } })
   ]);

@@ -2,10 +2,12 @@ import type { Prisma } from "@/generated/prisma/client";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { dealAccessWhere } from "@/modules/crm/access-where";
-import { daysAgo } from "@/modules/crm/date-ranges";
+import { closedDealStages } from "@/modules/crm/domain-constants";
+import { pageFromParam, paginatedResult } from "@/modules/crm/pagination";
 import { clientNameSelect, designerNameSelect, objectTitleSelect, userSummarySelect } from "@/modules/crm/selects";
+import { withCrmViolations } from "@/modules/crm/violation-enrichment";
 import { taskInclude } from "@/modules/tasks/queries";
-import { computeBonusEligibilityStatus, getActiveViolationsForEntity, getActiveViolationsMap } from "@/modules/crm-discipline/service";
+import { computeBonusEligibilityStatus, getActiveViolationsForEntity } from "@/modules/crm-discipline/service";
 import { canViewRecord, type PermissionUser } from "@/permissions";
 
 export type DealListSearchParams = {
@@ -33,12 +35,12 @@ export { dealAccessWhere };
 export function activeDealWhere(): Prisma.DealWhereInput {
   return {
     archivedAt: null,
-    stage: { notIn: ["LOST", "COMPLETED"] }
+    stage: { notIn: closedDealStages }
   };
 }
 
 export async function getDeals(params: DealListSearchParams, user: PermissionUser) {
-  const page = Math.max(Number(params.page ?? "1") || 1, 1);
+  const page = pageFromParam(params.page);
   const now = new Date();
   const filters: Prisma.DealWhereInput[] = [dealAccessWhere(user)];
 
@@ -60,7 +62,7 @@ export async function getDeals(params: DealListSearchParams, user: PermissionUse
   if (params.source) filters.push({ source: params.source as never });
   if (params.probability) filters.push({ probability: params.probability as never });
   if (params.noNextAction === "1") filters.push({ OR: [{ nextActionAt: null }, { nextActionText: null }] });
-  if (params.overdueNextAction === "1") filters.push({ nextActionAt: { lt: now }, stage: { notIn: ["LOST", "COMPLETED"] } });
+  if (params.overdueNextAction === "1") filters.push({ nextActionAt: { lt: now }, stage: { notIn: closedDealStages } });
   if (params.lost === "1") filters.push({ stage: "LOST" });
   if (params.active === "1") filters.push(activeDealWhere());
   if (params.noAmount === "1") filters.push({ potentialAmount: null });
@@ -86,23 +88,8 @@ export async function getDeals(params: DealListSearchParams, user: PermissionUse
     }),
     prisma.deal.count({ where })
   ]);
-  const violations = await getActiveViolationsMap("DEAL", rows.map((item) => item.id));
-  const items = rows.map((item) => {
-    const crmViolations = violations.get(item.id) ?? [];
-    return {
-      ...item,
-      crmViolations,
-      bonusEligibilityStatus: computeBonusEligibilityStatus(crmViolations)
-    };
-  });
-
-  return {
-    items,
-    total,
-    page,
-    pageSize: PAGE_SIZE,
-    pageCount: Math.max(Math.ceil(total / PAGE_SIZE), 1)
-  };
+  const items = await withCrmViolations("DEAL", rows);
+  return paginatedResult(items, total, page, PAGE_SIZE);
 }
 
 export function dealListInclude() {

@@ -15,7 +15,11 @@ export async function getDesignersReport(params: ReportSearchParams, user: Permi
   filters.push({ createdAt: periodWhere(from, to) });
   const designers = await prisma.designer.findMany({
     where: { AND: filters },
-    include: { responsible: { select: { name: true } }, projectObjects: { where: { archivedAt: null } }, proposals: { where: { archivedAt: null } } },
+    include: {
+      responsible: { select: { name: true } },
+      projectObjects: { where: { archivedAt: null }, select: { id: true } },
+      proposals: { where: { archivedAt: null }, select: { id: true, amount: true } }
+    },
     orderBy: { createdAt: "desc" }
   });
   const sixtyDaysAgo = daysAgo(60);
@@ -48,7 +52,13 @@ export async function getObjectsReport(params: ReportSearchParams, user: Permiss
   if (params.city) filters.push({ city: { contains: params.city, mode: "insensitive" } });
   const objects = await prisma.projectObject.findMany({
     where: { AND: filters },
-    include: { responsible: { select: { name: true } }, client: { select: { name: true } }, designer: { select: { name: true } }, tasks: { where: { archivedAt: null } }, participants: { where: { archivedAt: null } } },
+    include: {
+      responsible: { select: { name: true } },
+      client: { select: { name: true } },
+      designer: { select: { name: true } },
+      tasks: { where: { archivedAt: null }, select: { id: true } },
+      participants: { where: { archivedAt: null }, select: { id: true, participantType: true } }
+    },
     orderBy: { createdAt: "desc" }
   });
   return {

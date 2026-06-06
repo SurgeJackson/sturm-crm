@@ -3,9 +3,12 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { proposalAccessWhere } from "@/modules/crm/access-where";
 import { daysAgo } from "@/modules/crm/date-ranges";
+import { closedProposalStatuses } from "@/modules/crm/domain-constants";
+import { pageFromParam, paginatedResult } from "@/modules/crm/pagination";
 import { clientNameSelect, dealTitleSelect, designerNameSelect, objectTitleSelect, userSummarySelect } from "@/modules/crm/selects";
+import { withCrmViolations } from "@/modules/crm/violation-enrichment";
 import { taskInclude } from "@/modules/tasks/queries";
-import { computeBonusEligibilityStatus, getActiveViolationsForEntity, getActiveViolationsMap } from "@/modules/crm-discipline/service";
+import { computeBonusEligibilityStatus, getActiveViolationsForEntity } from "@/modules/crm-discipline/service";
 import { canViewRecord, type PermissionUser } from "@/permissions";
 
 export type ProposalListSearchParams = {
@@ -42,7 +45,7 @@ export function proposalListInclude() {
 }
 
 export async function getProposals(params: ProposalListSearchParams, user: PermissionUser) {
-  const page = Math.max(Number(params.page ?? "1") || 1, 1);
+  const page = pageFromParam(params.page);
   const now = new Date();
   const thinkingThreshold = daysAgo(7, now);
   const filters: Prisma.CommercialProposalWhereInput[] = [proposalAccessWhere(user)];
@@ -67,7 +70,7 @@ export async function getProposals(params: ProposalListSearchParams, user: Permi
   if (params.noFile === "1") filters.push({ fileUrl: null });
   if (params.noFollowUp === "1") filters.push({ nextTouchAt: null });
   if (params.overdueFollowUp === "1") {
-    filters.push({ nextTouchAt: { lt: now }, status: { notIn: ["ACCEPTED", "DECLINED", "ARCHIVED"] } });
+    filters.push({ nextTouchAt: { lt: now }, status: { notIn: closedProposalStatuses } });
   }
   if (params.thinking7 === "1") filters.push({ status: "CLIENT_THINKING", sentAt: { lt: thinkingThreshold } });
   if (params.internalReview === "1") filters.push({ status: "INTERNAL_REVIEW" });
@@ -95,23 +98,8 @@ export async function getProposals(params: ProposalListSearchParams, user: Permi
     }),
     prisma.commercialProposal.count({ where })
   ]);
-  const violations = await getActiveViolationsMap("PROPOSAL", rows.map((item) => item.id));
-  const items = rows.map((item) => {
-    const crmViolations = violations.get(item.id) ?? [];
-    return {
-      ...item,
-      crmViolations,
-      bonusEligibilityStatus: computeBonusEligibilityStatus(crmViolations)
-    };
-  });
-
-  return {
-    items,
-    total,
-    page,
-    pageSize: PAGE_SIZE,
-    pageCount: Math.max(Math.ceil(total / PAGE_SIZE), 1)
-  };
+  const items = await withCrmViolations("PROPOSAL", rows);
+  return paginatedResult(items, total, page, PAGE_SIZE);
 }
 
 export async function getProposalForUser(id: string, user: PermissionUser) {

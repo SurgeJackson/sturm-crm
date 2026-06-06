@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { daysAgo } from "@/modules/crm/date-ranges";
+import { closedDealStages, closedProposalStatuses, closedTaskStatuses } from "@/modules/crm/domain-constants";
 import type { PermissionUser } from "@/permissions";
 import { reportOwnerWhere, reportTaskOwnerWhere, type Metric, type ReportSearchParams } from "./common";
 
@@ -9,9 +10,9 @@ export async function getOverdueReport(params: ReportSearchParams, user: Permiss
   const now = new Date();
   const sixtyDaysAgo = daysAgo(60, now);
   const [tasks, proposalFollowUps, deals, designers, objects, clients] = await Promise.all([
-    prisma.taskActivity.findMany({ where: { AND: [taskOwner, { recordType: "TASK", archivedAt: null, status: { notIn: ["DONE", "CANCELLED", "CLOSED"] }, dueAt: { lt: now } }] }, include: { responsible: { select: { name: true } } }, take: 50 }),
-    prisma.commercialProposal.findMany({ where: { AND: [owner, { archivedAt: null, nextTouchAt: { lt: now }, status: { notIn: ["ACCEPTED", "DECLINED", "ARCHIVED"] } }] }, include: { responsible: { select: { name: true } } }, take: 50 }),
-    prisma.deal.findMany({ where: { AND: [owner, { archivedAt: null, nextActionAt: { lt: now }, stage: { notIn: ["LOST", "COMPLETED"] } }] }, include: { responsible: { select: { name: true } } }, take: 50 }),
+    prisma.taskActivity.findMany({ where: { AND: [taskOwner, { recordType: "TASK", archivedAt: null, status: { notIn: closedTaskStatuses }, dueAt: { lt: now } }] }, include: { responsible: { select: { name: true } } }, take: 50 }),
+    prisma.commercialProposal.findMany({ where: { AND: [owner, { archivedAt: null, nextTouchAt: { lt: now }, status: { notIn: closedProposalStatuses } }] }, include: { responsible: { select: { name: true } } }, take: 50 }),
+    prisma.deal.findMany({ where: { AND: [owner, { archivedAt: null, nextActionAt: { lt: now }, stage: { notIn: closedDealStages } }] }, include: { responsible: { select: { name: true } } }, take: 50 }),
     prisma.designer.findMany({ where: { AND: [owner, { archivedAt: null, OR: [{ lastTouchAt: null }, { lastTouchAt: { lt: sixtyDaysAgo } }] }] }, include: { responsible: { select: { name: true } } }, take: 50 }),
     prisma.projectObject.findMany({ where: { AND: [owner, { status: "ACTIVE", tasks: { none: { archivedAt: null } } }] }, include: { responsible: { select: { name: true } } }, take: 50 }),
     prisma.client.findMany({ where: { AND: [owner, { status: "ACTIVE", nextContactAt: null }] }, include: { responsible: { select: { name: true } } }, take: 50 })

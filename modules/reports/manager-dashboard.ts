@@ -1,6 +1,7 @@
 import type { Prisma } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { daysAgo, dayRange } from "@/modules/crm/date-ranges";
+import { closedDealStages, closedProposalStatuses, closedTaskStatuses } from "@/modules/crm/domain-constants";
 import type { PermissionUser } from "@/permissions";
 import { periodWhere, reportOwnerWhere, reportPeriod, reportTaskOwnerWhere, type Metric, type ReportSearchParams } from "./common";
 
@@ -12,7 +13,7 @@ export async function getManagerDashboardReport(params: ReportSearchParams, user
   const today = dayRange(now);
   const sixtyDaysAgo = daysAgo(60, now);
   const thinking7 = daysAgo(7, now);
-  const activeDeal: Prisma.DealWhereInput = { archivedAt: null, stage: { notIn: ["LOST", "COMPLETED"] } };
+  const activeDeal: Prisma.DealWhereInput = { archivedAt: null, stage: { notIn: closedDealStages } };
 
   const [
     activeDeals,
@@ -69,14 +70,14 @@ export async function getManagerDashboardReport(params: ReportSearchParams, user
     prisma.projectObject.count({ where: { AND: [owner, { OR: [{ status: "LOST" }, { stage: "LOST" }] }] } }),
     prisma.projectObject.count({ where: { AND: [owner, { status: "ACTIVE", tasks: { none: { archivedAt: null } } }] } }),
     prisma.taskActivity.count({ where: { AND: [taskOwner, { recordType: "TASK", archivedAt: null, dueAt: periodWhere(today.start, today.end) }] } }),
-    prisma.taskActivity.count({ where: { AND: [taskOwner, { recordType: "TASK", archivedAt: null, status: { notIn: ["DONE", "CANCELLED", "CLOSED"] }, dueAt: { lt: now } }] } }),
+    prisma.taskActivity.count({ where: { AND: [taskOwner, { recordType: "TASK", archivedAt: null, status: { notIn: closedTaskStatuses }, dueAt: { lt: now } }] } }),
     prisma.taskActivity.count({ where: { AND: [taskOwner, { recordType: "TASK", status: "DONE", completedAt: periodWhere(from, to) }] } }),
     prisma.taskActivity.count({ where: { AND: [taskOwner, { recordType: "TOUCH", completedAt: periodWhere(from, to) }] } }),
-    prisma.commercialProposal.count({ where: { AND: [owner, { archivedAt: null, nextTouchAt: null, status: { notIn: ["ACCEPTED", "DECLINED", "ARCHIVED"] } }] } }),
+    prisma.commercialProposal.count({ where: { AND: [owner, { archivedAt: null, nextTouchAt: null, status: { notIn: closedProposalStatuses } }] } }),
     prisma.client.count({ where: { AND: [owner, { status: "ACTIVE", nextContactAt: null }] } }),
     prisma.taskActivity.groupBy({
       by: ["responsibleId"],
-      where: { AND: [taskOwner, { recordType: "TASK", archivedAt: null, status: { notIn: ["DONE", "CANCELLED", "CLOSED"] }, dueAt: { lt: now } }] },
+      where: { AND: [taskOwner, { recordType: "TASK", archivedAt: null, status: { notIn: closedTaskStatuses }, dueAt: { lt: now } }] },
       _count: { _all: true }
     }),
     prisma.commercialProposal.findMany({

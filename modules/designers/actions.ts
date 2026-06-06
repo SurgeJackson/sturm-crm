@@ -3,7 +3,6 @@
 import { redirect } from "next/navigation";
 import type { DesignerRelationshipStage } from "@/generated/prisma/client";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { writeAuditLog } from "@/lib/audit-log";
 import { prisma } from "@/lib/prisma";
 import {
   canArchiveRecord,
@@ -11,8 +10,7 @@ import {
   canCreateDesigner,
   canEditRecord
 } from "@/permissions";
-import { writeTrackedFieldAuditLogs } from "@/modules/crm/audit-helpers";
-import { toAuditValue } from "@/modules/crm/form-utils";
+import { writeEntityAuditLog, writeTrackedFieldAuditLogs } from "@/modules/crm/audit-helpers";
 import { expireViolationsForEntity, syncDesignerDiscipline } from "@/modules/crm-discipline/service";
 import { parseDesignerForm, relationshipStages, toDesignerDocument } from "@/modules/designers/form";
 
@@ -49,12 +47,12 @@ export async function createDesignerAction(_prevState: DesignerActionState, form
     data: document
   });
 
-  await writeAuditLog({
+  await writeEntityAuditLog({
     entityType: "DESIGNER",
     entityId: designer.id,
     action: "CREATE",
     userId: user.id,
-    after: toAuditValue(designer)
+    after: designer
   });
 
   await syncDesignerDiscipline(designer.id, user.id);
@@ -96,13 +94,13 @@ export async function updateDesignerAction(id: string, _prevState: DesignerActio
     data: update
   });
 
-  await writeAuditLog({
+  await writeEntityAuditLog({
     entityType: "DESIGNER",
     entityId: id,
     action: "UPDATE",
     userId: user.id,
-    before: toAuditValue(before),
-    after: toAuditValue(after)
+    before,
+    after
   });
 
   const trackedFields = [
@@ -152,13 +150,13 @@ export async function archiveDesignerAction(id: string) {
     data: update
   });
 
-  await writeAuditLog({
+  await writeEntityAuditLog({
     entityType: "DESIGNER",
     entityId: id,
     action: "ARCHIVE",
     userId: user.id,
-    before: toAuditValue(before),
-    after: toAuditValue(after)
+    before,
+    after
   });
 
   await expireViolationsForEntity("DESIGNER", id, user.id);
@@ -193,7 +191,7 @@ export async function changeDesignerStageAction(id: string, formData: FormData) 
     data: { relationshipStage: stage as DesignerRelationshipStage }
   });
 
-  await writeAuditLog({
+  await writeEntityAuditLog({
     entityType: "DESIGNER",
     entityId: id,
     action: "CHANGE_RELATIONSHIP_STAGE",

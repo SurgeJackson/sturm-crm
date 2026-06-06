@@ -1,4 +1,8 @@
 import type { AuditEntityType, CrmViolationSeverity } from "@/generated/prisma/client";
+import {
+  activeDealStages as activeDealStageValues,
+  closedActivityStatuses
+} from "@/modules/crm/domain-constants";
 
 export type CrmViolationDraft = {
   code: string;
@@ -79,8 +83,8 @@ type TaskForDiscipline = {
   result?: string | null;
 };
 
-const activeDealStages = new Set(["NEW_REQUEST", "QUALIFICATION", "SELECTION", "PROPOSAL_IN_PROGRESS", "PROPOSAL_SENT", "WAITING_DECISION", "NEGOTIATION", "INVOICE_OR_ORDER", "PAID", "IN_DELIVERY"]);
-const closedTaskStatuses = new Set(["DONE", "CANCELLED", "CLOSED", "RECORDED"]);
+const activeDealStages = new Set<string>(activeDealStageValues);
+const closedTaskStatuses = new Set<string>(closedActivityStatuses);
 
 export type DisciplineRuleOptions = {
   now?: Date;

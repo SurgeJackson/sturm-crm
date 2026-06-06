@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { writeAuditLog } from "@/lib/audit-log";
 import { daysFromNow } from "@/modules/crm/date-ranges";
+import { closedTaskStatuses } from "@/modules/crm/domain-constants";
 import { toAuditValue } from "@/modules/crm/form-utils";
 
 export async function refreshDesignerObjectCounters(designerId?: string | null) {
@@ -36,7 +37,7 @@ export async function createFrozenObjectReturnTask(object: {
       objectId: object.id,
       autoRule: "FROZEN_OBJECT_RETURN",
       archivedAt: null,
-      status: { notIn: ["DONE", "CANCELLED", "CLOSED"] }
+      status: { notIn: closedTaskStatuses }
     },
     select: { id: true }
   });

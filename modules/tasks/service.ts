@@ -2,6 +2,7 @@ import type { TaskActivity, TaskAutoRule } from "@/generated/prisma/client";
 import { writeAuditLog } from "@/lib/audit-log";
 import { prisma } from "@/lib/prisma";
 import { daysAgo, daysFromNow } from "@/modules/crm/date-ranges";
+import { closedDealStages, closedTaskStatuses } from "@/modules/crm/domain-constants";
 import { toAuditValue } from "@/modules/crm/form-utils";
 import { syncClientDiscipline, syncDesignerDiscipline, syncTaskDiscipline } from "@/modules/crm-discipline/service";
 
@@ -99,7 +100,7 @@ async function createAutomaticTask(input: {
   const exists = await prisma.taskActivity.findFirst({
     where: {
       archivedAt: null,
-      status: { notIn: ["DONE", "CANCELLED", "CLOSED"] },
+      status: { notIn: closedTaskStatuses },
       autoRule: input.autoRule,
       clientId: input.clientId ?? undefined,
       designerId: input.designerId ?? undefined,
@@ -165,7 +166,7 @@ export async function ensureAutomaticTasksForUser(userId: string, now = new Date
     prisma.deal.findMany({
       where: {
         archivedAt: null,
-        stage: { notIn: ["LOST", "COMPLETED"] },
+        stage: { notIn: closedDealStages },
         OR: [{ nextActionAt: null }, { nextActionText: null }]
       },
       select: { id: true, title: true, clientId: true, objectId: true, designerId: true, responsibleId: true }

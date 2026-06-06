@@ -8,6 +8,12 @@ import { writeAuditLog } from "@/lib/audit-log";
 import { prisma } from "@/lib/prisma";
 import { toAuditValue } from "@/modules/crm/form-utils";
 import {
+  bonusEntityTypes,
+  computeBonusEligibilityStatus,
+  type BonusEligibilityStatus
+} from "@/modules/crm-discipline/bonus";
+import { processCursorBatches, type DisciplineSyncResult } from "@/modules/crm-discipline/batch-runner";
+import {
   validateClientForDiscipline,
   validateDealForDiscipline,
   validateDesignerForDiscipline,
@@ -17,69 +23,29 @@ import {
   type CrmViolationDraft,
   type DisciplineRuleOptions
 } from "@/modules/crm-discipline/rules";
-import { canViewAllData, type PermissionUser } from "@/permissions";
 
-export type BonusEligibilityStatus = "ELIGIBLE" | "NEEDS_FIX" | "NOT_ELIGIBLE" | "NOT_APPLICABLE";
+export {
+  bonusEligibilityLabels,
+  computeBonusEligibilityStatus,
+  crmDisciplineStatus,
+  crmEntityHref,
+  crmViolationSeverityLabels,
+  type BonusEligibilityStatus
+} from "@/modules/crm-discipline/bonus";
+export {
+  getActiveViolationsForEntity,
+  getActiveViolationsMap,
+  violationAccessWhere
+} from "@/modules/crm-discipline/queries";
+
 export type CrmDisciplineSyncOptions = DisciplineRuleOptions & {
   batchSize?: number;
 };
 
-type DisciplineSyncResult = { created: number; resolved: number; active: number };
-type DisciplineCheckTotals = DisciplineSyncResult & { checked: number };
-
-export const crmViolationSeverityLabels: Record<CrmViolationSeverity, string> = {
-  CRITICAL: "Критическое",
-  MEDIUM: "Среднее",
-  LOW: "Легкое"
-};
-
-export const bonusEligibilityLabels: Record<BonusEligibilityStatus, string> = {
-  ELIGIBLE: "Учитывается",
-  NEEDS_FIX: "Требует исправления",
-  NOT_ELIGIBLE: "Не учитывается",
-  NOT_APPLICABLE: "Не применяется"
-};
-
-const bonusEntityTypes = new Set<AuditEntityType>(["CLIENT", "OBJECT", "DEAL", "PROPOSAL"]);
 const DEFAULT_DISCIPLINE_BATCH_SIZE = 25;
 
 function normalizeSeverity(severity: CrmViolationDraft["severity"]): CrmViolationSeverity {
   return severity.toUpperCase() as CrmViolationSeverity;
-}
-
-export function computeBonusEligibilityStatus(
-  violations: Array<Pick<CrmViolation, "severity" | "canAffectBonus" | "status">> | CrmViolationDraft[],
-  applies = true
-): BonusEligibilityStatus {
-  if (!applies) return "NOT_APPLICABLE";
-
-  const activeBonusViolations = violations.filter((violation) => {
-    const status = "status" in violation ? violation.status : "ACTIVE";
-    return status === "ACTIVE" && violation.canAffectBonus;
-  });
-
-  if (activeBonusViolations.some((violation) => violation.severity === "CRITICAL" || violation.severity === "critical")) return "NOT_ELIGIBLE";
-  if (activeBonusViolations.some((violation) => violation.severity === "MEDIUM" || violation.severity === "medium")) return "NEEDS_FIX";
-  return "ELIGIBLE";
-}
-
-export function crmDisciplineStatus(violations: Array<Pick<CrmViolation, "severity" | "status">>) {
-  const active = violations.filter((violation) => violation.status === "ACTIVE");
-  if (active.some((violation) => violation.severity === "CRITICAL")) return "critical" as const;
-  if (active.length > 0) return "needs_fix" as const;
-  return "correct" as const;
-}
-
-export function crmEntityHref(entityType: AuditEntityType, entityId: string) {
-  const prefixes: Partial<Record<AuditEntityType, string>> = {
-    CLIENT: "/clients",
-    DESIGNER: "/designers",
-    OBJECT: "/objects",
-    DEAL: "/deals",
-    PROPOSAL: "/proposals",
-    TASK: "/tasks"
-  };
-  return `${prefixes[entityType] ?? "/reports/crm-discipline"}/${entityId}`;
 }
 
 type DisciplineTx = Prisma.TransactionClient;
@@ -275,32 +241,6 @@ export async function syncTaskDiscipline(taskId: string, actorId?: string | null
   return syncViolationsForEntity("TASK", task.id, validateTaskForDiscipline(task, options), actorId);
 }
 
-export async function getActiveViolationsForEntity(entityType: AuditEntityType, entityId: string) {
-  return prisma.crmViolation.findMany({
-    where: { entityType, entityId, status: "ACTIVE" },
-    orderBy: [{ severity: "asc" }, { detectedAt: "desc" }],
-    include: { responsible: { select: { id: true, name: true, email: true } } }
-  });
-}
-
-export async function getActiveViolationsMap(entityType: AuditEntityType, entityIds: string[]) {
-  if (entityIds.length === 0) return new Map<string, Awaited<ReturnType<typeof getActiveViolationsForEntity>>>();
-  const rows = await prisma.crmViolation.findMany({
-    where: { entityType, entityId: { in: entityIds }, status: "ACTIVE" },
-    orderBy: [{ severity: "asc" }, { detectedAt: "desc" }],
-    include: { responsible: { select: { id: true, name: true, email: true } } }
-  });
-  return rows.reduce<Map<string, typeof rows>>((acc, row) => {
-    acc.set(row.entityId, [...(acc.get(row.entityId) ?? []), row]);
-    return acc;
-  }, new Map());
-}
-
-export function violationAccessWhere(user: PermissionUser): Prisma.CrmViolationWhereInput {
-  if (canViewAllData(user)) return {};
-  return { responsibleId: user.id };
-}
-
 export async function runCrmDisciplineCheck(actorId?: string | null, options?: CrmDisciplineSyncOptions) {
   const ruleOptions = { now: options?.now ?? new Date() };
   const batchSize = Math.max(options?.batchSize ?? DEFAULT_DISCIPLINE_BATCH_SIZE, 1);
@@ -372,28 +312,4 @@ export async function runCrmDisciplineCheck(actorId?: string | null, options?: C
     }),
     { checked: 0, created: 0, resolved: 0, active: 0 }
   );
-}
-
-async function processCursorBatches<T extends { id: string }>(
-  fetchBatch: (cursorId?: string) => Promise<T[]>,
-  mapper: (item: T) => Promise<DisciplineSyncResult>
-): Promise<DisciplineCheckTotals> {
-  const totals: DisciplineCheckTotals = { checked: 0, created: 0, resolved: 0, active: 0 };
-  let cursorId: string | undefined;
-
-  for (;;) {
-    const batch = await fetchBatch(cursorId);
-    if (batch.length === 0) return totals;
-
-    const results = await Promise.all(batch.map(mapper));
-    for (const result of results) {
-      totals.checked += 1;
-      totals.created += result.created;
-      totals.resolved += result.resolved;
-      totals.active += result.active;
-    }
-
-    cursorId = batch.at(-1)?.id;
-    if (!cursorId) return totals;
-  }
 }

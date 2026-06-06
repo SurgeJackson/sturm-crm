@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import type { DashboardContext } from "@/modules/dashboard/context";
+import { closedTaskStatuses } from "@/modules/crm/domain-constants";
 
 export async function getActivityMetrics(ctx: DashboardContext) {
   const [
@@ -20,7 +21,7 @@ export async function getActivityMetrics(ctx: DashboardContext) {
       where: {
         AND: [
           ctx.access.task,
-          { recordType: "TASK", archivedAt: null, status: { notIn: ["DONE", "CANCELLED", "CLOSED"] }, dueAt: { lt: ctx.now } }
+          { recordType: "TASK", archivedAt: null, status: { notIn: closedTaskStatuses }, dueAt: { lt: ctx.now } }
         ]
       }
     }),
@@ -28,7 +29,7 @@ export async function getActivityMetrics(ctx: DashboardContext) {
       where: {
         AND: [
           ctx.access.task,
-          { recordType: "TASK", archivedAt: null, status: { notIn: ["DONE", "CANCELLED", "CLOSED"] }, dueAt: { gte: ctx.today.start, lte: ctx.today.end } }
+          { recordType: "TASK", archivedAt: null, status: { notIn: closedTaskStatuses }, dueAt: { gte: ctx.today.start, lte: ctx.today.end } }
         ]
       }
     }),
@@ -36,14 +37,14 @@ export async function getActivityMetrics(ctx: DashboardContext) {
     prisma.taskActivity.count({ where: { AND: [ctx.access.task, { recordType: "TASK", status: "DONE", completedAt: { gte: ctx.sevenDaysAgo } }] } }),
     prisma.taskActivity.count({ where: { AND: [ctx.access.task, { recordType: "TOUCH", completedAt: { gte: ctx.sevenDaysAgo } }] } }),
     prisma.taskActivity.findMany({
-      where: { AND: [ctx.access.task, { recordType: "TASK", archivedAt: null, status: { notIn: ["DONE", "CANCELLED", "CLOSED"] }, dueAt: { lt: ctx.now } }] },
+      where: { AND: [ctx.access.task, { recordType: "TASK", archivedAt: null, status: { notIn: closedTaskStatuses }, dueAt: { lt: ctx.now } }] },
       select: { responsible: { select: { id: true, name: true } } }
     }),
     prisma.taskActivity.count({
       where: {
         AND: [
           { responsibleId: ctx.user.id },
-          { recordType: "TASK", archivedAt: null, status: { notIn: ["DONE", "CANCELLED", "CLOSED"] }, dueAt: { gte: ctx.today.start, lte: ctx.today.end } }
+          { recordType: "TASK", archivedAt: null, status: { notIn: closedTaskStatuses }, dueAt: { gte: ctx.today.start, lte: ctx.today.end } }
         ]
       }
     }),
@@ -51,7 +52,7 @@ export async function getActivityMetrics(ctx: DashboardContext) {
       where: {
         AND: [
           { responsibleId: ctx.user.id },
-          { recordType: "TASK", archivedAt: null, status: { notIn: ["DONE", "CANCELLED", "CLOSED"] }, dueAt: { lt: ctx.now } }
+          { recordType: "TASK", archivedAt: null, status: { notIn: closedTaskStatuses }, dueAt: { lt: ctx.now } }
         ]
       }
     }),
@@ -70,7 +71,7 @@ export async function getActivityMetrics(ctx: DashboardContext) {
         recordType: "TASK",
         actionType: "FOLLOW_UP",
         archivedAt: null,
-        status: { notIn: ["DONE", "CANCELLED", "CLOSED"] }
+        status: { notIn: closedTaskStatuses }
       }
     }),
     prisma.taskActivity.findMany({

@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { ownerRecordWhere } from "@/modules/crm/access-where";
+import { closedTaskStatuses } from "@/modules/crm/domain-constants";
 import { canViewAllData, type PermissionUser } from "@/permissions";
 import { periodWhere, reportPeriod, type ReportSearchParams } from "./common";
 
@@ -33,7 +34,7 @@ export async function getEmployeeActivityReport(params: ReportSearchParams, user
         prisma.commercialProposal.aggregate({ where: { AND: [own, { createdAt: periodWhere(from, to) }] }, _sum: { amount: true } }),
         prisma.taskActivity.count({ where: { responsibleId: employee.id, recordType: "TASK", createdAt: periodWhere(from, to), ...actionFilter } }),
         prisma.taskActivity.count({ where: { responsibleId: employee.id, recordType: "TASK", status: "DONE", completedAt: periodWhere(from, to), ...actionFilter } }),
-        prisma.taskActivity.count({ where: { responsibleId: employee.id, recordType: "TASK", dueAt: { lt: now }, status: { notIn: ["DONE", "CANCELLED", "CLOSED"] }, ...actionFilter } }),
+        prisma.taskActivity.count({ where: { responsibleId: employee.id, recordType: "TASK", dueAt: { lt: now }, status: { notIn: closedTaskStatuses }, ...actionFilter } }),
         prisma.taskActivity.count({ where: { responsibleId: employee.id, recordType: "TOUCH", completedAt: periodWhere(from, to), ...actionFilter } }),
         prisma.taskActivity.count({ where: { responsibleId: employee.id, actionType: { in: ["CALL", "INCOMING_CALL"] }, createdAt: periodWhere(from, to) } }),
         prisma.taskActivity.count({ where: { responsibleId: employee.id, actionType: { in: ["SHOWROOM_MEETING", "OUTSIDE_MEETING"] }, createdAt: periodWhere(from, to) } }),

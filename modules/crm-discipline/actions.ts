@@ -2,9 +2,8 @@
 
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { writeAuditLog } from "@/lib/audit-log";
 import { prisma } from "@/lib/prisma";
-import { toAuditValue } from "@/modules/crm/form-utils";
+import { writeEntityAuditLog } from "@/modules/crm/audit-helpers";
 import { canIgnoreCrmViolation } from "@/permissions";
 
 export async function ignoreCrmViolationAction(id: string, returnTo: string) {
@@ -26,13 +25,13 @@ export async function ignoreCrmViolationAction(id: string, returnTo: string) {
     }
   });
 
-  await writeAuditLog({
+  await writeEntityAuditLog({
     entityType: "CRM_VIOLATION",
     entityId: id,
     action: "IGNORE_CRM_VIOLATION",
     userId: user.id,
-    before: toAuditValue(before),
-    after: toAuditValue(after)
+    before,
+    after
   });
 
   redirect(`${returnTo}?disciplineIgnored=1`);

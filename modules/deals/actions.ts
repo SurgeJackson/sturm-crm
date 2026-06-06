@@ -3,7 +3,6 @@
 import { redirect } from "next/navigation";
 import type { DealLossReason, DealStage } from "@/generated/prisma/client";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { writeAuditLog } from "@/lib/audit-log";
 import { prisma } from "@/lib/prisma";
 import {
   canArchiveRecord,
@@ -12,8 +11,8 @@ import {
   canCreateDeal,
   canEditRecord
 } from "@/permissions";
-import { writeTrackedFieldAuditLogs } from "@/modules/crm/audit-helpers";
-import { compactString, toAuditValue } from "@/modules/crm/form-utils";
+import { writeEntityAuditLog, writeTrackedFieldAuditLogs } from "@/modules/crm/audit-helpers";
+import { compactString } from "@/modules/crm/form-utils";
 import { expireViolationsForEntity, syncDealDiscipline } from "@/modules/crm-discipline/service";
 import { closedAtForStage, dealLossReasons, dealStages, parseDealForm, toDealDocument } from "@/modules/deals/form";
 import { getObjectForDeal } from "@/modules/deals/service";
@@ -51,12 +50,12 @@ export async function createDealAction(_prevState: DealActionState, formData: Fo
     }
   });
 
-  await writeAuditLog({
+  await writeEntityAuditLog({
     entityType: "DEAL",
     entityId: deal.id,
     action: "CREATE",
     userId: user.id,
-    after: toAuditValue(deal)
+    after: deal
   });
 
   await syncDealDiscipline(deal.id, user.id);
@@ -108,13 +107,13 @@ export async function updateDealAction(id: string, _prevState: DealActionState, 
     data: update
   });
 
-  await writeAuditLog({
+  await writeEntityAuditLog({
     entityType: "DEAL",
     entityId: id,
     action: "UPDATE",
     userId: user.id,
-    before: toAuditValue(before),
-    after: toAuditValue(after)
+    before,
+    after
   });
 
   const trackedFields = [
@@ -135,7 +134,7 @@ export async function updateDealAction(id: string, _prevState: DealActionState, 
   });
 
   if (before.stage !== "LOST" && after.stage === "LOST") {
-    await writeAuditLog({
+    await writeEntityAuditLog({
       entityType: "DEAL",
       entityId: id,
       action: "MARK_LOST",
@@ -146,7 +145,7 @@ export async function updateDealAction(id: string, _prevState: DealActionState, 
   }
 
   if (before.stage !== "COMPLETED" && after.stage === "COMPLETED") {
-    await writeAuditLog({
+    await writeEntityAuditLog({
       entityType: "DEAL",
       entityId: id,
       action: "MARK_COMPLETED",
@@ -179,13 +178,13 @@ export async function archiveDealAction(id: string) {
     data: { archivedAt: new Date() }
   });
 
-  await writeAuditLog({
+  await writeEntityAuditLog({
     entityType: "DEAL",
     entityId: id,
     action: "ARCHIVE",
     userId: user.id,
-    before: toAuditValue(before),
-    after: toAuditValue(after)
+    before,
+    after
   });
 
   await expireViolationsForEntity("DEAL", id, user.id);
@@ -220,23 +219,27 @@ export async function changeDealStageAction(id: string, formData: FormData) {
     redirect("/deals/pipeline?error=permission");
   }
 
-  const after = await prisma.deal.update({
-    where: { id },
-    data: {
-      stage,
-      closedAt: closedAtForStage(stage as DealStage, before.closedAt),
-      nextActionAt: stage === "LOST" || stage === "COMPLETED" ? null : before.nextActionAt,
-      nextActionText: stage === "LOST" || stage === "COMPLETED" ? null : before.nextActionText
-    }
-  });
+  await prisma.$transaction(async (tx) => {
+    const updated = await tx.deal.update({
+      where: { id },
+      data: {
+        stage,
+        closedAt: closedAtForStage(stage as DealStage, before.closedAt),
+        nextActionAt: stage === "LOST" || stage === "COMPLETED" ? null : before.nextActionAt,
+        nextActionText: stage === "LOST" || stage === "COMPLETED" ? null : before.nextActionText
+      }
+    });
 
-  await writeAuditLog({
-    entityType: "DEAL",
-    entityId: id,
-    action: stage === "COMPLETED" ? "MARK_COMPLETED" : "CHANGE_STAGE",
-    userId: user.id,
-    before: { stage: before.stage },
-    after: { stage: after.stage }
+    await writeEntityAuditLog({
+      entityType: "DEAL",
+      entityId: id,
+      action: stage === "COMPLETED" ? "MARK_COMPLETED" : "CHANGE_STAGE",
+      userId: user.id,
+      before: { stage: before.stage },
+      after: { stage: updated.stage },
+      client: tx
+    });
+
   });
 
   await syncDealDiscipline(id, user.id);
@@ -264,34 +267,38 @@ export async function closeDealAsLostAction(id: string, formData: FormData) {
     redirect(`/deals/${id}?error=permission`);
   }
 
-  const after = await prisma.deal.update({
-    where: { id },
-    data: {
-      stage: "LOST",
-      lossReason,
-      lossComment: lossComment || null,
-      closedAt: before.closedAt ?? new Date(),
-      nextActionAt: null,
-      nextActionText: null
-    }
-  });
+  await prisma.$transaction(async (tx) => {
+    const after = await tx.deal.update({
+      where: { id },
+      data: {
+        stage: "LOST",
+        lossReason,
+        lossComment: lossComment || null,
+        closedAt: before.closedAt ?? new Date(),
+        nextActionAt: null,
+        nextActionText: null
+      }
+    });
 
-  await writeAuditLog({
-    entityType: "DEAL",
-    entityId: id,
-    action: "MARK_LOST",
-    userId: user.id,
-    before: toAuditValue(before),
-    after: toAuditValue(after)
-  });
+    await writeEntityAuditLog({
+      entityType: "DEAL",
+      entityId: id,
+      action: "MARK_LOST",
+      userId: user.id,
+      before,
+      after,
+      client: tx
+    });
 
-  await writeAuditLog({
-    entityType: "DEAL",
-    entityId: id,
-    action: "SET_LOSS_REASON",
-    userId: user.id,
-    before: { lossReason: before.lossReason },
-    after: { lossReason }
+    await writeEntityAuditLog({
+      entityType: "DEAL",
+      entityId: id,
+      action: "SET_LOSS_REASON",
+      userId: user.id,
+      before: { lossReason: before.lossReason },
+      after: { lossReason },
+      client: tx
+    });
   });
 
   await syncDealDiscipline(id, user.id);
