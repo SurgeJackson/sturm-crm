@@ -1,6 +1,6 @@
 import { crmSeverityVariant } from "@/components/crm/discipline/variants";
 import { ReportScoreGrid, ReportValueListCard } from "@/components/reports/cards";
-import { BadgeCell, EmptyTableRow, EntityLinkCell, TableCard } from "@/components/ui/data-table";
+import { BadgeCell, EmptyTableRow, EntityLinkCell, TableCard, TextCell } from "@/components/ui/data-table";
 import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import type { getCrmDisciplineReport } from "@/modules/reports/queries";
 
@@ -95,12 +95,12 @@ export function CrmProblemsTable({ problems }: { problems: CrmProblem[] }) {
           <EmptyTableRow colSpan={7}>Нарушений нет.</EmptyTableRow>
         ) : problems.map((problem) => (
           <TableRow key={`${problem.area}-${problem.href}-${problem.issue}`}>
-            <TableCell>{problem.area}</TableCell>
-            <TableCell>{problem.issue}</TableCell>
+            <TextCell>{problem.area}</TextCell>
+            <TextCell>{problem.issue}</TextCell>
             <BadgeCell variant={crmSeverityVariant(problem.severity)}>{severityLabels[problem.severity]}</BadgeCell>
-            <TableCell>{problem.responsibleName}</TableCell>
-            <TableCell>{problem.violationCode}</TableCell>
-            <TableCell>{problem.canAffectBonus ? "Влияет" : "Не влияет"}</TableCell>
+            <TextCell>{problem.responsibleName}</TextCell>
+            <TextCell>{problem.violationCode}</TextCell>
+            <TextCell>{problem.canAffectBonus ? "Влияет" : "Не влияет"}</TextCell>
             <EntityLinkCell href={problem.href} title={`${problem.entity}: ${problem.title}`} />
           </TableRow>
         ))}

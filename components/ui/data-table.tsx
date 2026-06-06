@@ -57,6 +57,24 @@ export function MutedCell({ children }: { children: ReactNode }) {
   return <TableCell className="text-muted-foreground">{children}</TableCell>;
 }
 
+export function TextCell({ children, className }: { children: ReactNode; className?: string }) {
+  return <TableCell className={className}>{children}</TableCell>;
+}
+
+export function FallbackCell({
+  value,
+  emptyText = "Нет данных"
+}: {
+  value?: ReactNode | null;
+  emptyText?: ReactNode;
+}) {
+  return <TableCell>{value || emptyText}</TableCell>;
+}
+
+export function PersonCell({ name, emptyText = "Не выбран" }: { name?: string | null; emptyText?: string }) {
+  return <FallbackCell value={name} emptyText={emptyText} />;
+}
+
 export function TextLinkCell({
   href,
   children,

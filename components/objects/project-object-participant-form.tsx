@@ -3,7 +3,6 @@
 import { useActionState, useState } from "react";
 import type { ProjectObjectParticipant, User } from "@/generated/prisma/client";
 import {
-  FormActions,
   FormField,
   FormMessage,
   FormSection,
@@ -11,6 +10,7 @@ import {
   TextareaField,
   TextField
 } from "@/components/crm/form-fields";
+import { FormActions } from "@/components/crm/form-actions";
 import { NativeSelect } from "@/components/ui/native-select";
 import type { ProjectObjectParticipantActionState } from "@/modules/objects/actions";
 import {

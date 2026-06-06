@@ -1,22 +1,13 @@
 import Link from "next/link";
 import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { FilterActions, FilterBar } from "@/components/ui/filter-bar";
+import { FilterActions, FilterBar, FilterSelect, FilterShortcutButtons } from "@/components/ui/filter-bar";
 import { Input } from "@/components/ui/input";
-import { NativeSelect } from "@/components/ui/native-select";
 import { objectStageOptions, objectStatusOptions, objectTypeOptions } from "@/modules/crm/options";
 import type { ObjectListSearchParams } from "@/modules/objects/queries";
 
 type Option = { id: string; name: string };
 type DesignerOption = { id: string; name: string; studio: string | null };
-
-function currentUrl(params: ObjectListSearchParams, patch: Record<string, string | undefined>) {
-  const next = new URLSearchParams();
-  for (const [key, value] of Object.entries({ ...params, ...patch })) {
-    if (value) next.set(key, value);
-  }
-  return `/objects?${next.toString()}`;
-}
 
 export function ObjectsFilters({
   params,
@@ -35,48 +26,41 @@ export function ObjectsFilters({
         <Search className="pointer-events-none absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
         <Input className="pl-9" name="q" defaultValue={params.q ?? ""} placeholder="Поиск по названию, адресу, городу" />
       </div>
-      <NativeSelect name="objectType" defaultValue={params.objectType ?? ""}>
-        <option value="">Все типы</option>
-        {objectTypeOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
-      </NativeSelect>
-      <NativeSelect name="stage" defaultValue={params.stage ?? ""}>
-        <option value="">Все стадии</option>
-        {objectStageOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
-      </NativeSelect>
-      <NativeSelect name="status" defaultValue={params.status ?? ""}>
-        <option value="">Все статусы</option>
-        {objectStatusOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
-      </NativeSelect>
-      <NativeSelect name="responsibleId" defaultValue={params.responsibleId ?? ""}>
-        <option value="">Все ответственные</option>
+      <FilterSelect name="objectType" defaultValue={params.objectType} placeholder="Все типы" options={objectTypeOptions} />
+      <FilterSelect name="stage" defaultValue={params.stage} placeholder="Все стадии" options={objectStageOptions} />
+      <FilterSelect name="status" defaultValue={params.status} placeholder="Все статусы" options={objectStatusOptions} />
+      <FilterSelect name="responsibleId" defaultValue={params.responsibleId} placeholder="Все ответственные">
         {users.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}
-      </NativeSelect>
-      <NativeSelect name="clientId" defaultValue={params.clientId ?? ""}>
-        <option value="">Все клиенты</option>
+      </FilterSelect>
+      <FilterSelect name="clientId" defaultValue={params.clientId} placeholder="Все клиенты">
         {clients.map((client) => <option key={client.id} value={client.id}>{client.name}</option>)}
-      </NativeSelect>
-      <NativeSelect name="designerId" defaultValue={params.designerId ?? ""}>
-        <option value="">Все дизайнеры</option>
+      </FilterSelect>
+      <FilterSelect name="designerId" defaultValue={params.designerId} placeholder="Все дизайнеры">
         {designers.map((designer) => (
           <option key={designer.id} value={designer.id}>{designer.name}{designer.studio ? `, ${designer.studio}` : ""}</option>
         ))}
-      </NativeSelect>
-      <NativeSelect name="sort" defaultValue={params.sort ?? ""}>
-        <option value="">Сначала новые</option>
+      </FilterSelect>
+      <FilterSelect name="sort" defaultValue={params.sort} placeholder="Сначала новые">
         <option value="title">По названию</option>
         <option value="implementationStartAt">По сроку реализации</option>
-      </NativeSelect>
+      </FilterSelect>
       <FilterActions className="lg:col-span-4">
         <Button type="submit" variant="secondary">Применить</Button>
         <Button asChild variant="outline"><Link href="/objects">Сбросить</Link></Button>
-        <Button asChild variant="outline"><Link href={currentUrl(params, { noResponsible: "1", page: undefined })}>Без ответственного</Link></Button>
-        <Button asChild variant="outline"><Link href={currentUrl(params, { noClient: "1", page: undefined })}>Без клиента</Link></Button>
-        <Button asChild variant="outline"><Link href={currentUrl(params, { noDesigner: "1", page: undefined })}>Без дизайнера</Link></Button>
-        <Button asChild variant="outline"><Link href={currentUrl(params, { noTasks: "1", page: undefined })}>Без задач</Link></Button>
-        <Button asChild variant="outline"><Link href={currentUrl(params, { stage: "CALCULATION", page: undefined })}>В расчете</Link></Button>
-        <Button asChild variant="outline"><Link href={currentUrl(params, { stage: "APPROVAL", page: undefined })}>В согласовании</Link></Button>
-        <Button asChild variant="outline"><Link href={currentUrl(params, { frozen: "1", page: undefined })}>Замороженные</Link></Button>
-        <Button asChild variant="outline"><Link href={currentUrl(params, { lost: "1", page: undefined })}>Потерянные</Link></Button>
+        <FilterShortcutButtons
+          basePath="/objects"
+          params={params}
+          shortcuts={[
+            { label: "Без ответственного", patch: { noResponsible: "1", page: undefined } },
+            { label: "Без клиента", patch: { noClient: "1", page: undefined } },
+            { label: "Без дизайнера", patch: { noDesigner: "1", page: undefined } },
+            { label: "Без задач", patch: { noTasks: "1", page: undefined } },
+            { label: "В расчете", patch: { stage: "CALCULATION", page: undefined } },
+            { label: "В согласовании", patch: { stage: "APPROVAL", page: undefined } },
+            { label: "Замороженные", patch: { frozen: "1", page: undefined } },
+            { label: "Потерянные", patch: { lost: "1", page: undefined } }
+          ]}
+        />
       </FilterActions>
     </FilterBar>
   );

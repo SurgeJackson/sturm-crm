@@ -2,9 +2,8 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { NativeSelect } from "@/components/ui/native-select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ReportPeriodFilter } from "@/components/reports/filters";
+import { ReportFilterSelect, ReportPeriodFilter } from "@/components/reports/filters";
 import { ReportPageHeader } from "@/components/reports/layout";
 import { MetricsGrid } from "@/components/reports/metrics";
 import { BonusEligibilityRowsTable } from "@/components/reports/tables";
@@ -31,22 +30,32 @@ export default async function BonusEligibilityReportPage({ searchParams }: PageP
       <ReportPageHeader title="Премиальный статус CRM" description="Какие записи готовы к управленческому учету, а какие требуют исправления." report="bonus-eligibility" params={params} />
 
       <ReportPeriodFilter params={params} users={filters.users} actionPath="/reports/bonus-eligibility">
-        <NativeSelect name="entity" defaultValue={params.entity ?? ""}>
-          <option value="">Все сущности</option>
-          {entityTabs.map((tab) => <option key={tab.value} value={tab.value}>{tab.label}</option>)}
-        </NativeSelect>
-        <NativeSelect name="bonusStatus" defaultValue={params.bonusStatus ?? ""}>
-          <option value="">Все статусы учета</option>
-          <option value="ELIGIBLE">Учитывается</option>
-          <option value="NEEDS_FIX">Требует исправления</option>
-          <option value="NOT_ELIGIBLE">Не учитывается</option>
-        </NativeSelect>
-        <NativeSelect name="severity" defaultValue={params.severity ?? ""}>
-          <option value="">Любая серьезность</option>
-          <option value="critical">Критические</option>
-          <option value="medium">Средние</option>
-          <option value="low">Легкие</option>
-        </NativeSelect>
+        <ReportFilterSelect
+          name="entity"
+          value={params.entity}
+          placeholder="Все сущности"
+          options={entityTabs.map((tab) => ({ value: tab.value, label: tab.label }))}
+        />
+        <ReportFilterSelect
+          name="bonusStatus"
+          value={params.bonusStatus}
+          placeholder="Все статусы учета"
+          options={[
+            { value: "ELIGIBLE", label: "Учитывается" },
+            { value: "NEEDS_FIX", label: "Требует исправления" },
+            { value: "NOT_ELIGIBLE", label: "Не учитывается" }
+          ]}
+        />
+        <ReportFilterSelect
+          name="severity"
+          value={params.severity}
+          placeholder="Любая серьезность"
+          options={[
+            { value: "critical", label: "Критические" },
+            { value: "medium", label: "Средние" },
+            { value: "low", label: "Легкие" }
+          ]}
+        />
         <Input name="violationCode" defaultValue={params.violationCode ?? ""} placeholder="Код нарушения" />
       </ReportPeriodFilter>
 

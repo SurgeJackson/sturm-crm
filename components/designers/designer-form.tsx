@@ -3,9 +3,7 @@
 import { useActionState } from "react";
 import type { Designer, User } from "@/generated/prisma/client";
 import {
-  CheckboxGroupField,
   DateField,
-  FormActions,
   FormField,
   FormMessage,
   FormSection,
@@ -14,6 +12,8 @@ import {
   TextField,
   dateInputValue
 } from "@/components/crm/form-fields";
+import { CheckboxGroupField } from "@/components/crm/checkbox-group-field";
+import { FormActions } from "@/components/crm/form-actions";
 import { ResponsibleField } from "@/components/crm/responsible-field";
 import type { DesignerActionState } from "@/modules/designers/actions";
 import {

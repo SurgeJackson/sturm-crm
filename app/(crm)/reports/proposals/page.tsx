@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { NativeSelect } from "@/components/ui/native-select";
 import { BreakdownCard, ReportValueListCard } from "@/components/reports/cards";
 import { ReportFilterSelect, ReportPeriodFilter } from "@/components/reports/filters";
 import { ReportPageHeader } from "@/components/reports/layout";
@@ -23,8 +22,18 @@ export default async function ProposalsReportPage({ searchParams }: PageProps) {
       <ReportPageHeader title="Отчет по КП" description="Потенциальная выручка, статусы, follow-up и причины отказов." report="proposals" params={params} />
       <ReportPeriodFilter params={params} users={filters.users} actionPath="/reports/proposals">
         <ReportFilterSelect name="status" value={params.status} placeholder="Все статусы" options={commercialProposalStatusOptions} />
-        <NativeSelect name="clientId" defaultValue={params.clientId ?? ""}><option value="">Все клиенты</option>{filters.clients.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}</NativeSelect>
-        <NativeSelect name="designerId" defaultValue={params.designerId ?? ""}><option value="">Все дизайнеры</option>{filters.designers.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}</NativeSelect>
+        <ReportFilterSelect
+          name="clientId"
+          value={params.clientId}
+          placeholder="Все клиенты"
+          options={filters.clients.map((item) => ({ value: item.id, label: item.name }))}
+        />
+        <ReportFilterSelect
+          name="designerId"
+          value={params.designerId}
+          placeholder="Все дизайнеры"
+          options={filters.designers.map((item) => ({ value: item.id, label: item.name }))}
+        />
       </ReportPeriodFilter>
       <MetricsGrid metrics={report.metrics} />
       <div className="grid gap-4 xl:grid-cols-3">

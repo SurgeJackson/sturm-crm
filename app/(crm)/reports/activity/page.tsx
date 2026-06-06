@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { NativeSelect } from "@/components/ui/native-select";
 import { ReportFilterSelect, ReportPeriodFilter } from "@/components/reports/filters";
 import { ReportPageHeader } from "@/components/reports/layout";
 import { MetricsGrid } from "@/components/reports/metrics";
@@ -45,10 +44,12 @@ export default async function ActivityReportPage({ searchParams }: ActivityRepor
       <ReportPageHeader title="Активность сотрудников" description="Клиенты, дизайнеры, объекты, сделки, КП, задачи и касания за период." report="activity" params={params} />
 
       <ReportPeriodFilter params={params} users={filters.users} actionPath="/reports/activity">
-        <NativeSelect name="role" defaultValue={params.role ?? ""}>
-          <option value="">Все роли</option>
-          {Object.entries(roleLabels).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
-        </NativeSelect>
+        <ReportFilterSelect
+          name="role"
+          value={params.role}
+          placeholder="Все роли"
+          options={Object.entries(roleLabels).map(([value, label]) => ({ value, label }))}
+        />
         <ReportFilterSelect name="actionType" value={params.actionType} placeholder="Все действия" options={taskActionTypeOptions} />
       </ReportPeriodFilter>
 

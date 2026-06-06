@@ -4,7 +4,6 @@ import { useActionState } from "react";
 import type { Client, Designer, User } from "@/generated/prisma/client";
 import {
   DateField,
-  FormActions,
   FormField,
   FormMessage,
   FormSection,
@@ -13,6 +12,7 @@ import {
   TextField,
   dateInputValue
 } from "@/components/crm/form-fields";
+import { FormActions } from "@/components/crm/form-actions";
 import { ResponsibleField } from "@/components/crm/responsible-field";
 import type { ClientActionState } from "@/modules/clients/actions";
 import {

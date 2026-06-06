@@ -3,25 +3,19 @@
 import { useActionState } from "react";
 import type { Client, Designer, ProjectObject, User } from "@/generated/prisma/client";
 import {
-  CheckboxGroupField,
-  DateField,
-  FormActions,
-  FormField,
   FormMessage,
   FormSection,
-  SelectField,
-  TextareaField,
-  TextField,
-  dateInputValue
+  TextareaField
 } from "@/components/crm/form-fields";
-import { ResponsibleField } from "@/components/crm/responsible-field";
-import type { ProjectObjectActionState } from "@/modules/objects/actions";
+import { CheckboxGroupField } from "@/components/crm/checkbox-group-field";
+import { FormActions } from "@/components/crm/form-actions";
 import {
-  objectInterestCategoryOptions,
-  objectStageOptions,
-  objectStatusOptions,
-  objectTypeOptions
-} from "@/modules/crm/options";
+  ObjectIdentityFields,
+  ObjectRelationsFields,
+  ObjectStatusFields
+} from "@/components/objects/project-object-form-sections";
+import type { ProjectObjectActionState } from "@/modules/objects/actions";
+import { objectInterestCategoryOptions } from "@/modules/crm/options";
 
 type ProjectObjectFormProps = {
   action: (state: ProjectObjectActionState, formData: FormData) => Promise<ProjectObjectActionState>;
@@ -55,83 +49,17 @@ export function ProjectObjectForm({
       <FormMessage state={state} />
 
       <FormSection>
-        <TextField name="title" label="Название объекта *" state={state} defaultValue={projectObject?.title ?? ""} required />
-        <SelectField
-          name="objectType"
-          label="Тип объекта *"
+        <ObjectIdentityFields state={state} projectObject={projectObject} />
+        <ObjectRelationsFields
           state={state}
-          options={objectTypeOptions}
-          defaultValue={projectObject?.objectType ?? "APARTMENT"}
-        />
-        <TextField name="city" label="Город *" state={state} defaultValue={projectObject?.city ?? ""} required />
-        <TextField name="region" label="Регион" defaultValue={projectObject?.region ?? ""} />
-        <TextField name="address" label="Адрес" className="md:col-span-2" defaultValue={projectObject?.address ?? ""} />
-        <SelectField
-          name="clientId"
-          label="Клиент / заказчик *"
-          state={state}
-          placeholder="Выберите клиента"
-          defaultValue={projectObject?.clientId ?? ""}
-          required
-        >
-          {clients.map((client) => (
-            <option key={client.id} value={client.id}>
-              {client.name}
-            </option>
-          ))}
-        </SelectField>
-        <SelectField
-          name="designerId"
-          label="Дизайнер / архитектор"
-          placeholder="Не выбран"
-          defaultValue={projectObject?.designerId ?? ""}
-        >
-          {designers.map((designer) => (
-            <option key={designer.id} value={designer.id}>
-              {designer.name}
-              {designer.studio ? `, ${designer.studio}` : ""}
-            </option>
-          ))}
-        </SelectField>
-        <ResponsibleField
+          projectObject={projectObject}
+          clients={clients}
+          designers={designers}
           users={users}
           responsibleId={responsibleId}
           canChangeResponsible={canChangeResponsible}
-          state={state}
-          label="Ответственный STURM *"
         />
-        <SelectField
-          name="stage"
-          label="Стадия *"
-          state={state}
-          options={objectStageOptions}
-          defaultValue={projectObject?.stage ?? "NEW_OBJECT"}
-        />
-        <SelectField
-          name="status"
-          label="Статус *"
-          state={state}
-          options={objectStatusOptions}
-          defaultValue={projectObject?.status ?? "ACTIVE"}
-        />
-        <DateField
-          name="implementationStartAt"
-          label="Начало реализации"
-          defaultValue={dateInputValue(projectObject?.implementationStartAt)}
-        />
-        <DateField
-          name="implementationEndAt"
-          label="Завершение реализации"
-          defaultValue={dateInputValue(projectObject?.implementationEndAt)}
-        />
-        <TextField name="budget" label="Бюджет" inputMode="decimal" defaultValue={projectObject?.budget ?? ""} />
-        <TextField
-          name="bathroomsCount"
-          label="Количество санузлов"
-          type="number"
-          min="0"
-          defaultValue={projectObject?.bathroomsCount ?? ""}
-        />
+        <ObjectStatusFields state={state} projectObject={projectObject} />
       </FormSection>
 
       <CheckboxGroupField
