@@ -4,7 +4,7 @@ import { BreakdownCard } from "@/components/reports/cards";
 import { ReportFilterSelect, ReportPeriodFilter } from "@/components/reports/filters";
 import { ReportPageHeader } from "@/components/reports/layout";
 import { MetricsGrid } from "@/components/reports/metrics";
-import { DesignersReportTable } from "@/components/reports/report-tables";
+import { DesignersReportTable } from "@/components/reports/tables";
 import { designerLoyaltyLabels, designerPotentialLabels, designerRelationshipStageLabels } from "@/lib/constants";
 import { designerLoyaltyOptions, designerPotentialOptions, designerRelationshipStageOptions } from "@/modules/crm/options";
 import { getDesignersReport, getReportFilterOptions, type ReportSearchParams } from "@/modules/reports/queries";

@@ -1,12 +1,12 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { AuditLogCard, EntityInfoCard, EntityPageHeader, EntityTasksCard, NoticeStack, TextBlock } from "@/components/crm/detail-page";
-import { Detail, DetailGrid } from "@/components/crm/detail";
+import { AuditLogCard, EntityDetailShell, EntityDetailTabs, EntityPageHeader, EntityTasksCard, NoticeStack, TextBlock } from "@/components/crm/detail-page";
+import { EntityDetailsCard } from "@/components/crm/detail";
 import { CrmDisciplinePanel } from "@/components/crm/discipline/panel";
-import { DealProposalsTable } from "@/components/crm/related-tables";
+import { DealProposalsTable } from "@/components/crm/related";
+import { dealStageVariant } from "@/components/crm/status-variants";
 import { DealLossDialog } from "@/components/deals/deal-loss-dialog";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getAuditLogs } from "@/lib/audit-log";
 import {
   dealLossReasonLabels,
@@ -48,12 +48,13 @@ export default async function DealPage({ params, searchParams }: DealPageProps) 
   const lossAction = closeDealAsLostAction.bind(null, id);
 
   return (
-    <div className="space-y-6">
-      <EntityPageHeader
+    <EntityDetailShell
+      header={(
+        <EntityPageHeader
         title={deal.title}
         badges={
           <>
-            <Badge variant={deal.stage === "LOST" ? "warning" : "secondary"}>{dealStageLabels[deal.stage]}</Badge>
+            <Badge variant={dealStageVariant(deal.stage)}>{dealStageLabels[deal.stage]}</Badge>
             {deal.probability ? <Badge variant="outline">{probabilityLabel(deal)}</Badge> : null}
             <Badge variant="outline">{dealSourceLabels[deal.source]}</Badge>
           </>
@@ -65,77 +66,84 @@ export default async function DealPage({ params, searchParams }: DealPageProps) 
         ) : null}
         archiveAction={archiveAction}
         canArchive={canArchiveRecord(user, deal) && !deal.archivedAt}
-      />
-
-      <NoticeStack notices={[
+        />
+      )}
+      notices={(
+        <NoticeStack notices={[
         { show: Boolean(query.saved), message: "Сделка сохранена." },
         { show: Boolean(query.archived), message: "Сделка архивирована." },
         { show: Boolean(query.lost), message: "Сделка закрыта как проигранная." },
         { show: query.error === "lossReason", tone: "destructive", message: "Укажите причину проигрыша сделки." },
         { show: Boolean(query.error && query.error !== "lossReason"), tone: "destructive", message: "Действие недоступно для вашей роли." }
-      ]} />
-
-      <CrmDisciplinePanel
+        ]} />
+      )}
+      discipline={(
+        <CrmDisciplinePanel
         entityType="DEAL"
         entityId={deal.id}
         editHref={`/deals/${id}/edit`}
         returnTo={`/deals/${id}`}
         violations={deal.crmViolations}
         user={user}
+        />
+      )}
+    >
+
+      <EntityDetailTabs
+        tabs={[
+          {
+            value: "main",
+            label: "Основное",
+            content: (
+              <EntityDetailsCard
+                title="Данные сделки"
+                fields={[
+                  { label: "Клиент", value: deal.client.name },
+                  { label: "Объект", value: deal.projectObject.title },
+                  { label: "Дизайнер", value: deal.designer?.name },
+                  { label: "Ответственный", value: deal.responsible.name },
+                  { label: "Создал", value: deal.createdBy.name },
+                  { label: "Сумма", value: formatMoney(deal.potentialAmount) },
+                  { label: "Вероятность", value: probabilityLabel(deal) },
+                  { label: "Дата следующего действия", value: formatRussianDate(deal.nextActionAt) },
+                  { label: "Следующий шаг", value: deal.nextActionText },
+                  { label: "Источник", value: dealSourceLabels[deal.source] },
+                  { label: "Закрыта", value: formatRussianDate(deal.closedAt) },
+                  { label: "Причина проигрыша", value: deal.lossReason ? dealLossReasonLabels[deal.lossReason] : null }
+                ]}
+                footer={
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <TextBlock label="Комментарий">{deal.comment || "Комментариев пока нет."}</TextBlock>
+                    <TextBlock label="Комментарий к проигрышу">{deal.lossComment || "Нет данных"}</TextBlock>
+                  </div>
+                }
+              />
+            )
+          },
+          {
+            value: "proposals",
+            label: "КП",
+            content: <DealProposalsTable dealId={id} proposals={deal.proposals} />
+          },
+          {
+            value: "tasks",
+            label: "Задачи / касания",
+            content: (
+              <EntityTasksCard
+                items={deal.tasks}
+                canCreate={canCreateTask(user)}
+                taskHref={`/tasks/new?dealId=${deal.id}&clientId=${deal.clientId}&objectId=${deal.objectId}&responsibleId=${deal.responsibleId}${deal.designerId ? `&designerId=${deal.designerId}` : ""}`}
+                touchHref={`/tasks/new?recordType=TOUCH&dealId=${deal.id}&clientId=${deal.clientId}&objectId=${deal.objectId}&responsibleId=${deal.responsibleId}${deal.designerId ? `&designerId=${deal.designerId}` : ""}`}
+              />
+            )
+          },
+          {
+            value: "audit",
+            label: "История изменений",
+            content: <AuditLogCard logs={auditLogs} formatDate={formatRussianDate} />
+          }
+        ]}
       />
-
-      <Tabs defaultValue="main">
-        <TabsList className="flex-wrap">
-          <TabsTrigger value="main">Основное</TabsTrigger>
-          <TabsTrigger value="proposals">КП</TabsTrigger>
-          <TabsTrigger value="tasks">Задачи / касания</TabsTrigger>
-          <TabsTrigger value="audit">История изменений</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="main">
-          <EntityInfoCard
-            title="Данные сделки"
-            footer={
-              <div className="grid gap-4 md:grid-cols-2">
-                <TextBlock label="Комментарий">{deal.comment || "Комментариев пока нет."}</TextBlock>
-                <TextBlock label="Комментарий к проигрышу">{deal.lossComment || "Нет данных"}</TextBlock>
-              </div>
-            }
-          >
-              <DetailGrid>
-                <Detail label="Клиент" value={deal.client.name} />
-                <Detail label="Объект" value={deal.projectObject.title} />
-                <Detail label="Дизайнер" value={deal.designer?.name} />
-                <Detail label="Ответственный" value={deal.responsible.name} />
-                <Detail label="Создал" value={deal.createdBy.name} />
-                <Detail label="Сумма" value={formatMoney(deal.potentialAmount)} />
-                <Detail label="Вероятность" value={probabilityLabel(deal)} />
-                <Detail label="Дата следующего действия" value={formatRussianDate(deal.nextActionAt)} />
-                <Detail label="Следующий шаг" value={deal.nextActionText} />
-                <Detail label="Источник" value={dealSourceLabels[deal.source]} />
-                <Detail label="Закрыта" value={formatRussianDate(deal.closedAt)} />
-                <Detail label="Причина проигрыша" value={deal.lossReason ? dealLossReasonLabels[deal.lossReason] : null} />
-              </DetailGrid>
-          </EntityInfoCard>
-        </TabsContent>
-
-        <TabsContent value="proposals">
-          <DealProposalsTable dealId={id} proposals={deal.proposals} />
-        </TabsContent>
-
-        <TabsContent value="tasks">
-          <EntityTasksCard
-            items={deal.tasks}
-            canCreate={canCreateTask(user)}
-            taskHref={`/tasks/new?dealId=${deal.id}&clientId=${deal.clientId}&objectId=${deal.objectId}&responsibleId=${deal.responsibleId}${deal.designerId ? `&designerId=${deal.designerId}` : ""}`}
-            touchHref={`/tasks/new?recordType=TOUCH&dealId=${deal.id}&clientId=${deal.clientId}&objectId=${deal.objectId}&responsibleId=${deal.responsibleId}${deal.designerId ? `&designerId=${deal.designerId}` : ""}`}
-          />
-        </TabsContent>
-
-        <TabsContent value="audit">
-          <AuditLogCard logs={auditLogs} formatDate={formatRussianDate} />
-        </TabsContent>
-      </Tabs>
-    </div>
+    </EntityDetailShell>
   );
 }

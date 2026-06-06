@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { ReactNode } from "react";
+import type { ComponentProps, ReactNode } from "react";
 import { Badge, type BadgeProps } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableCell, TableEmptyRow } from "@/components/ui/table";
@@ -88,6 +88,28 @@ export function BadgeCell({
   );
 }
 
+export function StatusBadgeCell({
+  label,
+  variant = "outline"
+}: {
+  label: ReactNode;
+  variant?: BadgeProps["variant"];
+}) {
+  return (
+    <TableCell>
+      <Badge variant={variant}>{label}</Badge>
+    </TableCell>
+  );
+}
+
+export function SecondaryTextCell({ children }: { children: ReactNode }) {
+  return <TableCell className="text-muted-foreground">{children}</TableCell>;
+}
+
+export function CountCell({ value }: { value: number }) {
+  return <TableCell className="tabular-nums">{value}</TableCell>;
+}
+
 export function FileLinkCell({ href }: { href?: string | null }) {
   return (
     <TableCell>
@@ -113,6 +135,16 @@ export function DateCell({
   );
 }
 
-export function MoneyCell({ value }: { value?: number | null }) {
-  return <TableCell>{value ? `${value.toLocaleString("ru-RU")} ₽` : "Без суммы"}</TableCell>;
+export function DateTableCell(props: ComponentProps<typeof DateCell>) {
+  return <DateCell {...props} />;
+}
+
+export function MoneyCell({
+  value,
+  emptyText = "Без суммы"
+}: {
+  value?: number | null;
+  emptyText?: string;
+}) {
+  return <TableCell>{value != null ? `${value.toLocaleString("ru-RU")} ₽` : emptyText}</TableCell>;
 }

@@ -4,7 +4,7 @@ import { BreakdownCard } from "@/components/reports/cards";
 import { ReportFilterSelect, ReportPeriodFilter } from "@/components/reports/filters";
 import { ReportPageHeader } from "@/components/reports/layout";
 import { MetricsGrid } from "@/components/reports/metrics";
-import { DealsReportTable } from "@/components/reports/report-tables";
+import { DealsReportTable } from "@/components/reports/tables";
 import { dealLossReasonLabels, dealStageLabels } from "@/lib/constants";
 import { dealProbabilityOptions, dealSourceOptions, dealStageOptions } from "@/modules/crm/options";
 import { getDealsReport, getReportFilterOptions, type ReportSearchParams } from "@/modules/reports/queries";

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BonusEligibilityBadge, CrmDisciplineBadge } from "@/components/crm/discipline/badges";
+import { dealStageVariant } from "@/components/crm/status-variants";
 import { Badge } from "@/components/ui/badge";
 import { DateCell, EmptyTableRow, EntityLinkCell, MoneyCell, TableCard } from "@/components/ui/data-table";
 import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -45,7 +46,7 @@ export function DealsTable({ deals }: { deals: DealItem[] }) {
               <TableCell><Link href={`/clients/${deal.client.id}`} className="hover:underline">{deal.client.name}</Link></TableCell>
               <TableCell><Link href={`/objects/${deal.projectObject.id}`} className="hover:underline">{deal.projectObject.title}</Link></TableCell>
               <TableCell>{deal.responsible.name}</TableCell>
-              <TableCell><Badge variant={deal.stage === "LOST" ? "warning" : "outline"}>{dealStageLabels[deal.stage]}</Badge></TableCell>
+              <TableCell><Badge variant={dealStageVariant(deal.stage)}>{dealStageLabels[deal.stage]}</Badge></TableCell>
               <TableCell>
                 {deal.probability ? (
                   <Badge variant={deal.probability === "HIGH" || deal.probability === "VERY_HIGH" ? "secondary" : "outline"}>

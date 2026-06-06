@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ReportPeriodFilter } from "@/components/reports/filters";
 import { ReportPageHeader } from "@/components/reports/layout";
 import { MetricsGrid } from "@/components/reports/metrics";
-import { BonusEligibilityRowsTable } from "@/components/reports/report-tables";
+import { BonusEligibilityRowsTable } from "@/components/reports/tables";
 import { getBonusEligibilityReport, getReportFilterOptions, type ReportSearchParams } from "@/modules/reports/queries";
 
 type PageProps = { searchParams: Promise<ReportSearchParams> };

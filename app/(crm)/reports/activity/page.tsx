@@ -4,7 +4,7 @@ import { NativeSelect } from "@/components/ui/native-select";
 import { ReportFilterSelect, ReportPeriodFilter } from "@/components/reports/filters";
 import { ReportPageHeader } from "@/components/reports/layout";
 import { MetricsGrid } from "@/components/reports/metrics";
-import { ActivityReportTable } from "@/components/reports/report-tables";
+import { ActivityReportTable } from "@/components/reports/tables";
 import { roleLabels } from "@/lib/constants";
 import { taskActionTypeOptions } from "@/modules/crm/options";
 import { getEmployeeActivityReport, getReportFilterOptions, type ReportSearchParams } from "@/modules/reports/queries";

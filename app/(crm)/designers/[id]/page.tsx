@@ -1,12 +1,12 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { AuditLogCard, EntityInfoCard, EntityPageHeader, EntityTasksCard, NoticeStack } from "@/components/crm/detail-page";
-import { Detail, DetailGrid } from "@/components/crm/detail";
+import { AuditLogCard, EntityDetailShell, EntityDetailTabs, EntityPageHeader, EntityTasksCard, NoticeStack } from "@/components/crm/detail-page";
+import { EntityDetailsCard } from "@/components/crm/detail";
 import { CrmDisciplinePanel } from "@/components/crm/discipline/panel";
-import { DesignerDealsTable, DesignerObjectsTable, DesignerProposalsTable } from "@/components/crm/related-tables";
+import { DesignerDealsTable, DesignerObjectsTable, DesignerProposalsTable } from "@/components/crm/related";
+import { designerPotentialVariant } from "@/components/crm/status-variants";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { archiveDesignerAction } from "@/modules/designers/actions";
 import { getDesignerForUser } from "@/modules/designers/queries";
 import { getAuditLogs } from "@/lib/audit-log";
@@ -37,13 +37,14 @@ export default async function DesignerPage({ params, searchParams }: DesignerPag
   const archiveAction = archiveDesignerAction.bind(null, id);
 
   return (
-    <div className="space-y-6">
-      <EntityPageHeader
+    <EntityDetailShell
+      header={(
+        <EntityPageHeader
         title={designer.name}
         badges={
           <>
             <Badge variant="secondary">{designerRelationshipStageLabels[designer.relationshipStage]}</Badge>
-            <Badge variant={designer.potential === "A" ? "warning" : "outline"}>{designerPotentialLabels[designer.potential]}</Badge>
+            <Badge variant={designerPotentialVariant(designer.potential)}>{designerPotentialLabels[designer.potential]}</Badge>
             <Badge variant="outline">{designerLoyaltyLabels[designer.loyalty]}</Badge>
           </>
         }
@@ -51,15 +52,17 @@ export default async function DesignerPage({ params, searchParams }: DesignerPag
         canEdit={canEditRecord(user, designer)}
         archiveAction={archiveAction}
         canArchive={canArchiveRecord(user, designer) && !designer.archivedAt}
-      />
-
-      <NoticeStack notices={[
+        />
+      )}
+      notices={(
+        <NoticeStack notices={[
         { show: Boolean(query.saved), message: "Дизайнер сохранен." },
         { show: Boolean(query.archived), message: "Дизайнер архивирован." },
         { show: Boolean(query.error), tone: "destructive", message: "Действие недоступно для вашей роли." }
-      ]} />
-
-      <CrmDisciplinePanel
+        ]} />
+      )}
+      discipline={(
+        <CrmDisciplinePanel
         entityType="DESIGNER"
         entityId={designer.id}
         editHref={`/designers/${id}/edit`}
@@ -67,76 +70,96 @@ export default async function DesignerPage({ params, searchParams }: DesignerPag
         violations={designer.crmViolations}
         user={user}
         bonusApplies={false}
-      />
+        />
+      )}
+    >
 
-      <Tabs defaultValue="main">
-        <TabsList className="flex-wrap">
-          <TabsTrigger value="main">Основное</TabsTrigger>
-          <TabsTrigger value="pipeline">Воронка / отношения</TabsTrigger>
-          <TabsTrigger value="touches">Касания и задачи</TabsTrigger>
-          <TabsTrigger value="objects">Связанные объекты</TabsTrigger>
-          <TabsTrigger value="deals">Связанные сделки</TabsTrigger>
-          <TabsTrigger value="proposals">КП</TabsTrigger>
-          <TabsTrigger value="analytics">Аналитика</TabsTrigger>
-          <TabsTrigger value="audit">История изменений</TabsTrigger>
-        </TabsList>
-        <TabsContent value="main">
-          <EntityInfoCard title="Контакт">
-              <DetailGrid>
-                <Detail label="Студия" value={designer.studio} />
-                <Detail label="Роль" value={designerRoleLabels[designer.role]} />
-                <Detail label="Телефон" value={designer.phone} />
-                <Detail label="Мессенджер" value={designer.messenger} />
-                <Detail label="Email" value={designer.email} />
-                <Detail label="Сайт" value={designer.website} />
-                <Detail label="Город" value={designer.city} />
-                <Detail label="Ответственный" value={designer.responsible.name} />
-                <Detail label="Создал" value={designer.createdBy.name} />
-              </DetailGrid>
-          </EntityInfoCard>
-        </TabsContent>
-        <TabsContent value="pipeline">
-          <EntityInfoCard title="Отношения">
-              <DetailGrid>
-                <Detail label="Этап" value={designerRelationshipStageLabels[designer.relationshipStage]} />
-                <Detail label="Потенциал" value={designerPotentialLabels[designer.potential]} />
-                <Detail label="Лояльность" value={designerLoyaltyLabels[designer.loyalty]} />
-                <Detail label="Первый контакт" value={formatRussianDate(designer.firstContactAt)} />
-                <Detail label="Последнее касание" value={formatRussianDate(designer.lastTouchAt)} />
-                <Detail label="Следующий шаг" value={`${formatRussianDate(designer.nextStepAt)}: ${designer.nextStepText ?? ""}`} />
-              </DetailGrid>
-          </EntityInfoCard>
-        </TabsContent>
-        <TabsContent value="touches">
-          <EntityTasksCard
-            title="Касания и задачи"
-            items={designer.tasks}
-            canCreate={canCreateTask(user)}
-            taskHref={`/tasks/new?designerId=${designer.id}&responsibleId=${designer.responsibleId}`}
-            touchHref={`/tasks/new?recordType=TOUCH&designerId=${designer.id}&responsibleId=${designer.responsibleId}`}
-          />
-        </TabsContent>
-        <TabsContent value="objects">
-          <DesignerObjectsTable objects={designer.projectObjects} />
-        </TabsContent>
-        <TabsContent value="deals">
-          <DesignerDealsTable deals={designer.deals} />
-        </TabsContent>
-        <TabsContent value="proposals">
-          <DesignerProposalsTable proposals={designer.proposals} />
-        </TabsContent>
-        <TabsContent value="analytics">
-          <div className="grid gap-4 md:grid-cols-4">
-            <Card><CardHeader><CardTitle>Передано объектов</CardTitle></CardHeader><CardContent className="text-2xl font-semibold">{designer.transferredObjectsCount}</CardContent></Card>
-            <Card><CardHeader><CardTitle>Активные объекты</CardTitle></CardHeader><CardContent className="text-2xl font-semibold">{designer.activeObjectsCount}</CardContent></Card>
-            <Card><CardHeader><CardTitle>Сумма КП</CardTitle></CardHeader><CardContent className="text-2xl font-semibold">{designer.proposalsTotalAmount}</CardContent></Card>
-            <Card><CardHeader><CardTitle>Сумма оплат</CardTitle></CardHeader><CardContent className="text-2xl font-semibold">{designer.paymentsTotalAmount}</CardContent></Card>
-          </div>
-        </TabsContent>
-        <TabsContent value="audit">
-          <AuditLogCard logs={auditLogs} formatDate={formatRussianDate} />
-        </TabsContent>
-      </Tabs>
-    </div>
+      <EntityDetailTabs
+        tabs={[
+          {
+            value: "main",
+            label: "Основное",
+            content: (
+              <EntityDetailsCard
+                title="Контакт"
+                fields={[
+                  { label: "Студия", value: designer.studio },
+                  { label: "Роль", value: designerRoleLabels[designer.role] },
+                  { label: "Телефон", value: designer.phone },
+                  { label: "Мессенджер", value: designer.messenger },
+                  { label: "Email", value: designer.email },
+                  { label: "Сайт", value: designer.website },
+                  { label: "Город", value: designer.city },
+                  { label: "Ответственный", value: designer.responsible.name },
+                  { label: "Создал", value: designer.createdBy.name }
+                ]}
+              />
+            )
+          },
+          {
+            value: "pipeline",
+            label: "Воронка / отношения",
+            content: (
+              <EntityDetailsCard
+                title="Отношения"
+                fields={[
+                  { label: "Этап", value: designerRelationshipStageLabels[designer.relationshipStage] },
+                  { label: "Потенциал", value: designerPotentialLabels[designer.potential] },
+                  { label: "Лояльность", value: designerLoyaltyLabels[designer.loyalty] },
+                  { label: "Первый контакт", value: formatRussianDate(designer.firstContactAt) },
+                  { label: "Последнее касание", value: formatRussianDate(designer.lastTouchAt) },
+                  { label: "Следующий шаг", value: `${formatRussianDate(designer.nextStepAt)}: ${designer.nextStepText ?? ""}` }
+                ]}
+              />
+            )
+          },
+          {
+            value: "touches",
+            label: "Касания и задачи",
+            content: (
+              <EntityTasksCard
+                title="Касания и задачи"
+                items={designer.tasks}
+                canCreate={canCreateTask(user)}
+                taskHref={`/tasks/new?designerId=${designer.id}&responsibleId=${designer.responsibleId}`}
+                touchHref={`/tasks/new?recordType=TOUCH&designerId=${designer.id}&responsibleId=${designer.responsibleId}`}
+              />
+            )
+          },
+          {
+            value: "objects",
+            label: "Связанные объекты",
+            content: <DesignerObjectsTable objects={designer.projectObjects} />
+          },
+          {
+            value: "deals",
+            label: "Связанные сделки",
+            content: <DesignerDealsTable deals={designer.deals} />
+          },
+          {
+            value: "proposals",
+            label: "КП",
+            content: <DesignerProposalsTable proposals={designer.proposals} />
+          },
+          {
+            value: "analytics",
+            label: "Аналитика",
+            content: (
+              <div className="grid gap-4 md:grid-cols-4">
+                <Card><CardHeader><CardTitle>Передано объектов</CardTitle></CardHeader><CardContent className="text-2xl font-semibold">{designer.transferredObjectsCount}</CardContent></Card>
+                <Card><CardHeader><CardTitle>Активные объекты</CardTitle></CardHeader><CardContent className="text-2xl font-semibold">{designer.activeObjectsCount}</CardContent></Card>
+                <Card><CardHeader><CardTitle>Сумма КП</CardTitle></CardHeader><CardContent className="text-2xl font-semibold">{designer.proposalsTotalAmount}</CardContent></Card>
+                <Card><CardHeader><CardTitle>Сумма оплат</CardTitle></CardHeader><CardContent className="text-2xl font-semibold">{designer.paymentsTotalAmount}</CardContent></Card>
+              </div>
+            )
+          },
+          {
+            value: "audit",
+            label: "История изменений",
+            content: <AuditLogCard logs={auditLogs} formatDate={formatRussianDate} />
+          }
+        ]}
+      />
+    </EntityDetailShell>
   );
 }

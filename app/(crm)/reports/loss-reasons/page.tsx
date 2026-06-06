@@ -4,7 +4,7 @@ import { BreakdownCard } from "@/components/reports/cards";
 import { ReportPeriodFilter } from "@/components/reports/filters";
 import { ReportPageHeader } from "@/components/reports/layout";
 import { MetricsGrid } from "@/components/reports/metrics";
-import { LossReasonsReportTables } from "@/components/reports/report-tables";
+import { LossReasonsReportTables } from "@/components/reports/tables";
 import { dealLossReasonLabels, objectTypeLabels, proposalDeclineReasonLabels } from "@/lib/constants";
 import { getLossReasonsReport, getReportFilterOptions, type ReportSearchParams } from "@/modules/reports/queries";
 

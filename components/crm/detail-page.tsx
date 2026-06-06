@@ -4,6 +4,7 @@ import { Archive, Edit, MessageSquarePlus, Plus } from "lucide-react";
 import { TaskActivityTable } from "@/components/tasks/task-activity-table";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 
 type Notice = {
@@ -16,6 +17,12 @@ type AuditLog = {
   id: string;
   action: string;
   createdAt: Date;
+};
+
+type EntityDetailTab = {
+  value: string;
+  label: ReactNode;
+  content: ReactNode;
 };
 
 export function EntityPageHeader({
@@ -84,6 +91,27 @@ export function NoticeStack({ notices }: { notices: Notice[] }) {
   );
 }
 
+export function EntityDetailShell({
+  header,
+  notices,
+  discipline,
+  children
+}: {
+  header: ReactNode;
+  notices?: ReactNode;
+  discipline?: ReactNode;
+  children: ReactNode;
+}) {
+  return (
+    <div className="space-y-6">
+      {header}
+      {notices}
+      {discipline}
+      {children}
+    </div>
+  );
+}
+
 export function TextBlock({ label, children }: { label: string; children: ReactNode }) {
   return (
     <div>
@@ -110,6 +138,29 @@ export function EntityInfoCard({
         {footer ? <div className="mt-6">{footer}</div> : null}
       </CardContent>
     </Card>
+  );
+}
+
+export function EntityDetailTabs({
+  tabs,
+  defaultValue = tabs[0]?.value
+}: {
+  tabs: EntityDetailTab[];
+  defaultValue?: string;
+}) {
+  return (
+    <Tabs defaultValue={defaultValue}>
+      <TabsList className="flex-wrap">
+        {tabs.map((tab) => (
+          <TabsTrigger key={tab.value} value={tab.value}>{tab.label}</TabsTrigger>
+        ))}
+      </TabsList>
+      {tabs.map((tab) => (
+        <TabsContent key={tab.value} value={tab.value}>
+          {tab.content}
+        </TabsContent>
+      ))}
+    </Tabs>
   );
 }
 

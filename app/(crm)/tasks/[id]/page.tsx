@@ -2,9 +2,10 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Ban } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { AuditLogCard, EntityInfoCard, EntityPageHeader, NoticeStack, TextBlock } from "@/components/crm/detail-page";
-import { Detail, DetailGrid } from "@/components/crm/detail";
+import { AuditLogCard, EntityDetailShell, EntityPageHeader, NoticeStack, TextBlock } from "@/components/crm/detail-page";
+import { EntityDetailsCard } from "@/components/crm/detail";
 import { CrmDisciplinePanel } from "@/components/crm/discipline/panel";
+import { taskStatusVariant } from "@/components/crm/status-variants";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { getAuditLogs } from "@/lib/audit-log";
@@ -45,14 +46,15 @@ export default async function TaskPage({ params, searchParams }: TaskPageProps) 
   const cancelAction = cancelTaskAction.bind(null, id);
 
   return (
-    <div className="space-y-6">
-      <EntityPageHeader
+    <EntityDetailShell
+      header={(
+        <EntityPageHeader
         title={task.title}
         badges={
           <>
             <Badge variant="outline">{taskRecordTypeLabels[task.recordType]}</Badge>
             <Badge variant="outline">{taskActionTypeLabels[task.actionType]}</Badge>
-            <Badge variant={task.status === "DONE" || task.status === "RECORDED" ? "secondary" : "outline"}>{taskStatusLabels[task.status]}</Badge>
+            <Badge variant={taskStatusVariant(task.status)}>{taskStatusLabels[task.status]}</Badge>
           </>
         }
         editHref={`/tasks/${id}/edit`}
@@ -65,11 +67,11 @@ export default async function TaskPage({ params, searchParams }: TaskPageProps) 
               </Button>
             </form>
         ) : null}
-      />
-
-      <NoticeStack notices={[{ show: Boolean(query.saved), message: "Запись сохранена." }]} />
-
-      <CrmDisciplinePanel
+        />
+      )}
+      notices={<NoticeStack notices={[{ show: Boolean(query.saved), message: "Запись сохранена." }]} />}
+      discipline={(
+        <CrmDisciplinePanel
         entityType="TASK"
         entityId={task.id}
         editHref={`/tasks/${id}/edit`}
@@ -77,10 +79,20 @@ export default async function TaskPage({ params, searchParams }: TaskPageProps) 
         violations={task.crmViolations}
         user={user}
         bonusApplies={false}
-      />
+        />
+      )}
+    >
 
-      <EntityInfoCard
+      <EntityDetailsCard
         title="Основное"
+        fields={[
+          { label: "Ответственный", value: task.responsible.name },
+          { label: "Создал", value: task.createdBy.name },
+          { label: "Приоритет", value: taskPriorityLabels[task.priority] },
+          { label: "Срок / дата факта", value: formatRussianDateTime(task.dueAt) },
+          { label: "Выполнено", value: formatRussianDateTime(task.completedAt) },
+          { label: "Автоправило", value: task.autoRule ? taskAutoRuleLabels[task.autoRule] : null }
+        ]}
         footer={
           <div className="grid gap-4 md:grid-cols-2">
             <TextBlock label="Связанные сущности">
@@ -91,18 +103,9 @@ export default async function TaskPage({ params, searchParams }: TaskPageProps) 
             <TextBlock label="Следующий шаг">{task.nextStepText ? `${task.nextStepText} — ${formatRussianDateTime(task.nextStepAt)}` : "Не задан"}</TextBlock>
           </div>
         }
-      >
-          <DetailGrid>
-            <Detail label="Ответственный" value={task.responsible.name} />
-            <Detail label="Создал" value={task.createdBy.name} />
-            <Detail label="Приоритет" value={taskPriorityLabels[task.priority]} />
-            <Detail label="Срок / дата факта" value={formatRussianDateTime(task.dueAt)} />
-            <Detail label="Выполнено" value={formatRussianDateTime(task.completedAt)} />
-            <Detail label="Автоправило" value={task.autoRule ? taskAutoRuleLabels[task.autoRule] : null} />
-          </DetailGrid>
-      </EntityInfoCard>
+      />
 
       <AuditLogCard logs={auditLogs} formatDate={formatRussianDateTime} />
-    </div>
+    </EntityDetailShell>
   );
 }

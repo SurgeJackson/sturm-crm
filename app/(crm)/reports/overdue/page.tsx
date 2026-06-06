@@ -3,7 +3,7 @@ import { getCurrentUser } from "@/auth/get-current-user";
 import { ReportPeriodFilter } from "@/components/reports/filters";
 import { ReportPageHeader } from "@/components/reports/layout";
 import { MetricsGrid } from "@/components/reports/metrics";
-import { OverdueReportTables } from "@/components/reports/report-tables";
+import { OverdueReportTables } from "@/components/reports/tables";
 import { getOverdueReport, getReportFilterOptions, type ReportSearchParams } from "@/modules/reports/queries";
 
 type PageProps = { searchParams: Promise<ReportSearchParams> };

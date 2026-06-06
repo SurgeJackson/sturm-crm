@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BonusEligibilityBadge, CrmDisciplineBadge } from "@/components/crm/discipline/badges";
+import { proposalStatusVariant } from "@/components/crm/status-variants";
 import { Badge } from "@/components/ui/badge";
 import { DateCell, EmptyTableRow, EntityLinkCell, MoneyCell, TableCard } from "@/components/ui/data-table";
 import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -8,12 +9,6 @@ import type { getProposals } from "@/modules/proposals/queries";
 import { formatRussianDate } from "@/utils/date";
 
 type ProposalItem = Awaited<ReturnType<typeof getProposals>>["items"][number];
-
-function statusVariant(status: keyof typeof commercialProposalStatusLabels) {
-  if (status === "DECLINED" || status === "ARCHIVED") return "warning" as const;
-  if (status === "ACCEPTED" || status === "SENT") return "secondary" as const;
-  return "outline" as const;
-}
 
 export function ProposalsTable({ proposals }: { proposals: ProposalItem[] }) {
   return (
@@ -42,7 +37,7 @@ export function ProposalsTable({ proposals }: { proposals: ProposalItem[] }) {
               <EntityLinkCell href={`/proposals/${proposal.id}`} title={proposal.proposalNumber} description={proposal.projectObject.title} />
               <TableCell><Link href={`/deals/${proposal.deal.id}`} className="hover:underline">{proposal.deal.title}</Link></TableCell>
               <TableCell><Link href={`/clients/${proposal.client.id}`} className="hover:underline">{proposal.client.name}</Link></TableCell>
-              <TableCell><Badge variant={statusVariant(proposal.status)}>{commercialProposalStatusLabels[proposal.status]}</Badge></TableCell>
+              <TableCell><Badge variant={proposalStatusVariant(proposal.status)}>{commercialProposalStatusLabels[proposal.status]}</Badge></TableCell>
               <TableCell>v{proposal.version}</TableCell>
               <MoneyCell value={proposal.amount} />
               <DateCell>{formatRussianDate(proposal.sentAt)}</DateCell>

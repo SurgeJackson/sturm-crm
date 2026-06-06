@@ -1,6 +1,11 @@
 import type { ReactNode } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
+type DetailField = {
+  label: string;
+  value?: ReactNode | null;
+};
+
 export function Detail({ label, value }: { label: string; value?: ReactNode | null }) {
   return (
     <div>
@@ -22,6 +27,32 @@ export function DetailSection({ title, children }: { title: string; children: Re
       </CardHeader>
       <CardContent>
         <DetailGrid>{children}</DetailGrid>
+      </CardContent>
+    </Card>
+  );
+}
+
+export function EntityDetailsCard({
+  title,
+  fields,
+  footer
+}: {
+  title: string;
+  fields: DetailField[];
+  footer?: ReactNode;
+}) {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{title}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <DetailGrid>
+          {fields.map((field) => (
+            <Detail key={field.label} label={field.label} value={field.value} />
+          ))}
+        </DetailGrid>
+        {footer ? <div className="mt-6">{footer}</div> : null}
       </CardContent>
     </Card>
   );

@@ -5,7 +5,7 @@ import { BreakdownCard, ReportValueListCard } from "@/components/reports/cards";
 import { ReportFilterSelect, ReportPeriodFilter } from "@/components/reports/filters";
 import { ReportPageHeader } from "@/components/reports/layout";
 import { MetricsGrid } from "@/components/reports/metrics";
-import { ProposalsReportTable } from "@/components/reports/report-tables";
+import { ProposalsReportTable } from "@/components/reports/tables";
 import { commercialProposalStatusLabels, proposalDeclineReasonLabels } from "@/lib/constants";
 import { commercialProposalStatusOptions } from "@/modules/crm/options";
 import { getProposalsReport, getReportFilterOptions, type ReportSearchParams } from "@/modules/reports/queries";

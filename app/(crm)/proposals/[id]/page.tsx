@@ -5,18 +5,19 @@ import { getCurrentUser } from "@/auth/get-current-user";
 import {
   ActionPromptCard,
   AuditLogCard,
-  EntityInfoCard,
+  EntityDetailShell,
+  EntityDetailTabs,
   EntityPageHeader,
   EntityTasksCard,
   NoticeStack,
   TextBlock
 } from "@/components/crm/detail-page";
-import { Detail, DetailGrid } from "@/components/crm/detail";
+import { EntityDetailsCard } from "@/components/crm/detail";
 import { CrmDisciplinePanel } from "@/components/crm/discipline/panel";
-import { ProposalVersionsTable } from "@/components/crm/related-tables";
+import { ProposalVersionsTable } from "@/components/crm/related";
+import { proposalStatusVariant } from "@/components/crm/status-variants";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getAuditLogs } from "@/lib/audit-log";
 import {
   commercialProposalStatusLabels,
@@ -41,12 +42,6 @@ function formatMoney(value?: number | null) {
   return value ? `${value.toLocaleString("ru-RU")} ₽` : "0 ₽";
 }
 
-function statusVariant(status: keyof typeof commercialProposalStatusLabels) {
-  if (status === "DECLINED" || status === "ARCHIVED") return "warning" as const;
-  if (status === "ACCEPTED" || status === "SENT") return "secondary" as const;
-  return "outline" as const;
-}
-
 export default async function ProposalPage({ params, searchParams }: ProposalPageProps) {
   const user = await getCurrentUser();
   if (!user) redirect("/login");
@@ -63,12 +58,13 @@ export default async function ProposalPage({ params, searchParams }: ProposalPag
   const moveDealAction = moveDealToInvoiceFromProposalAction.bind(null, id);
 
   return (
-    <div className="space-y-6">
-      <EntityPageHeader
+    <EntityDetailShell
+      header={(
+        <EntityPageHeader
         title={proposal.proposalNumber}
         badges={
           <>
-            <Badge variant={statusVariant(proposal.status)}>{commercialProposalStatusLabels[proposal.status]}</Badge>
+            <Badge variant={proposalStatusVariant(proposal.status)}>{commercialProposalStatusLabels[proposal.status]}</Badge>
             <Badge variant="outline">v{proposal.version}</Badge>
             <Badge variant="outline">{formatMoney(proposal.amount)}</Badge>
           </>
@@ -85,23 +81,27 @@ export default async function ProposalPage({ params, searchParams }: ProposalPag
         ) : null}
         archiveAction={archiveAction}
         canArchive={canArchiveRecord(user, proposal) && !proposal.archivedAt}
-      />
-
-      <NoticeStack notices={[
+        />
+      )}
+      notices={(
+        <NoticeStack notices={[
         { show: Boolean(query.saved), message: "КП сохранено." },
         { show: Boolean(query.archived), message: "КП архивировано." },
         { show: Boolean(query.dealStage), message: "Сделка переведена в стадию “Счет / заказ”." },
         { show: Boolean(query.error), tone: "destructive", message: "Действие недоступно или данные не заполнены." }
-      ]} />
-
-      <CrmDisciplinePanel
+        ]} />
+      )}
+      discipline={(
+        <CrmDisciplinePanel
         entityType="PROPOSAL"
         entityId={proposal.id}
         editHref={`/proposals/${id}/edit`}
         returnTo={`/proposals/${id}`}
         violations={proposal.crmViolations}
         user={user}
-      />
+        />
+      )}
+    >
 
       {proposal.status === "ACCEPTED" && proposal.deal.stage !== "INVOICE_OR_ORDER" ? (
         <ActionPromptCard
@@ -114,70 +114,75 @@ export default async function ProposalPage({ params, searchParams }: ProposalPag
         />
       ) : null}
 
-      <Tabs defaultValue="main">
-        <TabsList className="flex-wrap">
-          <TabsTrigger value="main">Основное</TabsTrigger>
-          <TabsTrigger value="versions">Версии</TabsTrigger>
-          <TabsTrigger value="tasks">Задачи / касания</TabsTrigger>
-          <TabsTrigger value="audit">История изменений</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="main">
-          <EntityInfoCard
-            title="Данные КП"
-            footer={
-              <div className="grid gap-4 md:grid-cols-2">
-                <TextBlock label="Файл КП">
-                  {proposal.fileUrl ? <Link className="hover:underline" href={proposal.fileUrl}>Скачать {proposal.fileName}</Link> : "Файл не прикреплен."}
-                </TextBlock>
-                <TextBlock label="Комментарий">{proposal.comment || "Комментариев пока нет."}</TextBlock>
-              </div>
-            }
-          >
-              <DetailGrid>
-                <Detail label="Сделка" value={proposal.deal.title} />
-                <Detail label="Клиент" value={proposal.client.name} />
-                <Detail label="Объект" value={proposal.projectObject.title} />
-                <Detail label="Дизайнер" value={proposal.designer?.name} />
-                <Detail label="Ответственный" value={proposal.responsible.name} />
-                <Detail label="Создал" value={proposal.createdBy.name} />
-                <Detail label="Сумма" value={formatMoney(proposal.amount)} />
-                <Detail label="Скидка, %" value={proposal.discountPercent} />
-                <Detail label="Скидка, сумма" value={formatMoney(proposal.discountAmount)} />
-                <Detail label="Получатель" value={proposal.recipientName} />
-                <Detail label="Тип получателя" value={proposal.recipientType ? recipientTypeLabels[proposal.recipientType] : null} />
-                <Detail label="Контакт получателя" value={proposal.recipientContact} />
-                <Detail label="Кто согласует" value={proposal.approvalRequiredFrom} />
-                <Detail label="Дата отправки" value={formatRussianDate(proposal.sentAt)} />
-                <Detail label="Следующее касание" value={formatRussianDate(proposal.nextTouchAt)} />
-                <Detail label="Файл" value={proposal.fileName} />
-                <Detail label="Загрузил" value={proposal.uploadedBy?.name} />
-                <Detail label="Причина отклонения" value={proposal.declineReason ? proposalDeclineReasonLabels[proposal.declineReason] : null} />
-              </DetailGrid>
-          </EntityInfoCard>
-        </TabsContent>
-
-        <TabsContent value="versions">
-          <ProposalVersionsTable
-            versions={versions}
-            canCreateVersion={canEditRecord(user, proposal)}
-            createVersionAction={createVersionAction}
-          />
-        </TabsContent>
-
-        <TabsContent value="tasks">
-          <EntityTasksCard
-            items={proposal.tasks}
-            canCreate={canCreateTask(user)}
-            taskHref={`/tasks/new?proposalId=${proposal.id}&dealId=${proposal.dealId}&clientId=${proposal.clientId}&objectId=${proposal.objectId}&responsibleId=${proposal.responsibleId}${proposal.designerId ? `&designerId=${proposal.designerId}` : ""}`}
-            touchHref={`/tasks/new?recordType=TOUCH&proposalId=${proposal.id}&dealId=${proposal.dealId}&clientId=${proposal.clientId}&objectId=${proposal.objectId}&responsibleId=${proposal.responsibleId}${proposal.designerId ? `&designerId=${proposal.designerId}` : ""}`}
-          />
-        </TabsContent>
-
-        <TabsContent value="audit">
-          <AuditLogCard logs={auditLogs} formatDate={formatRussianDate} />
-        </TabsContent>
-      </Tabs>
-    </div>
+      <EntityDetailTabs
+        tabs={[
+          {
+            value: "main",
+            label: "Основное",
+            content: (
+              <EntityDetailsCard
+                title="Данные КП"
+                fields={[
+                  { label: "Сделка", value: proposal.deal.title },
+                  { label: "Клиент", value: proposal.client.name },
+                  { label: "Объект", value: proposal.projectObject.title },
+                  { label: "Дизайнер", value: proposal.designer?.name },
+                  { label: "Ответственный", value: proposal.responsible.name },
+                  { label: "Создал", value: proposal.createdBy.name },
+                  { label: "Сумма", value: formatMoney(proposal.amount) },
+                  { label: "Скидка, %", value: proposal.discountPercent },
+                  { label: "Скидка, сумма", value: formatMoney(proposal.discountAmount) },
+                  { label: "Получатель", value: proposal.recipientName },
+                  { label: "Тип получателя", value: proposal.recipientType ? recipientTypeLabels[proposal.recipientType] : null },
+                  { label: "Контакт получателя", value: proposal.recipientContact },
+                  { label: "Кто согласует", value: proposal.approvalRequiredFrom },
+                  { label: "Дата отправки", value: formatRussianDate(proposal.sentAt) },
+                  { label: "Следующее касание", value: formatRussianDate(proposal.nextTouchAt) },
+                  { label: "Файл", value: proposal.fileName },
+                  { label: "Загрузил", value: proposal.uploadedBy?.name },
+                  { label: "Причина отклонения", value: proposal.declineReason ? proposalDeclineReasonLabels[proposal.declineReason] : null }
+                ]}
+                footer={
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <TextBlock label="Файл КП">
+                      {proposal.fileUrl ? <Link className="hover:underline" href={proposal.fileUrl}>Скачать {proposal.fileName}</Link> : "Файл не прикреплен."}
+                    </TextBlock>
+                    <TextBlock label="Комментарий">{proposal.comment || "Комментариев пока нет."}</TextBlock>
+                  </div>
+                }
+              />
+            )
+          },
+          {
+            value: "versions",
+            label: "Версии",
+            content: (
+              <ProposalVersionsTable
+                versions={versions}
+                canCreateVersion={canEditRecord(user, proposal)}
+                createVersionAction={createVersionAction}
+              />
+            )
+          },
+          {
+            value: "tasks",
+            label: "Задачи / касания",
+            content: (
+              <EntityTasksCard
+                items={proposal.tasks}
+                canCreate={canCreateTask(user)}
+                taskHref={`/tasks/new?proposalId=${proposal.id}&dealId=${proposal.dealId}&clientId=${proposal.clientId}&objectId=${proposal.objectId}&responsibleId=${proposal.responsibleId}${proposal.designerId ? `&designerId=${proposal.designerId}` : ""}`}
+                touchHref={`/tasks/new?recordType=TOUCH&proposalId=${proposal.id}&dealId=${proposal.dealId}&clientId=${proposal.clientId}&objectId=${proposal.objectId}&responsibleId=${proposal.responsibleId}${proposal.designerId ? `&designerId=${proposal.designerId}` : ""}`}
+              />
+            )
+          },
+          {
+            value: "audit",
+            label: "История изменений",
+            content: <AuditLogCard logs={auditLogs} formatDate={formatRussianDate} />
+          }
+        ]}
+      />
+    </EntityDetailShell>
   );
 }

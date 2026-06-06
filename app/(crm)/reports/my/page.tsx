@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
 import { MetricsGrid } from "@/components/reports/metrics";
-import { MyDisciplineProblemsTable } from "@/components/reports/report-tables";
+import { MyDisciplineProblemsTable } from "@/components/reports/tables";
 import { PageHeader } from "@/components/layout/page-header";
 import { getMyReport } from "@/modules/reports/queries";
 

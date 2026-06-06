@@ -4,7 +4,7 @@ import { BreakdownCard } from "@/components/reports/cards";
 import { ReportFilterSelect, ReportPeriodFilter } from "@/components/reports/filters";
 import { ReportPageHeader } from "@/components/reports/layout";
 import { MetricsGrid } from "@/components/reports/metrics";
-import { ObjectsReportTable } from "@/components/reports/report-tables";
+import { ObjectsReportTable } from "@/components/reports/tables";
 import { objectStageLabels, objectTypeLabels } from "@/lib/constants";
 import { objectStageOptions, objectStatusOptions, objectTypeOptions } from "@/modules/crm/options";
 import { getObjectsReport, getReportFilterOptions, type ReportSearchParams } from "@/modules/reports/queries";

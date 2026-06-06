@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
+import { designerPotentialVariant } from "@/components/crm/status-variants";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PipelineBoard } from "@/components/crm/pipeline-board";
@@ -39,7 +40,7 @@ export default async function DesignerPipelinePage() {
               <div className="text-xs text-muted-foreground">{designer.studio ?? designer.responsible.name}</div>
             </div>
             <div className="flex flex-wrap gap-2">
-              <Badge variant={designer.potential === "A" ? "warning" : "outline"}>{designerPotentialLabels[designer.potential]}</Badge>
+              <Badge variant={designerPotentialVariant(designer.potential)}>{designerPotentialLabels[designer.potential]}</Badge>
               <Badge variant="outline">{designerLoyaltyLabels[designer.loyalty]}</Badge>
             </div>
             <div className={isOverdue(designer.nextStepAt) ? "text-sm text-destructive" : "text-sm text-muted-foreground"}>

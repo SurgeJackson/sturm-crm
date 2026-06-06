@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BonusEligibilityBadge, CrmDisciplineBadge } from "@/components/crm/discipline/badges";
+import { objectStatusVariant } from "@/components/crm/status-variants";
 import { Badge } from "@/components/ui/badge";
 import { EmptyTableRow, EntityLinkCell, TableCard } from "@/components/ui/data-table";
 import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -7,12 +8,6 @@ import { objectStageLabels, objectStatusLabels, objectTypeLabels } from "@/lib/c
 import type { getProjectObjects } from "@/modules/objects/queries";
 
 type ObjectItem = Awaited<ReturnType<typeof getProjectObjects>>["items"][number];
-
-function statusVariant(status: keyof typeof objectStatusLabels) {
-  if (status === "LOST" || status === "ARCHIVED") return "warning" as const;
-  if (status === "FROZEN") return "warning" as const;
-  return "secondary" as const;
-}
 
 export function ObjectsTable({ objects }: { objects: ObjectItem[] }) {
   return (
@@ -52,7 +47,7 @@ export function ObjectsTable({ objects }: { objects: ObjectItem[] }) {
               </TableCell>
               <TableCell>{object.responsible.name}</TableCell>
               <TableCell><Badge variant="outline">{objectStageLabels[object.stage]}</Badge></TableCell>
-              <TableCell><Badge variant={statusVariant(object.status)}>{objectStatusLabels[object.status]}</Badge></TableCell>
+              <TableCell><Badge variant={objectStatusVariant(object.status)}>{objectStatusLabels[object.status]}</Badge></TableCell>
               <TableCell><CrmDisciplineBadge violations={object.crmViolations} /></TableCell>
               <TableCell><BonusEligibilityBadge violations={object.crmViolations} /></TableCell>
             </TableRow>
