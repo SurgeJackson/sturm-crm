@@ -8,6 +8,7 @@ export {
 } from "@/modules/crm-discipline/bonus";
 export * from "@/modules/crm-discipline/entity-sync";
 export * from "@/modules/crm-discipline/full-check";
+export * from "@/modules/crm-discipline/mutations";
 export {
   getActiveViolationsForEntity,
   getActiveViolationsMap,

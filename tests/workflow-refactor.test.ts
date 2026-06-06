@@ -1,8 +1,11 @@
 import { describe, expect, it } from "vitest";
-import type { CommercialProposal, Deal } from "../generated/prisma/client";
+import type { Client, CommercialProposal, Deal, Designer } from "../generated/prisma/client";
+import { clientTrackedFields } from "../modules/clients/service";
+import { designerTrackedFields } from "../modules/designers/service";
 import { fallbackReportCsv } from "../modules/reports/exporters";
 import { dealStatusAuditEvents, dealTrackedFields } from "../modules/deals/service";
 import { proposalStatusAuditEvents, proposalTrackedFields } from "../modules/proposals/service";
+import { taskAuditAction } from "../modules/tasks/service";
 
 describe("deal workflow helpers", () => {
   it("detects completed and lost status audit events", () => {
@@ -97,6 +100,61 @@ describe("proposal workflow helpers", () => {
       "nextTouchAt",
       "declineReason"
     ]);
+  });
+});
+
+describe("client workflow helpers", () => {
+  it("builds tracked fields for client ownership and status changes", () => {
+    const fields = clientTrackedFields(
+      { responsibleId: "old", status: "NEW" } as Client,
+      { responsibleId: "new", status: "ACTIVE" }
+    );
+
+    expect(fields).toEqual([
+      ["responsibleId", "CHANGE_RESPONSIBLE", "old", "new"],
+      ["status", "CHANGE_STATUS", "NEW", "ACTIVE"]
+    ]);
+  });
+});
+
+describe("designer workflow helpers", () => {
+  it("builds tracked fields for designer relationship management", () => {
+    const fields = designerTrackedFields(
+      {
+        responsibleId: "old",
+        relationshipStage: "FIRST_CONTACT",
+        potential: "B",
+        loyalty: "NEUTRAL",
+        nextStepText: "old step",
+        nextStepAt: new Date("2026-01-01T00:00:00.000Z")
+      } as Designer,
+      {
+        responsibleId: "new",
+        relationshipStage: "MEETING_DONE",
+        potential: "A",
+        loyalty: "LOYAL",
+        nextStepText: "new step",
+        nextStepAt: new Date("2026-01-02T00:00:00.000Z")
+      } as Designer
+    );
+
+    expect(fields.map((field) => field[0])).toEqual([
+      "responsibleId",
+      "relationshipStage",
+      "potential",
+      "loyalty",
+      "nextStepText",
+      "nextStepAt"
+    ]);
+  });
+});
+
+describe("task workflow helpers", () => {
+  it("selects audit action for create, touch create, close and update", () => {
+    expect(taskAuditAction(null, { recordType: "TASK", status: "NEW" })).toBe("CREATE_TASK");
+    expect(taskAuditAction(null, { recordType: "TOUCH", status: "RECORDED" })).toBe("CREATE_TOUCH");
+    expect(taskAuditAction({ status: "IN_PROGRESS" }, { recordType: "TASK", status: "DONE" })).toBe("CLOSE_TASK");
+    expect(taskAuditAction({ status: "DONE" }, { recordType: "TASK", status: "DONE" })).toBe("UPDATE");
   });
 });
 

@@ -3,6 +3,10 @@ import { prisma } from "@/lib/prisma";
 import { writeEntityAuditLog } from "@/modules/crm/audit-helpers";
 import { toParticipantDocument, type ParticipantFormData } from "@/modules/objects/form";
 
+export function getProjectObjectParticipantForMutation(id: string) {
+  return prisma.projectObjectParticipant.findUnique({ where: { id } });
+}
+
 export async function createProjectObjectParticipant(objectId: string, data: ParticipantFormData, userId: string) {
   return prisma.$transaction(async (tx) => {
     const participant = await tx.projectObjectParticipant.create({

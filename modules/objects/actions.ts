@@ -2,7 +2,6 @@
 
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { prisma } from "@/lib/prisma";
 import {
   canArchiveRecord,
   canChangeObjectResponsible,
@@ -17,6 +16,8 @@ import {
 import {
   archiveProjectObject,
   createProjectObject,
+  getProjectObjectForMutation,
+  getProjectObjectWithDesignerForMutation,
   moveDesignerToFirstObjectReceived,
   updateProjectObject,
   validateObjectRelations
@@ -24,6 +25,7 @@ import {
 import {
   archiveProjectObjectParticipant,
   createProjectObjectParticipant,
+  getProjectObjectParticipantForMutation,
   updateProjectObjectParticipant
 } from "@/modules/objects/participants-service";
 
@@ -66,7 +68,7 @@ export async function updateProjectObjectAction(id: string, _prevState: ProjectO
     return { message: "Необходима авторизация" };
   }
 
-  const before = await prisma.projectObject.findUnique({ where: { id } });
+  const before = await getProjectObjectForMutation(id);
 
   if (!before || !canEditRecord(user, before)) {
     return { message: "Недостаточно прав для редактирования объекта" };
@@ -94,7 +96,7 @@ export async function archiveProjectObjectAction(id: string) {
     redirect("/login");
   }
 
-  const before = await prisma.projectObject.findUnique({ where: { id } });
+  const before = await getProjectObjectForMutation(id);
 
   if (!before || !canArchiveRecord(user, before)) {
     redirect(`/objects/${id}?error=archive`);
@@ -116,7 +118,7 @@ export async function createProjectObjectParticipantAction(
     return { message: "Необходима авторизация" };
   }
 
-  const object = await prisma.projectObject.findUnique({ where: { id: objectId } });
+  const object = await getProjectObjectForMutation(objectId);
 
   if (!object || !canManageObjectParticipants(user, object)) {
     return { message: "Недостаточно прав для добавления участника" };
@@ -146,8 +148,8 @@ export async function updateProjectObjectParticipantAction(
   }
 
   const [object, before] = await Promise.all([
-    prisma.projectObject.findUnique({ where: { id: objectId } }),
-    prisma.projectObjectParticipant.findUnique({ where: { id: participantId } })
+    getProjectObjectForMutation(objectId),
+    getProjectObjectParticipantForMutation(participantId)
   ]);
 
   if (!object || !before || before.objectId !== objectId || !canManageObjectParticipants(user, object)) {
@@ -173,8 +175,8 @@ export async function archiveProjectObjectParticipantAction(objectId: string, pa
   }
 
   const [object, before] = await Promise.all([
-    prisma.projectObject.findUnique({ where: { id: objectId } }),
-    prisma.projectObjectParticipant.findUnique({ where: { id: participantId } })
+    getProjectObjectForMutation(objectId),
+    getProjectObjectParticipantForMutation(participantId)
   ]);
 
   if (!object || !before || before.objectId !== objectId || !canManageObjectParticipants(user, object)) {
@@ -193,10 +195,7 @@ export async function moveDesignerToFirstObjectReceivedAction(objectId: string) 
     redirect("/login");
   }
 
-  const object = await prisma.projectObject.findUnique({
-    where: { id: objectId },
-    include: { designer: true }
-  });
+  const object = await getProjectObjectWithDesignerForMutation(objectId);
 
   if (!object || !object.designer || !canEditRecord(user, object)) {
     redirect(`/objects/${objectId}?error=designerStage`);

@@ -3,16 +3,20 @@
 import { redirect } from "next/navigation";
 import type { DesignerRelationshipStage } from "@/generated/prisma/client";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { prisma } from "@/lib/prisma";
 import {
   canArchiveRecord,
   canChangeRecordResponsible,
   canCreateDesigner,
   canEditRecord
 } from "@/permissions";
-import { writeEntityAuditLog, writeTrackedFieldAuditLogs } from "@/modules/crm/audit-helpers";
-import { expireViolationsForEntity, syncDesignerDiscipline } from "@/modules/crm-discipline/service";
-import { parseDesignerForm, relationshipStages, toDesignerDocument } from "@/modules/designers/form";
+import { parseDesignerForm, relationshipStages } from "@/modules/designers/form";
+import {
+  archiveDesigner,
+  changeDesignerStage,
+  createDesigner,
+  getDesignerForMutation,
+  updateDesigner
+} from "@/modules/designers/service";
 
 export type DesignerActionState = {
   errors?: Record<string, string[]>;
@@ -33,34 +37,7 @@ export async function createDesignerAction(_prevState: DesignerActionState, form
   }
 
   const responsibleId = canChangeRecordResponsible(user) ? parsed.data.responsibleId : user.id;
-  const document = {
-    ...toDesignerDocument(parsed.data, responsibleId),
-    transferredObjectsCount: 0,
-    activeObjectsCount: 0,
-    proposalsTotalAmount: 0,
-    paymentsTotalAmount: 0,
-    createdById: user.id,
-    archivedAt: null
-  };
-
-  const designer = await prisma.$transaction(async (tx) => {
-    const created = await tx.designer.create({
-      data: document
-    });
-
-    await writeEntityAuditLog({
-      entityType: "DESIGNER",
-      entityId: created.id,
-      action: "CREATE",
-      userId: user.id,
-      after: created,
-      client: tx
-    });
-
-    return created;
-  });
-
-  await syncDesignerDiscipline(designer.id, user.id);
+  const designer = await createDesigner(parsed.data, responsibleId, user.id);
 
   redirect(`/designers/${designer.id}?saved=1`);
 }
@@ -72,7 +49,7 @@ export async function updateDesignerAction(id: string, _prevState: DesignerActio
     return { message: "Необходима авторизация" };
   }
 
-  const before = await prisma.designer.findUnique({ where: { id } });
+  const before = await getDesignerForMutation(id);
 
   if (!before || !canEditRecord(user, {
     createdById: before.createdById,
@@ -90,43 +67,7 @@ export async function updateDesignerAction(id: string, _prevState: DesignerActio
   const responsibleId = canChangeRecordResponsible(user)
     ? parsed.data.responsibleId
     : before.responsibleId;
-  const update = {
-    ...toDesignerDocument(parsed.data, responsibleId)
-  };
-
-  await prisma.$transaction(async (tx) => {
-    const after = await tx.designer.update({
-      where: { id },
-      data: update
-    });
-
-    await writeEntityAuditLog({
-      entityType: "DESIGNER",
-      entityId: id,
-      action: "UPDATE",
-      userId: user.id,
-      before,
-      after,
-      client: tx
-    });
-
-    await writeTrackedFieldAuditLogs({
-      entityType: "DESIGNER",
-      entityId: id,
-      userId: user.id,
-      client: tx,
-      fields: [
-        ["responsibleId", "CHANGE_RESPONSIBLE", before.responsibleId, responsibleId],
-        ["relationshipStage", "CHANGE_RELATIONSHIP_STAGE", before.relationshipStage, parsed.data.relationshipStage],
-        ["potential", "CHANGE_POTENTIAL", before.potential, parsed.data.potential],
-        ["loyalty", "CHANGE_LOYALTY", before.loyalty, parsed.data.loyalty],
-        ["nextStepText", "CHANGE_NEXT_STEP", before.nextStepText, parsed.data.nextStepText],
-        ["nextStepAt", "CHANGE_NEXT_STEP", before.nextStepAt?.toISOString?.(), update.nextStepAt?.toISOString?.()]
-      ]
-    });
-  });
-
-  await syncDesignerDiscipline(id, user.id);
+  await updateDesigner(id, before, parsed.data, responsibleId, user.id);
 
   redirect(`/designers/${id}?saved=1`);
 }
@@ -138,7 +79,7 @@ export async function archiveDesignerAction(id: string) {
     redirect("/login");
   }
 
-  const before = await prisma.designer.findUnique({ where: { id } });
+  const before = await getDesignerForMutation(id);
 
   if (!before || !canArchiveRecord(user, {
     createdById: before.createdById,
@@ -147,29 +88,7 @@ export async function archiveDesignerAction(id: string) {
     redirect(`/designers/${id}?error=archive`);
   }
 
-  const update = {
-    status: "ARCHIVED" as const,
-    archivedAt: new Date(),
-    updatedAt: new Date()
-  };
-  await prisma.$transaction(async (tx) => {
-    const after = await tx.designer.update({
-      where: { id },
-      data: update
-    });
-
-    await writeEntityAuditLog({
-      entityType: "DESIGNER",
-      entityId: id,
-      action: "ARCHIVE",
-      userId: user.id,
-      before,
-      after,
-      client: tx
-    });
-  });
-
-  await expireViolationsForEntity("DESIGNER", id, user.id);
+  await archiveDesigner(id, before, user.id);
 
   redirect(`/designers/${id}?archived=1`);
 }
@@ -187,7 +106,7 @@ export async function changeDesignerStageAction(id: string, formData: FormData) 
     redirect("/designers/pipeline?error=stage");
   }
 
-  const before = await prisma.designer.findUnique({ where: { id } });
+  const before = await getDesignerForMutation(id);
 
   if (!before || !canEditRecord(user, {
     createdById: before.createdById,
@@ -196,24 +115,7 @@ export async function changeDesignerStageAction(id: string, formData: FormData) 
     redirect("/designers/pipeline?error=permission");
   }
 
-  await prisma.$transaction(async (tx) => {
-    await tx.designer.update({
-      where: { id },
-      data: { relationshipStage: stage as DesignerRelationshipStage }
-    });
-
-    await writeEntityAuditLog({
-      entityType: "DESIGNER",
-      entityId: id,
-      action: "CHANGE_RELATIONSHIP_STAGE",
-      userId: user.id,
-      before: { relationshipStage: before.relationshipStage },
-      after: { relationshipStage: stage },
-      client: tx
-    });
-  });
-
-  await syncDesignerDiscipline(id, user.id);
+  await changeDesignerStage(id, before, stage as DesignerRelationshipStage, user.id);
 
   redirect("/designers/pipeline?saved=1");
 }

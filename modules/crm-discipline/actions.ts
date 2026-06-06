@@ -2,8 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { prisma } from "@/lib/prisma";
-import { writeEntityAuditLog } from "@/modules/crm/audit-helpers";
+import { ignoreCrmViolation } from "@/modules/crm-discipline/service";
 import { canIgnoreCrmViolation } from "@/permissions";
 
 export async function ignoreCrmViolationAction(id: string, returnTo: string) {
@@ -12,27 +11,8 @@ export async function ignoreCrmViolationAction(id: string, returnTo: string) {
     redirect(`${returnTo}?error=disciplinePermission`);
   }
 
-  const before = await prisma.crmViolation.findUnique({ where: { id } });
-  if (!before) redirect(returnTo);
-
-  const after = await prisma.crmViolation.update({
-    where: { id },
-    data: {
-      status: "IGNORED",
-      resolvedAt: new Date(),
-      resolvedById: user.id,
-      comment: "Проигнорировано руководителем"
-    }
-  });
-
-  await writeEntityAuditLog({
-    entityType: "CRM_VIOLATION",
-    entityId: id,
-    action: "IGNORE_CRM_VIOLATION",
-    userId: user.id,
-    before,
-    after
-  });
+  const violation = await ignoreCrmViolation(id, user.id);
+  if (!violation) redirect(returnTo);
 
   redirect(`${returnTo}?disciplineIgnored=1`);
 }

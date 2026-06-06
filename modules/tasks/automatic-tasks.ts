@@ -1,4 +1,4 @@
-import { Prisma, type TaskAutoRule } from "@/generated/prisma/client";
+import { Prisma, type TaskActionType, type TaskAutoRule, type TaskPriority } from "@/generated/prisma/client";
 import { writeAuditLog } from "@/lib/audit-log";
 import { prisma } from "@/lib/prisma";
 import { daysAgo, daysFromNow } from "@/modules/crm/date-ranges";
@@ -8,10 +8,14 @@ import { syncTaskDiscipline } from "@/modules/crm-discipline/service";
 
 export type AutomaticTaskInput = {
   title: string;
+  description?: string | null;
+  notes?: string | null;
   responsibleId: string;
   createdById: string;
   dueAt: Date;
   autoRule: TaskAutoRule;
+  actionType?: TaskActionType;
+  priority?: TaskPriority;
   clientId?: string | null;
   designerId?: string | null;
   objectId?: string | null;
@@ -32,7 +36,29 @@ export function automaticTaskDedupeWhere(input: AutomaticTaskInput) {
   };
 }
 
-async function createAutomaticTask(input: AutomaticTaskInput) {
+export function automaticTaskCreateData(input: AutomaticTaskInput) {
+  return {
+    recordType: "TASK" as const,
+    actionType: input.actionType ?? "FOLLOW_UP",
+    title: input.title,
+    description: input.description ?? null,
+    responsibleId: input.responsibleId,
+    createdById: input.createdById,
+    dueAt: input.dueAt,
+    status: "NEW" as const,
+    priority: input.priority ?? "NORMAL",
+    isAutoCreated: true,
+    autoRule: input.autoRule,
+    clientId: input.clientId ?? null,
+    designerId: input.designerId ?? null,
+    objectId: input.objectId ?? null,
+    dealId: input.dealId ?? null,
+    proposalId: input.proposalId ?? null,
+    notes: input.notes ?? null
+  };
+}
+
+export async function createAutomaticTask(input: AutomaticTaskInput) {
   const exists = await prisma.taskActivity.findFirst({
     where: automaticTaskDedupeWhere(input),
     select: { id: true }
@@ -42,23 +68,7 @@ async function createAutomaticTask(input: AutomaticTaskInput) {
   let task;
   try {
     task = await prisma.taskActivity.create({
-      data: {
-        recordType: "TASK",
-        actionType: "FOLLOW_UP",
-        title: input.title,
-        responsibleId: input.responsibleId,
-        createdById: input.createdById,
-        dueAt: input.dueAt,
-        status: "NEW",
-        priority: "NORMAL",
-        isAutoCreated: true,
-        autoRule: input.autoRule,
-        clientId: input.clientId ?? null,
-        designerId: input.designerId ?? null,
-        objectId: input.objectId ?? null,
-        dealId: input.dealId ?? null,
-        proposalId: input.proposalId ?? null
-      }
+      data: automaticTaskCreateData(input)
     });
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") return null;

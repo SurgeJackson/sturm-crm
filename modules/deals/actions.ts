@@ -3,7 +3,6 @@
 import { redirect } from "next/navigation";
 import type { DealLossReason, DealStage } from "@/generated/prisma/client";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { prisma } from "@/lib/prisma";
 import {
   canArchiveRecord,
   canChangeDealResponsible,
@@ -13,7 +12,15 @@ import {
 } from "@/permissions";
 import { compactString } from "@/modules/crm/form-utils";
 import { dealLossReasons, dealStages, parseDealForm } from "@/modules/deals/form";
-import { archiveDeal, changeDealStage, createDeal, getObjectForDeal, markDealAsLost, updateDeal } from "@/modules/deals/service";
+import {
+  archiveDeal,
+  changeDealStage,
+  createDeal,
+  getDealForMutation,
+  getObjectForDeal,
+  markDealAsLost,
+  updateDeal
+} from "@/modules/deals/service";
 
 export type DealActionState = {
   errors?: Record<string, string[]>;
@@ -53,7 +60,7 @@ export async function updateDealAction(id: string, _prevState: DealActionState, 
     return { message: "Необходима авторизация" };
   }
 
-  const before = await prisma.deal.findUnique({ where: { id } });
+  const before = await getDealForMutation(id);
 
   if (!before || !canEditRecord(user, before)) {
     return { message: "Недостаточно прав для редактирования сделки" };
@@ -85,7 +92,7 @@ export async function archiveDealAction(id: string) {
     redirect("/login");
   }
 
-  const before = await prisma.deal.findUnique({ where: { id } });
+  const before = await getDealForMutation(id);
 
   if (!before || !canArchiveRecord(user, before)) {
     redirect(`/deals/${id}?error=archive`);
@@ -109,7 +116,7 @@ export async function changeDealStageAction(id: string, formData: FormData) {
   }
   const stage = nextStage as DealStage;
 
-  const before = await prisma.deal.findUnique({ where: { id } });
+  const before = await getDealForMutation(id);
 
   if (!before || !canEditRecord(user, before)) {
     redirect("/deals/pipeline?error=permission");
@@ -142,7 +149,7 @@ export async function closeDealAsLostAction(id: string, formData: FormData) {
     redirect(`/deals/${id}?error=lossReason`);
   }
 
-  const before = await prisma.deal.findUnique({ where: { id } });
+  const before = await getDealForMutation(id);
 
   if (!before || !canEditRecord(user, before) || !canCloseDealAsLost(user)) {
     redirect(`/deals/${id}?error=permission`);

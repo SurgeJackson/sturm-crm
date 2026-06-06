@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { roleLabels } from "../lib/constants";
 import { enumParam, flagParam, upperEnumParam } from "../modules/crm/param-parsing";
 import { isFrozenObjectTransition } from "../modules/objects/service";
-import { automaticTaskDedupeWhere } from "../modules/tasks/automatic-tasks";
+import { automaticTaskCreateData, automaticTaskDedupeWhere } from "../modules/tasks/automatic-tasks";
 import { buildEmployeeActivityRows } from "../modules/reports/activity";
 
 describe("query parameter parsing", () => {
@@ -38,6 +38,44 @@ describe("automatic task helpers", () => {
       autoRule: "CLIENT_WITHOUT_NEXT_CONTACT",
       clientId: "client-1",
       designerId: undefined
+    });
+  });
+
+  it("builds normalized create data for automatic tasks", () => {
+    const dueAt = new Date("2026-01-02T00:00:00.000Z");
+
+    expect(automaticTaskCreateData({
+      title: "Связаться по КП КП-2026-0001",
+      description: "Follow-up по КП КП-2026-0001",
+      notes: "Follow-up по КП КП-2026-0001",
+      responsibleId: "manager-1",
+      createdById: "creator-1",
+      dueAt,
+      autoRule: "PROPOSAL_FOLLOW_UP",
+      priority: "HIGH",
+      clientId: "client-1",
+      designerId: null,
+      objectId: "object-1",
+      dealId: "deal-1",
+      proposalId: "proposal-1"
+    })).toMatchObject({
+      recordType: "TASK",
+      actionType: "FOLLOW_UP",
+      title: "Связаться по КП КП-2026-0001",
+      description: "Follow-up по КП КП-2026-0001",
+      responsibleId: "manager-1",
+      createdById: "creator-1",
+      dueAt,
+      status: "NEW",
+      priority: "HIGH",
+      isAutoCreated: true,
+      autoRule: "PROPOSAL_FOLLOW_UP",
+      clientId: "client-1",
+      designerId: null,
+      objectId: "object-1",
+      dealId: "deal-1",
+      proposalId: "proposal-1",
+      notes: "Follow-up по КП КП-2026-0001"
     });
   });
 });

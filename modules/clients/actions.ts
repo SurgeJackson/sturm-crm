@@ -2,16 +2,14 @@
 
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { prisma } from "@/lib/prisma";
 import {
   canArchiveRecord,
   canChangeRecordResponsible,
   canCreateClient,
   canEditRecord
 } from "@/permissions";
-import { writeEntityAuditLog, writeTrackedFieldAuditLogs } from "@/modules/crm/audit-helpers";
-import { expireViolationsForEntity, syncClientDiscipline } from "@/modules/crm-discipline/service";
-import { parseClientForm, toClientDocument } from "@/modules/clients/form";
+import { parseClientForm } from "@/modules/clients/form";
+import { archiveClient, createClient, getClientForMutation, updateClient } from "@/modules/clients/service";
 
 export type ClientActionState = {
   errors?: Record<string, string[]>;
@@ -32,30 +30,7 @@ export async function createClientAction(_prevState: ClientActionState, formData
   }
 
   const responsibleId = canChangeRecordResponsible(user) ? parsed.data.responsibleId : user.id;
-  const document = {
-    ...toClientDocument(parsed.data, responsibleId),
-    createdById: user.id,
-    archivedAt: parsed.data.status === "ARCHIVED" ? new Date() : null
-  };
-
-  const client = await prisma.$transaction(async (tx) => {
-    const created = await tx.client.create({
-      data: document
-    });
-
-    await writeEntityAuditLog({
-      entityType: "CLIENT",
-      entityId: created.id,
-      action: "CREATE",
-      userId: user.id,
-      after: created,
-      client: tx
-    });
-
-    return created;
-  });
-
-  await syncClientDiscipline(client.id, user.id);
+  const client = await createClient(parsed.data, responsibleId, user.id);
 
   redirect(`/clients/${client.id}?saved=1`);
 }
@@ -67,7 +42,7 @@ export async function updateClientAction(id: string, _prevState: ClientActionSta
     return { message: "Необходима авторизация" };
   }
 
-  const before = await prisma.client.findUnique({ where: { id } });
+  const before = await getClientForMutation(id);
 
   if (!before || !canEditRecord(user, {
     createdById: before.createdById,
@@ -85,39 +60,7 @@ export async function updateClientAction(id: string, _prevState: ClientActionSta
   const responsibleId = canChangeRecordResponsible(user)
     ? parsed.data.responsibleId
     : before.responsibleId;
-  const update = {
-    ...toClientDocument(parsed.data, responsibleId)
-  };
-
-  await prisma.$transaction(async (tx) => {
-    const after = await tx.client.update({
-      where: { id },
-      data: update
-    });
-
-    await writeEntityAuditLog({
-      entityType: "CLIENT",
-      entityId: id,
-      action: "UPDATE",
-      userId: user.id,
-      before,
-      after,
-      client: tx
-    });
-
-    await writeTrackedFieldAuditLogs({
-      entityType: "CLIENT",
-      entityId: id,
-      userId: user.id,
-      client: tx,
-      fields: [
-        ["responsibleId", "CHANGE_RESPONSIBLE", before.responsibleId, responsibleId],
-        ["status", "CHANGE_STATUS", before.status, parsed.data.status]
-      ]
-    });
-  });
-
-  await syncClientDiscipline(id, user.id);
+  await updateClient(id, before, parsed.data, responsibleId, user.id);
 
   redirect(`/clients/${id}?saved=1`);
 }
@@ -129,7 +72,7 @@ export async function archiveClientAction(id: string) {
     redirect("/login");
   }
 
-  const before = await prisma.client.findUnique({ where: { id } });
+  const before = await getClientForMutation(id);
 
   if (!before || !canArchiveRecord(user, {
     createdById: before.createdById,
@@ -138,29 +81,7 @@ export async function archiveClientAction(id: string) {
     redirect(`/clients/${id}?error=archive`);
   }
 
-  const update = {
-    status: "ARCHIVED" as const,
-    archivedAt: new Date(),
-    updatedAt: new Date()
-  };
-  await prisma.$transaction(async (tx) => {
-    const after = await tx.client.update({
-      where: { id },
-      data: update
-    });
-
-    await writeEntityAuditLog({
-      entityType: "CLIENT",
-      entityId: id,
-      action: "ARCHIVE",
-      userId: user.id,
-      before,
-      after,
-      client: tx
-    });
-  });
-
-  await expireViolationsForEntity("CLIENT", id, user.id);
+  await archiveClient(id, before, user.id);
 
   redirect(`/clients/${id}?archived=1`);
 }

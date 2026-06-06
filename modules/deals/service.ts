@@ -11,6 +11,10 @@ export function getObjectForDeal(objectId: string) {
   });
 }
 
+export function getDealForMutation(id: string) {
+  return prisma.deal.findUnique({ where: { id } });
+}
+
 export function dealTrackedFields(before: Deal, after: Deal): readonly TrackedAuditField[] {
   return [
     ["responsibleId", "CHANGE_RESPONSIBLE", before.responsibleId, after.responsibleId],

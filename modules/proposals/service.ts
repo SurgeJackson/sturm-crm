@@ -1,8 +1,9 @@
 import type { CommercialProposal, DealStage } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { writeEntityAuditLog, writeTrackedFieldAuditLogs, type TrackedAuditField } from "@/modules/crm/audit-helpers";
-import { expireViolationsForEntity, syncDealDiscipline, syncProposalDiscipline, syncTaskDiscipline } from "@/modules/crm-discipline/service";
+import { expireViolationsForEntity, syncDealDiscipline, syncProposalDiscipline } from "@/modules/crm-discipline/service";
 import { toProposalDocument, type ProposalFileData, type ProposalFormData } from "@/modules/proposals/form";
+import { createAutomaticTask } from "@/modules/tasks/service";
 
 export async function generateProposalNumber(now = new Date()) {
   const year = now.getFullYear();
@@ -29,43 +30,35 @@ export async function getDealForProposal(dealId: string) {
   });
 }
 
+export function getProposalForMutation(id: string) {
+  return prisma.commercialProposal.findUnique({ where: { id } });
+}
+
+export function getProposalWithDealForMutation(id: string) {
+  return prisma.commercialProposal.findUnique({
+    where: { id },
+    include: { deal: true }
+  });
+}
+
 export async function createProposalFollowUpTask(proposal: CommercialProposal) {
   if (proposal.status !== "SENT" || !proposal.nextTouchAt) return;
 
-  const existing = await prisma.taskActivity.findFirst({
-    where: {
-      proposalId: proposal.id,
-      autoRule: "PROPOSAL_FOLLOW_UP",
-      archivedAt: null
-    },
-    select: { id: true }
+  return createAutomaticTask({
+    title: `Связаться по КП ${proposal.proposalNumber}`,
+    description: `Follow-up по КП ${proposal.proposalNumber}`,
+    notes: `Follow-up по КП ${proposal.proposalNumber}`,
+    responsibleId: proposal.responsibleId,
+    createdById: proposal.createdById,
+    dueAt: proposal.nextTouchAt,
+    autoRule: "PROPOSAL_FOLLOW_UP",
+    priority: "HIGH",
+    clientId: proposal.clientId,
+    designerId: proposal.designerId,
+    objectId: proposal.objectId,
+    dealId: proposal.dealId,
+    proposalId: proposal.id
   });
-
-  if (existing) return;
-
-  const task = await prisma.taskActivity.create({
-    data: {
-      recordType: "TASK",
-      actionType: "FOLLOW_UP",
-      title: `Связаться по КП ${proposal.proposalNumber}`,
-      status: "NEW",
-      priority: "HIGH",
-      objectId: proposal.objectId,
-      dealId: proposal.dealId,
-      proposalId: proposal.id,
-      clientId: proposal.clientId,
-      designerId: proposal.designerId,
-      dueAt: proposal.nextTouchAt,
-      responsibleId: proposal.responsibleId,
-      createdById: proposal.createdById,
-      isAutoCreated: true,
-      autoRule: "PROPOSAL_FOLLOW_UP",
-      description: `Follow-up по КП ${proposal.proposalNumber}`,
-      notes: `Follow-up по КП ${proposal.proposalNumber}`
-    }
-  });
-
-  await syncTaskDiscipline(task.id, proposal.createdById);
 }
 
 export function proposalTrackedFields(before: CommercialProposal, after: CommercialProposal): readonly TrackedAuditField[] {

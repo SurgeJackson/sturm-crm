@@ -2,7 +2,6 @@
 
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { prisma } from "@/lib/prisma";
 import {
   canArchiveRecord,
   canChangeProposalFinancials,
@@ -23,6 +22,8 @@ import {
   createProposalVersion,
   generateProposalNumber,
   getDealForProposal,
+  getProposalForMutation,
+  getProposalWithDealForMutation,
   moveDealToInvoiceFromProposal,
   updateProposal
 } from "@/modules/proposals/service";
@@ -72,7 +73,7 @@ export async function updateProposalAction(id: string, _prevState: ProposalActio
   const user = await getCurrentUser();
   if (!user) return { message: "Необходима авторизация" };
 
-  const before = await prisma.commercialProposal.findUnique({ where: { id } });
+  const before = await getProposalForMutation(id);
   if (!before || !canEditRecord(user, before)) return { message: "Недостаточно прав для редактирования КП" };
 
   const parsed = parseProposalForm(formData);
@@ -124,7 +125,7 @@ export async function archiveProposalAction(id: string) {
   const user = await getCurrentUser();
   if (!user) redirect("/login");
 
-  const before = await prisma.commercialProposal.findUnique({ where: { id } });
+  const before = await getProposalForMutation(id);
   if (!before || !canArchiveRecord(user, before)) redirect(`/proposals/${id}?error=archive`);
 
   await archiveProposal(id, before, user.id);
@@ -136,7 +137,7 @@ export async function createProposalVersionAction(id: string) {
   const user = await getCurrentUser();
   if (!user) redirect("/login");
 
-  const source = await prisma.commercialProposal.findUnique({ where: { id } });
+  const source = await getProposalForMutation(id);
   if (!source || !canEditRecord(user, source)) redirect(`/proposals/${id}?error=version`);
 
   const newProposal = await createProposalVersion(source, user.id);
@@ -148,10 +149,7 @@ export async function moveDealToInvoiceFromProposalAction(id: string) {
   const user = await getCurrentUser();
   if (!user) redirect("/login");
 
-  const proposal = await prisma.commercialProposal.findUnique({
-    where: { id },
-    include: { deal: true }
-  });
+  const proposal = await getProposalWithDealForMutation(id);
   if (!proposal || !canEditRecord(user, proposal)) redirect(`/proposals/${id}?error=permission`);
 
   await moveDealToInvoiceFromProposal(proposal, user.id);
