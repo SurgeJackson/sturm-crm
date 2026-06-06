@@ -1,12 +1,10 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { EmptyTableRow, TableCard } from "@/components/ui/data-table";
-import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { BreakdownCard } from "@/components/reports/cards";
 import { ReportPeriodFilter } from "@/components/reports/filters";
 import { ReportPageHeader } from "@/components/reports/layout";
 import { MetricsGrid } from "@/components/reports/metrics";
+import { LossReasonsReportTables } from "@/components/reports/report-tables";
 import { dealLossReasonLabels, objectTypeLabels, proposalDeclineReasonLabels } from "@/lib/constants";
 import { getLossReasonsReport, getReportFilterOptions, type ReportSearchParams } from "@/modules/reports/queries";
 
@@ -23,59 +21,25 @@ export default async function LossReasonsReportPage({ searchParams }: PageProps)
       <ReportPeriodFilter params={params} users={filters.users} actionPath="/reports/loss-reasons" />
       <MetricsGrid metrics={report.metrics} />
       <div className="grid gap-4 xl:grid-cols-3">
-        <BreakdownCard title="Причины проигрыша сделок" data={Object.fromEntries(Object.entries(report.dealReasons).map(([key, value]) => [dealLossReasonLabels[key as keyof typeof dealLossReasonLabels] ?? key, value]))} />
-        <BreakdownCard title="Причины отклонения КП" data={Object.fromEntries(Object.entries(report.proposalReasons).map(([key, value]) => [proposalDeclineReasonLabels[key as keyof typeof proposalDeclineReasonLabels] ?? key, value]))} />
+        <BreakdownCard
+          title="Причины проигрыша сделок"
+          data={report.dealReasons}
+          labelFor={(key) => dealLossReasonLabels[key as keyof typeof dealLossReasonLabels] ?? key}
+        />
+        <BreakdownCard
+          title="Причины отклонения КП"
+          data={report.proposalReasons}
+          labelFor={(key) => proposalDeclineReasonLabels[key as keyof typeof proposalDeclineReasonLabels] ?? key}
+        />
         <BreakdownCard title="По ответственным" data={report.byResponsible} />
         <BreakdownCard title="По дизайнерам" data={report.byDesigner} />
-        <BreakdownCard title="По типам объектов" data={Object.fromEntries(Object.entries(report.byObjectType).map(([key, value]) => [objectTypeLabels[key as keyof typeof objectTypeLabels] ?? key, value]))} />
+        <BreakdownCard
+          title="По типам объектов"
+          data={report.byObjectType}
+          labelFor={(key) => objectTypeLabels[key as keyof typeof objectTypeLabels] ?? key}
+        />
       </div>
-      <div className="grid gap-4 xl:grid-cols-2">
-        <TableCard title="Проигранные сделки">
-          <TableHeader>
-            <TableRow>
-              <TableHead>Сделка</TableHead>
-              <TableHead>Причина</TableHead>
-              <TableHead>Сумма</TableHead>
-              <TableHead>Ответственный</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {report.lostDeals.length === 0 ? (
-              <EmptyTableRow colSpan={4}>Нет проигранных сделок.</EmptyTableRow>
-            ) : report.lostDeals.map((deal) => (
-              <TableRow key={deal.id}>
-                <TableCell><Link className="font-medium hover:underline" href={`/deals/${deal.id}`}>{deal.title}</Link></TableCell>
-                <TableCell>{deal.lossReason ? dealLossReasonLabels[deal.lossReason] : "Не указана"}</TableCell>
-                <TableCell>{deal.potentialAmount ? `${deal.potentialAmount.toLocaleString("ru-RU")} ₽` : "Нет"}</TableCell>
-                <TableCell>{deal.responsible.name}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </TableCard>
-
-        <TableCard title="Отклоненные КП">
-          <TableHeader>
-            <TableRow>
-              <TableHead>КП</TableHead>
-              <TableHead>Причина</TableHead>
-              <TableHead>Сумма</TableHead>
-              <TableHead>Ответственный</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {report.declinedProposals.length === 0 ? (
-              <EmptyTableRow colSpan={4}>Нет отклоненных КП.</EmptyTableRow>
-            ) : report.declinedProposals.map((proposal) => (
-              <TableRow key={proposal.id}>
-                <TableCell><Link className="font-medium hover:underline" href={`/proposals/${proposal.id}`}>{proposal.proposalNumber}</Link></TableCell>
-                <TableCell>{proposal.declineReason ? proposalDeclineReasonLabels[proposal.declineReason] : "Не указана"}</TableCell>
-                <TableCell>{proposal.amount.toLocaleString("ru-RU")} ₽</TableCell>
-                <TableCell>{proposal.responsible.name}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </TableCard>
-      </div>
+      <LossReasonsReportTables lostDeals={report.lostDeals} declinedProposals={report.declinedProposals} />
     </div>
   );
 }

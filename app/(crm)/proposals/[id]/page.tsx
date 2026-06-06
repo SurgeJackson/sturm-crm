@@ -13,10 +13,9 @@ import {
 } from "@/components/crm/detail-page";
 import { Detail, DetailGrid } from "@/components/crm/detail";
 import { CrmDisciplinePanel } from "@/components/crm/discipline/panel";
+import { ProposalVersionsTable } from "@/components/crm/related-tables";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { EmptyTableRow, TableCard } from "@/components/ui/data-table";
-import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getAuditLogs } from "@/lib/audit-log";
 import {
@@ -159,43 +158,11 @@ export default async function ProposalPage({ params, searchParams }: ProposalPag
         </TabsContent>
 
         <TabsContent value="versions">
-          <TableCard
-            title="Версии КП"
-            actions={canEditRecord(user, proposal) ? (
-              <form action={createVersionAction}>
-                <Button type="submit" size="sm">Создать новую версию</Button>
-              </form>
-            ) : null}
-          >
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Номер</TableHead>
-                    <TableHead>Версия</TableHead>
-                    <TableHead>Дата</TableHead>
-                    <TableHead>Сумма</TableHead>
-                    <TableHead>Статус</TableHead>
-                    <TableHead>Файл</TableHead>
-                    <TableHead>Ответственный</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {versions.length === 0 ? (
-                    <EmptyTableRow colSpan={7}>Версий КП пока нет</EmptyTableRow>
-                  ) : (
-                    versions.map((item) => (
-                      <TableRow key={item.id}>
-                        <TableCell><Link className="font-medium hover:underline" href={`/proposals/${item.id}`}>{item.proposalNumber}</Link></TableCell>
-                        <TableCell>v{item.version}</TableCell>
-                        <TableCell>{formatRussianDate(item.createdAt)}</TableCell>
-                        <TableCell>{formatMoney(item.amount)}</TableCell>
-                        <TableCell><Badge variant={statusVariant(item.status)}>{commercialProposalStatusLabels[item.status]}</Badge></TableCell>
-                        <TableCell>{item.fileUrl ? <Link className="hover:underline" href={item.fileUrl}>Скачать</Link> : "Нет файла"}</TableCell>
-                        <TableCell>{item.responsible.name}</TableCell>
-                      </TableRow>
-                    ))
-                  )}
-                </TableBody>
-          </TableCard>
+          <ProposalVersionsTable
+            versions={versions}
+            canCreateVersion={canEditRecord(user, proposal)}
+            createVersionAction={createVersionAction}
+          />
         </TabsContent>
 
         <TabsContent value="tasks">

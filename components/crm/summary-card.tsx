@@ -45,9 +45,9 @@ export function SummaryBreakdownCard({
       {entries.length === 0 ? (
         <p className="text-sm text-muted-foreground">{emptyText}</p>
       ) : entries.map(([key, count]) => (
-        <div key={key} className="flex items-center justify-between rounded-md border p-3 text-sm">
-          <span>{labelFor(key)}</span>
-          <Badge variant={valueVariant}>{count}</Badge>
+        <div key={key} className="flex items-center justify-between gap-3 rounded-md border p-3 text-sm">
+          <span className="min-w-0">{labelFor(key)}</span>
+          <Badge className="shrink-0" variant={valueVariant}>{count}</Badge>
         </div>
       ))}
     </SummaryCard>
@@ -82,12 +82,12 @@ export function SummaryValueListCard<T>({
       ) : items.map((item) => {
         const content = (
           <>
-            <span>{renderLabel(item)}</span>
-            <Badge variant={valueVariant}>{renderValue(item)}</Badge>
+            <span className="min-w-0">{renderLabel(item)}</span>
+            <Badge className="shrink-0" variant={valueVariant}>{renderValue(item)}</Badge>
           </>
         );
         const className = cn(
-          "flex items-center justify-between rounded-md border p-3 text-sm",
+          "flex items-center justify-between gap-3 rounded-md border p-3 text-sm",
           hrefFor ? "hover:border-primary" : undefined
         );
         const href = hrefFor?.(item);

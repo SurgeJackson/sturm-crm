@@ -1,12 +1,10 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { EmptyTableRow, TableCard } from "@/components/ui/data-table";
 import { NativeSelect } from "@/components/ui/native-select";
-import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ReportFilterSelect, ReportPeriodFilter } from "@/components/reports/filters";
 import { ReportPageHeader } from "@/components/reports/layout";
 import { MetricsGrid } from "@/components/reports/metrics";
+import { ActivityReportTable } from "@/components/reports/report-tables";
 import { roleLabels } from "@/lib/constants";
 import { taskActionTypeOptions } from "@/modules/crm/options";
 import { getEmployeeActivityReport, getReportFilterOptions, type ReportSearchParams } from "@/modules/reports/queries";
@@ -66,42 +64,7 @@ export default async function ActivityReportPage({ searchParams }: ActivityRepor
         { title: "Касания", value: totals.touches, tone: "secondary" }
       ]} />
 
-      <TableCard title="Таблица активности">
-            <TableHeader>
-              <TableRow>
-                <TableHead>Сотрудник</TableHead>
-                <TableHead>Клиенты</TableHead>
-                <TableHead>Дизайнеры</TableHead>
-                <TableHead>Объекты</TableHead>
-                <TableHead>Сделки</TableHead>
-                <TableHead>КП</TableHead>
-                <TableHead>Сумма КП</TableHead>
-                <TableHead>Задачи</TableHead>
-                <TableHead>Выполнено</TableHead>
-                <TableHead>Просрочено</TableHead>
-                <TableHead>Касания</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {report.rows.length === 0 ? (
-                <EmptyTableRow colSpan={11}>Активности за период нет.</EmptyTableRow>
-              ) : report.rows.map((row) => (
-                <TableRow key={row.employee.id}>
-                  <TableCell><Link className="font-medium hover:underline" href={`/reports/activity?responsibleId=${row.employee.id}`}>{row.employee.name}</Link><div className="text-xs text-muted-foreground">{roleLabels[row.employee.role]}</div></TableCell>
-                  <TableCell>{row.clients}</TableCell>
-                  <TableCell>{row.designers}</TableCell>
-                  <TableCell>{row.objects}</TableCell>
-                  <TableCell>{row.deals}</TableCell>
-                  <TableCell>{row.proposals}</TableCell>
-                  <TableCell>{row.proposalAmount.toLocaleString("ru-RU")} ₽</TableCell>
-                  <TableCell>{row.tasks}</TableCell>
-                  <TableCell>{row.doneTasks}</TableCell>
-                  <TableCell>{row.overdueTasks}</TableCell>
-                  <TableCell>{row.touches}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-      </TableCard>
+      <ActivityReportTable rows={report.rows} />
     </div>
   );
 }

@@ -1,17 +1,13 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { Badge } from "@/components/ui/badge";
-import { EmptyTableRow, TableCard } from "@/components/ui/data-table";
-import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { BreakdownCard } from "@/components/reports/cards";
 import { ReportFilterSelect, ReportPeriodFilter } from "@/components/reports/filters";
 import { ReportPageHeader } from "@/components/reports/layout";
 import { MetricsGrid } from "@/components/reports/metrics";
-import { dealStageLabels, dealSourceLabels, dealProbabilityLabels, dealLossReasonLabels } from "@/lib/constants";
+import { DealsReportTable } from "@/components/reports/report-tables";
+import { dealLossReasonLabels, dealStageLabels } from "@/lib/constants";
 import { dealProbabilityOptions, dealSourceOptions, dealStageOptions } from "@/modules/crm/options";
 import { getDealsReport, getReportFilterOptions, type ReportSearchParams } from "@/modules/reports/queries";
-import { formatRussianDate } from "@/utils/date";
 
 type PageProps = { searchParams: Promise<ReportSearchParams> };
 
@@ -31,15 +27,18 @@ export default async function DealsReportPage({ searchParams }: PageProps) {
       </ReportPeriodFilter>
       <MetricsGrid metrics={report.metrics} />
       <div className="grid gap-4 xl:grid-cols-2">
-        <BreakdownCard title="Сделки по стадиям" data={Object.fromEntries(Object.entries(report.byStage).map(([key, value]) => [dealStageLabels[key as keyof typeof dealStageLabels] ?? key, value]))} />
-        <BreakdownCard title="Причины проигрыша" data={Object.fromEntries(Object.entries(report.lossReasons).map(([key, value]) => [dealLossReasonLabels[key as keyof typeof dealLossReasonLabels] ?? key, value]))} />
+        <BreakdownCard
+          title="Сделки по стадиям"
+          data={report.byStage}
+          labelFor={(key) => dealStageLabels[key as keyof typeof dealStageLabels] ?? key}
+        />
+        <BreakdownCard
+          title="Причины проигрыша"
+          data={report.lossReasons}
+          labelFor={(key) => dealLossReasonLabels[key as keyof typeof dealLossReasonLabels] ?? key}
+        />
       </div>
-      <TableCard title="Сделки">
-        <TableHeader><TableRow><TableHead>Сделка</TableHead><TableHead>Стадия</TableHead><TableHead>Источник</TableHead><TableHead>Вероятность</TableHead><TableHead>Сумма</TableHead><TableHead>Ответственный</TableHead><TableHead>Следующий шаг</TableHead></TableRow></TableHeader>
-        <TableBody>
-          {report.deals.length === 0 ? <EmptyTableRow colSpan={7}>Сделки не найдены.</EmptyTableRow> : report.deals.map((deal) => <TableRow key={deal.id}><TableCell><Link href={`/deals/${deal.id}`} className="font-medium hover:underline">{deal.title}</Link><div className="text-xs text-muted-foreground">{deal.client.name} / {deal.projectObject.title}</div></TableCell><TableCell><Badge variant="outline">{dealStageLabels[deal.stage]}</Badge></TableCell><TableCell>{dealSourceLabels[deal.source]}</TableCell><TableCell>{deal.probability ? dealProbabilityLabels[deal.probability] : "Нет"}</TableCell><TableCell>{deal.potentialAmount ? `${deal.potentialAmount.toLocaleString("ru-RU")} ₽` : "Нет"}</TableCell><TableCell>{deal.responsible.name}</TableCell><TableCell>{formatRussianDate(deal.nextActionAt)}</TableCell></TableRow>)}
-        </TableBody>
-      </TableCard>
+      <DealsReportTable deals={report.deals} />
     </div>
   );
 }

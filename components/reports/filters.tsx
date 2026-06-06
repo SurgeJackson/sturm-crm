@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { FilterActions, FilterBar } from "@/components/ui/filter-bar";
 import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
 import type { ReportSearchParams } from "@/modules/reports/queries";
@@ -20,31 +20,27 @@ export function ReportPeriodFilter({
   actionPath: string;
 }) {
   return (
-    <Card>
-      <CardContent className="pt-5">
-        <form className="grid gap-3 md:[grid-template-columns:repeat(auto-fit,minmax(12rem,1fr))]">
-          <Input name="from" type="date" defaultValue={params.from ?? ""} aria-label="Дата с" />
-          <Input name="to" type="date" defaultValue={params.to ?? ""} aria-label="Дата по" />
-          <NativeSelect name="responsibleId" defaultValue={params.responsibleId ?? ""}>
-            <option value="">Все ответственные</option>
-            {users.map((user) => (
-              <option key={user.id} value={user.id}>
-                {user.name}
-              </option>
-            ))}
-          </NativeSelect>
-          {children}
-          <div className="flex flex-wrap gap-2 md:col-span-full">
-            <Button type="submit" variant="secondary">
-              Показать
-            </Button>
-            <Button asChild variant="outline">
-              <Link href={actionPath}>Сбросить</Link>
-            </Button>
-          </div>
-        </form>
-      </CardContent>
-    </Card>
+    <FilterBar>
+      <Input name="from" type="date" defaultValue={params.from ?? ""} aria-label="Дата с" />
+      <Input name="to" type="date" defaultValue={params.to ?? ""} aria-label="Дата по" />
+      <NativeSelect name="responsibleId" defaultValue={params.responsibleId ?? ""}>
+        <option value="">Все ответственные</option>
+        {users.map((user) => (
+          <option key={user.id} value={user.id}>
+            {user.name}
+          </option>
+        ))}
+      </NativeSelect>
+      {children}
+      <FilterActions>
+        <Button type="submit" variant="secondary">
+          Показать
+        </Button>
+        <Button asChild variant="outline">
+          <Link href={actionPath}>Сбросить</Link>
+        </Button>
+      </FilterActions>
+    </FilterBar>
   );
 }
 

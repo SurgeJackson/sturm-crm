@@ -25,8 +25,7 @@ export function EntityPageHeader({
   canEdit,
   archiveAction,
   canArchive,
-  actions,
-  extraActions
+  actions
 }: {
   title: ReactNode;
   badges?: ReactNode;
@@ -35,7 +34,6 @@ export function EntityPageHeader({
   archiveAction?: () => Promise<void>;
   canArchive?: boolean;
   actions?: ReactNode;
-  extraActions?: ReactNode;
 }) {
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -53,7 +51,6 @@ export function EntityPageHeader({
           </Button>
         ) : null}
         {actions}
-        {extraActions}
         {canArchive && archiveAction ? (
           <form action={archiveAction}>
             <Button type="submit" variant="destructive">

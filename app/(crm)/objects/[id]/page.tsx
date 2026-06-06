@@ -1,6 +1,4 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Plus } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
 import {
   ActionPromptCard,
@@ -13,20 +11,12 @@ import {
 } from "@/components/crm/detail-page";
 import { Detail, DetailGrid } from "@/components/crm/detail";
 import { CrmDisciplinePanel } from "@/components/crm/discipline/panel";
+import { ObjectDealsTable, ObjectParticipantsTables, ObjectProposalsTable } from "@/components/crm/related-tables";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { EmptyTableRow, TableCard } from "@/components/ui/data-table";
-import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getAuditLogs } from "@/lib/audit-log";
 import {
-  attitudeToSturmLabels,
-  changeApprovalLabels,
-  dealProbabilityLabels,
-  dealStageLabels,
-  commercialProposalStatusLabels,
-  influenceLevelLabels,
-  influenceTypeLabels,
   objectInterestCategoryLabels,
   objectStageLabels,
   objectStatusLabels,
@@ -94,6 +84,7 @@ export default async function ObjectPage({ params, searchParams }: ObjectPagePro
   ]);
   const archiveAction = archiveProjectObjectAction.bind(null, id);
   const moveDesignerStageAction = moveDesignerToFirstObjectReceivedAction.bind(null, id);
+  const archiveParticipantAction = (participantId: string) => archiveProjectObjectParticipantAction.bind(null, id, participantId);
   const purchaseInfluencers = projectObject.participants.filter((participant) => participant.participantType === "PURCHASE_INFLUENCER");
   const implementationContacts = projectObject.participants.filter((participant) => participant.participantType === "IMPLEMENTATION_CONTACT");
   const canManageParticipants = canManageObjectParticipants(user, projectObject);
@@ -198,183 +189,20 @@ export default async function ObjectPage({ params, searchParams }: ObjectPagePro
         </TabsContent>
 
         <TabsContent value="participants">
-          <div className="space-y-4">
-            <TableCard
-              title="Влияющие на закупку"
-              actions={canManageParticipants ? (
-                <Button asChild size="sm">
-                  <Link href={`/objects/${id}/participants/new?type=PURCHASE_INFLUENCER`}>
-                    <Plus className="h-4 w-4" />
-                    Добавить
-                  </Link>
-                </Button>
-              ) : null}
-            >
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>ФИО</TableHead>
-                      <TableHead>Роль</TableHead>
-                      <TableHead>Компания</TableHead>
-                      <TableHead>Уровень</TableHead>
-                      <TableHead>Тип влияния</TableHead>
-                      <TableHead>Отношение</TableHead>
-                      <TableHead>Что важно</TableHead>
-                      <TableHead>Ответственный</TableHead>
-                      <TableHead>Действия</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {purchaseInfluencers.length === 0 ? (
-                      <EmptyTableRow colSpan={9}>По объекту пока нет участников</EmptyTableRow>
-                    ) : (
-                      purchaseInfluencers.map((participant) => (
-                        <TableRow key={participant.id}>
-                          <TableCell className="font-medium">{participant.fullName}</TableCell>
-                          <TableCell>{participant.role}</TableCell>
-                          <TableCell>{participant.company || "Нет данных"}</TableCell>
-                          <TableCell>{participant.influenceLevel ? influenceLevelLabels[participant.influenceLevel] : "Нет данных"}</TableCell>
-                          <TableCell>{participant.influenceType ? influenceTypeLabels[participant.influenceType] : "Нет данных"}</TableCell>
-                          <TableCell>{participant.attitudeToSturm ? attitudeToSturmLabels[participant.attitudeToSturm] : "Нет данных"}</TableCell>
-                          <TableCell>{participant.decisionFactors || "Нет данных"}</TableCell>
-                          <TableCell>{participant.responsible?.name || "Не выбран"}</TableCell>
-                          <TableCell>
-                            <div className="flex gap-2">
-                              <Button asChild variant="outline" size="sm"><Link href={`/objects/${id}/participants/${participant.id}/edit`}>Открыть</Link></Button>
-                              {canManageParticipants ? (
-                                <form action={archiveProjectObjectParticipantAction.bind(null, id, participant.id)}>
-                                  <Button type="submit" variant="ghost" size="sm">Архив</Button>
-                                </form>
-                              ) : null}
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      ))
-                    )}
-                  </TableBody>
-            </TableCard>
-
-            <TableCard
-              title="Контактные лица реализации"
-              actions={canManageParticipants ? (
-                <Button asChild size="sm">
-                  <Link href={`/objects/${id}/participants/new?type=IMPLEMENTATION_CONTACT`}>
-                    <Plus className="h-4 w-4" />
-                    Добавить
-                  </Link>
-                </Button>
-              ) : null}
-            >
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>ФИО</TableHead>
-                      <TableHead>Роль</TableHead>
-                      <TableHead>Компания</TableHead>
-                      <TableHead>Зона</TableHead>
-                      <TableHead>Согласует</TableHead>
-                      <TableHead>Когда подключать</TableHead>
-                      <TableHead>Ответственный</TableHead>
-                      <TableHead>Действия</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {implementationContacts.length === 0 ? (
-                      <EmptyTableRow colSpan={8}>По объекту пока нет участников</EmptyTableRow>
-                    ) : (
-                      implementationContacts.map((participant) => (
-                        <TableRow key={participant.id}>
-                          <TableCell className="font-medium">{participant.fullName}</TableCell>
-                          <TableCell>{participant.role}</TableCell>
-                          <TableCell>{participant.company || "Нет данных"}</TableCell>
-                          <TableCell>{participant.responsibilityZone || "Нет данных"}</TableCell>
-                          <TableCell>{participant.canApproveChanges ? changeApprovalLabels[participant.canApproveChanges] : "Нет данных"}</TableCell>
-                          <TableCell>{participant.whenToInvolve || "Нет данных"}</TableCell>
-                          <TableCell>{participant.responsible?.name || "Не выбран"}</TableCell>
-                          <TableCell>
-                            <div className="flex gap-2">
-                              <Button asChild variant="outline" size="sm"><Link href={`/objects/${id}/participants/${participant.id}/edit`}>Открыть</Link></Button>
-                              {canManageParticipants ? (
-                                <form action={archiveProjectObjectParticipantAction.bind(null, id, participant.id)}>
-                                  <Button type="submit" variant="ghost" size="sm">Архив</Button>
-                                </form>
-                              ) : null}
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      ))
-                    )}
-                  </TableBody>
-            </TableCard>
-          </div>
+          <ObjectParticipantsTables
+            objectId={id}
+            purchaseInfluencers={purchaseInfluencers}
+            implementationContacts={implementationContacts}
+            canManageParticipants={canManageParticipants}
+            archiveParticipantAction={archiveParticipantAction}
+          />
         </TabsContent>
 
         <TabsContent value="deals">
-          <TableCard
-            title="Сделки"
-            actions={
-              <Button asChild size="sm">
-                <Link href={`/deals/new?objectId=${id}`}>Создать сделку по объекту</Link>
-              </Button>
-            }
-          >
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Сделка</TableHead>
-                    <TableHead>Стадия</TableHead>
-                    <TableHead>Сумма</TableHead>
-                    <TableHead>Вероятность</TableHead>
-                    <TableHead>Ответственный</TableHead>
-                    <TableHead>Следующее действие</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {projectObject.deals.length === 0 ? (
-                    <EmptyTableRow colSpan={6}>По объекту пока нет сделок</EmptyTableRow>
-                  ) : (
-                    projectObject.deals.map((deal) => (
-                      <TableRow key={deal.id}>
-                        <TableCell><Link className="font-medium hover:underline" href={`/deals/${deal.id}`}>{deal.title}</Link></TableCell>
-                        <TableCell><Badge variant="outline">{dealStageLabels[deal.stage]}</Badge></TableCell>
-                        <TableCell>{deal.potentialAmount ? `${deal.potentialAmount.toLocaleString("ru-RU")} ₽` : "Без суммы"}</TableCell>
-                        <TableCell>{deal.probability ? dealProbabilityLabels[deal.probability] : "Не выбрана"}</TableCell>
-                        <TableCell>{deal.responsible.name}</TableCell>
-                        <TableCell>{formatRussianDate(deal.nextActionAt)}</TableCell>
-                      </TableRow>
-                    ))
-                  )}
-                </TableBody>
-          </TableCard>
+          <ObjectDealsTable objectId={id} deals={projectObject.deals} />
         </TabsContent>
         <TabsContent value="proposals">
-          <TableCard title="КП">
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>КП</TableHead>
-                    <TableHead>Сделка</TableHead>
-                    <TableHead>Статус</TableHead>
-                    <TableHead>Сумма</TableHead>
-                    <TableHead>Версия</TableHead>
-                    <TableHead>Follow-up</TableHead>
-                    <TableHead>Ответственный</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {projectObject.proposals.length === 0 ? (
-                    <EmptyTableRow colSpan={7}>По объекту пока нет КП</EmptyTableRow>
-                  ) : (
-                    projectObject.proposals.map((proposal) => (
-                      <TableRow key={proposal.id}>
-                        <TableCell><Link className="font-medium hover:underline" href={`/proposals/${proposal.id}`}>{proposal.proposalNumber}</Link></TableCell>
-                        <TableCell><Link className="hover:underline" href={`/deals/${proposal.deal.id}`}>{proposal.deal.title}</Link></TableCell>
-                        <TableCell><Badge variant="outline">{commercialProposalStatusLabels[proposal.status]}</Badge></TableCell>
-                        <TableCell>{proposal.amount.toLocaleString("ru-RU")} ₽</TableCell>
-                        <TableCell>v{proposal.version}</TableCell>
-                        <TableCell>{formatRussianDate(proposal.nextTouchAt)}</TableCell>
-                        <TableCell>{proposal.responsible.name}</TableCell>
-                      </TableRow>
-                    ))
-                  )}
-                </TableBody>
-          </TableCard>
+          <ObjectProposalsTable proposals={projectObject.proposals} />
         </TabsContent>
         <TabsContent value="tasks">
           <EntityTasksCard

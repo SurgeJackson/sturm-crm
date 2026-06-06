@@ -1,20 +1,14 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { bonusVariant } from "@/components/crm/discipline/variants";
-import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { EmptyTableRow } from "@/components/ui/data-table";
 import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ReportPeriodFilter } from "@/components/reports/filters";
 import { ReportPageHeader } from "@/components/reports/layout";
 import { MetricsGrid } from "@/components/reports/metrics";
-import { bonusEligibilityLabels } from "@/modules/crm-discipline/service";
-import { getBonusEligibilityReport, getReportFilterOptions, type BonusEligibilityRow, type ReportSearchParams } from "@/modules/reports/queries";
-import { formatRussianDate } from "@/utils/date";
+import { BonusEligibilityRowsTable } from "@/components/reports/report-tables";
+import { getBonusEligibilityReport, getReportFilterOptions, type ReportSearchParams } from "@/modules/reports/queries";
 
 type PageProps = { searchParams: Promise<ReportSearchParams> };
 
@@ -24,39 +18,6 @@ const entityTabs = [
   { value: "CLIENT", label: "Клиенты" },
   { value: "OBJECT", label: "Объекты" }
 ] as const;
-
-function RowsTable({ rows }: { rows: BonusEligibilityRow[] }) {
-  return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Сущность</TableHead>
-          <TableHead>Название</TableHead>
-          <TableHead>Ответственный</TableHead>
-          <TableHead>Статус учета</TableHead>
-          <TableHead>Нарушения</TableHead>
-          <TableHead>Влияет на премию</TableHead>
-          <TableHead>Дата обнаружения</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {rows.length === 0 ? (
-          <EmptyTableRow colSpan={7}>Записей нет.</EmptyTableRow>
-        ) : rows.map((row) => (
-          <TableRow key={`${row.entityType}-${row.href}`}>
-            <TableCell>{row.entity}</TableCell>
-            <TableCell><Link className="font-medium hover:underline" href={row.href}>{row.title}</Link></TableCell>
-            <TableCell>{row.responsibleName}</TableCell>
-            <TableCell><Badge variant={bonusVariant(row.status)}>{bonusEligibilityLabels[row.status]}</Badge></TableCell>
-            <TableCell>{row.violations.length ? row.violations.join("; ") : "Нет активных нарушений"}</TableCell>
-            <TableCell>{row.affectsBonus ? "Да" : "Нет"}</TableCell>
-            <TableCell>{formatRussianDate(row.detectedAt)}</TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  );
-}
 
 export default async function BonusEligibilityReportPage({ searchParams }: PageProps) {
   const user = await getCurrentUser();
@@ -102,7 +63,7 @@ export default async function BonusEligibilityReportPage({ searchParams }: PageP
             </div>
             {entityTabs.map((tab) => (
               <TabsContent key={tab.value} value={tab.value} className="mt-0">
-                <RowsTable rows={report.rows.filter((row) => row.entityType === tab.value)} />
+                <BonusEligibilityRowsTable rows={report.rows.filter((row) => row.entityType === tab.value)} />
               </TabsContent>
             ))}
           </Tabs>

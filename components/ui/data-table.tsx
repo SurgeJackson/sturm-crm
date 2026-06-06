@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { Badge, type BadgeProps } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableCell, TableEmptyRow } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
@@ -53,6 +54,46 @@ export function EntityLinkCell({
 
 export function MutedCell({ children }: { children: ReactNode }) {
   return <TableCell className="text-muted-foreground">{children}</TableCell>;
+}
+
+export function TextLinkCell({
+  href,
+  children,
+  muted
+}: {
+  href: string;
+  children: ReactNode;
+  muted?: boolean;
+}) {
+  return (
+    <TableCell className={muted ? "text-muted-foreground" : undefined}>
+      <Link href={href} className="hover:underline">
+        {children}
+      </Link>
+    </TableCell>
+  );
+}
+
+export function BadgeCell({
+  children,
+  variant = "outline"
+}: {
+  children: ReactNode;
+  variant?: BadgeProps["variant"];
+}) {
+  return (
+    <TableCell>
+      <Badge variant={variant}>{children}</Badge>
+    </TableCell>
+  );
+}
+
+export function FileLinkCell({ href }: { href?: string | null }) {
+  return (
+    <TableCell>
+      {href ? <Link className="hover:underline" href={href}>Скачать</Link> : "Нет файла"}
+    </TableCell>
+  );
 }
 
 export function DateCell({

@@ -1,14 +1,11 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
 import { AuditLogCard, EntityInfoCard, EntityPageHeader, EntityTasksCard, NoticeStack, TextBlock } from "@/components/crm/detail-page";
 import { Detail, DetailGrid } from "@/components/crm/detail";
 import { CrmDisciplinePanel } from "@/components/crm/discipline/panel";
+import { DealProposalsTable } from "@/components/crm/related-tables";
 import { DealLossDialog } from "@/components/deals/deal-loss-dialog";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { EmptyTableRow, TableCard } from "@/components/ui/data-table";
-import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getAuditLogs } from "@/lib/audit-log";
 import {
@@ -16,8 +13,7 @@ import {
   dealProbabilityLabels,
   dealProbabilityPercent,
   dealSourceLabels,
-  dealStageLabels,
-  commercialProposalStatusLabels
+  dealStageLabels
 } from "@/lib/constants";
 import { archiveDealAction, closeDealAsLostAction } from "@/modules/deals/actions";
 import { getDealForUser } from "@/modules/deals/queries";
@@ -124,45 +120,7 @@ export default async function DealPage({ params, searchParams }: DealPageProps) 
         </TabsContent>
 
         <TabsContent value="proposals">
-          <TableCard
-            title="КП"
-            actions={
-              <Button asChild size="sm">
-                <Link href={`/proposals/new?dealId=${id}`}>Создать КП по сделке</Link>
-              </Button>
-            }
-          >
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Номер</TableHead>
-                    <TableHead>Версия</TableHead>
-                    <TableHead>Статус</TableHead>
-                    <TableHead>Сумма</TableHead>
-                    <TableHead>Отправлено</TableHead>
-                    <TableHead>Follow-up</TableHead>
-                    <TableHead>Файл</TableHead>
-                    <TableHead>Ответственный</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {deal.proposals.length === 0 ? (
-                    <EmptyTableRow colSpan={8}>По сделке пока нет КП</EmptyTableRow>
-                  ) : (
-                    deal.proposals.map((proposal) => (
-                      <TableRow key={proposal.id}>
-                        <TableCell><Link className="font-medium hover:underline" href={`/proposals/${proposal.id}`}>{proposal.proposalNumber}</Link></TableCell>
-                        <TableCell>v{proposal.version}</TableCell>
-                        <TableCell><Badge variant="outline">{commercialProposalStatusLabels[proposal.status]}</Badge></TableCell>
-                        <TableCell>{proposal.amount.toLocaleString("ru-RU")} ₽</TableCell>
-                        <TableCell>{formatRussianDate(proposal.sentAt)}</TableCell>
-                        <TableCell>{formatRussianDate(proposal.nextTouchAt)}</TableCell>
-                        <TableCell>{proposal.fileUrl ? <Link className="hover:underline" href={proposal.fileUrl}>Скачать</Link> : "Нет файла"}</TableCell>
-                        <TableCell>{proposal.responsible.name}</TableCell>
-                      </TableRow>
-                    ))
-                  )}
-                </TableBody>
-          </TableCard>
+          <DealProposalsTable dealId={id} proposals={deal.proposals} />
         </TabsContent>
 
         <TabsContent value="tasks">

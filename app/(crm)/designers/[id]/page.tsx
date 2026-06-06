@@ -1,13 +1,11 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
 import { AuditLogCard, EntityInfoCard, EntityPageHeader, EntityTasksCard, NoticeStack } from "@/components/crm/detail-page";
 import { Detail, DetailGrid } from "@/components/crm/detail";
 import { CrmDisciplinePanel } from "@/components/crm/discipline/panel";
+import { DesignerDealsTable, DesignerObjectsTable, DesignerProposalsTable } from "@/components/crm/related-tables";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { EmptyTableRow, TableCard } from "@/components/ui/data-table";
-import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { archiveDesignerAction } from "@/modules/designers/actions";
 import { getDesignerForUser } from "@/modules/designers/queries";
@@ -16,11 +14,7 @@ import {
   designerLoyaltyLabels,
   designerPotentialLabels,
   designerRelationshipStageLabels,
-  designerRoleLabels,
-  dealStageLabels,
-  commercialProposalStatusLabels,
-  objectStageLabels,
-  objectStatusLabels
+  designerRoleLabels
 } from "@/lib/constants";
 import { formatRussianDate } from "@/utils/date";
 import { canArchiveRecord, canCreateTask, canEditRecord } from "@/permissions";
@@ -123,90 +117,13 @@ export default async function DesignerPage({ params, searchParams }: DesignerPag
           />
         </TabsContent>
         <TabsContent value="objects">
-          <TableCard title="Переданные объекты">
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Объект</TableHead>
-                    <TableHead>Клиент</TableHead>
-                    <TableHead>Ответственный</TableHead>
-                    <TableHead>Стадия</TableHead>
-                    <TableHead>Статус</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {designer.projectObjects.length === 0 ? (
-                    <EmptyTableRow colSpan={5}>Дизайнер пока не передал объекты.</EmptyTableRow>
-                  ) : (
-                    designer.projectObjects.map((object) => (
-                      <TableRow key={object.id}>
-                        <TableCell><Link className="font-medium hover:underline" href={`/objects/${object.id}`}>{object.title}</Link></TableCell>
-                        <TableCell><Link className="hover:underline" href={`/clients/${object.client.id}`}>{object.client.name}</Link></TableCell>
-                        <TableCell>{object.responsible.name}</TableCell>
-                        <TableCell><Badge variant="outline">{objectStageLabels[object.stage]}</Badge></TableCell>
-                        <TableCell><Badge variant="secondary">{objectStatusLabels[object.status]}</Badge></TableCell>
-                      </TableRow>
-                    ))
-                  )}
-                </TableBody>
-          </TableCard>
+          <DesignerObjectsTable objects={designer.projectObjects} />
         </TabsContent>
         <TabsContent value="deals">
-          <TableCard title="Связанные сделки">
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Сделка</TableHead>
-                    <TableHead>Объект</TableHead>
-                    <TableHead>Стадия</TableHead>
-                    <TableHead>Сумма</TableHead>
-                    <TableHead>Ответственный</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {designer.deals.length === 0 ? (
-                    <EmptyTableRow colSpan={5}>У дизайнера пока нет связанных сделок.</EmptyTableRow>
-                  ) : (
-                    designer.deals.map((deal) => (
-                      <TableRow key={deal.id}>
-                        <TableCell><Link className="font-medium hover:underline" href={`/deals/${deal.id}`}>{deal.title}</Link></TableCell>
-                        <TableCell><Link className="hover:underline" href={`/objects/${deal.projectObject.id}`}>{deal.projectObject.title}</Link></TableCell>
-                        <TableCell><Badge variant="outline">{dealStageLabels[deal.stage]}</Badge></TableCell>
-                        <TableCell>{deal.potentialAmount ? `${deal.potentialAmount.toLocaleString("ru-RU")} ₽` : "Без суммы"}</TableCell>
-                        <TableCell>{deal.responsible.name}</TableCell>
-                      </TableRow>
-                    ))
-                  )}
-                </TableBody>
-          </TableCard>
+          <DesignerDealsTable deals={designer.deals} />
         </TabsContent>
         <TabsContent value="proposals">
-          <TableCard title="КП по объектам дизайнера">
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>КП</TableHead>
-                    <TableHead>Сделка</TableHead>
-                    <TableHead>Объект</TableHead>
-                    <TableHead>Статус</TableHead>
-                    <TableHead>Сумма</TableHead>
-                    <TableHead>Ответственный</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {designer.proposals.length === 0 ? (
-                    <EmptyTableRow colSpan={6}>По дизайнеру пока нет КП</EmptyTableRow>
-                  ) : (
-                    designer.proposals.map((proposal) => (
-                      <TableRow key={proposal.id}>
-                        <TableCell><Link className="font-medium hover:underline" href={`/proposals/${proposal.id}`}>{proposal.proposalNumber}</Link></TableCell>
-                        <TableCell><Link className="hover:underline" href={`/deals/${proposal.deal.id}`}>{proposal.deal.title}</Link></TableCell>
-                        <TableCell><Link className="hover:underline" href={`/objects/${proposal.projectObject.id}`}>{proposal.projectObject.title}</Link></TableCell>
-                        <TableCell><Badge variant="outline">{commercialProposalStatusLabels[proposal.status]}</Badge></TableCell>
-                        <TableCell>{proposal.amount.toLocaleString("ru-RU")} ₽</TableCell>
-                        <TableCell>{proposal.responsible.name}</TableCell>
-                      </TableRow>
-                    ))
-                  )}
-                </TableBody>
-          </TableCard>
+          <DesignerProposalsTable proposals={designer.proposals} />
         </TabsContent>
         <TabsContent value="analytics">
           <div className="grid gap-4 md:grid-cols-4">

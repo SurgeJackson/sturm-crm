@@ -5,36 +5,14 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { EmptyTableRow, TableCard } from "@/components/ui/data-table";
 import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import type { getCrmDisciplineReport } from "@/modules/reports/queries";
 
-type CrmScore = {
-  name: string;
-  score: number;
-  total: number;
-  critical: number;
-  medium: number;
-  light: number;
-};
-
-type CrmSummaryRow = {
-  name?: string;
-  total?: number;
-  critical?: number;
-  bonus?: number;
-  count?: number;
-  code?: string;
-};
-
-type CrmProblem = {
-  area: string;
-  issue: string;
-  severity: Parameters<typeof crmSeverityVariant>[0];
-  responsibleName: string;
-  violationCode?: string;
-  canAffectBonus?: boolean;
-  href: string;
-  entity: string;
-  title: string;
-};
+type CrmDisciplineReport = Awaited<ReturnType<typeof getCrmDisciplineReport>>;
+type CrmScore = CrmDisciplineReport["scores"][number];
+type CrmEmployeeSummaryRow = CrmDisciplineReport["byEmployee"][number];
+type CrmEntitySummaryRow = CrmDisciplineReport["byEntity"][number];
+type CrmFrequentSummaryRow = CrmDisciplineReport["frequent"][number];
+type CrmProblem = CrmDisciplineReport["problems"][number];
 
 const severityLabels: Record<string, string> = {
   critical: "Критично",
@@ -71,9 +49,9 @@ export function CrmDisciplineBreakdowns({
   byEntity,
   frequent
 }: {
-  byEmployee: CrmSummaryRow[];
-  byEntity: CrmSummaryRow[];
-  frequent: CrmSummaryRow[];
+  byEmployee: CrmEmployeeSummaryRow[];
+  byEntity: CrmEntitySummaryRow[];
+  frequent: CrmFrequentSummaryRow[];
 }) {
   return (
     <div className="grid gap-4 lg:grid-cols-3">
@@ -98,8 +76,8 @@ export function CrmDisciplineBreakdowns({
         title="Самые частые нарушения"
         items={frequent}
         emptyText="Нет данных."
-        getKey={(row) => row.code ?? row.name ?? "unknown"}
-        renderLabel={(row) => row.code ?? row.name ?? "Нет кода"}
+        getKey={(row) => row.code}
+        renderLabel={(row) => row.code}
         renderValue={(row) => row.count ?? 0}
       />
     </div>
