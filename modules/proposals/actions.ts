@@ -4,13 +4,6 @@ import { mkdir, writeFile } from "fs/promises";
 import path from "path";
 import { randomUUID } from "crypto";
 import { redirect } from "next/navigation";
-import { z } from "zod";
-import type {
-  CommercialProposal,
-  CommercialProposalStatus,
-  ProposalDeclineReason,
-  RecipientType
-} from "@/generated/prisma/client";
 import { getCurrentUser } from "@/auth/get-current-user";
 import { writeAuditLog } from "@/lib/audit-log";
 import { prisma } from "@/lib/prisma";
@@ -23,109 +16,28 @@ import {
   canEditRecord
 } from "@/permissions";
 import { writeTrackedFieldAuditLogs } from "@/modules/crm/audit-helpers";
-import { compactString, optionalDate, toAuditValue } from "@/modules/crm/form-utils";
-import { expireViolationsForEntity, syncDealDiscipline, syncProposalDiscipline, syncTaskDiscipline } from "@/modules/crm-discipline/service";
+import { toAuditValue } from "@/modules/crm/form-utils";
+import { expireViolationsForEntity, syncDealDiscipline, syncProposalDiscipline } from "@/modules/crm-discipline/service";
+import {
+  ensureSentRequirements,
+  parseProposalForm,
+  toProposalDocument,
+  type ProposalFileData
+} from "@/modules/proposals/form";
+import {
+  createProposalFollowUpTask,
+  generateProposalNumber,
+  getDealForProposal
+} from "@/modules/proposals/service";
 
 export type ProposalActionState = {
   errors?: Record<string, string[]>;
   message?: string;
 };
 
-const proposalStatuses = [
-  "DRAFT",
-  "INTERNAL_REVIEW",
-  "SENT",
-  "CLIENT_THINKING",
-  "NEEDS_RECALCULATION",
-  "NEW_VERSION_CREATED",
-  "ACCEPTED",
-  "DECLINED",
-  "ARCHIVED"
-] as const;
-
-const recipientTypes = ["CLIENT", "DESIGNER", "PURCHASE_INFLUENCER", "IMPLEMENTATION_CONTACT", "OTHER"] as const;
-const declineReasons = [
-  "PRICE",
-  "DEADLINES",
-  "ASSORTMENT",
-  "COMPETITOR",
-  "CHINA",
-  "SELF_PURCHASE",
-  "PROJECT_FROZEN",
-  "CLIENT_DISAPPEARED",
-  "DESIGNER_NOT_SUPPORT",
-  "PROCUREMENT_CHOSE_OTHER",
-  "OTHER"
-] as const;
-
 const MAX_FILE_SIZE = 20 * 1024 * 1024;
 const ALLOWED_EXTENSIONS = new Set([".pdf", ".xls", ".xlsx", ".doc", ".docx"]);
 const UPLOAD_DIR = path.join(process.cwd(), "public", "uploads", "proposals");
-
-const proposalSchema = z
-  .object({
-    dealId: z.string().trim().min(1, "Укажите сделку КП"),
-    responsibleId: z.string().trim().min(1, "Укажите ответственного по КП"),
-    amount: z.string().trim().min(1, "Укажите сумму КП"),
-    discountPercent: z.string().trim().optional(),
-    discountAmount: z.string().trim().optional(),
-    status: z.enum(proposalStatuses),
-    recipientType: z.union([z.literal(""), z.enum(recipientTypes)]).optional(),
-    recipientName: z.string().trim().optional(),
-    recipientContact: z.string().trim().optional(),
-    approvalRequiredFrom: z.string().trim().optional(),
-    sentAt: z.string().trim().optional(),
-    nextTouchAt: z.string().trim().optional(),
-    declineReason: z.union([z.literal(""), z.enum(declineReasons)]).optional(),
-    declineComment: z.string().trim().optional(),
-    comment: z.string().trim().optional()
-  })
-  .superRefine((value, ctx) => {
-    if (value.status === "SENT") {
-      if (!value.recipientType) {
-        ctx.addIssue({ code: "custom", message: "Укажите тип получателя КП", path: ["recipientType"] });
-      }
-      if (!value.recipientName) {
-        ctx.addIssue({ code: "custom", message: "Укажите получателя КП", path: ["recipientName"] });
-      }
-      if (!value.sentAt) {
-        ctx.addIssue({ code: "custom", message: "Укажите дату отправки КП", path: ["sentAt"] });
-      }
-      if (!value.nextTouchAt) {
-        ctx.addIssue({ code: "custom", message: "Укажите дату следующего касания по КП", path: ["nextTouchAt"] });
-      }
-    }
-
-    if (value.status === "DECLINED" && !value.declineReason) {
-      ctx.addIssue({ code: "custom", message: "Укажите причину отклонения КП", path: ["declineReason"] });
-    }
-  });
-
-function parseProposalForm(formData: FormData) {
-  return proposalSchema.safeParse({
-    dealId: formData.get("dealId"),
-    responsibleId: formData.get("responsibleId"),
-    amount: formData.get("amount"),
-    discountPercent: compactString(formData.get("discountPercent")),
-    discountAmount: compactString(formData.get("discountAmount")),
-    status: formData.get("status"),
-    recipientType: formData.get("recipientType") ?? "",
-    recipientName: compactString(formData.get("recipientName")),
-    recipientContact: compactString(formData.get("recipientContact")),
-    approvalRequiredFrom: compactString(formData.get("approvalRequiredFrom")),
-    sentAt: compactString(formData.get("sentAt")),
-    nextTouchAt: compactString(formData.get("nextTouchAt")),
-    declineReason: formData.get("declineReason") ?? "",
-    declineComment: compactString(formData.get("declineComment")),
-    comment: compactString(formData.get("comment"))
-  });
-}
-
-function parseMoney(value?: string) {
-  if (!value) return null;
-  const parsed = Number(value.replace(",", "."));
-  return Number.isFinite(parsed) ? parsed : null;
-}
 
 function safeFileName(name: string) {
   const ext = path.extname(name).toLowerCase();
@@ -139,7 +51,7 @@ function getFile(formData: FormData) {
   return value;
 }
 
-async function saveProposalFile(file: File, userId: string) {
+async function saveProposalFile(file: File, userId: string): Promise<ProposalFileData> {
   const extension = path.extname(file.name).toLowerCase();
   if (!ALLOWED_EXTENSIONS.has(extension)) {
     throw new Error("Поддерживаются только PDF, XLS, XLSX, DOC и DOCX");
@@ -163,123 +75,6 @@ async function saveProposalFile(file: File, userId: string) {
     uploadedById: userId,
     uploadedAt: new Date()
   };
-}
-
-async function generateProposalNumber() {
-  const year = new Date().getFullYear();
-  const prefix = `КП-${year}-`;
-  const latest = await prisma.commercialProposal.findFirst({
-    where: { proposalNumber: { startsWith: prefix } },
-    orderBy: { proposalNumber: "desc" },
-    select: { proposalNumber: true }
-  });
-  const nextNumber = latest ? Number(latest.proposalNumber.replace(prefix, "")) + 1 : 1;
-  return `${prefix}${String(nextNumber).padStart(4, "0")}`;
-}
-
-async function getDealForProposal(dealId: string) {
-  return prisma.deal.findUnique({
-    where: { id: dealId },
-    select: {
-      id: true,
-      clientId: true,
-      objectId: true,
-      designerId: true,
-      responsibleId: true
-    }
-  });
-}
-
-function toProposalDocument(
-  data: z.infer<typeof proposalSchema>,
-  deal: { clientId: string; objectId: string; designerId: string | null; responsibleId: string },
-  responsibleId: string,
-  existing?: Pick<
-    CommercialProposal,
-    "amount" | "discountPercent" | "discountAmount" | "fileUrl" | "fileName" | "fileSize" | "fileMimeType" | "uploadedById" | "uploadedAt"
-  > | null,
-  fileData?: Awaited<ReturnType<typeof saveProposalFile>>,
-  lockFinancial = false
-) {
-  const status = data.status as CommercialProposalStatus;
-
-  return {
-    dealId: data.dealId,
-    clientId: deal.clientId,
-    objectId: deal.objectId,
-    designerId: deal.designerId,
-    responsibleId,
-    amount: lockFinancial ? existing?.amount ?? 0 : parseMoney(data.amount) ?? 0,
-    discountPercent: lockFinancial ? existing?.discountPercent ?? null : parseMoney(data.discountPercent),
-    discountAmount: lockFinancial ? existing?.discountAmount ?? null : parseMoney(data.discountAmount),
-    status,
-    recipientType: data.recipientType ? (data.recipientType as RecipientType) : null,
-    recipientName: data.recipientName || null,
-    recipientContact: data.recipientContact || null,
-    approvalRequiredFrom: data.approvalRequiredFrom || null,
-    sentAt: optionalDate(data.sentAt),
-    nextTouchAt: optionalDate(data.nextTouchAt),
-    fileUrl: fileData?.fileUrl ?? existing?.fileUrl ?? null,
-    fileName: fileData?.fileName ?? existing?.fileName ?? null,
-    fileSize: fileData?.fileSize ?? existing?.fileSize ?? null,
-    fileMimeType: fileData?.fileMimeType ?? existing?.fileMimeType ?? null,
-    uploadedById: fileData?.uploadedById ?? existing?.uploadedById ?? null,
-    uploadedAt: fileData?.uploadedAt ?? existing?.uploadedAt ?? null,
-    declineReason: status === "DECLINED" && data.declineReason ? (data.declineReason as ProposalDeclineReason) : null,
-    declineComment: status === "DECLINED" ? data.declineComment || null : null,
-    comment: data.comment || null,
-    notes: data.comment || null,
-    archivedAt: status === "ARCHIVED" ? new Date() : null
-  };
-}
-
-async function ensureSentRequirements(
-  status: CommercialProposalStatus,
-  fileUrl?: string | null,
-  parsed?: z.infer<typeof proposalSchema>
-) {
-  if (status !== "SENT") return null;
-  if (!fileUrl) return "Прикрепите файл КП перед отправкой";
-  if (!parsed?.nextTouchAt) return "Укажите дату следующего касания по КП";
-  return null;
-}
-
-async function createFollowUpTask(proposal: CommercialProposal) {
-  if (proposal.status !== "SENT" || !proposal.nextTouchAt) return;
-
-  const existing = await prisma.taskActivity.findFirst({
-    where: {
-      proposalId: proposal.id,
-      title: { contains: proposal.proposalNumber }
-    },
-    select: { id: true }
-  });
-
-  if (existing) return;
-
-  const task = await prisma.taskActivity.create({
-    data: {
-      recordType: "TASK",
-      actionType: "FOLLOW_UP",
-      title: `Связаться по КП ${proposal.proposalNumber}`,
-      status: "NEW",
-      priority: "HIGH",
-      objectId: proposal.objectId,
-      dealId: proposal.dealId,
-      proposalId: proposal.id,
-      clientId: proposal.clientId,
-      designerId: proposal.designerId,
-      dueAt: proposal.nextTouchAt,
-      responsibleId: proposal.responsibleId,
-      createdById: proposal.createdById,
-      isAutoCreated: true,
-      autoRule: "PROPOSAL_FOLLOW_UP",
-      description: `Follow-up по КП ${proposal.proposalNumber}`,
-      notes: `Follow-up по КП ${proposal.proposalNumber}`
-    }
-  });
-
-  await syncTaskDiscipline(task.id, proposal.createdById);
 }
 
 export async function createProposalAction(_prevState: ProposalActionState, formData: FormData) {
@@ -316,7 +111,7 @@ export async function createProposalAction(_prevState: ProposalActionState, form
     }
   });
 
-  if (proposal.status === "SENT") await createFollowUpTask(proposal);
+  if (proposal.status === "SENT") await createProposalFollowUpTask(proposal);
 
   await writeAuditLog({
     entityType: "PROPOSAL",
@@ -384,7 +179,7 @@ export async function updateProposalAction(id: string, _prevState: ProposalActio
     data: document
   });
 
-  if (before.status !== "SENT" && after.status === "SENT") await createFollowUpTask(after);
+  if (before.status !== "SENT" && after.status === "SENT") await createProposalFollowUpTask(after);
 
   await writeAuditLog({
     entityType: "PROPOSAL",

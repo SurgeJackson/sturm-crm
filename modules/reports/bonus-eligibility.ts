@@ -1,8 +1,8 @@
 import type { CrmViolation } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { computeBonusEligibilityStatus, crmEntityHref, getActiveViolationsMap, type BonusEligibilityStatus } from "@/modules/crm-discipline/service";
-import { canViewAllData, type PermissionUser } from "@/permissions";
-import { groupBy, ownerWhere, periodWhere, reportPeriod, type Metric, type ReportSearchParams } from "./common";
+import type { PermissionUser } from "@/permissions";
+import { groupBy, periodWhere, reportOwnerWhere, reportPeriod, type Metric, type ReportSearchParams } from "./common";
 
 export type BonusEligibilityRow = {
   entityType: "CLIENT" | "OBJECT" | "DEAL" | "PROPOSAL";
@@ -53,8 +53,7 @@ function bonusRow(
 
 export async function getBonusEligibilityReport(params: ReportSearchParams, user: PermissionUser) {
   const { from, to } = reportPeriod(params);
-  const responsibleId = canViewAllData(user) ? params.responsibleId : undefined;
-  const owner = ownerWhere(user, responsibleId);
+  const owner = reportOwnerWhere(user, params);
   const entityTypes = (params.entity ? [params.entity] : ["DEAL", "PROPOSAL", "CLIENT", "OBJECT"]) as Array<BonusEligibilityRow["entityType"]>;
   const rows: InternalBonusEligibilityRow[] = [];
 

@@ -58,6 +58,18 @@ export function taskOwnerWhere(user: PermissionUser, responsibleId?: string) {
   return ownerRecordWhere<Prisma.TaskActivityWhereInput>(user, responsibleId);
 }
 
+export function reportResponsibleId(params: ReportSearchParams, user: PermissionUser) {
+  return canViewAllData(user) ? params.responsibleId : undefined;
+}
+
+export function reportOwnerWhere(user: PermissionUser, params: ReportSearchParams) {
+  return ownerWhere(user, reportResponsibleId(params, user));
+}
+
+export function reportTaskOwnerWhere(user: PermissionUser, params: ReportSearchParams) {
+  return taskOwnerWhere(user, reportResponsibleId(params, user));
+}
+
 export function periodWhere(from: Date, to: Date): Prisma.DateTimeFilter {
   return { gte: from, lte: to };
 }

@@ -15,6 +15,22 @@ export function optionalDateTime(value?: string) {
   return Number.isNaN(date.getTime()) ? null : date;
 }
 
+export function optionalNumber(value?: string) {
+  if (!value) return null;
+  const parsed = Number(value.replace(",", "."));
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
+export function optionalInteger(value?: string) {
+  if (!value) return null;
+  const parsed = Number.parseInt(value, 10);
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
+export function splitTextareaLines(value?: string) {
+  return value ? value.split(/\r?\n/).map((item) => item.trim()).filter(Boolean) : [];
+}
+
 export function toAuditValue(value: unknown) {
   return JSON.parse(
     JSON.stringify(value, (_key, currentValue) => {

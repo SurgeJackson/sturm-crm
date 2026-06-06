@@ -1,14 +1,13 @@
 import type { Prisma } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { daysAgo, dayRange } from "@/modules/crm/date-ranges";
-import { canViewAllData, type PermissionUser } from "@/permissions";
-import { ownerWhere, periodWhere, reportPeriod, taskOwnerWhere, type Metric, type ReportSearchParams } from "./common";
+import type { PermissionUser } from "@/permissions";
+import { periodWhere, reportOwnerWhere, reportPeriod, reportTaskOwnerWhere, type Metric, type ReportSearchParams } from "./common";
 
 export async function getManagerDashboardReport(params: ReportSearchParams, user: PermissionUser) {
   const { from, to } = reportPeriod(params);
-  const responsibleId = canViewAllData(user) ? params.responsibleId : undefined;
-  const owner = ownerWhere(user, responsibleId);
-  const taskOwner = taskOwnerWhere(user, responsibleId);
+  const owner = reportOwnerWhere(user, params);
+  const taskOwner = reportTaskOwnerWhere(user, params);
   const now = new Date();
   const today = dayRange(now);
   const sixtyDaysAgo = daysAgo(60, now);

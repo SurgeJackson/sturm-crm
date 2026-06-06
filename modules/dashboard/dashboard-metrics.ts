@@ -2,8 +2,19 @@ import type { Prisma } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { accessWhereBundle, ownerRecordWhere } from "@/modules/crm/access-where";
 import { daysAgo, daysFromNow, dayRange } from "@/modules/crm/date-ranges";
-import { countBy } from "@/modules/reports/common";
 import type { PermissionUser } from "@/permissions";
+
+function groupRowsToCountMap<T extends Record<string, unknown>>(
+  rows: Array<T & { _count: { _all: number } }>,
+  key: keyof T
+) {
+  return rows.reduce<Record<string, number>>((acc, row) => {
+    const value = row[key];
+    if (value == null) return acc;
+    acc[String(value)] = row._count._all;
+    return acc;
+  }, {});
+}
 
 export async function getDashboardMetrics(user: PermissionUser) {
   const now = new Date();
@@ -209,13 +220,15 @@ export async function getDashboardMetrics(user: PermissionUser) {
         AND: [myAccess, { nextContactAt: null }]
       }
     }),
-    prisma.designer.findMany({
+    prisma.designer.groupBy({
+      by: ["relationshipStage"],
       where: access.designer,
-      select: { relationshipStage: true }
+      _count: { _all: true }
     }),
-    prisma.projectObject.findMany({
+    prisma.projectObject.groupBy({
+      by: ["stage"],
       where: access.object,
-      select: { stage: true }
+      _count: { _all: true }
     }),
     prisma.designer.findMany({
       where: access.designer,
@@ -223,13 +236,15 @@ export async function getDashboardMetrics(user: PermissionUser) {
       take: 5,
       select: { id: true, name: true, studio: true, transferredObjectsCount: true }
     }),
-    prisma.deal.findMany({
+    prisma.deal.groupBy({
+      by: ["stage"],
       where: access.deal,
-      select: { stage: true }
+      _count: { _all: true }
     }),
-    prisma.deal.findMany({
+    prisma.deal.groupBy({
+      by: ["lossReason"],
       where: { AND: [access.deal, { stage: "LOST", lossReason: { not: null } }] },
-      select: { lossReason: true }
+      _count: { _all: true }
     }),
     prisma.deal.findMany({
       where: access.deal,
@@ -237,13 +252,15 @@ export async function getDashboardMetrics(user: PermissionUser) {
         responsible: { select: { id: true, name: true } }
       }
     }),
-    prisma.commercialProposal.findMany({
+    prisma.commercialProposal.groupBy({
+      by: ["status"],
       where: access.proposal,
-      select: { status: true }
+      _count: { _all: true }
     }),
-    prisma.commercialProposal.findMany({
+    prisma.commercialProposal.groupBy({
+      by: ["declineReason"],
       where: { AND: [access.proposal, { status: "DECLINED", declineReason: { not: null } }] },
-      select: { declineReason: true }
+      _count: { _all: true }
     }),
     prisma.commercialProposal.findMany({
       where: access.proposal,
@@ -254,10 +271,10 @@ export async function getDashboardMetrics(user: PermissionUser) {
     })
   ]);
 
-  const activeDesignersByStage = countBy(activeDesigners, (designer) => designer.relationshipStage);
-  const objectsByStage = countBy(activeObjectsByStage, (object) => object.stage);
-  const dealsByStage = countBy(activeDealsByStage, (deal) => deal.stage);
-  const dealLossReasons = countBy(lostDealReasons, (deal) => deal.lossReason);
+  const activeDesignersByStage = groupRowsToCountMap(activeDesigners, "relationshipStage");
+  const objectsByStage = groupRowsToCountMap(activeObjectsByStage, "stage");
+  const dealsByStage = groupRowsToCountMap(activeDealsByStage, "stage");
+  const dealLossReasons = groupRowsToCountMap(lostDealReasons, "lossReason");
 
   const dealResponsibleCounts = dealsByResponsible.reduce<Record<string, { name: string; count: number }>>((acc, deal) => {
     acc[deal.responsible.id] = {
@@ -267,8 +284,8 @@ export async function getDashboardMetrics(user: PermissionUser) {
     return acc;
   }, {});
 
-  const proposalStatusCounts = countBy(proposalsByStatus, (proposal) => proposal.status);
-  const proposalDeclineReasonCounts = countBy(proposalDeclineReasons, (proposal) => proposal.declineReason);
+  const proposalStatusCounts = groupRowsToCountMap(proposalsByStatus, "status");
+  const proposalDeclineReasonCounts = groupRowsToCountMap(proposalDeclineReasons, "declineReason");
 
   const proposalResponsibleAmounts = proposalsByResponsible.reduce<Record<string, { name: string; amount: number }>>((acc, proposal) => {
     acc[proposal.responsible.id] = {

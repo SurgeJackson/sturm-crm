@@ -1,13 +1,13 @@
 import type { Prisma } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { daysAgo } from "@/modules/crm/date-ranges";
-import { canViewAllData, type PermissionUser } from "@/permissions";
-import { groupBy, ownerWhere, periodWhere, reportPeriod, sum, type Metric, type ReportSearchParams } from "./common";
+import type { PermissionUser } from "@/permissions";
+import { groupBy, periodWhere, reportOwnerWhere, reportPeriod, sum, type Metric, type ReportSearchParams } from "./common";
 
 export async function getDealsReport(params: ReportSearchParams, user: PermissionUser) {
   const { from, to } = reportPeriod(params);
   const now = new Date();
-  const filters: Prisma.DealWhereInput[] = [ownerWhere(user, canViewAllData(user) ? params.responsibleId : undefined)];
+  const filters: Prisma.DealWhereInput[] = [reportOwnerWhere(user, params)];
   if (params.stage) filters.push({ stage: params.stage as never });
   if (params.source) filters.push({ source: params.source as never });
   if (params.probability) filters.push({ probability: params.probability as never });
@@ -40,7 +40,7 @@ export async function getDealsReport(params: ReportSearchParams, user: Permissio
 export async function getProposalsReport(params: ReportSearchParams, user: PermissionUser) {
   const { from, to } = reportPeriod(params);
   const now = new Date();
-  const filters: Prisma.CommercialProposalWhereInput[] = [ownerWhere(user, canViewAllData(user) ? params.responsibleId : undefined), { createdAt: periodWhere(from, to) }];
+  const filters: Prisma.CommercialProposalWhereInput[] = [reportOwnerWhere(user, params), { createdAt: periodWhere(from, to) }];
   if (params.status) filters.push({ status: params.status as never });
   if (params.designerId) filters.push({ designerId: params.designerId });
   if (params.objectId) filters.push({ objectId: params.objectId });
@@ -79,7 +79,7 @@ export async function getProposalsReport(params: ReportSearchParams, user: Permi
 
 export async function getLossReasonsReport(params: ReportSearchParams, user: PermissionUser) {
   const { from, to } = reportPeriod(params);
-  const owner = ownerWhere(user, canViewAllData(user) ? params.responsibleId : undefined);
+  const owner = reportOwnerWhere(user, params);
   const [lostDeals, declinedProposals, lostObjects] = await Promise.all([
     prisma.deal.findMany({ where: { AND: [owner, { stage: "LOST", updatedAt: periodWhere(from, to) }] }, include: { responsible: { select: { name: true } }, designer: { select: { name: true } }, projectObject: { select: { objectType: true } } } }),
     prisma.commercialProposal.findMany({ where: { AND: [owner, { status: "DECLINED", updatedAt: periodWhere(from, to) }] }, include: { responsible: { select: { name: true } }, designer: { select: { name: true } }, projectObject: { select: { objectType: true } } } }),

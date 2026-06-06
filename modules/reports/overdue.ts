@@ -1,12 +1,11 @@
 import { prisma } from "@/lib/prisma";
 import { daysAgo } from "@/modules/crm/date-ranges";
-import { canViewAllData, type PermissionUser } from "@/permissions";
-import { ownerWhere, taskOwnerWhere, type Metric, type ReportSearchParams } from "./common";
+import type { PermissionUser } from "@/permissions";
+import { reportOwnerWhere, reportTaskOwnerWhere, type Metric, type ReportSearchParams } from "./common";
 
 export async function getOverdueReport(params: ReportSearchParams, user: PermissionUser) {
-  const responsibleId = canViewAllData(user) ? params.responsibleId : undefined;
-  const owner = ownerWhere(user, responsibleId);
-  const taskOwner = taskOwnerWhere(user, responsibleId);
+  const owner = reportOwnerWhere(user, params);
+  const taskOwner = reportTaskOwnerWhere(user, params);
   const now = new Date();
   const sixtyDaysAgo = daysAgo(60, now);
   const [tasks, proposalFollowUps, deals, designers, objects, clients] = await Promise.all([

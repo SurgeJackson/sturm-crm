@@ -1,12 +1,12 @@
 import type { Prisma } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { daysAgo } from "@/modules/crm/date-ranges";
-import { canViewAllData, type PermissionUser } from "@/permissions";
-import { groupBy, ownerWhere, periodWhere, reportPeriod, sum, type Metric, type ReportSearchParams } from "./common";
+import type { PermissionUser } from "@/permissions";
+import { groupBy, periodWhere, reportOwnerWhere, reportPeriod, sum, type Metric, type ReportSearchParams } from "./common";
 
 export async function getDesignersReport(params: ReportSearchParams, user: PermissionUser) {
   const { from, to } = reportPeriod(params);
-  const filters: Prisma.DesignerWhereInput[] = [ownerWhere(user, canViewAllData(user) ? params.responsibleId : undefined)];
+  const filters: Prisma.DesignerWhereInput[] = [reportOwnerWhere(user, params)];
   if (params.stage) filters.push({ relationshipStage: params.stage as never });
   if (params.probability) filters.push({ potential: params.probability as never });
   if (params.status) filters.push({ loyalty: params.status as never });
@@ -39,7 +39,7 @@ export async function getDesignersReport(params: ReportSearchParams, user: Permi
 
 export async function getObjectsReport(params: ReportSearchParams, user: PermissionUser) {
   const { from, to } = reportPeriod(params);
-  const filters: Prisma.ProjectObjectWhereInput[] = [ownerWhere(user, canViewAllData(user) ? params.responsibleId : undefined), { createdAt: periodWhere(from, to) }];
+  const filters: Prisma.ProjectObjectWhereInput[] = [reportOwnerWhere(user, params), { createdAt: periodWhere(from, to) }];
   if (params.designerId) filters.push({ designerId: params.designerId });
   if (params.clientId) filters.push({ clientId: params.clientId });
   if (params.stage) filters.push({ stage: params.stage as never });

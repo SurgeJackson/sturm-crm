@@ -2,10 +2,9 @@ import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../generated/prisma/client";
 import bcrypt from "bcryptjs";
-import { mkdir, writeFile } from "fs/promises";
-import path from "path";
 import { runCrmDisciplineCheck } from "../modules/crm-discipline/service";
-import { DEMO_PASSWORD, seedUsers } from "./seed-fixtures";
+import { DEMO_PASSWORD } from "./seed-fixtures";
+import { offsetDate, prepareSeedProposalFile, seedUserAccounts } from "./seed-support";
 
 const adapter = new PrismaPg({
   connectionString: process.env.DATABASE_URL
@@ -16,26 +15,8 @@ async function main() {
   const now = new Date();
   const passwordHash = await bcrypt.hash(DEMO_PASSWORD, 12);
   const year = now.getFullYear();
-  const uploadsDir = path.join(process.cwd(), "public", "uploads", "proposals");
-  await mkdir(uploadsDir, { recursive: true });
-  await writeFile(path.join(uploadsDir, "seed-kp.pdf"), Buffer.from("Seed commercial proposal file"));
-
-  for (const user of seedUsers) {
-    await prisma.user.upsert({
-      where: { email: user.email },
-      update: {
-        name: user.name,
-        role: user.role,
-        isActive: true,
-        passwordHash
-      },
-      create: {
-        ...user,
-        passwordHash,
-        isActive: true
-      }
-    });
-  }
+  await prepareSeedProposalFile();
+  await seedUserAccounts(prisma, passwordHash);
 
   await prisma.client.upsert({
     where: { id: "seed_client_showroom" },
@@ -99,7 +80,7 @@ async function main() {
       cooperationTerms: null,
       firstContactAt: now,
       lastTouchAt: now,
-      nextStepAt: new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000),
+      nextStepAt: offsetDate(now, 7),
       nextStepText: "Позвонить и договориться о встрече",
       transferredObjectsCount: 1,
       activeObjectsCount: 1,
@@ -130,7 +111,7 @@ async function main() {
       cooperationTerms: null,
       firstContactAt: now,
       lastTouchAt: now,
-      nextStepAt: new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000),
+      nextStepAt: offsetDate(now, 7),
       nextStepText: "Позвонить и договориться о встрече",
       transferredObjectsCount: 1,
       activeObjectsCount: 1,
@@ -161,7 +142,7 @@ async function main() {
       status: "ACTIVE",
       stage: "CALCULATION",
       implementationStartAt: now,
-      implementationEndAt: new Date(now.getTime() + 45 * 24 * 60 * 60 * 1000),
+      implementationEndAt: offsetDate(now, 45),
       budget: 2800000,
       bathroomsCount: 8,
       interestCategories: ["SANITARY_WARE", "MIXERS", "SHOWER_SYSTEMS", "BATHROOM_FURNITURE"],
@@ -183,7 +164,7 @@ async function main() {
       status: "ACTIVE",
       stage: "CALCULATION",
       implementationStartAt: now,
-      implementationEndAt: new Date(now.getTime() + 45 * 24 * 60 * 60 * 1000),
+      implementationEndAt: offsetDate(now, 45),
       budget: 2800000,
       bathroomsCount: 8,
       interestCategories: ["SANITARY_WARE", "MIXERS", "SHOWER_SYSTEMS", "BATHROOM_FURNITURE"],
@@ -297,7 +278,7 @@ async function main() {
       stage: "PROPOSAL_IN_PROGRESS",
       potentialAmount: 1850000,
       probability: "HIGH",
-      nextActionAt: new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000),
+      nextActionAt: offsetDate(now, 3),
       nextActionText: "Подготовить КП по сантехнике",
       source: "DESIGNER",
       lossReason: null,
@@ -317,7 +298,7 @@ async function main() {
       stage: "PROPOSAL_IN_PROGRESS",
       potentialAmount: 1850000,
       probability: "HIGH",
-      nextActionAt: new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000),
+      nextActionAt: offsetDate(now, 3),
       nextActionText: "Подготовить КП по сантехнике",
       source: "DESIGNER",
       lossReason: null,
@@ -393,8 +374,8 @@ async function main() {
       recipientName: "Клиент шоурума",
       recipientContact: "client@example.com",
       approvalRequiredFrom: "Анна Собственник",
-      sentAt: new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000),
-      nextTouchAt: new Date(now.getTime() + 2 * 24 * 60 * 60 * 1000),
+      sentAt: offsetDate(now, -2),
+      nextTouchAt: offsetDate(now, 2),
       fileUrl: "/uploads/proposals/seed-kp.pdf",
       fileName: "seed-kp.pdf",
       fileSize: 29,
@@ -425,8 +406,8 @@ async function main() {
       recipientName: "Клиент шоурума",
       recipientContact: "client@example.com",
       approvalRequiredFrom: "Анна Собственник",
-      sentAt: new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000),
-      nextTouchAt: new Date(now.getTime() + 2 * 24 * 60 * 60 * 1000),
+      sentAt: offsetDate(now, -2),
+      nextTouchAt: offsetDate(now, 2),
       fileUrl: "/uploads/proposals/seed-kp.pdf",
       fileName: "seed-kp.pdf",
       fileSize: 29,
@@ -461,8 +442,8 @@ async function main() {
       recipientName: "Клиент шоурума",
       recipientContact: "client@example.com",
       approvalRequiredFrom: "Анна Собственник",
-      sentAt: new Date(now.getTime() - 8 * 24 * 60 * 60 * 1000),
-      nextTouchAt: new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000),
+      sentAt: offsetDate(now, -8),
+      nextTouchAt: offsetDate(now, -1),
       fileUrl: "/uploads/proposals/seed-kp.pdf",
       fileName: "seed-kp.pdf",
       fileSize: 29,
@@ -493,8 +474,8 @@ async function main() {
       recipientName: "Клиент шоурума",
       recipientContact: "client@example.com",
       approvalRequiredFrom: "Анна Собственник",
-      sentAt: new Date(now.getTime() - 8 * 24 * 60 * 60 * 1000),
-      nextTouchAt: new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000),
+      sentAt: offsetDate(now, -8),
+      nextTouchAt: offsetDate(now, -1),
       fileUrl: "/uploads/proposals/seed-kp.pdf",
       fileName: "seed-kp.pdf",
       fileSize: 29,
@@ -529,7 +510,7 @@ async function main() {
       recipientName: "Клиент шоурума",
       recipientContact: "client@example.com",
       approvalRequiredFrom: null,
-      sentAt: new Date(now.getTime() - 4 * 24 * 60 * 60 * 1000),
+      sentAt: offsetDate(now, -4),
       nextTouchAt: null,
       fileUrl: "/uploads/proposals/seed-kp.pdf",
       fileName: "seed-kp.pdf",
@@ -561,7 +542,7 @@ async function main() {
       recipientName: "Клиент шоурума",
       recipientContact: "client@example.com",
       approvalRequiredFrom: null,
-      sentAt: new Date(now.getTime() - 4 * 24 * 60 * 60 * 1000),
+      sentAt: offsetDate(now, -4),
       nextTouchAt: null,
       fileUrl: "/uploads/proposals/seed-kp.pdf",
       fileName: "seed-kp.pdf",
@@ -592,7 +573,7 @@ async function main() {
       proposalId: "seed_proposal_sanitary_v1",
       clientId: "seed_client_showroom",
       designerId: "seed_designer_north",
-      dueAt: new Date(now.getTime() + 2 * 24 * 60 * 60 * 1000),
+      dueAt: offsetDate(now, 2),
       completedAt: null,
       result: null,
       nextStepText: null,
@@ -616,7 +597,7 @@ async function main() {
       proposalId: "seed_proposal_sanitary_v1",
       clientId: "seed_client_showroom",
       designerId: "seed_designer_north",
-      dueAt: new Date(now.getTime() + 2 * 24 * 60 * 60 * 1000),
+      dueAt: offsetDate(now, 2),
       responsibleId: "seed_owner",
       createdById: "seed_owner",
       isAutoCreated: true,
@@ -639,7 +620,7 @@ async function main() {
       dealId: "seed_deal_apartments_sanitary",
       clientId: "seed_client_showroom",
       designerId: "seed_designer_north",
-      dueAt: new Date(now.getTime() - 24 * 60 * 60 * 1000),
+      dueAt: offsetDate(now, -1),
       completedAt: null,
       result: null,
       responsibleId: "seed_store_manager",
@@ -658,7 +639,7 @@ async function main() {
       dealId: "seed_deal_apartments_sanitary",
       clientId: "seed_client_showroom",
       designerId: "seed_designer_north",
-      dueAt: new Date(now.getTime() - 24 * 60 * 60 * 1000),
+      dueAt: offsetDate(now, -1),
       responsibleId: "seed_store_manager",
       createdById: "seed_owner",
       archivedAt: null,
@@ -678,11 +659,11 @@ async function main() {
       objectId: "seed_project_object_apartments",
       clientId: "seed_client_showroom",
       designerId: "seed_designer_north",
-      dueAt: new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000),
-      completedAt: new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000),
+      dueAt: offsetDate(now, -2),
+      completedAt: offsetDate(now, -2),
       result: "Дизайнер готов показать подбор клиенту",
       nextStepText: "Отправить уточненную подборку",
-      nextStepAt: new Date(now.getTime() + 24 * 60 * 60 * 1000),
+      nextStepAt: offsetDate(now, 1),
       responsibleId: "seed_project_manager",
       archivedAt: null,
       notes: "Seed касание"
@@ -698,11 +679,11 @@ async function main() {
       objectId: "seed_project_object_apartments",
       clientId: "seed_client_showroom",
       designerId: "seed_designer_north",
-      dueAt: new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000),
-      completedAt: new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000),
+      dueAt: offsetDate(now, -2),
+      completedAt: offsetDate(now, -2),
       result: "Дизайнер готов показать подбор клиенту",
       nextStepText: "Отправить уточненную подборку",
-      nextStepAt: new Date(now.getTime() + 24 * 60 * 60 * 1000),
+      nextStepAt: offsetDate(now, 1),
       responsibleId: "seed_project_manager",
       createdById: "seed_owner",
       archivedAt: null,

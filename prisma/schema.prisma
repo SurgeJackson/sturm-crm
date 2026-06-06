@@ -429,6 +429,8 @@ model Client {
   @@index([source])
   @@index([createdAt])
   @@index([nextContactAt])
+  @@index([responsibleId, status, nextContactAt])
+  @@index([responsibleId, createdAt])
 }
 
 model Designer {
@@ -483,6 +485,8 @@ model Designer {
   @@index([createdAt])
   @@index([lastTouchAt])
   @@index([nextStepAt])
+  @@index([responsibleId, relationshipStage, lastTouchAt])
+  @@index([responsibleId, nextStepAt])
 }
 
 model ProjectObject {
@@ -527,6 +531,8 @@ model ProjectObject {
   @@index([status])
   @@index([objectType])
   @@index([createdAt])
+  @@index([responsibleId, status, stage])
+  @@index([responsibleId, createdAt])
 }
 
 model ProjectObjectParticipant {
@@ -601,6 +607,8 @@ model Deal {
   @@index([nextActionAt])
   @@index([createdAt])
   @@index([updatedAt])
+  @@index([responsibleId, stage, archivedAt, nextActionAt])
+  @@index([responsibleId, createdAt])
 }
 
 model CommercialProposal {
@@ -660,6 +668,8 @@ model CommercialProposal {
   @@index([sentAt])
   @@index([createdAt])
   @@index([updatedAt])
+  @@index([responsibleId, status, archivedAt, nextTouchAt])
+  @@index([responsibleId, createdAt])
 }
 
 model TaskActivity {
@@ -709,6 +719,9 @@ model TaskActivity {
   @@index([dealId])
   @@index([proposalId])
   @@index([objectParticipantId])
+  @@index([responsibleId, recordType, status, dueAt])
+  @@index([archivedAt, status, dueAt])
+  @@index([autoRule, archivedAt, status])
 }
 
 model AuditLog {

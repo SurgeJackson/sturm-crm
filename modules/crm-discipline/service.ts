@@ -20,7 +20,11 @@ import {
 import { canViewAllData, type PermissionUser } from "@/permissions";
 
 export type BonusEligibilityStatus = "ELIGIBLE" | "NEEDS_FIX" | "NOT_ELIGIBLE" | "NOT_APPLICABLE";
-export type CrmDisciplineSyncOptions = DisciplineRuleOptions;
+export type CrmDisciplineSyncOptions = DisciplineRuleOptions & {
+  batchSize?: number;
+};
+
+type DisciplineSyncResult = { created: number; resolved: number; active: number };
 
 export const crmViolationSeverityLabels: Record<CrmViolationSeverity, string> = {
   CRITICAL: "Критическое",
@@ -36,6 +40,7 @@ export const bonusEligibilityLabels: Record<BonusEligibilityStatus, string> = {
 };
 
 const bonusEntityTypes = new Set<AuditEntityType>(["CLIENT", "OBJECT", "DEAL", "PROPOSAL"]);
+const DEFAULT_DISCIPLINE_BATCH_SIZE = 25;
 
 function normalizeSeverity(severity: CrmViolationDraft["severity"]): CrmViolationSeverity {
   return severity.toUpperCase() as CrmViolationSeverity;
@@ -297,6 +302,7 @@ export function violationAccessWhere(user: PermissionUser): Prisma.CrmViolationW
 
 export async function runCrmDisciplineCheck(actorId?: string | null, options?: CrmDisciplineSyncOptions) {
   const ruleOptions = { now: options?.now ?? new Date() };
+  const batchSize = Math.max(options?.batchSize ?? DEFAULT_DISCIPLINE_BATCH_SIZE, 1);
   const [clients, designers, objects, deals, proposals, tasks] = await Promise.all([
     prisma.client.findMany({ where: { archivedAt: null } }),
     prisma.designer.findMany({ where: { archivedAt: null } }),
@@ -306,13 +312,26 @@ export async function runCrmDisciplineCheck(actorId?: string | null, options?: C
     prisma.taskActivity.findMany({ where: { archivedAt: null } })
   ]);
 
-  const results: Array<{ created: number; resolved: number; active: number }> = [];
-  for (const client of clients) results.push(await syncViolationsForEntity("CLIENT", client.id, validateClientForDiscipline(client, ruleOptions), actorId));
-  for (const designer of designers) results.push(await syncViolationsForEntity("DESIGNER", designer.id, validateDesignerForDiscipline(designer, ruleOptions), actorId));
-  for (const object of objects) results.push(await syncViolationsForEntity("OBJECT", object.id, validateObjectForDiscipline(object, ruleOptions), actorId));
-  for (const deal of deals) results.push(await syncViolationsForEntity("DEAL", deal.id, validateDealForDiscipline(deal, ruleOptions), actorId));
-  for (const proposal of proposals) results.push(await syncViolationsForEntity("PROPOSAL", proposal.id, validateProposalForDiscipline(proposal, ruleOptions), actorId));
-  for (const task of tasks) results.push(await syncViolationsForEntity("TASK", task.id, validateTaskForDiscipline(task, ruleOptions), actorId));
+  const results = [
+    ...await processInChunks(clients, batchSize, (client) =>
+      syncViolationsForEntity("CLIENT", client.id, validateClientForDiscipline(client, ruleOptions), actorId)
+    ),
+    ...await processInChunks(designers, batchSize, (designer) =>
+      syncViolationsForEntity("DESIGNER", designer.id, validateDesignerForDiscipline(designer, ruleOptions), actorId)
+    ),
+    ...await processInChunks(objects, batchSize, (object) =>
+      syncViolationsForEntity("OBJECT", object.id, validateObjectForDiscipline(object, ruleOptions), actorId)
+    ),
+    ...await processInChunks(deals, batchSize, (deal) =>
+      syncViolationsForEntity("DEAL", deal.id, validateDealForDiscipline(deal, ruleOptions), actorId)
+    ),
+    ...await processInChunks(proposals, batchSize, (proposal) =>
+      syncViolationsForEntity("PROPOSAL", proposal.id, validateProposalForDiscipline(proposal, ruleOptions), actorId)
+    ),
+    ...await processInChunks(tasks, batchSize, (task) =>
+      syncViolationsForEntity("TASK", task.id, validateTaskForDiscipline(task, ruleOptions), actorId)
+    )
+  ];
 
   return results.reduce(
     (acc: { checked: number; created: number; resolved: number; active: number }, item) => ({
@@ -323,4 +342,16 @@ export async function runCrmDisciplineCheck(actorId?: string | null, options?: C
     }),
     { checked: 0, created: 0, resolved: 0, active: 0 }
   );
+}
+
+async function processInChunks<T>(
+  items: T[],
+  batchSize: number,
+  mapper: (item: T) => Promise<DisciplineSyncResult>
+) {
+  const results: DisciplineSyncResult[] = [];
+  for (let index = 0; index < items.length; index += batchSize) {
+    results.push(...await Promise.all(items.slice(index, index + batchSize).map(mapper)));
+  }
+  return results;
 }
