@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Ban, Edit } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
+import { Detail } from "@/components/crm/detail";
 import { CrmDisciplinePanel } from "@/components/crm/crm-discipline";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -17,15 +18,6 @@ type TaskPageProps = {
   params: Promise<{ id: string }>;
   searchParams: Promise<{ saved?: string }>;
 };
-
-function Detail({ label, value }: { label: string; value?: string | number | null }) {
-  return (
-    <div>
-      <dt className="text-xs text-muted-foreground">{label}</dt>
-      <dd className="mt-1 text-sm">{value || "Нет данных"}</dd>
-    </div>
-  );
-}
 
 function entityLinks(task: Awaited<ReturnType<typeof getTaskForUser>>) {
   const links = [

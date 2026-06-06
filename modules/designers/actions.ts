@@ -20,6 +20,7 @@ import {
   canCreateDesigner,
   canEditRecord
 } from "@/permissions";
+import { writeTrackedFieldAuditLogs } from "@/modules/crm/audit-helpers";
 import { compactString, optionalDate, toAuditValue } from "@/modules/crm/form-utils";
 import { expireViolationsForEntity, syncDesignerDiscipline } from "@/modules/crm-discipline/service";
 
@@ -232,18 +233,12 @@ export async function updateDesignerAction(id: string, _prevState: DesignerActio
     ["nextStepAt", "CHANGE_NEXT_STEP", before.nextStepAt?.toISOString?.(), update.nextStepAt?.toISOString?.()]
   ] as const;
 
-  for (const [field, action, previous, next] of trackedFields) {
-    if (previous !== next) {
-      await writeAuditLog({
-        entityType: "DESIGNER",
-        entityId: id,
-        action,
-        userId: user.id,
-        before: { [field]: previous },
-        after: { [field]: next }
-      });
-    }
-  }
+  await writeTrackedFieldAuditLogs({
+    entityType: "DESIGNER",
+    entityId: id,
+    userId: user.id,
+    fields: trackedFields
+  });
 
   await syncDesignerDiscipline(id, user.id);
 

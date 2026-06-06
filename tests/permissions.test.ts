@@ -16,6 +16,7 @@ import {
   canCreateObject,
   canCreateProposal,
   canEditRecord,
+  canIgnoreCrmViolation,
   canManageUsers,
   canManageObjectParticipants,
   canViewAllData,
@@ -48,6 +49,13 @@ describe("permissions", () => {
     expect(canArchiveRecord(salesLead, foreignRecord)).toBe(true);
     expect(canArchiveRecord(projectManager, ownRecord)).toBe(false);
     expect(canArchiveRecord(administrator, ownRecord)).toBe(false);
+  });
+
+  it("keeps crm violation ignore rights on leadership roles only", () => {
+    expect(canIgnoreCrmViolation(owner)).toBe(true);
+    expect(canIgnoreCrmViolation(salesLead)).toBe(true);
+    expect(canIgnoreCrmViolation(projectManager)).toBe(false);
+    expect(canIgnoreCrmViolation(administrator)).toBe(false);
   });
 
   it("allows elevated roles to manage users and responsible assignment", () => {

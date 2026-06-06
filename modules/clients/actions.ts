@@ -12,6 +12,7 @@ import {
   canCreateClient,
   canEditRecord
 } from "@/permissions";
+import { writeTrackedFieldAuditLogs } from "@/modules/crm/audit-helpers";
 import { compactString, optionalDate, toAuditValue } from "@/modules/crm/form-utils";
 import { expireViolationsForEntity, syncClientDiscipline } from "@/modules/crm-discipline/service";
 
@@ -173,27 +174,15 @@ export async function updateClientAction(id: string, _prevState: ClientActionSta
     after: toAuditValue(after)
   });
 
-  if (before.responsibleId !== responsibleId) {
-    await writeAuditLog({
-      entityType: "CLIENT",
-      entityId: id,
-      action: "CHANGE_RESPONSIBLE",
-      userId: user.id,
-      before: { responsibleId: before.responsibleId },
-      after: { responsibleId }
-    });
-  }
-
-  if (before.status !== parsed.data.status) {
-    await writeAuditLog({
-      entityType: "CLIENT",
-      entityId: id,
-      action: "CHANGE_STATUS",
-      userId: user.id,
-      before: { status: before.status },
-      after: { status: parsed.data.status }
-    });
-  }
+  await writeTrackedFieldAuditLogs({
+    entityType: "CLIENT",
+    entityId: id,
+    userId: user.id,
+    fields: [
+      ["responsibleId", "CHANGE_RESPONSIBLE", before.responsibleId, responsibleId],
+      ["status", "CHANGE_STATUS", before.status, parsed.data.status]
+    ]
+  });
 
   await syncClientDiscipline(id, user.id);
 

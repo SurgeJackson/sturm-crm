@@ -1,4 +1,4 @@
-import type { AuditEntityType } from "@/generated/prisma/client";
+import type { AuditEntityType, Prisma, PrismaClient } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 
 type WriteAuditLogInput = {
@@ -10,6 +10,8 @@ type WriteAuditLogInput = {
   after?: unknown;
 };
 
+type AuditLogClient = PrismaClient | Prisma.TransactionClient;
+
 export async function writeAuditLog({
   entityType,
   entityId,
@@ -17,8 +19,8 @@ export async function writeAuditLog({
   userId,
   before,
   after
-}: WriteAuditLogInput) {
-  return prisma.auditLog.create({
+}: WriteAuditLogInput, client: AuditLogClient = prisma) {
+  return client.auditLog.create({
     data: {
       entityType,
       entityId,

@@ -422,6 +422,13 @@ model Client {
   deals          Deal[]               @relation("DealClient")
   proposals      CommercialProposal[] @relation("ProposalClient")
   tasks          TaskActivity[]       @relation("TaskClient")
+
+  @@index([responsibleId])
+  @@index([createdById])
+  @@index([status])
+  @@index([source])
+  @@index([createdAt])
+  @@index([nextContactAt])
 }
 
 model Designer {
@@ -465,6 +472,17 @@ model Designer {
   deals          Deal[]               @relation("DealDesigner")
   proposals      CommercialProposal[] @relation("ProposalDesigner")
   tasks          TaskActivity[]       @relation("TaskDesigner")
+
+  @@index([responsibleId])
+  @@index([createdById])
+  @@index([relationshipStage])
+  @@index([potential])
+  @@index([loyalty])
+  @@index([status])
+  @@index([source])
+  @@index([createdAt])
+  @@index([lastTouchAt])
+  @@index([nextStepAt])
 }
 
 model ProjectObject {
@@ -500,6 +518,15 @@ model ProjectObject {
   deals        Deal[]                     @relation("DealObject")
   proposals    CommercialProposal[]       @relation("ProposalObject")
   tasks        TaskActivity[]             @relation("TaskObject")
+
+  @@index([responsibleId])
+  @@index([createdById])
+  @@index([clientId])
+  @@index([designerId])
+  @@index([stage])
+  @@index([status])
+  @@index([objectType])
+  @@index([createdAt])
 }
 
 model ProjectObjectParticipant {
@@ -562,6 +589,18 @@ model Deal {
   createdBy     User                 @relation("DealCreatedBy", fields: [createdById], references: [id])
   proposals     CommercialProposal[] @relation("ProposalDeal")
   tasks         TaskActivity[]       @relation("TaskDeal")
+
+  @@index([responsibleId])
+  @@index([createdById])
+  @@index([clientId])
+  @@index([objectId])
+  @@index([designerId])
+  @@index([stage])
+  @@index([source])
+  @@index([probability])
+  @@index([nextActionAt])
+  @@index([createdAt])
+  @@index([updatedAt])
 }
 
 model CommercialProposal {
@@ -609,6 +648,18 @@ model CommercialProposal {
   parent        CommercialProposal?  @relation("ProposalVersions", fields: [parentProposalId], references: [id])
   versions      CommercialProposal[] @relation("ProposalVersions")
   tasks         TaskActivity[]       @relation("TaskProposal")
+
+  @@index([responsibleId])
+  @@index([createdById])
+  @@index([dealId])
+  @@index([clientId])
+  @@index([objectId])
+  @@index([designerId])
+  @@index([status])
+  @@index([nextTouchAt])
+  @@index([sentAt])
+  @@index([createdAt])
+  @@index([updatedAt])
 }
 
 model TaskActivity {
@@ -699,4 +750,9 @@ model CrmViolation {
   @@index([status])
   @@index([responsibleId])
   @@index([detectedAt])
+  @@index([resolvedAt])
+  @@index([entityType, entityId, status])
+  @@index([status, responsibleId, detectedAt])
+  @@index([status, entityType, detectedAt])
+  @@index([status, canAffectBonus])
 }

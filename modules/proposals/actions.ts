@@ -22,6 +22,7 @@ import {
   canCreateProposal,
   canEditRecord
 } from "@/permissions";
+import { writeTrackedFieldAuditLogs } from "@/modules/crm/audit-helpers";
 import { compactString, optionalDate, toAuditValue } from "@/modules/crm/form-utils";
 import { expireViolationsForEntity, syncDealDiscipline, syncProposalDiscipline, syncTaskDiscipline } from "@/modules/crm-discipline/service";
 
@@ -403,18 +404,12 @@ export async function updateProposalAction(id: string, _prevState: ProposalActio
     ["declineReason", "DECLINE", before.declineReason, after.declineReason]
   ] as const;
 
-  for (const [field, action, previous, next] of trackedFields) {
-    if (previous !== next) {
-      await writeAuditLog({
-        entityType: "PROPOSAL",
-        entityId: id,
-        action,
-        userId: user.id,
-        before: { [field]: previous },
-        after: { [field]: next }
-      });
-    }
-  }
+  await writeTrackedFieldAuditLogs({
+    entityType: "PROPOSAL",
+    entityId: id,
+    userId: user.id,
+    fields: trackedFields
+  });
 
   if (fileData) {
     await writeAuditLog({

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Archive, Edit, MessageSquarePlus, Plus } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
+import { Detail } from "@/components/crm/detail";
 import { CrmDisciplinePanel } from "@/components/crm/crm-discipline";
 import { TaskActivityTable } from "@/components/tasks/task-activity-table";
 import { Badge } from "@/components/ui/badge";
@@ -29,15 +30,6 @@ type DesignerPageProps = {
   params: Promise<{ id: string }>;
   searchParams: Promise<{ saved?: string; archived?: string; error?: string }>;
 };
-
-function Detail({ label, value }: { label: string; value?: string | number | null }) {
-  return (
-    <div>
-      <dt className="text-xs text-muted-foreground">{label}</dt>
-      <dd className="mt-1 text-sm">{value || "Нет данных"}</dd>
-    </div>
-  );
-}
 
 export default async function DesignerPage({ params, searchParams }: DesignerPageProps) {
   const user = await getCurrentUser();

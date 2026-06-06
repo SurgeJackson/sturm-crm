@@ -18,6 +18,7 @@ import {
   canCreateDeal,
   canEditRecord
 } from "@/permissions";
+import { writeTrackedFieldAuditLogs } from "@/modules/crm/audit-helpers";
 import { compactString, optionalDate, toAuditValue } from "@/modules/crm/form-utils";
 import { expireViolationsForEntity, syncDealDiscipline } from "@/modules/crm-discipline/service";
 
@@ -279,18 +280,12 @@ export async function updateDealAction(id: string, _prevState: DealActionState, 
     ["lossReason", "SET_LOSS_REASON", before.lossReason, after.lossReason]
   ] as const;
 
-  for (const [field, action, previous, next] of trackedFields) {
-    if (previous !== next) {
-      await writeAuditLog({
-        entityType: "DEAL",
-        entityId: id,
-        action,
-        userId: user.id,
-        before: { [field]: previous },
-        after: { [field]: next }
-      });
-    }
-  }
+  await writeTrackedFieldAuditLogs({
+    entityType: "DEAL",
+    entityId: id,
+    userId: user.id,
+    fields: trackedFields
+  });
 
   if (before.stage !== "LOST" && after.stage === "LOST") {
     await writeAuditLog({

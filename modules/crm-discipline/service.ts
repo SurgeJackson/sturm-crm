@@ -1,8 +1,8 @@
-import type {
-  AuditEntityType,
-  CrmViolation,
-  CrmViolationSeverity,
-  Prisma
+import {
+  Prisma,
+  type AuditEntityType,
+  type CrmViolation,
+  type CrmViolationSeverity
 } from "@/generated/prisma/client";
 import { writeAuditLog } from "@/lib/audit-log";
 import { prisma } from "@/lib/prisma";
@@ -74,7 +74,13 @@ export function crmEntityHref(entityType: AuditEntityType, entityId: string) {
   return `${prefixes[entityType] ?? "/reports/crm-discipline"}/${entityId}`;
 }
 
-async function logViolationCreation(violation: CrmViolation, actorId?: string | null) {
+type DisciplineTx = Prisma.TransactionClient;
+
+function isUniqueConstraintError(error: unknown) {
+  return error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002";
+}
+
+async function logViolationCreation(violation: CrmViolation, actorId?: string | null, client?: DisciplineTx) {
   const userId = actorId ?? violation.responsibleId;
   if (!userId) return;
   await writeAuditLog({
@@ -83,10 +89,10 @@ async function logViolationCreation(violation: CrmViolation, actorId?: string | 
     action: "CREATE_CRM_VIOLATION",
     userId,
     after: toAuditValue(violation)
-  });
+  }, client);
 }
 
-async function logViolationResolution(before: CrmViolation, after: CrmViolation, actorId?: string | null) {
+async function logViolationResolution(before: CrmViolation, after: CrmViolation, actorId?: string | null, client?: DisciplineTx) {
   const userId = actorId ?? after.responsibleId;
   if (!userId) return;
   await writeAuditLog({
@@ -96,7 +102,7 @@ async function logViolationResolution(before: CrmViolation, after: CrmViolation,
     userId,
     before: toAuditValue(before),
     after: toAuditValue(after)
-  });
+  }, client);
 }
 
 async function logBonusEligibilityChange(
@@ -104,7 +110,8 @@ async function logBonusEligibilityChange(
   entityId: string,
   before: BonusEligibilityStatus,
   after: BonusEligibilityStatus,
-  actorId?: string | null
+  actorId?: string | null,
+  client?: DisciplineTx
 ) {
   if (before === after || !actorId || !bonusEntityTypes.has(entityType)) return;
   await writeAuditLog({
@@ -114,7 +121,7 @@ async function logBonusEligibilityChange(
     userId: actorId,
     before: { bonusEligibilityStatus: before },
     after: { bonusEligibilityStatus: after }
-  });
+  }, client);
 }
 
 export async function syncViolationsForEntity(
@@ -123,84 +130,96 @@ export async function syncViolationsForEntity(
   drafts: CrmViolationDraft[],
   actorId?: string | null
 ) {
-  const activeBefore = await prisma.crmViolation.findMany({
-    where: { entityType, entityId, status: "ACTIVE" }
-  });
-  const beforeBonusStatus = computeBonusEligibilityStatus(activeBefore, bonusEntityTypes.has(entityType));
-  const nextByCode = new Map(drafts.map((draft) => [draft.code, draft]));
-  const activeByCode = new Map(activeBefore.map((violation) => [violation.violationCode, violation]));
-  const created: CrmViolation[] = [];
-  const resolved: CrmViolation[] = [];
+  const sync = () => prisma.$transaction(async (tx) => {
+    const activeBefore = await tx.crmViolation.findMany({
+      where: { entityType, entityId, status: "ACTIVE" }
+    });
+    const uniqueDrafts = Array.from(new Map(drafts.map((draft) => [draft.code, draft])).values());
+    const beforeBonusStatus = computeBonusEligibilityStatus(activeBefore, bonusEntityTypes.has(entityType));
+    const nextByCode = new Map(uniqueDrafts.map((draft) => [draft.code, draft]));
+    const activeByCode = new Map(activeBefore.map((violation) => [violation.violationCode, violation]));
+    let created = 0;
+    let resolved = 0;
 
-  for (const draft of drafts) {
-    const existing = activeByCode.get(draft.code);
-    if (existing) {
-      const severity = normalizeSeverity(draft.severity);
-      if (
-        existing.severity !== severity ||
-        existing.message !== draft.message ||
-        existing.responsibleId !== draft.responsibleId ||
-        existing.canAffectBonus !== draft.canAffectBonus
-      ) {
-        await prisma.crmViolation.update({
-          where: { id: existing.id },
-          data: {
-            severity,
-            message: draft.message,
-            responsibleId: draft.responsibleId,
-            canAffectBonus: draft.canAffectBonus
-          }
-        });
+    for (const draft of uniqueDrafts) {
+      const existing = activeByCode.get(draft.code);
+      if (existing) {
+        const severity = normalizeSeverity(draft.severity);
+        if (
+          existing.severity !== severity ||
+          existing.message !== draft.message ||
+          existing.responsibleId !== draft.responsibleId ||
+          existing.canAffectBonus !== draft.canAffectBonus
+        ) {
+          await tx.crmViolation.update({
+            where: { id: existing.id },
+            data: {
+              severity,
+              message: draft.message,
+              responsibleId: draft.responsibleId,
+              canAffectBonus: draft.canAffectBonus
+            }
+          });
+        }
+        continue;
       }
-      continue;
+
+      const violation = await tx.crmViolation.create({
+        data: {
+          entityType,
+          entityId,
+          violationCode: draft.code,
+          severity: normalizeSeverity(draft.severity),
+          message: draft.message,
+          responsibleId: draft.responsibleId,
+          canAffectBonus: draft.canAffectBonus,
+          detectedAt: draft.createdAt
+        }
+      });
+      created += 1;
+      await logViolationCreation(violation, actorId, tx);
     }
 
-    const violation = await prisma.crmViolation.create({
-      data: {
-        entityType,
-        entityId,
-        violationCode: draft.code,
-        severity: normalizeSeverity(draft.severity),
-        message: draft.message,
-        responsibleId: draft.responsibleId,
-        canAffectBonus: draft.canAffectBonus,
-        detectedAt: draft.createdAt
-      }
-    });
-    created.push(violation);
-    await logViolationCreation(violation, actorId);
+    for (const violation of activeBefore) {
+      if (nextByCode.has(violation.violationCode)) continue;
+      const after = await tx.crmViolation.update({
+        where: { id: violation.id },
+        data: {
+          status: "RESOLVED",
+          resolvedAt: new Date(),
+          resolvedById: actorId ?? undefined
+        }
+      });
+      resolved += 1;
+      await logViolationResolution(violation, after, actorId, tx);
+    }
+
+    const afterBonusStatus = computeBonusEligibilityStatus(uniqueDrafts, bonusEntityTypes.has(entityType));
+    await logBonusEligibilityChange(entityType, entityId, beforeBonusStatus, afterBonusStatus, actorId, tx);
+
+    return { created, resolved, active: uniqueDrafts.length };
+  });
+
+  try {
+    return await sync();
+  } catch (error) {
+    if (isUniqueConstraintError(error)) return sync();
+    throw error;
   }
-
-  for (const violation of activeBefore) {
-    if (nextByCode.has(violation.violationCode)) continue;
-    const after = await prisma.crmViolation.update({
-      where: { id: violation.id },
-      data: {
-        status: "RESOLVED",
-        resolvedAt: new Date(),
-        resolvedById: actorId ?? undefined
-      }
-    });
-    resolved.push(after);
-    await logViolationResolution(violation, after, actorId);
-  }
-
-  const afterBonusStatus = computeBonusEligibilityStatus(drafts, bonusEntityTypes.has(entityType));
-  await logBonusEligibilityChange(entityType, entityId, beforeBonusStatus, afterBonusStatus, actorId);
-
-  return { created: created.length, resolved: resolved.length, active: drafts.length };
 }
 
 export async function expireViolationsForEntity(entityType: AuditEntityType, entityId: string, actorId?: string | null) {
-  const active = await prisma.crmViolation.findMany({ where: { entityType, entityId, status: "ACTIVE" } });
-  for (const violation of active) {
-    const after = await prisma.crmViolation.update({
-      where: { id: violation.id },
-      data: { status: "EXPIRED", resolvedAt: new Date(), resolvedById: actorId ?? undefined }
-    });
-    await logViolationResolution(violation, after, actorId);
-  }
-  return active.length;
+  return prisma.$transaction(async (tx) => {
+    const active = await tx.crmViolation.findMany({ where: { entityType, entityId, status: "ACTIVE" } });
+    for (const violation of active) {
+      const after = await tx.crmViolation.update({
+        where: { id: violation.id },
+        data: { status: "EXPIRED", resolvedAt: new Date(), resolvedById: actorId ?? undefined }
+      });
+      await logViolationResolution(violation, after, actorId, tx);
+    }
+    return active.length;
+  });
 }
 
 export async function syncClientDiscipline(clientId: string, actorId?: string | null) {

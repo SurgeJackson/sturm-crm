@@ -23,6 +23,7 @@ import {
   canEditRecord,
   canManageObjectParticipants
 } from "@/permissions";
+import { writeTrackedFieldAuditLogs } from "@/modules/crm/audit-helpers";
 import { compactString, optionalDate, toAuditValue } from "@/modules/crm/form-utils";
 import { expireViolationsForEntity, syncDesignerDiscipline, syncObjectDiscipline } from "@/modules/crm-discipline/service";
 
@@ -425,18 +426,12 @@ export async function updateProjectObjectAction(id: string, _prevState: ProjectO
     ["designerId", "CHANGE_DESIGNER", before.designerId, after.designerId]
   ] as const;
 
-  for (const [field, action, previous, next] of trackedFields) {
-    if (previous !== next) {
-      await writeAuditLog({
-        entityType: "OBJECT",
-        entityId: id,
-        action,
-        userId: user.id,
-        before: { [field]: previous },
-        after: { [field]: next }
-      });
-    }
-  }
+  await writeTrackedFieldAuditLogs({
+    entityType: "OBJECT",
+    entityId: id,
+    userId: user.id,
+    fields: trackedFields
+  });
 
   const becameFrozen =
     (after.status === "FROZEN" || after.stage === "FROZEN") &&
