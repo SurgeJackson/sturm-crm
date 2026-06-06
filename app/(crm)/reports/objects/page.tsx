@@ -33,8 +33,34 @@ export default async function ObjectsReportPage({ searchParams }: PageProps) {
         <BreakdownCard title="Объекты по типам" data={Object.fromEntries(Object.entries(report.byType).map(([key, value]) => [objectTypeLabels[key as keyof typeof objectTypeLabels] ?? key, value]))} />
       </div>
       <TableCard title="Объекты">
-        <TableHeader><TableRow><TableHead>Объект</TableHead><TableHead>Тип</TableHead><TableHead>Стадия</TableHead><TableHead>Статус</TableHead><TableHead>Клиент</TableHead><TableHead>Дизайнер</TableHead><TableHead>Задачи</TableHead><TableHead>Участники</TableHead></TableRow></TableHeader>
-        <TableBody>{report.objects.length === 0 ? <EmptyTableRow colSpan={8}>Объекты не найдены.</EmptyTableRow> : report.objects.map((object) => <TableRow key={object.id}><TableCell><Link href={`/objects/${object.id}`} className="font-medium hover:underline">{object.title}</Link></TableCell><TableCell>{objectTypeLabels[object.objectType]}</TableCell><TableCell><Badge variant="outline">{objectStageLabels[object.stage]}</Badge></TableCell><TableCell>{objectStatusLabels[object.status]}</TableCell><TableCell>{object.client.name}</TableCell><TableCell>{object.designer?.name ?? "Нет"}</TableCell><TableCell>{object.tasks.length}</TableCell><TableCell>{object.participants.length}</TableCell></TableRow>)}</TableBody>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Объект</TableHead>
+            <TableHead>Тип</TableHead>
+            <TableHead>Стадия</TableHead>
+            <TableHead>Статус</TableHead>
+            <TableHead>Клиент</TableHead>
+            <TableHead>Дизайнер</TableHead>
+            <TableHead>Задачи</TableHead>
+            <TableHead>Участники</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {report.objects.length === 0 ? (
+            <EmptyTableRow colSpan={8}>Объекты не найдены.</EmptyTableRow>
+          ) : report.objects.map((object) => (
+            <TableRow key={object.id}>
+              <TableCell><Link href={`/objects/${object.id}`} className="font-medium hover:underline">{object.title}</Link></TableCell>
+              <TableCell>{objectTypeLabels[object.objectType]}</TableCell>
+              <TableCell><Badge variant="outline">{objectStageLabels[object.stage]}</Badge></TableCell>
+              <TableCell>{objectStatusLabels[object.status]}</TableCell>
+              <TableCell>{object.client.name}</TableCell>
+              <TableCell>{object.designer?.name ?? "Нет"}</TableCell>
+              <TableCell>{object.tasks.length}</TableCell>
+              <TableCell>{object.participants.length}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
       </TableCard>
     </div>
   );

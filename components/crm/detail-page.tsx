@@ -1,6 +1,7 @@
 import Link from "next/link";
-import type { ReactNode } from "react";
+import type { ComponentProps, ReactNode } from "react";
 import { Archive, Edit, MessageSquarePlus, Plus } from "lucide-react";
+import { TaskActivityTable } from "@/components/tasks/task-activity-table";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
@@ -24,6 +25,7 @@ export function EntityPageHeader({
   canEdit,
   archiveAction,
   canArchive,
+  actions,
   extraActions
 }: {
   title: ReactNode;
@@ -32,6 +34,7 @@ export function EntityPageHeader({
   canEdit?: boolean;
   archiveAction?: () => Promise<void>;
   canArchive?: boolean;
+  actions?: ReactNode;
   extraActions?: ReactNode;
 }) {
   return (
@@ -40,7 +43,7 @@ export function EntityPageHeader({
         <h1 className="text-2xl font-semibold">{title}</h1>
         {badges ? <div className="mt-2 flex flex-wrap gap-2">{badges}</div> : null}
       </div>
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2 sm:justify-end">
         {canEdit && editHref ? (
           <Button asChild variant="outline">
             <Link href={editHref}>
@@ -49,6 +52,7 @@ export function EntityPageHeader({
             </Link>
           </Button>
         ) : null}
+        {actions}
         {extraActions}
         {canArchive && archiveAction ? (
           <form action={archiveAction}>
@@ -89,6 +93,43 @@ export function TextBlock({ label, children }: { label: string; children: ReactN
       <div className="text-xs text-muted-foreground">{label}</div>
       <div className="mt-1 whitespace-pre-wrap text-sm">{children}</div>
     </div>
+  );
+}
+
+export function EntityInfoCard({
+  title,
+  children,
+  footer
+}: {
+  title: string;
+  children: ReactNode;
+  footer?: ReactNode;
+}) {
+  return (
+    <Card>
+      <CardHeader><CardTitle>{title}</CardTitle></CardHeader>
+      <CardContent>
+        {children}
+        {footer ? <div className="mt-6">{footer}</div> : null}
+      </CardContent>
+    </Card>
+  );
+}
+
+export function ActionPromptCard({
+  message,
+  action
+}: {
+  message: ReactNode;
+  action: ReactNode;
+}) {
+  return (
+    <Card>
+      <CardContent className="flex flex-col gap-3 pt-5 sm:flex-row sm:items-center sm:justify-between">
+        <div className="text-sm">{message}</div>
+        {action}
+      </CardContent>
+    </Card>
   );
 }
 
@@ -142,5 +183,33 @@ export function TaskQuickActions({
         </Link>
       </Button>
     </div>
+  );
+}
+
+export function EntityTasksCard({
+  title = "Задачи / касания",
+  items,
+  emptyText = "По этой сущности пока нет задач",
+  taskHref,
+  touchHref,
+  canCreate
+}: {
+  title?: string;
+  items: ComponentProps<typeof TaskActivityTable>["items"];
+  emptyText?: string;
+  taskHref: string;
+  touchHref: string;
+  canCreate?: boolean;
+}) {
+  return (
+    <Card>
+      <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <CardTitle>{title}</CardTitle>
+        {canCreate ? <TaskQuickActions taskHref={taskHref} touchHref={touchHref} /> : null}
+      </CardHeader>
+      <CardContent className="p-0">
+        <TaskActivityTable items={items} emptyText={emptyText} />
+      </CardContent>
+    </Card>
   );
 }

@@ -30,8 +30,51 @@ export default async function LossReasonsReportPage({ searchParams }: PageProps)
         <BreakdownCard title="По типам объектов" data={Object.fromEntries(Object.entries(report.byObjectType).map(([key, value]) => [objectTypeLabels[key as keyof typeof objectTypeLabels] ?? key, value]))} />
       </div>
       <div className="grid gap-4 xl:grid-cols-2">
-        <TableCard title="Проигранные сделки"><TableHeader><TableRow><TableHead>Сделка</TableHead><TableHead>Причина</TableHead><TableHead>Сумма</TableHead><TableHead>Ответственный</TableHead></TableRow></TableHeader><TableBody>{report.lostDeals.length === 0 ? <EmptyTableRow colSpan={4}>Нет проигранных сделок.</EmptyTableRow> : report.lostDeals.map((deal) => <TableRow key={deal.id}><TableCell><Link className="font-medium hover:underline" href={`/deals/${deal.id}`}>{deal.title}</Link></TableCell><TableCell>{deal.lossReason ? dealLossReasonLabels[deal.lossReason] : "Не указана"}</TableCell><TableCell>{deal.potentialAmount ? `${deal.potentialAmount.toLocaleString("ru-RU")} ₽` : "Нет"}</TableCell><TableCell>{deal.responsible.name}</TableCell></TableRow>)}</TableBody></TableCard>
-        <TableCard title="Отклоненные КП"><TableHeader><TableRow><TableHead>КП</TableHead><TableHead>Причина</TableHead><TableHead>Сумма</TableHead><TableHead>Ответственный</TableHead></TableRow></TableHeader><TableBody>{report.declinedProposals.length === 0 ? <EmptyTableRow colSpan={4}>Нет отклоненных КП.</EmptyTableRow> : report.declinedProposals.map((proposal) => <TableRow key={proposal.id}><TableCell><Link className="font-medium hover:underline" href={`/proposals/${proposal.id}`}>{proposal.proposalNumber}</Link></TableCell><TableCell>{proposal.declineReason ? proposalDeclineReasonLabels[proposal.declineReason] : "Не указана"}</TableCell><TableCell>{proposal.amount.toLocaleString("ru-RU")} ₽</TableCell><TableCell>{proposal.responsible.name}</TableCell></TableRow>)}</TableBody></TableCard>
+        <TableCard title="Проигранные сделки">
+          <TableHeader>
+            <TableRow>
+              <TableHead>Сделка</TableHead>
+              <TableHead>Причина</TableHead>
+              <TableHead>Сумма</TableHead>
+              <TableHead>Ответственный</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {report.lostDeals.length === 0 ? (
+              <EmptyTableRow colSpan={4}>Нет проигранных сделок.</EmptyTableRow>
+            ) : report.lostDeals.map((deal) => (
+              <TableRow key={deal.id}>
+                <TableCell><Link className="font-medium hover:underline" href={`/deals/${deal.id}`}>{deal.title}</Link></TableCell>
+                <TableCell>{deal.lossReason ? dealLossReasonLabels[deal.lossReason] : "Не указана"}</TableCell>
+                <TableCell>{deal.potentialAmount ? `${deal.potentialAmount.toLocaleString("ru-RU")} ₽` : "Нет"}</TableCell>
+                <TableCell>{deal.responsible.name}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </TableCard>
+
+        <TableCard title="Отклоненные КП">
+          <TableHeader>
+            <TableRow>
+              <TableHead>КП</TableHead>
+              <TableHead>Причина</TableHead>
+              <TableHead>Сумма</TableHead>
+              <TableHead>Ответственный</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {report.declinedProposals.length === 0 ? (
+              <EmptyTableRow colSpan={4}>Нет отклоненных КП.</EmptyTableRow>
+            ) : report.declinedProposals.map((proposal) => (
+              <TableRow key={proposal.id}>
+                <TableCell><Link className="font-medium hover:underline" href={`/proposals/${proposal.id}`}>{proposal.proposalNumber}</Link></TableCell>
+                <TableCell>{proposal.declineReason ? proposalDeclineReasonLabels[proposal.declineReason] : "Не указана"}</TableCell>
+                <TableCell>{proposal.amount.toLocaleString("ru-RU")} ₽</TableCell>
+                <TableCell>{proposal.responsible.name}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </TableCard>
       </div>
     </div>
   );

@@ -2,12 +2,11 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Ban } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { AuditLogCard, EntityPageHeader, NoticeStack, TextBlock } from "@/components/crm/detail-page";
+import { AuditLogCard, EntityInfoCard, EntityPageHeader, NoticeStack, TextBlock } from "@/components/crm/detail-page";
 import { Detail, DetailGrid } from "@/components/crm/detail";
 import { CrmDisciplinePanel } from "@/components/crm/discipline/panel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getAuditLogs } from "@/lib/audit-log";
 import { taskActionTypeLabels, taskAutoRuleLabels, taskPriorityLabels, taskRecordTypeLabels, taskStatusLabels } from "@/lib/constants";
 import { cancelTaskAction } from "@/modules/tasks/actions";
@@ -58,7 +57,7 @@ export default async function TaskPage({ params, searchParams }: TaskPageProps) 
         }
         editHref={`/tasks/${id}/edit`}
         canEdit={canEditRecord(user, task)}
-        extraActions={canCancelTask(user, task) && task.status !== "CANCELLED" ? (
+        actions={canCancelTask(user, task) && task.status !== "CANCELLED" ? (
             <form action={cancelAction}>
               <Button type="submit" variant="destructive">
                 <Ban className="h-4 w-4" />
@@ -80,9 +79,19 @@ export default async function TaskPage({ params, searchParams }: TaskPageProps) 
         bonusApplies={false}
       />
 
-      <Card>
-        <CardHeader><CardTitle>Основное</CardTitle></CardHeader>
-        <CardContent>
+      <EntityInfoCard
+        title="Основное"
+        footer={
+          <div className="grid gap-4 md:grid-cols-2">
+            <TextBlock label="Связанные сущности">
+              <div className="mt-2 flex flex-col gap-1 text-sm">{entityLinks(task)}</div>
+            </TextBlock>
+            <TextBlock label="Описание">{task.description || "Нет описания."}</TextBlock>
+            <TextBlock label="Результат">{task.result || "Результат не указан."}</TextBlock>
+            <TextBlock label="Следующий шаг">{task.nextStepText ? `${task.nextStepText} — ${formatRussianDateTime(task.nextStepAt)}` : "Не задан"}</TextBlock>
+          </div>
+        }
+      >
           <DetailGrid>
             <Detail label="Ответственный" value={task.responsible.name} />
             <Detail label="Создал" value={task.createdBy.name} />
@@ -91,16 +100,7 @@ export default async function TaskPage({ params, searchParams }: TaskPageProps) 
             <Detail label="Выполнено" value={formatRussianDateTime(task.completedAt)} />
             <Detail label="Автоправило" value={task.autoRule ? taskAutoRuleLabels[task.autoRule] : null} />
           </DetailGrid>
-          <div className="mt-6 grid gap-4 md:grid-cols-2">
-            <TextBlock label="Связанные сущности">
-              <div className="mt-2 flex flex-col gap-1 text-sm">{entityLinks(task)}</div>
-            </TextBlock>
-            <TextBlock label="Описание">{task.description || "Нет описания."}</TextBlock>
-            <TextBlock label="Результат">{task.result || "Результат не указан."}</TextBlock>
-            <TextBlock label="Следующий шаг">{task.nextStepText ? `${task.nextStepText} — ${formatRussianDateTime(task.nextStepAt)}` : "Не задан"}</TextBlock>
-          </div>
-        </CardContent>
-      </Card>
+      </EntityInfoCard>
 
       <AuditLogCard logs={auditLogs} formatDate={formatRussianDateTime} />
     </div>

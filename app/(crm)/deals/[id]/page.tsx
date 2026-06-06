@@ -1,14 +1,12 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { AuditLogCard, EntityPageHeader, NoticeStack, TaskQuickActions, TextBlock } from "@/components/crm/detail-page";
+import { AuditLogCard, EntityInfoCard, EntityPageHeader, EntityTasksCard, NoticeStack, TextBlock } from "@/components/crm/detail-page";
 import { Detail, DetailGrid } from "@/components/crm/detail";
 import { CrmDisciplinePanel } from "@/components/crm/discipline/panel";
 import { DealLossDialog } from "@/components/deals/deal-loss-dialog";
-import { TaskActivityTable } from "@/components/tasks/task-activity-table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { EmptyTableRow, TableCard } from "@/components/ui/data-table";
 import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -66,7 +64,7 @@ export default async function DealPage({ params, searchParams }: DealPageProps) 
         }
         editHref={`/deals/${id}/edit`}
         canEdit={canEditRecord(user, deal)}
-        extraActions={canEditRecord(user, deal) && deal.stage !== "LOST" && deal.stage !== "COMPLETED" && canCloseDealAsLost(user) ? (
+        actions={canEditRecord(user, deal) && deal.stage !== "LOST" && deal.stage !== "COMPLETED" && canCloseDealAsLost(user) ? (
             <DealLossDialog action={lossAction} />
         ) : null}
         archiveAction={archiveAction}
@@ -99,9 +97,15 @@ export default async function DealPage({ params, searchParams }: DealPageProps) 
         </TabsList>
 
         <TabsContent value="main">
-          <Card>
-            <CardHeader><CardTitle>Данные сделки</CardTitle></CardHeader>
-            <CardContent>
+          <EntityInfoCard
+            title="Данные сделки"
+            footer={
+              <div className="grid gap-4 md:grid-cols-2">
+                <TextBlock label="Комментарий">{deal.comment || "Комментариев пока нет."}</TextBlock>
+                <TextBlock label="Комментарий к проигрышу">{deal.lossComment || "Нет данных"}</TextBlock>
+              </div>
+            }
+          >
               <DetailGrid>
                 <Detail label="Клиент" value={deal.client.name} />
                 <Detail label="Объект" value={deal.projectObject.title} />
@@ -116,12 +120,7 @@ export default async function DealPage({ params, searchParams }: DealPageProps) 
                 <Detail label="Закрыта" value={formatRussianDate(deal.closedAt)} />
                 <Detail label="Причина проигрыша" value={deal.lossReason ? dealLossReasonLabels[deal.lossReason] : null} />
               </DetailGrid>
-              <div className="mt-6 grid gap-4 md:grid-cols-2">
-                <TextBlock label="Комментарий">{deal.comment || "Комментариев пока нет."}</TextBlock>
-                <TextBlock label="Комментарий к проигрышу">{deal.lossComment || "Нет данных"}</TextBlock>
-              </div>
-            </CardContent>
-          </Card>
+          </EntityInfoCard>
         </TabsContent>
 
         <TabsContent value="proposals">
@@ -167,20 +166,12 @@ export default async function DealPage({ params, searchParams }: DealPageProps) 
         </TabsContent>
 
         <TabsContent value="tasks">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle>Задачи / касания</CardTitle>
-              {canCreateTask(user) ? (
-                <TaskQuickActions
-                  taskHref={`/tasks/new?dealId=${deal.id}&clientId=${deal.clientId}&objectId=${deal.objectId}&responsibleId=${deal.responsibleId}${deal.designerId ? `&designerId=${deal.designerId}` : ""}`}
-                  touchHref={`/tasks/new?recordType=TOUCH&dealId=${deal.id}&clientId=${deal.clientId}&objectId=${deal.objectId}&responsibleId=${deal.responsibleId}${deal.designerId ? `&designerId=${deal.designerId}` : ""}`}
-                />
-              ) : null}
-            </CardHeader>
-            <CardContent className="p-0">
-              <TaskActivityTable items={deal.tasks} emptyText="По этой сущности пока нет задач" />
-            </CardContent>
-          </Card>
+          <EntityTasksCard
+            items={deal.tasks}
+            canCreate={canCreateTask(user)}
+            taskHref={`/tasks/new?dealId=${deal.id}&clientId=${deal.clientId}&objectId=${deal.objectId}&responsibleId=${deal.responsibleId}${deal.designerId ? `&designerId=${deal.designerId}` : ""}`}
+            touchHref={`/tasks/new?recordType=TOUCH&dealId=${deal.id}&clientId=${deal.clientId}&objectId=${deal.objectId}&responsibleId=${deal.responsibleId}${deal.designerId ? `&designerId=${deal.designerId}` : ""}`}
+          />
         </TabsContent>
 
         <TabsContent value="audit">

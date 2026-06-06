@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
+import { SummaryBreakdownCard } from "@/components/crm/summary-card";
 import { Badge, type BadgeProps } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
@@ -82,25 +83,14 @@ export function DashboardBreakdownCard({
   variant?: BadgeProps["variant"];
   contentClassName?: string;
 }) {
-  const entries = Object.entries(data);
-
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-      </CardHeader>
-      <CardContent className={cn("space-y-2", contentClassName)}>
-        {entries.length === 0 ? (
-          <p className="text-sm text-muted-foreground">{emptyText}</p>
-        ) : (
-          entries.map(([key, count]) => (
-            <div key={key} className="flex items-center justify-between rounded-md border p-3 text-sm">
-              <span>{labelFor(key)}</span>
-              <Badge variant={variant}>{count}</Badge>
-            </div>
-          ))
-        )}
-      </CardContent>
-    </Card>
+    <SummaryBreakdownCard
+      title={title}
+      data={data}
+      emptyText={emptyText}
+      labelFor={labelFor}
+      valueVariant={variant}
+      contentClassName={contentClassName}
+    />
   );
 }

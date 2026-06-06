@@ -22,9 +22,9 @@ export function ReportPeriodFilter({
   return (
     <Card>
       <CardContent className="pt-5">
-        <form className="grid gap-3 md:grid-cols-5">
-          <Input name="from" type="date" defaultValue={params.from ?? ""} />
-          <Input name="to" type="date" defaultValue={params.to ?? ""} />
+        <form className="grid gap-3 md:[grid-template-columns:repeat(auto-fit,minmax(12rem,1fr))]">
+          <Input name="from" type="date" defaultValue={params.from ?? ""} aria-label="Дата с" />
+          <Input name="to" type="date" defaultValue={params.to ?? ""} aria-label="Дата по" />
           <NativeSelect name="responsibleId" defaultValue={params.responsibleId ?? ""}>
             <option value="">Все ответственные</option>
             {users.map((user) => (
@@ -34,7 +34,7 @@ export function ReportPeriodFilter({
             ))}
           </NativeSelect>
           {children}
-          <div className="flex flex-wrap gap-2 md:col-span-5">
+          <div className="flex flex-wrap gap-2 md:col-span-full">
             <Button type="submit" variant="secondary">
               Показать
             </Button>
@@ -60,7 +60,7 @@ export function ReportFilterSelect({
   options: Array<{ value: string; label: string }>;
 }) {
   return (
-    <NativeSelect name={name} defaultValue={value ?? ""}>
+    <NativeSelect name={name} defaultValue={value ?? ""} aria-label={placeholder}>
       <option value="">{placeholder}</option>
       {options.map((option) => (
         <option key={option.value} value={option.value}>

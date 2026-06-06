@@ -1,12 +1,10 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { AuditLogCard, EntityPageHeader, NoticeStack, TaskQuickActions } from "@/components/crm/detail-page";
+import { AuditLogCard, EntityInfoCard, EntityPageHeader, EntityTasksCard, NoticeStack } from "@/components/crm/detail-page";
 import { Detail, DetailSection } from "@/components/crm/detail";
 import { CrmDisciplinePanel } from "@/components/crm/discipline/panel";
-import { TaskActivityTable } from "@/components/tasks/task-activity-table";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { EmptyTableRow, TableCard } from "@/components/ui/data-table";
 import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -95,10 +93,9 @@ export default async function ClientPage({ params, searchParams }: ClientPagePro
           </DetailSection>
         </TabsContent>
         <TabsContent value="comments">
-          <Card>
-            <CardHeader><CardTitle>Комментарии</CardTitle></CardHeader>
-            <CardContent className="whitespace-pre-wrap text-sm">{client.comment || "Комментариев пока нет."}</CardContent>
-          </Card>
+          <EntityInfoCard title="Комментарии">
+            <div className="whitespace-pre-wrap text-sm">{client.comment || "Комментариев пока нет."}</div>
+          </EntityInfoCard>
         </TabsContent>
         <TabsContent value="links">
           <div className="grid gap-4">
@@ -187,20 +184,12 @@ export default async function ClientPage({ params, searchParams }: ClientPagePro
           </div>
         </TabsContent>
         <TabsContent value="tasks">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle>Задачи / касания</CardTitle>
-              {canCreateTask(user) ? (
-                <TaskQuickActions
-                  taskHref={`/tasks/new?clientId=${client.id}&responsibleId=${client.responsibleId}`}
-                  touchHref={`/tasks/new?recordType=TOUCH&clientId=${client.id}&responsibleId=${client.responsibleId}`}
-                />
-              ) : null}
-            </CardHeader>
-            <CardContent className="p-0">
-              <TaskActivityTable items={client.tasks} emptyText="По этой сущности пока нет задач" />
-            </CardContent>
-          </Card>
+          <EntityTasksCard
+            items={client.tasks}
+            canCreate={canCreateTask(user)}
+            taskHref={`/tasks/new?clientId=${client.id}&responsibleId=${client.responsibleId}`}
+            touchHref={`/tasks/new?recordType=TOUCH&clientId=${client.id}&responsibleId=${client.responsibleId}`}
+          />
         </TabsContent>
         <TabsContent value="audit">
           <AuditLogCard logs={auditLogs} formatDate={formatRussianDate} />

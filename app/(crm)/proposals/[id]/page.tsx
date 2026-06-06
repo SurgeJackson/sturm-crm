@@ -2,13 +2,19 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Plus } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { AuditLogCard, EntityPageHeader, NoticeStack, TaskQuickActions, TextBlock } from "@/components/crm/detail-page";
+import {
+  ActionPromptCard,
+  AuditLogCard,
+  EntityInfoCard,
+  EntityPageHeader,
+  EntityTasksCard,
+  NoticeStack,
+  TextBlock
+} from "@/components/crm/detail-page";
 import { Detail, DetailGrid } from "@/components/crm/detail";
 import { CrmDisciplinePanel } from "@/components/crm/discipline/panel";
-import { TaskActivityTable } from "@/components/tasks/task-activity-table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { EmptyTableRow, TableCard } from "@/components/ui/data-table";
 import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -70,7 +76,7 @@ export default async function ProposalPage({ params, searchParams }: ProposalPag
         }
         editHref={`/proposals/${id}/edit`}
         canEdit={canEditRecord(user, proposal)}
-        extraActions={canEditRecord(user, proposal) ? (
+        actions={canEditRecord(user, proposal) ? (
               <form action={createVersionAction}>
                 <Button type="submit" variant="secondary">
                   <Plus className="h-4 w-4" />
@@ -99,14 +105,14 @@ export default async function ProposalPage({ params, searchParams }: ProposalPag
       />
 
       {proposal.status === "ACCEPTED" && proposal.deal.stage !== "INVOICE_OR_ORDER" ? (
-        <Card>
-          <CardContent className="flex flex-col gap-3 pt-5 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-sm">КП принято. Перевести сделку в стадию “Счет / заказ”?</p>
+        <ActionPromptCard
+          message="КП принято. Перевести сделку в стадию “Счет / заказ”?"
+          action={
             <form action={moveDealAction}>
               <Button type="submit" variant="secondary">Перевести сделку</Button>
             </form>
-          </CardContent>
-        </Card>
+          }
+        />
       ) : null}
 
       <Tabs defaultValue="main">
@@ -118,9 +124,17 @@ export default async function ProposalPage({ params, searchParams }: ProposalPag
         </TabsList>
 
         <TabsContent value="main">
-          <Card>
-            <CardHeader><CardTitle>Данные КП</CardTitle></CardHeader>
-            <CardContent>
+          <EntityInfoCard
+            title="Данные КП"
+            footer={
+              <div className="grid gap-4 md:grid-cols-2">
+                <TextBlock label="Файл КП">
+                  {proposal.fileUrl ? <Link className="hover:underline" href={proposal.fileUrl}>Скачать {proposal.fileName}</Link> : "Файл не прикреплен."}
+                </TextBlock>
+                <TextBlock label="Комментарий">{proposal.comment || "Комментариев пока нет."}</TextBlock>
+              </div>
+            }
+          >
               <DetailGrid>
                 <Detail label="Сделка" value={proposal.deal.title} />
                 <Detail label="Клиент" value={proposal.client.name} />
@@ -141,14 +155,7 @@ export default async function ProposalPage({ params, searchParams }: ProposalPag
                 <Detail label="Загрузил" value={proposal.uploadedBy?.name} />
                 <Detail label="Причина отклонения" value={proposal.declineReason ? proposalDeclineReasonLabels[proposal.declineReason] : null} />
               </DetailGrid>
-              <div className="mt-6 grid gap-4 md:grid-cols-2">
-                <TextBlock label="Файл КП">
-                    {proposal.fileUrl ? <Link className="hover:underline" href={proposal.fileUrl}>Скачать {proposal.fileName}</Link> : "Файл не прикреплен."}
-                </TextBlock>
-                <TextBlock label="Комментарий">{proposal.comment || "Комментариев пока нет."}</TextBlock>
-              </div>
-            </CardContent>
-          </Card>
+          </EntityInfoCard>
         </TabsContent>
 
         <TabsContent value="versions">
@@ -192,20 +199,12 @@ export default async function ProposalPage({ params, searchParams }: ProposalPag
         </TabsContent>
 
         <TabsContent value="tasks">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle>Задачи / касания</CardTitle>
-              {canCreateTask(user) ? (
-                <TaskQuickActions
-                  taskHref={`/tasks/new?proposalId=${proposal.id}&dealId=${proposal.dealId}&clientId=${proposal.clientId}&objectId=${proposal.objectId}&responsibleId=${proposal.responsibleId}${proposal.designerId ? `&designerId=${proposal.designerId}` : ""}`}
-                  touchHref={`/tasks/new?recordType=TOUCH&proposalId=${proposal.id}&dealId=${proposal.dealId}&clientId=${proposal.clientId}&objectId=${proposal.objectId}&responsibleId=${proposal.responsibleId}${proposal.designerId ? `&designerId=${proposal.designerId}` : ""}`}
-                />
-              ) : null}
-            </CardHeader>
-            <CardContent className="p-0">
-              <TaskActivityTable items={proposal.tasks} emptyText="По этой сущности пока нет задач" />
-            </CardContent>
-          </Card>
+          <EntityTasksCard
+            items={proposal.tasks}
+            canCreate={canCreateTask(user)}
+            taskHref={`/tasks/new?proposalId=${proposal.id}&dealId=${proposal.dealId}&clientId=${proposal.clientId}&objectId=${proposal.objectId}&responsibleId=${proposal.responsibleId}${proposal.designerId ? `&designerId=${proposal.designerId}` : ""}`}
+            touchHref={`/tasks/new?recordType=TOUCH&proposalId=${proposal.id}&dealId=${proposal.dealId}&clientId=${proposal.clientId}&objectId=${proposal.objectId}&responsibleId=${proposal.responsibleId}${proposal.designerId ? `&designerId=${proposal.designerId}` : ""}`}
+          />
         </TabsContent>
 
         <TabsContent value="audit">

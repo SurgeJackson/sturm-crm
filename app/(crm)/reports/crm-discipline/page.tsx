@@ -1,20 +1,14 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { crmSeverityVariant } from "@/components/crm/discipline/variants";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { EmptyTableRow, TableCard } from "@/components/ui/data-table";
 import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
-import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { CrmDisciplineBreakdowns, CrmProblemsTable, CrmScoreGrid } from "@/components/reports/crm-discipline";
 import { ReportPeriodFilter } from "@/components/reports/filters";
 import { ReportPageHeader } from "@/components/reports/layout";
 import { MetricsGrid } from "@/components/reports/metrics";
 import { getCrmDisciplineReport, getReportFilterOptions, type ReportSearchParams } from "@/modules/reports/queries";
 
 type PageProps = { searchParams: Promise<ReportSearchParams> };
-const severityLabels = { critical: "Критично", medium: "Средне", light: "Легко" };
 
 export default async function CrmDisciplineReportPage({ searchParams }: PageProps) {
   const user = await getCurrentUser();
@@ -51,69 +45,9 @@ export default async function CrmDisciplineReportPage({ searchParams }: PageProp
         { title: "Влияют на премирование", value: report.summary.bonus, tone: report.summary.bonus ? "warning" : "secondary" },
         { title: "Исправлено за период", value: report.summary.resolved, tone: "secondary" }
       ]} />
-      <div className="grid gap-4 md:grid-cols-3">
-        {report.scores.length === 0 ? (
-          <Card><CardContent className="pt-5 text-sm text-muted-foreground">Нарушений нет. Score 100%.</CardContent></Card>
-        ) : report.scores.map((score) => (
-          <Card key={score.name}>
-            <CardHeader><CardTitle>{score.name}</CardTitle></CardHeader>
-            <CardContent>
-              <div className="text-3xl font-semibold">{score.score}%</div>
-              <div className="mt-3 flex flex-wrap gap-2 text-xs">
-                <Badge variant={score.score < 60 ? "warning" : "secondary"}>{score.total} наруш.</Badge>
-                <Badge variant="warning">Крит: {score.critical}</Badge>
-                <Badge variant="outline">Сред: {score.medium}</Badge>
-                <Badge variant="outline">Легк: {score.light}</Badge>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-      <div className="grid gap-4 lg:grid-cols-3">
-        <Card>
-          <CardHeader><CardTitle>Нарушения по сотрудникам</CardTitle></CardHeader>
-          <CardContent className="space-y-3 text-sm">
-            {report.byEmployee.length === 0 ? <p className="text-muted-foreground">Нет данных.</p> : report.byEmployee.map((row) => (
-              <div key={row.name} className="flex items-center justify-between gap-3">
-                <span>{row.name}</span>
-                <span className="text-muted-foreground">{row.total} · крит. {row.critical} · премия {row.bonus}</span>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader><CardTitle>Нарушения по сущностям</CardTitle></CardHeader>
-          <CardContent className="space-y-3 text-sm">
-            {report.byEntity.length === 0 ? <p className="text-muted-foreground">Нет данных.</p> : report.byEntity.map((row) => (
-              <div key={row.name} className="flex items-center justify-between gap-3"><span>{row.name}</span><span className="text-muted-foreground">{row.count}</span></div>
-            ))}
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader><CardTitle>Самые частые нарушения</CardTitle></CardHeader>
-          <CardContent className="space-y-3 text-sm">
-            {report.frequent.length === 0 ? <p className="text-muted-foreground">Нет данных.</p> : report.frequent.map((row) => (
-              <div key={row.code} className="flex items-center justify-between gap-3"><span>{row.code}</span><span className="text-muted-foreground">{row.count}</span></div>
-            ))}
-          </CardContent>
-        </Card>
-      </div>
-      <TableCard title="Проблемные записи">
-        <TableHeader><TableRow><TableHead>Раздел</TableHead><TableHead>Проблема</TableHead><TableHead>Серьезность</TableHead><TableHead>Ответственный</TableHead><TableHead>Код</TableHead><TableHead>Премирование</TableHead><TableHead>Запись</TableHead></TableRow></TableHeader>
-        <TableBody>
-          {report.problems.length === 0 ? <EmptyTableRow colSpan={7}>Нарушений нет.</EmptyTableRow> : report.problems.map((problem) => (
-            <TableRow key={`${problem.area}-${problem.href}-${problem.issue}`}>
-              <TableCell>{problem.area}</TableCell>
-              <TableCell>{problem.issue}</TableCell>
-              <TableCell><Badge variant={crmSeverityVariant(problem.severity)}>{severityLabels[problem.severity]}</Badge></TableCell>
-              <TableCell>{problem.responsibleName}</TableCell>
-              <TableCell>{problem.violationCode}</TableCell>
-              <TableCell>{problem.canAffectBonus ? "Влияет" : "Не влияет"}</TableCell>
-              <TableCell><Link className="font-medium hover:underline" href={problem.href}>{problem.entity}: {problem.title}</Link></TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </TableCard>
+      <CrmScoreGrid scores={report.scores} />
+      <CrmDisciplineBreakdowns byEmployee={report.byEmployee} byEntity={report.byEntity} frequent={report.frequent} />
+      <CrmProblemsTable problems={report.problems} />
     </div>
   );
 }

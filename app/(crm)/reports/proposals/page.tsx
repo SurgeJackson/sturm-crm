@@ -42,8 +42,32 @@ export default async function ProposalsReportPage({ searchParams }: PageProps) {
         />
       </div>
       <TableCard title="КП">
-        <TableHeader><TableRow><TableHead>КП</TableHead><TableHead>Статус</TableHead><TableHead>Клиент</TableHead><TableHead>Сделка</TableHead><TableHead>Сумма</TableHead><TableHead>Follow-up</TableHead><TableHead>Ответственный</TableHead></TableRow></TableHeader>
-        <TableBody>{report.proposals.length === 0 ? <EmptyTableRow colSpan={7}>КП не найдены.</EmptyTableRow> : report.proposals.map((proposal) => <TableRow key={proposal.id}><TableCell><Link href={`/proposals/${proposal.id}`} className="font-medium hover:underline">{proposal.proposalNumber}</Link></TableCell><TableCell><Badge variant="outline">{commercialProposalStatusLabels[proposal.status]}</Badge></TableCell><TableCell>{proposal.client.name}</TableCell><TableCell>{proposal.deal.title}</TableCell><TableCell>{proposal.amount.toLocaleString("ru-RU")} ₽</TableCell><TableCell>{formatRussianDate(proposal.nextTouchAt)}</TableCell><TableCell>{proposal.responsible.name}</TableCell></TableRow>)}</TableBody>
+        <TableHeader>
+          <TableRow>
+            <TableHead>КП</TableHead>
+            <TableHead>Статус</TableHead>
+            <TableHead>Клиент</TableHead>
+            <TableHead>Сделка</TableHead>
+            <TableHead>Сумма</TableHead>
+            <TableHead>Follow-up</TableHead>
+            <TableHead>Ответственный</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {report.proposals.length === 0 ? (
+            <EmptyTableRow colSpan={7}>КП не найдены.</EmptyTableRow>
+          ) : report.proposals.map((proposal) => (
+            <TableRow key={proposal.id}>
+              <TableCell><Link href={`/proposals/${proposal.id}`} className="font-medium hover:underline">{proposal.proposalNumber}</Link></TableCell>
+              <TableCell><Badge variant="outline">{commercialProposalStatusLabels[proposal.status]}</Badge></TableCell>
+              <TableCell>{proposal.client.name}</TableCell>
+              <TableCell>{proposal.deal.title}</TableCell>
+              <TableCell>{proposal.amount.toLocaleString("ru-RU")} ₽</TableCell>
+              <TableCell>{formatRussianDate(proposal.nextTouchAt)}</TableCell>
+              <TableCell>{proposal.responsible.name}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
       </TableCard>
     </div>
   );

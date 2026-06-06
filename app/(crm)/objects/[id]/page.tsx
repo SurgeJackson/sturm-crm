@@ -2,13 +2,19 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Plus } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { AuditLogCard, EntityPageHeader, NoticeStack, TaskQuickActions, TextBlock } from "@/components/crm/detail-page";
+import {
+  ActionPromptCard,
+  AuditLogCard,
+  EntityInfoCard,
+  EntityPageHeader,
+  EntityTasksCard,
+  NoticeStack,
+  TextBlock
+} from "@/components/crm/detail-page";
 import { Detail, DetailGrid } from "@/components/crm/detail";
 import { CrmDisciplinePanel } from "@/components/crm/discipline/panel";
-import { TaskActivityTable } from "@/components/tasks/task-activity-table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { EmptyTableRow, TableCard } from "@/components/ui/data-table";
 import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -128,16 +134,18 @@ export default async function ObjectPage({ params, searchParams }: ObjectPagePro
       />
 
       {projectObject.designer && shouldOfferDesignerStageUpdate(projectObject.designer.relationshipStage) ? (
-        <Card>
-          <CardContent className="flex flex-col gap-3 pt-5 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-sm">
+        <ActionPromptCard
+          message={
+            <>
               Этот дизайнер передал объект. Можно перевести его на этап “Первый объект получен”.
-            </p>
+            </>
+          }
+          action={
             <form action={moveDesignerStageAction}>
               <Button type="submit" variant="secondary">Перевести этап</Button>
             </form>
-          </CardContent>
-        </Card>
+          }
+        />
       ) : null}
 
       <Tabs defaultValue="main">
@@ -152,24 +160,10 @@ export default async function ObjectPage({ params, searchParams }: ObjectPagePro
         </TabsList>
 
         <TabsContent value="main">
-          <Card>
-            <CardHeader><CardTitle>Данные объекта</CardTitle></CardHeader>
-            <CardContent>
-              <DetailGrid>
-                <Detail label="Город" value={projectObject.city} />
-                <Detail label="Регион" value={projectObject.region} />
-                <Detail label="Адрес" value={projectObject.address} />
-                <Detail label="Клиент" value={projectObject.client.name} />
-                <Detail label="Дизайнер" value={projectObject.designer?.name} />
-                <Detail label="Ответственный" value={projectObject.responsible.name} />
-                <Detail label="Создал" value={projectObject.createdBy.name} />
-                <Detail label="Начало реализации" value={formatRussianDate(projectObject.implementationStartAt)} />
-                <Detail label="Завершение реализации" value={formatRussianDate(projectObject.implementationEndAt)} />
-                <Detail label="Бюджет" value={projectObject.budget ? `${projectObject.budget.toLocaleString("ru-RU")} ₽` : null} />
-                <Detail label="Количество санузлов" value={projectObject.bathroomsCount} />
-                <Detail label="Создан" value={formatRussianDate(projectObject.createdAt)} />
-              </DetailGrid>
-              <div className="mt-6 space-y-4">
+          <EntityInfoCard
+            title="Данные объекта"
+            footer={
+              <div className="space-y-4">
                 <div>
                   <div className="text-xs text-muted-foreground">Категории интереса</div>
                   <div className="mt-2 flex flex-wrap gap-2">
@@ -184,8 +178,23 @@ export default async function ObjectPage({ params, searchParams }: ObjectPagePro
                 </div>
                 <TextBlock label="Комментарий">{projectObject.comment || "Комментариев пока нет."}</TextBlock>
               </div>
-            </CardContent>
-          </Card>
+            }
+          >
+              <DetailGrid>
+                <Detail label="Город" value={projectObject.city} />
+                <Detail label="Регион" value={projectObject.region} />
+                <Detail label="Адрес" value={projectObject.address} />
+                <Detail label="Клиент" value={projectObject.client.name} />
+                <Detail label="Дизайнер" value={projectObject.designer?.name} />
+                <Detail label="Ответственный" value={projectObject.responsible.name} />
+                <Detail label="Создал" value={projectObject.createdBy.name} />
+                <Detail label="Начало реализации" value={formatRussianDate(projectObject.implementationStartAt)} />
+                <Detail label="Завершение реализации" value={formatRussianDate(projectObject.implementationEndAt)} />
+                <Detail label="Бюджет" value={projectObject.budget ? `${projectObject.budget.toLocaleString("ru-RU")} ₽` : null} />
+                <Detail label="Количество санузлов" value={projectObject.bathroomsCount} />
+                <Detail label="Создан" value={formatRussianDate(projectObject.createdAt)} />
+              </DetailGrid>
+          </EntityInfoCard>
         </TabsContent>
 
         <TabsContent value="participants">
@@ -368,25 +377,16 @@ export default async function ObjectPage({ params, searchParams }: ObjectPagePro
           </TableCard>
         </TabsContent>
         <TabsContent value="tasks">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle>Задачи / касания</CardTitle>
-              {canCreateTask(user) ? (
-                <TaskQuickActions
-                  taskHref={`/tasks/new?objectId=${projectObject.id}&clientId=${projectObject.clientId}&responsibleId=${projectObject.responsibleId}${projectObject.designerId ? `&designerId=${projectObject.designerId}` : ""}`}
-                  touchHref={`/tasks/new?recordType=TOUCH&objectId=${projectObject.id}&clientId=${projectObject.clientId}&responsibleId=${projectObject.responsibleId}${projectObject.designerId ? `&designerId=${projectObject.designerId}` : ""}`}
-                />
-              ) : null}
-            </CardHeader>
-            <CardContent className="p-0">
-              <TaskActivityTable items={projectObject.tasks} emptyText="По этой сущности пока нет задач" />
-            </CardContent>
-          </Card>
+          <EntityTasksCard
+            items={projectObject.tasks}
+            canCreate={canCreateTask(user)}
+            taskHref={`/tasks/new?objectId=${projectObject.id}&clientId=${projectObject.clientId}&responsibleId=${projectObject.responsibleId}${projectObject.designerId ? `&designerId=${projectObject.designerId}` : ""}`}
+            touchHref={`/tasks/new?recordType=TOUCH&objectId=${projectObject.id}&clientId=${projectObject.clientId}&responsibleId=${projectObject.responsibleId}${projectObject.designerId ? `&designerId=${projectObject.designerId}` : ""}`}
+          />
         </TabsContent>
         <TabsContent value="files">
-          <Card>
-            <CardHeader><CardTitle>Файлы объекта</CardTitle></CardHeader>
-            <CardContent className="space-y-2 text-sm">
+          <EntityInfoCard title="Файлы объекта">
+            <div className="space-y-2 text-sm">
               {projectObject.files.length === 0 ? (
                 <p className="text-muted-foreground">По объекту пока нет файлов</p>
               ) : (
@@ -394,8 +394,8 @@ export default async function ObjectPage({ params, searchParams }: ObjectPagePro
                   <div key={file} className="rounded-md border p-3">{file}</div>
                 ))
               )}
-            </CardContent>
-          </Card>
+            </div>
+          </EntityInfoCard>
         </TabsContent>
         <TabsContent value="audit">
           <AuditLogCard logs={auditLogs} formatDate={formatRussianDate} />

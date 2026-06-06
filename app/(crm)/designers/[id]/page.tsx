@@ -1,10 +1,9 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { AuditLogCard, EntityPageHeader, NoticeStack, TaskQuickActions } from "@/components/crm/detail-page";
+import { AuditLogCard, EntityInfoCard, EntityPageHeader, EntityTasksCard, NoticeStack } from "@/components/crm/detail-page";
 import { Detail, DetailGrid } from "@/components/crm/detail";
 import { CrmDisciplinePanel } from "@/components/crm/discipline/panel";
-import { TaskActivityTable } from "@/components/tasks/task-activity-table";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { EmptyTableRow, TableCard } from "@/components/ui/data-table";
@@ -88,9 +87,7 @@ export default async function DesignerPage({ params, searchParams }: DesignerPag
           <TabsTrigger value="audit">История изменений</TabsTrigger>
         </TabsList>
         <TabsContent value="main">
-          <Card>
-            <CardHeader><CardTitle>Контакт</CardTitle></CardHeader>
-            <CardContent>
+          <EntityInfoCard title="Контакт">
               <DetailGrid>
                 <Detail label="Студия" value={designer.studio} />
                 <Detail label="Роль" value={designerRoleLabels[designer.role]} />
@@ -102,13 +99,10 @@ export default async function DesignerPage({ params, searchParams }: DesignerPag
                 <Detail label="Ответственный" value={designer.responsible.name} />
                 <Detail label="Создал" value={designer.createdBy.name} />
               </DetailGrid>
-            </CardContent>
-          </Card>
+          </EntityInfoCard>
         </TabsContent>
         <TabsContent value="pipeline">
-          <Card>
-            <CardHeader><CardTitle>Отношения</CardTitle></CardHeader>
-            <CardContent>
+          <EntityInfoCard title="Отношения">
               <DetailGrid>
                 <Detail label="Этап" value={designerRelationshipStageLabels[designer.relationshipStage]} />
                 <Detail label="Потенциал" value={designerPotentialLabels[designer.potential]} />
@@ -117,24 +111,16 @@ export default async function DesignerPage({ params, searchParams }: DesignerPag
                 <Detail label="Последнее касание" value={formatRussianDate(designer.lastTouchAt)} />
                 <Detail label="Следующий шаг" value={`${formatRussianDate(designer.nextStepAt)}: ${designer.nextStepText ?? ""}`} />
               </DetailGrid>
-            </CardContent>
-          </Card>
+          </EntityInfoCard>
         </TabsContent>
         <TabsContent value="touches">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle>Касания и задачи</CardTitle>
-              {canCreateTask(user) ? (
-                <TaskQuickActions
-                  taskHref={`/tasks/new?designerId=${designer.id}&responsibleId=${designer.responsibleId}`}
-                  touchHref={`/tasks/new?recordType=TOUCH&designerId=${designer.id}&responsibleId=${designer.responsibleId}`}
-                />
-              ) : null}
-            </CardHeader>
-            <CardContent className="p-0">
-              <TaskActivityTable items={designer.tasks} emptyText="По этой сущности пока нет задач" />
-            </CardContent>
-          </Card>
+          <EntityTasksCard
+            title="Касания и задачи"
+            items={designer.tasks}
+            canCreate={canCreateTask(user)}
+            taskHref={`/tasks/new?designerId=${designer.id}&responsibleId=${designer.responsibleId}`}
+            touchHref={`/tasks/new?recordType=TOUCH&designerId=${designer.id}&responsibleId=${designer.responsibleId}`}
+          />
         </TabsContent>
         <TabsContent value="objects">
           <TableCard title="Переданные объекты">

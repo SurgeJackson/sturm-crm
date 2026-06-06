@@ -16,7 +16,7 @@ export function TableCard({
   return (
     <Card>
       {title || actions ? (
-        <CardHeader className={actions ? "flex flex-row items-center justify-between" : undefined}>
+        <CardHeader className={actions ? "flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between" : undefined}>
           {title ? <CardTitle>{title}</CardTitle> : <div />}
           {actions}
         </CardHeader>
