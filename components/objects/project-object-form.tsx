@@ -48,8 +48,11 @@ export function ProjectObjectForm({
     <form action={formAction} className="grid gap-5">
       <FormMessage state={state} />
 
-      <FormSection>
+      <FormSection title="Объект" description="Название, тип и адрес проектной продажи.">
         <ObjectIdentityFields state={state} projectObject={projectObject} />
+      </FormSection>
+
+      <FormSection title="Связи и ответственность" description="Клиент, дизайнер и ответственный менеджер STURM.">
         <ObjectRelationsFields
           state={state}
           projectObject={projectObject}
@@ -59,6 +62,9 @@ export function ProjectObjectForm({
           responsibleId={responsibleId}
           canChangeResponsible={canChangeResponsible}
         />
+      </FormSection>
+
+      <FormSection title="Статус и сроки" description="Стадия объекта, бюджет и плановые даты реализации.">
         <ObjectStatusFields state={state} projectObject={projectObject} />
       </FormSection>
 
@@ -69,7 +75,7 @@ export function ProjectObjectForm({
         selectedValues={selectedCategories}
       />
 
-      <FormSection>
+      <FormSection title="Файлы и комментарии">
         <TextareaField
           name="files"
           label="Файлы объекта"
@@ -79,7 +85,11 @@ export function ProjectObjectForm({
         <TextareaField name="comment" label="Комментарий" defaultValue={projectObject?.comment ?? ""} />
       </FormSection>
 
-      <FormActions isPending={isPending} submitLabel={submitLabel} />
+      <FormActions
+        isPending={isPending}
+        submitLabel={submitLabel}
+        cancelHref={projectObject ? `/objects/${projectObject.id}` : "/objects"}
+      />
     </form>
   );
 }

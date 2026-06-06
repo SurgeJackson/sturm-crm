@@ -1,46 +1,50 @@
 import Link from "next/link";
-import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { FilterActions, FilterBar } from "@/components/ui/filter-bar";
-import { Input } from "@/components/ui/input";
-import { NativeSelect } from "@/components/ui/native-select";
+import {
+  FilterActions,
+  FilterBar,
+  FilterDateInput,
+  FilterSearchInput,
+  FilterSelect,
+  filterShortcutHref,
+  type ActiveFilter
+} from "@/components/ui/filter-bar";
 import { taskPriorityOptions, taskRecordTypeOptions, taskStatusOptions } from "@/modules/crm/options";
 import type { TaskListSearchParams } from "@/modules/tasks/queries";
 
 type UserOption = { id: string; name: string };
 
 function currentUrl(params: TaskListSearchParams, patch: Record<string, string | undefined>) {
-  const next = new URLSearchParams();
-  for (const [key, value] of Object.entries({ ...params, ...patch })) {
-    if (value) next.set(key, value);
-  }
-  return `/tasks?${next.toString()}`;
+  return filterShortcutHref("/tasks", params, patch);
+}
+
+function optionLabel(options: Array<{ value: string; label: string }>, value?: string) {
+  return options.find((option) => option.value === value)?.label ?? value;
 }
 
 export function TasksFilters({ params, users }: { params: TaskListSearchParams; users: UserOption[] }) {
+  const activeFilters: ActiveFilter[] = [
+    params.q ? { key: "q", label: "Поиск", value: params.q, href: currentUrl(params, { q: undefined, page: undefined }) } : null,
+    params.recordType ? { key: "recordType", label: "Тип", value: optionLabel(taskRecordTypeOptions, params.recordType), href: currentUrl(params, { recordType: undefined, page: undefined }) } : null,
+    params.responsibleId ? { key: "responsibleId", label: "Ответственный", value: users.find((user) => user.id === params.responsibleId)?.name ?? params.responsibleId, href: currentUrl(params, { responsibleId: undefined, page: undefined }) } : null,
+    params.status ? { key: "status", label: "Статус", value: optionLabel(taskStatusOptions, params.status), href: currentUrl(params, { status: undefined, page: undefined }) } : null,
+    params.priority ? { key: "priority", label: "Приоритет", value: optionLabel(taskPriorityOptions, params.priority), href: currentUrl(params, { priority: undefined, page: undefined }) } : null,
+    params.due ? { key: "due", label: "Дата", value: params.due, href: currentUrl(params, { due: undefined, page: undefined }) } : null,
+    params.today === "1" ? { key: "today", label: "Период", value: "На сегодня", href: currentUrl(params, { today: undefined, page: undefined }) } : null,
+    params.overdue === "1" ? { key: "overdue", label: "Срок", value: "Просроченные", href: currentUrl(params, { overdue: undefined, page: undefined }) } : null,
+    params.noResult === "1" ? { key: "noResult", label: "Результат", value: "Без результата", href: currentUrl(params, { noResult: undefined, page: undefined }) } : null
+  ].filter(Boolean) as ActiveFilter[];
+
   return (
-    <FilterBar className="lg:grid-cols-4">
-      <div className="relative lg:col-span-2">
-        <Search className="pointer-events-none absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-        <Input className="pl-9" name="q" defaultValue={params.q ?? ""} placeholder="Поиск по названию, описанию, результату" />
-      </div>
-      <NativeSelect name="recordType" defaultValue={params.recordType ?? ""}>
-        <option value="">Все записи</option>
-        {taskRecordTypeOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
-      </NativeSelect>
-      <NativeSelect name="responsibleId" defaultValue={params.responsibleId ?? ""}>
-        <option value="">Все ответственные</option>
+    <FilterBar className="lg:grid-cols-4" activeFilters={activeFilters} resetHref="/tasks">
+      <FilterSearchInput className="lg:col-span-2" defaultValue={params.q} placeholder="Поиск по названию, описанию, результату" />
+      <FilterSelect name="recordType" defaultValue={params.recordType} placeholder="Все записи" options={taskRecordTypeOptions} />
+      <FilterSelect name="responsibleId" defaultValue={params.responsibleId} placeholder="Все ответственные">
         {users.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}
-      </NativeSelect>
-      <NativeSelect name="status" defaultValue={params.status ?? ""}>
-        <option value="">Все статусы</option>
-        {taskStatusOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
-      </NativeSelect>
-      <NativeSelect name="priority" defaultValue={params.priority ?? ""}>
-        <option value="">Все приоритеты</option>
-        {taskPriorityOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
-      </NativeSelect>
-      <Input name="due" type="date" defaultValue={params.due ?? ""} />
+      </FilterSelect>
+      <FilterSelect name="status" defaultValue={params.status} placeholder="Все статусы" options={taskStatusOptions} />
+      <FilterSelect name="priority" defaultValue={params.priority} placeholder="Все приоритеты" options={taskPriorityOptions} />
+      <FilterDateInput name="due" label="Дата срока" defaultValue={params.due} />
       <FilterActions className="lg:col-span-4">
         <Button type="submit" variant="secondary">Применить</Button>
         <Button asChild variant="outline"><Link href="/tasks">Сбросить</Link></Button>

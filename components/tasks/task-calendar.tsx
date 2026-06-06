@@ -2,9 +2,15 @@ import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { FilterCheckbox } from "@/components/ui/filter-bar";
-import { Input } from "@/components/ui/input";
-import { NativeSelect } from "@/components/ui/native-select";
+import {
+  FilterActions,
+  FilterBar,
+  FilterCheckbox,
+  FilterDateInput,
+  FilterSelect,
+  filterShortcutHref,
+  type ActiveFilter
+} from "@/components/ui/filter-bar";
 import { TaskActivityTable } from "@/components/tasks/task-activity-table";
 import type { getTaskCalendar, getTaskFormContext, TaskCalendarSearchParams } from "@/modules/tasks/queries";
 import { formatRussianDate } from "@/utils/date";
@@ -25,25 +31,26 @@ export function TaskCalendarFilters({
   params: TaskCalendarSearchParams;
   users: TaskFormContext["users"];
 }) {
+  const activeFilters: ActiveFilter[] = [
+    params.date ? { key: "date", label: "Неделя", value: params.date, href: filterShortcutHref("/tasks/calendar", params, { date: undefined }) } : null,
+    params.responsibleId ? { key: "responsibleId", label: "Ответственный", value: users.find((user) => user.id === params.responsibleId)?.name ?? params.responsibleId, href: filterShortcutHref("/tasks/calendar", params, { responsibleId: undefined }) } : null,
+    params.mine === "1" ? { key: "mine", label: "Режим", value: "Мои задачи", href: filterShortcutHref("/tasks/calendar", params, { mine: undefined }) } : null
+  ].filter(Boolean) as ActiveFilter[];
+
   return (
-    <Card>
-      <CardContent className="pt-5">
-        <form className="grid gap-3 md:grid-cols-4">
-          <Input name="date" type="date" defaultValue={params.date ?? new Date().toISOString().slice(0, 10)} />
-          <NativeSelect name="responsibleId" defaultValue={params.responsibleId ?? ""}>
-            <option value="">Все ответственные</option>
+    <FilterBar className="md:grid-cols-4" activeFilters={activeFilters} resetHref="/tasks/calendar">
+      <FilterDateInput name="date" label="Дата недели" defaultValue={params.date ?? new Date().toISOString().slice(0, 10)} />
+      <FilterSelect name="responsibleId" defaultValue={params.responsibleId} placeholder="Все ответственные">
             {users.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}
-          </NativeSelect>
-          <FilterCheckbox name="mine" defaultChecked={params.mine === "1"}>
-            Мои задачи
-          </FilterCheckbox>
-          <div className="flex gap-2">
-            <Button type="submit" variant="secondary">Показать</Button>
-            <Button asChild variant="outline"><Link href="/tasks/calendar">Сбросить</Link></Button>
-          </div>
-        </form>
-      </CardContent>
-    </Card>
+      </FilterSelect>
+      <FilterCheckbox name="mine" defaultChecked={params.mine === "1"}>
+        Мои задачи
+      </FilterCheckbox>
+      <FilterActions className="md:col-span-1">
+        <Button type="submit" variant="secondary">Показать</Button>
+        <Button asChild variant="outline"><Link href="/tasks/calendar">Сбросить</Link></Button>
+      </FilterActions>
+    </FilterBar>
   );
 }
 

@@ -13,7 +13,7 @@ export function TaskResultFields({
   recordType: string;
 }) {
   return (
-    <FormSection>
+    <FormSection title="Результат и следующий шаг" description="Следующий шаг будет создан как отдельная задача после сохранения.">
       <TextareaField
         name="result"
         label={recordType === "TOUCH" ? "Результат касания *" : "Результат выполнения"}

@@ -53,7 +53,7 @@ export function DesignerForm({
     <form action={formAction} className="grid gap-5">
       <FormMessage state={state} />
 
-      <FormSection>
+      <FormSection title="Контакт" description="Базовые данные дизайнера или бюро.">
         <TextField name="name" label="Имя *" state={state} defaultValue={designer?.name ?? ""} required />
         <TextField name="studio" label="Студия / бюро" defaultValue={designer?.studio ?? ""} />
         <SelectField name="role" label="Роль *" options={designerRoleOptions} defaultValue={designer?.role ?? "DESIGNER"} />
@@ -62,6 +62,9 @@ export function DesignerForm({
         <TextField name="messenger" label="Мессенджер" defaultValue={designer?.messenger ?? ""} />
         <TextField name="email" label="Email" state={state} type="email" defaultValue={designer?.email ?? ""} />
         <TextField name="website" label="Сайт" defaultValue={designer?.website ?? ""} />
+      </FormSection>
+
+      <FormSection title="Профиль и отношения" description="Классификация партнера, этап взаимодействия и ответственный менеджер.">
         <SelectField
           name="source"
           label="Источник *"
@@ -99,6 +102,9 @@ export function DesignerForm({
           canChangeResponsible={canChangeResponsible}
           state={state}
         />
+      </FormSection>
+
+      <FormSection title="Следующий шаг" description="Поля обязательны для контроля CRM-дисциплины по дизайнеру.">
         <DateField name="firstContactAt" label="Первый контакт" defaultValue={dateInputValue(designer?.firstContactAt)} />
         <DateField name="lastTouchAt" label="Последнее касание" defaultValue={dateInputValue(designer?.lastTouchAt)} />
         <DateField
@@ -118,12 +124,16 @@ export function DesignerForm({
         selectedValues={selectedSpecializations}
       />
 
-      <FormSection>
+      <FormSection title="Условия и комментарии">
         <TextareaField name="cooperationTerms" label="Условия сотрудничества" defaultValue={designer?.cooperationTerms ?? ""} />
         <TextareaField name="comment" label="Комментарий" defaultValue={designer?.comment ?? ""} />
       </FormSection>
 
-      <FormActions isPending={isPending} submitLabel={submitLabel} />
+      <FormActions
+        isPending={isPending}
+        submitLabel={submitLabel}
+        cancelHref={designer ? `/designers/${designer.id}` : "/designers"}
+      />
     </form>
   );
 }

@@ -39,6 +39,7 @@ export default async function NewObjectParticipantPage({ params, searchParams }:
         defaultParticipantType={participantType(query.type)}
         users={users}
         currentUserId={user.id}
+        objectId={id}
         submitLabel="Сохранить"
       />
     </FormPageShell>

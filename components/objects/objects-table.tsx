@@ -33,17 +33,18 @@ export function ObjectsTable({ objects }: { objects: ObjectItem[] }) {
                 href={`/objects/${object.id}`}
                 title={object.title}
                 description={[object.city, object.address].filter(Boolean).join(", ")}
+                cellLabel="Объект"
               />
-              <TableCell>{objectTypeLabels[object.objectType]}</TableCell>
-              <TextLinkCell href={`/clients/${object.client.id}`}>{object.client.name}</TextLinkCell>
+              <TableCell label="Тип">{objectTypeLabels[object.objectType]}</TableCell>
+              <TextLinkCell cellLabel="Клиент" href={`/clients/${object.client.id}`}>{object.client.name}</TextLinkCell>
               {object.designer ? (
-                <TextLinkCell href={`/designers/${object.designer.id}`}>{object.designer.name}</TextLinkCell>
+                <TextLinkCell cellLabel="Дизайнер" href={`/designers/${object.designer.id}`}>{object.designer.name}</TextLinkCell>
               ) : (
-                <MutedCell>Не выбран</MutedCell>
+                <MutedCell cellLabel="Дизайнер">Не выбран</MutedCell>
               )}
-              <TableCell>{object.responsible.name}</TableCell>
-              <BadgeCell>{objectStageLabels[object.stage]}</BadgeCell>
-              <BadgeCell variant={objectStatusVariant(object.status)}>{objectStatusLabels[object.status]}</BadgeCell>
+              <TableCell label="Ответственный">{object.responsible.name}</TableCell>
+              <BadgeCell cellLabel="Стадия">{objectStageLabels[object.stage]}</BadgeCell>
+              <BadgeCell cellLabel="Статус" variant={objectStatusVariant(object.status)}>{objectStatusLabels[object.status]}</BadgeCell>
               <CrmDisciplineCell violations={object.crmViolations} />
               <BonusEligibilityCell violations={object.crmViolations} />
             </TableRow>

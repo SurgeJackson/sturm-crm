@@ -42,18 +42,19 @@ export function DesignersReportTable({ designers }: { designers: DesignersReport
         ) : designers.map((designer) => (
           <TableRow key={designer.id}>
             <EntityLinkCell
+              cellLabel="Дизайнер"
               href={`/designers/${designer.id}`}
               title={designer.name}
               description={designer.studio}
             />
-            <BadgeCell>{designerRelationshipStageLabels[designer.relationshipStage]}</BadgeCell>
-            <BadgeCell variant={designerPotentialVariant(designer.potential)}>
+            <BadgeCell cellLabel="Этап">{designerRelationshipStageLabels[designer.relationshipStage]}</BadgeCell>
+            <BadgeCell cellLabel="Потенциал" variant={designerPotentialVariant(designer.potential)}>
               {designerPotentialLabels[designer.potential]}
             </BadgeCell>
-            <TableCell>{designerLoyaltyLabels[designer.loyalty]}</TableCell>
-            <CountCell value={designer.projectObjects.length} />
-            <CountCell value={designer.proposals.length} />
-            <DateCell>{formatRussianDate(designer.lastTouchAt)}</DateCell>
+            <TableCell label="Лояльность">{designerLoyaltyLabels[designer.loyalty]}</TableCell>
+            <CountCell cellLabel="Объекты" value={designer.projectObjects.length} />
+            <CountCell cellLabel="КП" value={designer.proposals.length} />
+            <DateCell cellLabel="Последнее касание">{formatRussianDate(designer.lastTouchAt)}</DateCell>
           </TableRow>
         ))}
       </TableBody>
@@ -81,14 +82,14 @@ export function ObjectsReportTable({ objects }: { objects: ObjectsReport["object
           <EmptyTableRow colSpan={8}>Объекты не найдены.</EmptyTableRow>
         ) : objects.map((object) => (
           <TableRow key={object.id}>
-            <EntityLinkCell href={`/objects/${object.id}`} title={object.title} />
-            <TableCell>{objectTypeLabels[object.objectType]}</TableCell>
-            <BadgeCell>{objectStageLabels[object.stage]}</BadgeCell>
-            <BadgeCell variant={objectStatusVariant(object.status)}>{objectStatusLabels[object.status]}</BadgeCell>
-            <TableCell>{object.client.name}</TableCell>
-            <TableCell>{object.designer?.name ?? "Нет"}</TableCell>
-            <CountCell value={object.tasks.length} />
-            <CountCell value={object.participants.length} />
+            <EntityLinkCell cellLabel="Объект" href={`/objects/${object.id}`} title={object.title} />
+            <TableCell label="Тип">{objectTypeLabels[object.objectType]}</TableCell>
+            <BadgeCell cellLabel="Стадия">{objectStageLabels[object.stage]}</BadgeCell>
+            <BadgeCell cellLabel="Статус" variant={objectStatusVariant(object.status)}>{objectStatusLabels[object.status]}</BadgeCell>
+            <TableCell label="Клиент">{object.client.name}</TableCell>
+            <TableCell label="Дизайнер">{object.designer?.name ?? "Нет"}</TableCell>
+            <CountCell cellLabel="Задачи" value={object.tasks.length} />
+            <CountCell cellLabel="Участники" value={object.participants.length} />
           </TableRow>
         ))}
       </TableBody>

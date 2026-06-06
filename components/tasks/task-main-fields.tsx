@@ -44,7 +44,7 @@ export function TaskMainFields({
   const defaultStatus = task?.status ?? (recordType === "TOUCH" ? "RECORDED" : "NEW");
 
   return (
-    <FormSection>
+    <FormSection title="Основная запись" description="Тип, действие, ответственный и срок выполнения.">
       <SelectField
         name="recordType"
         label="Тип записи *"

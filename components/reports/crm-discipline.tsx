@@ -95,13 +95,13 @@ export function CrmProblemsTable({ problems }: { problems: CrmProblem[] }) {
           <EmptyTableRow colSpan={7}>Нарушений нет.</EmptyTableRow>
         ) : problems.map((problem) => (
           <TableRow key={`${problem.area}-${problem.href}-${problem.issue}`}>
-            <TextCell>{problem.area}</TextCell>
-            <TextCell>{problem.issue}</TextCell>
-            <BadgeCell variant={crmSeverityVariant(problem.severity)}>{severityLabels[problem.severity]}</BadgeCell>
-            <TextCell>{problem.responsibleName}</TextCell>
-            <TextCell>{problem.violationCode}</TextCell>
-            <TextCell>{problem.canAffectBonus ? "Влияет" : "Не влияет"}</TextCell>
-            <EntityLinkCell href={problem.href} title={`${problem.entity}: ${problem.title}`} />
+            <TextCell cellLabel="Раздел">{problem.area}</TextCell>
+            <TextCell cellLabel="Проблема">{problem.issue}</TextCell>
+            <BadgeCell cellLabel="Серьезность" variant={crmSeverityVariant(problem.severity)}>{severityLabels[problem.severity]}</BadgeCell>
+            <TextCell cellLabel="Ответственный">{problem.responsibleName}</TextCell>
+            <TextCell cellLabel="Код">{problem.violationCode}</TextCell>
+            <TextCell cellLabel="Премирование">{problem.canAffectBonus ? "Влияет" : "Не влияет"}</TextCell>
+            <EntityLinkCell cellLabel="Запись" href={problem.href} title={`${problem.entity}: ${problem.title}`} />
           </TableRow>
         ))}
       </TableBody>

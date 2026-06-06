@@ -31,6 +31,7 @@ export default async function DealPage({ params, searchParams }: DealPageProps) 
     <EntityDetailShell
       title={deal.title}
       badges={<DealHeaderBadges stage={deal.stage} probability={deal.probability} source={deal.source} />}
+      listHref="/deals"
       editHref={`/deals/${id}/edit`}
       canEdit={canEditRecord(user, deal)}
       actions={canEditRecord(user, deal) && deal.stage !== "LOST" && deal.stage !== "COMPLETED" && canCloseDealAsLost(user) ? (

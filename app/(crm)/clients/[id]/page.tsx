@@ -29,6 +29,7 @@ export default async function ClientPage({ params, searchParams }: ClientPagePro
     <EntityDetailShell
       title={client.name}
       badges={<ClientHeaderBadges status={client.status} clientType={client.clientType} />}
+      listHref="/clients"
       editHref={`/clients/${id}/edit`}
       canEdit={canEditRecord(user, client)}
       archiveAction={archiveAction}

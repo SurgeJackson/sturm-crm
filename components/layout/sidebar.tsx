@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 import {
   BarChart3,
   BriefcaseBusiness,
@@ -9,11 +10,14 @@ import {
   CheckSquare,
   FileText,
   LayoutDashboard,
+  PanelLeftClose,
+  PanelLeftOpen,
   Settings,
   UserRound,
   UsersRound
 } from "lucide-react";
 import type { UserRole } from "@/generated/prisma/client";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { canAccessSettings, canViewReports } from "@/permissions";
 
@@ -38,13 +42,35 @@ type SidebarProps = {
 
 export function Sidebar({ user }: SidebarProps) {
   const pathname = usePathname();
+  const [isCollapsed, setIsCollapsed] = useState(() =>
+    typeof window === "undefined" ? false : localStorage.getItem("sturm-sidebar-collapsed") === "1"
+  );
+
+  function toggleCollapsed() {
+    setIsCollapsed((current) => {
+      const next = !current;
+      localStorage.setItem("sturm-sidebar-collapsed", next ? "1" : "0");
+      return next;
+    });
+  }
 
   return (
-    <aside className="hidden w-72 shrink-0 border-r bg-card lg:block">
-      <div className="flex h-16 items-center border-b px-5">
-        <Link href="/" className="text-lg font-semibold tracking-normal">
+    <aside className={cn("hidden shrink-0 border-r bg-card transition-[width] duration-200 lg:block", isCollapsed ? "w-20" : "w-72")}>
+      <div className={cn("flex h-16 items-center gap-2 border-b px-3", isCollapsed ? "justify-center" : "justify-between")}>
+        <Link href="/" className={cn("min-w-0 text-lg font-semibold tracking-normal", isCollapsed ? "sr-only" : "truncate")}>
           STURM CRM
         </Link>
+        {isCollapsed ? <div className="text-sm font-semibold">S</div> : null}
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          aria-label={isCollapsed ? "Развернуть меню" : "Свернуть меню"}
+          title={isCollapsed ? "Развернуть меню" : "Свернуть меню"}
+          onClick={toggleCollapsed}
+        >
+          {isCollapsed ? <PanelLeftOpen className="h-4 w-4" /> : <PanelLeftClose className="h-4 w-4" />}
+        </Button>
       </div>
       <nav className="space-y-1 p-3">
         {navigation.map((item) => {
@@ -57,19 +83,22 @@ export function Sidebar({ user }: SidebarProps) {
           }
 
           const Icon = item.icon;
-          const isActive = pathname === item.href;
+          const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(`${item.href}/`));
 
           return (
             <Link
               key={item.href}
               href={item.href}
+              title={isCollapsed ? item.label : undefined}
+              aria-label={item.label}
               className={cn(
                 "flex min-h-10 items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground",
+                isCollapsed && "justify-center px-2",
                 isActive && "bg-muted text-foreground"
               )}
             >
               <Icon className="h-4 w-4 shrink-0" />
-              <span className="truncate">{item.label}</span>
+              <span className={cn("truncate", isCollapsed && "sr-only")}>{item.label}</span>
             </Link>
           );
         })}

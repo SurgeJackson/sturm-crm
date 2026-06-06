@@ -41,6 +41,7 @@ export default async function ProposalPage({ params, searchParams }: ProposalPag
     <EntityDetailShell
       title={proposal.proposalNumber}
       badges={<ProposalHeaderBadges status={proposal.status} version={proposal.version} amount={proposal.amount} />}
+      listHref="/proposals"
       editHref={`/proposals/${id}/edit`}
       canEdit={canEditRecord(user, proposal)}
       actions={canEditRecord(user, proposal) ? (

@@ -1,11 +1,33 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
-import { FilterActions, FilterBar, FilterSelect } from "@/components/ui/filter-bar";
-import { Input } from "@/components/ui/input";
+import {
+  FilterActions,
+  FilterBar,
+  FilterDateInput,
+  FilterSelect,
+  filterShortcutHref,
+  type ActiveFilter
+} from "@/components/ui/filter-bar";
 import type { ReportSearchParams } from "@/modules/reports/queries";
 
 type Option = { id: string; name: string; email?: string; role?: string };
+
+const reportFilterLabels: Record<string, string> = {
+  from: "С",
+  to: "По",
+  responsibleId: "Ответственный",
+  stage: "Стадия",
+  status: "Статус",
+  source: "Источник",
+  probability: "Вероятность",
+  type: "Тип",
+  entity: "Сущность",
+  bonusStatus: "Премия",
+  severity: "Серьезность",
+  actionType: "Действие",
+  violationCode: "Код"
+};
 
 export function ReportPeriodFilter({
   params,
@@ -18,10 +40,19 @@ export function ReportPeriodFilter({
   children?: ReactNode;
   actionPath: string;
 }) {
+  const activeFilters: ActiveFilter[] = Object.entries(params)
+    .filter(([, value]) => Boolean(value))
+    .map(([key, value]) => ({
+      key,
+      label: reportFilterLabels[key] ?? key,
+      value: key === "responsibleId" ? users.find((user) => user.id === value)?.name ?? value : value,
+      href: filterShortcutHref(actionPath, params, { [key]: undefined })
+    }));
+
   return (
-    <FilterBar>
-      <Input name="from" type="date" defaultValue={params.from ?? ""} aria-label="Дата с" />
-      <Input name="to" type="date" defaultValue={params.to ?? ""} aria-label="Дата по" />
+    <FilterBar activeFilters={activeFilters} resetHref={actionPath}>
+      <FilterDateInput name="from" label="Дата с" defaultValue={params.from} />
+      <FilterDateInput name="to" label="Дата по" defaultValue={params.to} />
       <FilterSelect name="responsibleId" defaultValue={params.responsibleId} placeholder="Все ответственные">
         {users.map((user) => (
           <option key={user.id} value={user.id}>

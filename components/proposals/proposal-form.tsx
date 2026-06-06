@@ -59,7 +59,7 @@ export function ProposalForm({
     <form action={formAction} className="grid gap-5">
       <FormMessage state={state} />
 
-      <FormSection>
+      <FormSection title="Сделка и ответственный" description="КП наследует контекст клиента, объекта и дизайнера из выбранной сделки.">
         <ProposalDealFields
           state={state}
           deals={deals}
@@ -71,6 +71,9 @@ export function ProposalForm({
           canChangeResponsible={canChangeResponsible}
           selectedDeal={selectedDeal}
         />
+      </FormSection>
+
+      <FormSection title="Коммерческие условия" description="Статус, сумма, скидки и получатель КП.">
         <ProposalCommercialFields
           state={state}
           proposal={proposal}
@@ -79,12 +82,21 @@ export function ProposalForm({
           setStatus={setStatus}
           isSent={isSent}
         />
+      </FormSection>
+
+      <FormSection title="Отправка, файл и результат" description="Поля отправки обязательны для отправленного КП и follow-up контроля.">
         <ProposalDeliveryFields state={state} proposal={proposal} isSent={isSent} isDeclined={isDeclined} />
       </FormSection>
 
-      <TextareaField name="comment" label="Комментарий" defaultValue={proposal?.comment ?? ""} />
+      <FormSection title="Комментарий" columns={1}>
+        <TextareaField name="comment" label="Комментарий" defaultValue={proposal?.comment ?? ""} />
+      </FormSection>
 
-      <FormActions isPending={isPending} submitLabel={submitLabel} />
+      <FormActions
+        isPending={isPending}
+        submitLabel={submitLabel}
+        cancelHref={proposal ? `/proposals/${proposal.id}` : "/proposals"}
+      />
     </form>
   );
 }

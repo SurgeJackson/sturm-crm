@@ -33,15 +33,15 @@ export function ProposalsReportTable({ proposals }: { proposals: ProposalsReport
           <EmptyTableRow colSpan={7}>КП не найдены.</EmptyTableRow>
         ) : proposals.map((proposal) => (
           <TableRow key={proposal.id}>
-            <EntityLinkCell href={`/proposals/${proposal.id}`} title={proposal.proposalNumber} />
-            <BadgeCell variant={proposalStatusVariant(proposal.status)}>
+            <EntityLinkCell cellLabel="КП" href={`/proposals/${proposal.id}`} title={proposal.proposalNumber} />
+            <BadgeCell cellLabel="Статус" variant={proposalStatusVariant(proposal.status)}>
               {commercialProposalStatusLabels[proposal.status]}
             </BadgeCell>
-            <TableCell>{proposal.client.name}</TableCell>
-            <TableCell>{proposal.deal.title}</TableCell>
-            <MoneyCell value={proposal.amount} />
-            <DateCell>{formatRussianDate(proposal.nextTouchAt)}</DateCell>
-            <TableCell>{proposal.responsible.name}</TableCell>
+            <TableCell label="Клиент">{proposal.client.name}</TableCell>
+            <TableCell label="Сделка">{proposal.deal.title}</TableCell>
+            <MoneyCell cellLabel="Сумма" value={proposal.amount} />
+            <DateCell cellLabel="Follow-up">{formatRussianDate(proposal.nextTouchAt)}</DateCell>
+            <TableCell label="Ответственный">{proposal.responsible.name}</TableCell>
           </TableRow>
         ))}
       </TableBody>

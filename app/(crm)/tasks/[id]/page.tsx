@@ -47,6 +47,7 @@ export default async function TaskPage({ params, searchParams }: TaskPageProps) 
     <EntityDetailShell
       title={task.title}
       badges={<TaskHeaderBadges recordType={task.recordType} actionType={task.actionType} status={task.status} />}
+      listHref="/tasks"
       editHref={`/tasks/${id}/edit`}
       canEdit={canEditRecord(user, task)}
       actions={canCancelTask(user, task) && task.status !== "CANCELLED" ? (

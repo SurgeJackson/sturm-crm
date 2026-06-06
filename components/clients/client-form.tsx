@@ -49,13 +49,16 @@ export function ClientForm({
     <form action={formAction} className="grid gap-5">
       <FormMessage state={state} />
 
-      <FormSection>
+      <FormSection title="Контакт" description="Идентификация клиента и основные способы связи.">
         <TextField name="name" label="Имя / название *" defaultValue={client?.name ?? ""} state={state} required />
         <SelectField name="clientType" label="Тип клиента *" defaultValue={client?.clientType ?? "INDIVIDUAL"} options={clientTypeOptions} state={state} />
         <TextField name="phone" label="Телефон" defaultValue={client?.phone ?? ""} state={state} />
         <TextField name="messenger" label="Мессенджер" defaultValue={client?.messenger ?? ""} state={state} />
         <TextField name="email" label="Email" type="email" defaultValue={client?.email ?? ""} state={state} />
         <TextField name="city" label="Город" defaultValue={client?.city ?? ""} />
+      </FormSection>
+
+      <FormSection title="Учет и связи" description="Источник, статус, ответственный и связанный дизайнер.">
         <SelectField name="source" label="Источник *" defaultValue={client?.source ?? "SHOWROOM"} options={clientSourceOptions} state={state} />
         <SelectField name="status" label="Статус *" defaultValue={client?.status ?? "NEW"} options={clientStatusOptions} state={state} />
         <ResponsibleField
@@ -72,13 +75,22 @@ export function ClientForm({
             </option>
           ))}
         </SelectField>
+      </FormSection>
+
+      <FormSection title="Контактный цикл" description="Даты помогают контролировать CRM-дисциплину и follow-up.">
         <DateField name="lastContactAt" label="Последний контакт" defaultValue={dateInputValue(client?.lastContactAt)} />
         <DateField name="nextContactAt" label="Следующий контакт" defaultValue={dateInputValue(client?.nextContactAt)} />
       </FormSection>
 
-      <TextareaField name="comment" label="Комментарий" defaultValue={client?.comment ?? ""} />
+      <FormSection title="Заметки" columns={1}>
+        <TextareaField name="comment" label="Комментарий" defaultValue={client?.comment ?? ""} />
+      </FormSection>
 
-      <FormActions isPending={isPending} submitLabel={submitLabel} />
+      <FormActions
+        isPending={isPending}
+        submitLabel={submitLabel}
+        cancelHref={client ? `/clients/${client.id}` : "/clients"}
+      />
     </form>
   );
 }

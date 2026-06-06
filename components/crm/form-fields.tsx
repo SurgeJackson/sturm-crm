@@ -140,10 +140,30 @@ export function SelectField({
   );
 }
 
-export function FormSection({ children, columns = 2 }: { children: ReactNode; columns?: 1 | 2 }) {
+export function FormSection({
+  children,
+  columns = 2,
+  title,
+  description,
+  className
+}: {
+  children: ReactNode;
+  columns?: 1 | 2;
+  title?: string;
+  description?: string;
+  className?: string;
+}) {
   return (
-    <div className={columns === 1 ? "grid gap-4" : "grid gap-4 md:grid-cols-2"}>
-      {children}
-    </div>
+    <fieldset className={cn("space-y-4", className)}>
+      {title || description ? (
+        <div>
+          {title ? <legend className="text-sm font-semibold">{title}</legend> : null}
+          {description ? <p className="mt-1 text-xs text-muted-foreground">{description}</p> : null}
+        </div>
+      ) : null}
+      <div className={columns === 1 ? "grid gap-4" : "grid gap-4 md:grid-cols-2"}>
+        {children}
+      </div>
+    </fieldset>
   );
 }

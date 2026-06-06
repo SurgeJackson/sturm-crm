@@ -29,6 +29,7 @@ export default async function DesignerPage({ params, searchParams }: DesignerPag
     <EntityDetailShell
       title={designer.name}
       badges={<DesignerHeaderBadges relationshipStage={designer.relationshipStage} potential={designer.potential} loyalty={designer.loyalty} />}
+      listHref="/designers"
       editHref={`/designers/${id}/edit`}
       canEdit={canEditRecord(user, designer)}
       archiveAction={archiveAction}

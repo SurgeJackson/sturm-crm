@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
-import { Archive, Edit } from "lucide-react";
+import { Archive, Edit, Table2 } from "lucide-react";
 import { CrmDisciplinePanel } from "@/components/crm/discipline/panel";
 import { PageNoticeStack, type PageNotice } from "@/components/layout/page-notice";
 import { Button } from "@/components/ui/button";
@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 export function EntityPageHeader({
   title,
   badges,
+  listHref,
+  listLabel = "К таблице",
   editHref,
   canEdit,
   archiveAction,
@@ -16,6 +18,8 @@ export function EntityPageHeader({
 }: {
   title: ReactNode;
   badges?: ReactNode;
+  listHref?: string;
+  listLabel?: string;
   editHref?: string;
   canEdit?: boolean;
   archiveAction?: () => Promise<void>;
@@ -29,6 +33,14 @@ export function EntityPageHeader({
         {badges ? <div className="mt-2 flex flex-wrap gap-2">{badges}</div> : null}
       </div>
       <div className="flex flex-wrap gap-2 sm:justify-end">
+        {listHref ? (
+          <Button asChild variant="outline">
+            <Link href={listHref}>
+              <Table2 className="h-4 w-4" />
+              {listLabel}
+            </Link>
+          </Button>
+        ) : null}
         {canEdit && editHref ? (
           <Button asChild variant="outline">
             <Link href={editHref}>
@@ -54,6 +66,8 @@ export function EntityPageHeader({
 export function EntityDetailShell({
   title,
   badges,
+  listHref,
+  listLabel,
   editHref,
   canEdit,
   archiveAction,
@@ -65,6 +79,8 @@ export function EntityDetailShell({
 }: {
   title: ReactNode;
   badges?: ReactNode;
+  listHref?: string;
+  listLabel?: string;
   editHref?: string;
   canEdit?: boolean;
   archiveAction?: () => Promise<void>;
@@ -79,6 +95,8 @@ export function EntityDetailShell({
       <EntityPageHeader
         title={title}
         badges={badges}
+        listHref={listHref}
+        listLabel={listLabel}
         editHref={editHref}
         canEdit={canEdit}
         archiveAction={archiveAction}

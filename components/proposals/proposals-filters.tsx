@@ -1,13 +1,40 @@
 import Link from "next/link";
-import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { FilterActions, FilterBar, FilterSelect, FilterShortcutButtons } from "@/components/ui/filter-bar";
-import { Input } from "@/components/ui/input";
+import {
+  FilterActions,
+  FilterBar,
+  FilterSearchInput,
+  FilterSelect,
+  FilterShortcutButtons,
+  filterShortcutHref,
+  type ActiveFilter
+} from "@/components/ui/filter-bar";
 import { commercialProposalStatusOptions } from "@/modules/crm/options";
 import type { ProposalListSearchParams } from "@/modules/proposals/queries";
 
 type Option = { id: string; name: string };
 type DesignerOption = { id: string; name: string; studio: string | null };
+
+const sortLabels: Record<string, string> = {
+  proposalNumber: "По номеру",
+  amount: "По сумме",
+  nextTouchAt: "По follow-up"
+};
+
+const shortcutLabels: Record<string, string> = {
+  noFile: "Без файла",
+  noFollowUp: "Без follow-up",
+  overdueFollowUp: "Просроченный follow-up",
+  thinking7: "Думает 7+ дней",
+  internalReview: "На проверке",
+  needsRecalculation: "Требуется пересчет",
+  accepted: "Принятые",
+  declined: "Отклоненные"
+};
+
+function optionLabel(options: Array<{ value: string; label: string }>, value?: string) {
+  return options.find((option) => option.value === value)?.label ?? value;
+}
 
 export function ProposalsFilters({
   params,
@@ -24,12 +51,25 @@ export function ProposalsFilters({
   deals: Array<{ id: string; title: string }>;
   designers: DesignerOption[];
 }) {
+  const activeFilters: ActiveFilter[] = [
+    params.q ? { key: "q", label: "Поиск", value: params.q, href: filterShortcutHref("/proposals", params, { q: undefined, page: undefined }) } : null,
+    params.status ? { key: "status", label: "Статус", value: optionLabel(commercialProposalStatusOptions, params.status), href: filterShortcutHref("/proposals", params, { status: undefined, page: undefined }) } : null,
+    params.responsibleId ? { key: "responsibleId", label: "Ответственный", value: users.find((user) => user.id === params.responsibleId)?.name ?? params.responsibleId, href: filterShortcutHref("/proposals", params, { responsibleId: undefined, page: undefined }) } : null,
+    params.clientId ? { key: "clientId", label: "Клиент", value: clients.find((client) => client.id === params.clientId)?.name ?? params.clientId, href: filterShortcutHref("/proposals", params, { clientId: undefined, page: undefined }) } : null,
+    params.objectId ? { key: "objectId", label: "Объект", value: objects.find((object) => object.id === params.objectId)?.title ?? params.objectId, href: filterShortcutHref("/proposals", params, { objectId: undefined, page: undefined }) } : null,
+    params.dealId ? { key: "dealId", label: "Сделка", value: deals.find((deal) => deal.id === params.dealId)?.title ?? params.dealId, href: filterShortcutHref("/proposals", params, { dealId: undefined, page: undefined }) } : null,
+    params.designerId ? { key: "designerId", label: "Дизайнер", value: designers.find((designer) => designer.id === params.designerId)?.name ?? params.designerId, href: filterShortcutHref("/proposals", params, { designerId: undefined, page: undefined }) } : null,
+    params.sort ? { key: "sort", label: "Сортировка", value: sortLabels[params.sort] ?? params.sort, href: filterShortcutHref("/proposals", params, { sort: undefined, page: undefined }) } : null,
+    ...Object.entries(shortcutLabels).map(([key, label]) =>
+      params[key as keyof ProposalListSearchParams] === "1"
+        ? { key, label: "Быстрый фильтр", value: label, href: filterShortcutHref("/proposals", params, { [key]: undefined, page: undefined }) }
+        : null
+    )
+  ].filter(Boolean) as ActiveFilter[];
+
   return (
-    <FilterBar className="lg:grid-cols-4">
-      <div className="relative lg:col-span-2">
-        <Search className="pointer-events-none absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-        <Input className="pl-9" name="q" defaultValue={params.q ?? ""} placeholder="Поиск по номеру, клиенту, объекту, сделке" />
-      </div>
+    <FilterBar className="lg:grid-cols-4" activeFilters={activeFilters} resetHref="/proposals">
+      <FilterSearchInput className="lg:col-span-2" defaultValue={params.q} placeholder="Поиск по номеру, клиенту, объекту, сделке" />
       <FilterSelect name="status" defaultValue={params.status} placeholder="Все статусы" options={commercialProposalStatusOptions} />
       <FilterSelect name="responsibleId" defaultValue={params.responsibleId} placeholder="Все ответственные">
         {users.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}

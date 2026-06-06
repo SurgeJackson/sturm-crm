@@ -160,7 +160,11 @@ export function TaskActivityForm({
 
       <TaskResultFields state={state} task={task} recordType={recordType} />
 
-      <FormActions isPending={isPending} submitLabel={submitLabel} />
+      <FormActions
+        isPending={isPending}
+        submitLabel={submitLabel}
+        cancelHref={task ? `/tasks/${task.id}` : "/tasks"}
+      />
     </form>
   );
 }

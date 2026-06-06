@@ -71,7 +71,7 @@ export function DealForm({
     <form action={formAction} className="grid gap-5">
       <FormMessage state={state} />
 
-      <FormSection>
+      <FormSection title="Связи" description="Сделка должна быть привязана к объекту, клиенту и ответственному.">
         <DealRelationFields
           state={state}
           title={title}
@@ -89,6 +89,9 @@ export function DealForm({
           responsibleId={responsibleId}
           canChangeResponsible={canChangeResponsible}
         />
+      </FormSection>
+
+      <FormSection title="Воронка и следующий шаг" description="Стадия, вероятность, сумма и плановое действие по сделке.">
         <DealPipelineFields
           state={state}
           deal={deal}
@@ -99,9 +102,15 @@ export function DealForm({
         />
       </FormSection>
 
-      <TextareaField name="comment" label="Комментарий" defaultValue={deal?.comment ?? ""} />
+      <FormSection title="Комментарий" columns={1}>
+        <TextareaField name="comment" label="Комментарий" defaultValue={deal?.comment ?? ""} />
+      </FormSection>
 
-      <FormActions isPending={isPending} submitLabel={submitLabel} />
+      <FormActions
+        isPending={isPending}
+        submitLabel={submitLabel}
+        cancelHref={deal ? `/deals/${deal.id}` : "/deals"}
+      />
     </form>
   );
 }

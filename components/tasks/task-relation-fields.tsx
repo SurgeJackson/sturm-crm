@@ -86,7 +86,7 @@ export function TaskRelationFields({
   applyParticipant: (value: string) => void;
 }) {
   return (
-    <FormSection>
+    <FormSection title="Связи CRM" description="Выбор более конкретной сущности автоматически подтянет связанные поля.">
       <RelationSelectField
         name="clientId"
         label="Клиент"

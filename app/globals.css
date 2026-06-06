@@ -74,3 +74,134 @@ body {
 :focus-visible {
   outline-color: hsl(var(--ring));
 }
+
+.responsive-table table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.responsive-table th,
+.responsive-table td {
+  min-width: 0;
+  max-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.responsive-table td > *,
+.responsive-table th > * {
+  max-width: 100%;
+  min-width: 0;
+}
+
+.responsive-table td a,
+.responsive-table th a {
+  overflow-wrap: anywhere;
+}
+
+.responsive-table td[colspan] {
+  max-width: none;
+}
+
+.responsive-table td[data-actions="true"] {
+  text-align: right;
+}
+
+.responsive-table td[data-actions="true"] > * {
+  max-width: 100%;
+}
+
+.responsive-table td[data-actions="true"] .flex {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+@media (max-width: 767px) {
+  .responsive-table {
+    overflow-x: visible;
+  }
+
+  .responsive-table table,
+  .responsive-table thead,
+  .responsive-table tbody,
+  .responsive-table tr,
+  .responsive-table th,
+  .responsive-table td {
+    display: block;
+  }
+
+  .responsive-table thead {
+    display: none;
+  }
+
+  .responsive-table tbody {
+    display: grid;
+    gap: 0.75rem;
+    padding: 0.75rem;
+  }
+
+  .responsive-table tr {
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
+    background: hsl(var(--card));
+    padding: 0.75rem;
+  }
+
+  .responsive-table tr:hover {
+    background: hsl(var(--muted) / 0.35);
+  }
+
+  .responsive-table tr[data-empty="true"] {
+    padding: 0;
+  }
+
+  .responsive-table td {
+    max-width: none;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    border: 0;
+    padding: 0.35rem 0;
+    text-align: right;
+  }
+
+  .responsive-table td:first-child {
+    padding-top: 0;
+  }
+
+  .responsive-table td:last-child {
+    padding-bottom: 0;
+  }
+
+  .responsive-table td[data-label]::before {
+    content: attr(data-label);
+    max-width: 45%;
+    flex: 0 0 auto;
+    text-align: left;
+    font-size: 0.75rem;
+    line-height: 1.25rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .responsive-table td:not([data-label]) {
+    justify-content: flex-start;
+    text-align: left;
+  }
+
+  .responsive-table td[data-actions="true"] {
+    justify-content: flex-end;
+  }
+
+  .responsive-table td[data-actions="true"]::before {
+    display: none;
+  }
+
+  .responsive-table td[colspan] {
+    display: block;
+    width: 100%;
+    padding: 1.5rem 0;
+    text-align: center;
+  }
+}

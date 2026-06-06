@@ -28,18 +28,18 @@ export function ClientsTable({ clients }: { clients: ClientItem[] }) {
         ) : (
           clients.map((client) => (
             <TableRow key={client.id}>
-              <EntityLinkCell href={`/clients/${client.id}`} title={client.name} description={client.city ?? "Город не указан"} />
-              <TableCell>
+              <EntityLinkCell href={`/clients/${client.id}`} title={client.name} description={client.city ?? "Город не указан"} cellLabel="Клиент" />
+              <TableCell label="Контакты">
                 <div>{client.phone ?? client.messenger ?? "Нет контакта"}</div>
                 <div className="text-xs text-muted-foreground">{client.email ?? ""}</div>
               </TableCell>
-              <TableCell>
+              <TableCell label="Тип / источник">
                 <div>{clientTypeLabels[client.clientType]}</div>
                 <div className="text-xs text-muted-foreground">{clientSourceLabels[client.source]}</div>
               </TableCell>
-              <BadgeCell variant={client.status === "ARCHIVED" ? "outline" : "secondary"}>{clientStatusLabels[client.status]}</BadgeCell>
-              <TableCell>{client.responsible.name}</TableCell>
-              <DateCell>{formatRussianDate(client.nextContactAt)}</DateCell>
+              <BadgeCell cellLabel="Статус" variant={client.status === "ARCHIVED" ? "outline" : "secondary"}>{clientStatusLabels[client.status]}</BadgeCell>
+              <TableCell label="Ответственный">{client.responsible.name}</TableCell>
+              <DateCell cellLabel="Следующий контакт">{formatRussianDate(client.nextContactAt)}</DateCell>
               <CrmDisciplineCell violations={client.crmViolations} />
               <BonusEligibilityCell violations={client.crmViolations} />
             </TableRow>

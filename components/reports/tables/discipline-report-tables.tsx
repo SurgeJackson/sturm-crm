@@ -23,9 +23,9 @@ export function MyDisciplineProblemsTable({ problems }: { problems: MyReport["di
           <EmptyTableRow colSpan={3}>Нарушений нет.</EmptyTableRow>
         ) : problems.map((problem) => (
           <TableRow key={`${problem.href}-${problem.issue}`}>
-            <TableCell>{problem.area}</TableCell>
-            <TableCell>{problem.issue}</TableCell>
-            <EntityLinkCell href={problem.href} title={problem.title} />
+            <TableCell label="Раздел">{problem.area}</TableCell>
+            <TableCell label="Проблема">{problem.issue}</TableCell>
+            <EntityLinkCell cellLabel="Запись" href={problem.href} title={problem.title} />
           </TableRow>
         ))}
       </TableBody>
@@ -52,13 +52,13 @@ export function BonusEligibilityRowsTable({ rows }: { rows: BonusEligibilityRepo
           <EmptyTableRow colSpan={7}>Записей нет.</EmptyTableRow>
         ) : rows.map((row) => (
           <TableRow key={`${row.entityType}-${row.href}`}>
-            <TableCell>{row.entity}</TableCell>
-            <EntityLinkCell href={row.href} title={row.title} />
-            <TableCell>{row.responsibleName}</TableCell>
-            <BadgeCell variant={bonusVariant(row.status)}>{bonusEligibilityLabels[row.status]}</BadgeCell>
-            <TableCell>{row.violations.length ? row.violations.join("; ") : "Нет активных нарушений"}</TableCell>
-            <BooleanCell value={row.affectsBonus} />
-            <DateCell>{formatRussianDate(row.detectedAt)}</DateCell>
+            <TableCell label="Сущность">{row.entity}</TableCell>
+            <EntityLinkCell cellLabel="Название" href={row.href} title={row.title} />
+            <TableCell label="Ответственный">{row.responsibleName}</TableCell>
+            <BadgeCell cellLabel="Статус учета" variant={bonusVariant(row.status)}>{bonusEligibilityLabels[row.status]}</BadgeCell>
+            <TableCell label="Нарушения">{row.violations.length ? row.violations.join("; ") : "Нет активных нарушений"}</TableCell>
+            <BooleanCell cellLabel="Влияет на премию" value={row.affectsBonus} />
+            <DateCell cellLabel="Дата обнаружения">{formatRussianDate(row.detectedAt)}</DateCell>
           </TableRow>
         ))}
       </TableBody>

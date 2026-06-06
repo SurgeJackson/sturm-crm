@@ -27,9 +27,9 @@ export function OverdueReportTables({ report }: { report: OverdueReport }) {
             <EmptyTableRow colSpan={3}>Просроченных задач нет.</EmptyTableRow>
           ) : report.tasks.map((task) => (
             <TableRow key={task.id}>
-              <EntityLinkCell href={`/tasks/${task.id}`} title={task.title} />
-              <DateCell>{formatRussianDateTime(task.dueAt)}</DateCell>
-              <TableCell>{task.responsible.name}</TableCell>
+              <EntityLinkCell cellLabel="Задача" href={`/tasks/${task.id}`} title={task.title} />
+              <DateCell cellLabel="Срок">{formatRussianDateTime(task.dueAt)}</DateCell>
+              <TableCell label="Ответственный">{task.responsible.name}</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -48,9 +48,9 @@ export function OverdueReportTables({ report }: { report: OverdueReport }) {
             <EmptyTableRow colSpan={3}>Просроченных follow-up нет.</EmptyTableRow>
           ) : report.proposalFollowUps.map((proposal) => (
             <TableRow key={proposal.id}>
-              <EntityLinkCell href={`/proposals/${proposal.id}`} title={proposal.proposalNumber} />
-              <DateCell>{formatRussianDate(proposal.nextTouchAt)}</DateCell>
-              <TableCell>{proposal.responsible.name}</TableCell>
+              <EntityLinkCell cellLabel="КП" href={`/proposals/${proposal.id}`} title={proposal.proposalNumber} />
+              <DateCell cellLabel="Follow-up">{formatRussianDate(proposal.nextTouchAt)}</DateCell>
+              <TableCell label="Ответственный">{proposal.responsible.name}</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -69,9 +69,9 @@ export function OverdueReportTables({ report }: { report: OverdueReport }) {
             <EmptyTableRow colSpan={3}>Таких сделок нет.</EmptyTableRow>
           ) : report.deals.map((deal) => (
             <TableRow key={deal.id}>
-              <EntityLinkCell href={`/deals/${deal.id}`} title={deal.title} />
-              <DateCell>{formatRussianDate(deal.nextActionAt)}</DateCell>
-              <TableCell>{deal.responsible.name}</TableCell>
+              <EntityLinkCell cellLabel="Сделка" href={`/deals/${deal.id}`} title={deal.title} />
+              <DateCell cellLabel="Дата">{formatRussianDate(deal.nextActionAt)}</DateCell>
+              <TableCell label="Ответственный">{deal.responsible.name}</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -90,9 +90,9 @@ export function OverdueReportTables({ report }: { report: OverdueReport }) {
             <EmptyTableRow colSpan={3}>Дизайнеров без касаний нет.</EmptyTableRow>
           ) : report.designers.map((designer) => (
             <TableRow key={designer.id}>
-              <EntityLinkCell href={`/designers/${designer.id}`} title={designer.name} />
-              <DateCell>{formatRussianDate(designer.lastTouchAt)}</DateCell>
-              <TableCell>{designer.responsible.name}</TableCell>
+              <EntityLinkCell cellLabel="Дизайнер" href={`/designers/${designer.id}`} title={designer.name} />
+              <DateCell cellLabel="Последнее касание">{formatRussianDate(designer.lastTouchAt)}</DateCell>
+              <TableCell label="Ответственный">{designer.responsible.name}</TableCell>
             </TableRow>
           ))}
         </TableBody>

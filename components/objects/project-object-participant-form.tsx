@@ -3,7 +3,6 @@
 import { useActionState, useState } from "react";
 import type { ProjectObjectParticipant, User } from "@/generated/prisma/client";
 import {
-  FormField,
   FormMessage,
   FormSection,
   SelectField,
@@ -11,7 +10,6 @@ import {
   TextField
 } from "@/components/crm/form-fields";
 import { FormActions } from "@/components/crm/form-actions";
-import { NativeSelect } from "@/components/ui/native-select";
 import type { ProjectObjectParticipantActionState } from "@/modules/objects/actions";
 import {
   attitudeToSturmOptions,
@@ -30,6 +28,7 @@ type ProjectObjectParticipantFormProps = {
   defaultParticipantType?: ProjectObjectParticipant["participantType"];
   users: Pick<User, "id" | "name" | "email">[];
   currentUserId: string;
+  objectId: string;
   submitLabel: string;
 };
 
@@ -41,6 +40,7 @@ export function ProjectObjectParticipantForm({
   defaultParticipantType = "PURCHASE_INFLUENCER",
   users,
   currentUserId,
+  objectId,
   submitLabel
 }: ProjectObjectParticipantFormProps) {
   const [state, formAction, isPending] = useActionState(action, initialState);
@@ -52,21 +52,15 @@ export function ProjectObjectParticipantForm({
     <form action={formAction} className="grid gap-5">
       <FormMessage state={state} />
 
-      <FormSection>
-        <FormField name="participantType" label="Тип участника *" state={state}>
-          <NativeSelect
-            id="participantType"
-            name="participantType"
-            value={participantType}
-            onChange={(event) => setParticipantType(event.target.value as typeof participantType)}
-          >
-            {projectObjectParticipantTypeOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </NativeSelect>
-        </FormField>
+      <FormSection title="Контакт" description="Кто участвует в объекте и как с ним связаться.">
+        <SelectField
+          name="participantType"
+          label="Тип участника *"
+          state={state}
+          options={projectObjectParticipantTypeOptions}
+          value={participantType}
+          onChange={(event) => setParticipantType(event.target.value as typeof participantType)}
+        />
         <TextField name="fullName" label="ФИО *" state={state} defaultValue={participant?.fullName ?? ""} required />
         <TextField name="company" label="Компания" defaultValue={participant?.company ?? ""} />
         <TextField name="role" label="Роль *" state={state} defaultValue={participant?.role ?? ""} required />
@@ -80,7 +74,9 @@ export function ProjectObjectParticipantForm({
             </option>
           ))}
         </SelectField>
+      </FormSection>
 
+      <FormSection title={isInfluencer ? "Влияние на покупку" : "Реализация"} description={isInfluencer ? "Факторы принятия решения и отношение к STURM." : "Зона ответственности и правила подключения к изменениям."}>
         {isInfluencer ? (
           <>
             <SelectField
@@ -133,9 +129,16 @@ export function ProjectObjectParticipantForm({
         )}
       </FormSection>
 
-      <TextareaField name="comment" label="Комментарий" defaultValue={participant?.comment ?? ""} />
+      <FormSection title="Комментарий" columns={1}>
+        <TextareaField name="comment" label="Комментарий" defaultValue={participant?.comment ?? ""} />
+      </FormSection>
 
-      <FormActions isPending={isPending} submitLabel={submitLabel} />
+      <FormActions
+        isPending={isPending}
+        submitLabel={submitLabel}
+        cancelHref={`/objects/${objectId}`}
+        cancelLabel="К объекту"
+      />
     </form>
   );
 }

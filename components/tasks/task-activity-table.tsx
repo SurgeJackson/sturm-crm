@@ -63,21 +63,21 @@ export function TaskActivityTable({ items, emptyText, compact = false }: TaskAct
       </TableHeader>
       <TableBody>
         {items.length === 0 ? (
-          <TableRow>
+          <TableRow empty>
             <TableCell colSpan={compact ? 7 : 9} className="h-24 text-center text-sm text-muted-foreground">{emptyText}</TableCell>
           </TableRow>
         ) : (
           items.map((task) => (
             <TableRow key={task.id} className={isOverdue(task) ? "bg-warning/10" : undefined}>
-              <EntityLinkCell href={`/tasks/${task.id}`} title={task.title} description={taskRecordTypeLabels[task.recordType]} />
-              <TableCell>{taskActionTypeLabels[task.actionType]}</TableCell>
-              <TableCell>{task.responsible.name}</TableCell>
-              <DateCell warning={isOverdue(task)}>{formatRussianDateTime(task.dueAt)}</DateCell>
-              {!compact ? <TableCell>{linkedEntity(task)}</TableCell> : null}
-              <BadgeCell variant={statusVariant(task)}>{taskStatusLabels[task.status]}</BadgeCell>
+              <EntityLinkCell href={`/tasks/${task.id}`} title={task.title} description={taskRecordTypeLabels[task.recordType]} cellLabel="Запись" />
+              <TableCell label="Действие">{taskActionTypeLabels[task.actionType]}</TableCell>
+              <TableCell label="Ответственный">{task.responsible.name}</TableCell>
+              <DateCell cellLabel="Срок / факт" warning={isOverdue(task)}>{formatRussianDateTime(task.dueAt)}</DateCell>
+              {!compact ? <TableCell label="Связь">{linkedEntity(task)}</TableCell> : null}
+              <BadgeCell cellLabel="Статус" variant={statusVariant(task)}>{taskStatusLabels[task.status]}</BadgeCell>
               <CrmDisciplineCell violations={task.crmViolations ?? []} />
-              {!compact ? <TableCell>{taskPriorityLabels[task.priority]}</TableCell> : null}
-              <TableCell className="text-right">
+              {!compact ? <TableCell label="Приоритет">{taskPriorityLabels[task.priority]}</TableCell> : null}
+              <TableCell actions className="text-right">
                 <Button asChild variant="outline" size="sm">
                   <Link href={`/tasks/${task.id}`}>Открыть</Link>
                 </Button>

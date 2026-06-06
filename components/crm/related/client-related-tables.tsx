@@ -47,11 +47,11 @@ function ClientRelatedObjectsTable({ objects }: { objects: ClientDetail["project
           <EmptyTableRow colSpan={5}>У клиента пока нет связанных объектов.</EmptyTableRow>
         ) : objects.map((object) => (
           <TableRow key={object.id}>
-            <EntityLinkCell href={`/objects/${object.id}`} title={object.title} />
-            <TableCell>{object.designer?.name || "Не выбран"}</TableCell>
-            <TableCell>{object.responsible.name}</TableCell>
-            <BadgeCell>{objectStageLabels[object.stage]}</BadgeCell>
-            <BadgeCell variant={objectStatusVariant(object.status)}>{objectStatusLabels[object.status]}</BadgeCell>
+            <EntityLinkCell cellLabel="Объект" href={`/objects/${object.id}`} title={object.title} />
+            <TableCell label="Дизайнер">{object.designer?.name || "Не выбран"}</TableCell>
+            <TableCell label="Ответственный">{object.responsible.name}</TableCell>
+            <BadgeCell cellLabel="Стадия">{objectStageLabels[object.stage]}</BadgeCell>
+            <BadgeCell cellLabel="Статус" variant={objectStatusVariant(object.status)}>{objectStatusLabels[object.status]}</BadgeCell>
           </TableRow>
         ))}
       </TableBody>
@@ -77,12 +77,12 @@ function ClientRelatedDealsTable({ deals }: { deals: ClientDetail["deals"] }) {
           <EmptyTableRow colSpan={6}>У клиента пока нет связанных сделок.</EmptyTableRow>
         ) : deals.map((deal) => (
           <TableRow key={deal.id}>
-            <EntityLinkCell href={`/deals/${deal.id}`} title={deal.title} />
-            <TextLinkCell href={`/objects/${deal.projectObject.id}`}>{deal.projectObject.title}</TextLinkCell>
-            <BadgeCell variant={dealStageVariant(deal.stage)}>{dealStageLabels[deal.stage]}</BadgeCell>
-            <MoneyCell value={deal.potentialAmount} />
-            <TableCell>{deal.responsible.name}</TableCell>
-            <DateCell>{formatRussianDate(deal.nextActionAt)}</DateCell>
+            <EntityLinkCell cellLabel="Сделка" href={`/deals/${deal.id}`} title={deal.title} />
+            <TextLinkCell cellLabel="Объект" href={`/objects/${deal.projectObject.id}`}>{deal.projectObject.title}</TextLinkCell>
+            <BadgeCell cellLabel="Стадия" variant={dealStageVariant(deal.stage)}>{dealStageLabels[deal.stage]}</BadgeCell>
+            <MoneyCell cellLabel="Сумма" value={deal.potentialAmount} />
+            <TableCell label="Ответственный">{deal.responsible.name}</TableCell>
+            <DateCell cellLabel="Следующее действие">{formatRussianDate(deal.nextActionAt)}</DateCell>
           </TableRow>
         ))}
       </TableBody>
@@ -108,14 +108,14 @@ function ClientRelatedProposalsTable({ proposals }: { proposals: ClientDetail["p
           <EmptyTableRow colSpan={6}>По клиенту пока нет КП</EmptyTableRow>
         ) : proposals.map((proposal) => (
           <TableRow key={proposal.id}>
-            <EntityLinkCell href={`/proposals/${proposal.id}`} title={proposal.proposalNumber} />
-            <TextLinkCell href={`/deals/${proposal.deal.id}`}>{proposal.deal.title}</TextLinkCell>
-            <TextLinkCell href={`/objects/${proposal.projectObject.id}`}>{proposal.projectObject.title}</TextLinkCell>
-            <BadgeCell variant={proposalStatusVariant(proposal.status)}>
+            <EntityLinkCell cellLabel="КП" href={`/proposals/${proposal.id}`} title={proposal.proposalNumber} />
+            <TextLinkCell cellLabel="Сделка" href={`/deals/${proposal.deal.id}`}>{proposal.deal.title}</TextLinkCell>
+            <TextLinkCell cellLabel="Объект" href={`/objects/${proposal.projectObject.id}`}>{proposal.projectObject.title}</TextLinkCell>
+            <BadgeCell cellLabel="Статус" variant={proposalStatusVariant(proposal.status)}>
               {commercialProposalStatusLabels[proposal.status]}
             </BadgeCell>
-            <MoneyCell value={proposal.amount} />
-            <DateCell>{formatRussianDate(proposal.nextTouchAt)}</DateCell>
+            <MoneyCell cellLabel="Сумма" value={proposal.amount} />
+            <DateCell cellLabel="Follow-up">{formatRussianDate(proposal.nextTouchAt)}</DateCell>
           </TableRow>
         ))}
       </TableBody>

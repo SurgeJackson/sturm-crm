@@ -32,6 +32,7 @@ export default async function EditObjectParticipantPage({ params }: EditParticip
         participant={participant}
         users={users}
         currentUserId={user.id}
+        objectId={id}
         submitLabel="Сохранить"
       />
     </FormPageShell>

@@ -42,15 +42,15 @@ export function ProposalsTable({ proposals }: { proposals: ProposalItem[] }) {
         ) : (
           proposals.map((proposal) => (
             <TableRow key={proposal.id}>
-              <EntityLinkCell href={`/proposals/${proposal.id}`} title={proposal.proposalNumber} description={proposal.projectObject.title} />
-              <TextLinkCell href={`/deals/${proposal.deal.id}`}>{proposal.deal.title}</TextLinkCell>
-              <TextLinkCell href={`/clients/${proposal.client.id}`}>{proposal.client.name}</TextLinkCell>
-              <BadgeCell variant={proposalStatusVariant(proposal.status)}>{commercialProposalStatusLabels[proposal.status]}</BadgeCell>
-              <VersionCell value={proposal.version} />
-              <MoneyCell value={proposal.amount} />
-              <DateCell>{formatRussianDate(proposal.sentAt)}</DateCell>
-              <DateCell>{formatRussianDate(proposal.nextTouchAt)}</DateCell>
-              <FileLinkCell href={proposal.fileUrl} />
+              <EntityLinkCell href={`/proposals/${proposal.id}`} title={proposal.proposalNumber} description={proposal.projectObject.title} cellLabel="КП" />
+              <TextLinkCell cellLabel="Сделка" href={`/deals/${proposal.deal.id}`}>{proposal.deal.title}</TextLinkCell>
+              <TextLinkCell cellLabel="Клиент" href={`/clients/${proposal.client.id}`}>{proposal.client.name}</TextLinkCell>
+              <BadgeCell cellLabel="Статус" variant={proposalStatusVariant(proposal.status)}>{commercialProposalStatusLabels[proposal.status]}</BadgeCell>
+              <VersionCell cellLabel="Версия" value={proposal.version} />
+              <MoneyCell cellLabel="Сумма" value={proposal.amount} />
+              <DateCell cellLabel="Отправлено">{formatRussianDate(proposal.sentAt)}</DateCell>
+              <DateCell cellLabel="Follow-up">{formatRussianDate(proposal.nextTouchAt)}</DateCell>
+              <FileLinkCell cellLabel="Файл" href={proposal.fileUrl} />
               <CrmDisciplineCell violations={proposal.crmViolations} />
               <BonusEligibilityCell violations={proposal.crmViolations} />
             </TableRow>

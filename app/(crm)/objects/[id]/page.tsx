@@ -77,6 +77,7 @@ export default async function ObjectPage({ params, searchParams }: ObjectPagePro
     <EntityDetailShell
       title={projectObject.title}
       badges={<ObjectHeaderBadges objectType={projectObject.objectType} stage={projectObject.stage} status={projectObject.status} />}
+      listHref="/objects"
       editHref={`/objects/${id}/edit`}
       canEdit={canEditRecord(user, projectObject)}
       archiveAction={archiveAction}

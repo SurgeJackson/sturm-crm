@@ -38,13 +38,13 @@ export function DesignersTable({ designers }: { designers: DesignerItem[] }) {
         ) : (
           designers.map((designer) => (
             <TableRow key={designer.id}>
-              <EntityLinkCell href={`/designers/${designer.id}`} title={designer.name} description={designer.studio ?? designer.city ?? "Нет студии"} />
-              <TableCell>{designerRoleLabels[designer.role]}</TableCell>
-              <BadgeCell variant="secondary">{designerRelationshipStageLabels[designer.relationshipStage]}</BadgeCell>
-              <BadgeCell variant={designerPotentialVariant(designer.potential)}>{designerPotentialLabels[designer.potential]}</BadgeCell>
-              <TableCell>{designerLoyaltyLabels[designer.loyalty]}</TableCell>
-              <TableCell>{designer.responsible.name}</TableCell>
-              <DateCell warning={isOverdue(designer.nextStepAt)} muted={designer.nextStepText ?? "Не указан"}>
+              <EntityLinkCell href={`/designers/${designer.id}`} title={designer.name} description={designer.studio ?? designer.city ?? "Нет студии"} cellLabel="Дизайнер" />
+              <TableCell label="Роль">{designerRoleLabels[designer.role]}</TableCell>
+              <BadgeCell cellLabel="Этап" variant="secondary">{designerRelationshipStageLabels[designer.relationshipStage]}</BadgeCell>
+              <BadgeCell cellLabel="Потенциал" variant={designerPotentialVariant(designer.potential)}>{designerPotentialLabels[designer.potential]}</BadgeCell>
+              <TableCell label="Лояльность">{designerLoyaltyLabels[designer.loyalty]}</TableCell>
+              <TableCell label="Ответственный">{designer.responsible.name}</TableCell>
+              <DateCell cellLabel="Следующий шаг" warning={isOverdue(designer.nextStepAt)} muted={designer.nextStepText ?? "Не указан"}>
                 {formatRussianDate(designer.nextStepAt)}
               </DateCell>
               <CrmDisciplineCell violations={designer.crmViolations} />

@@ -3,8 +3,8 @@ import { cn } from "@/lib/utils";
 
 const Table = React.forwardRef<HTMLTableElement, React.HTMLAttributes<HTMLTableElement>>(
   ({ className, ...props }, ref) => (
-    <div className="w-full overflow-x-auto">
-      <table ref={ref} className={cn("min-w-full caption-bottom text-sm", className)} {...props} />
+    <div className="responsive-table w-full max-w-full overflow-x-visible">
+      <table ref={ref} className={cn("w-full table-fixed caption-bottom text-sm", className)} {...props} />
     </div>
   )
 );
@@ -24,9 +24,18 @@ const TableBody = React.forwardRef<HTMLTableSectionElement, React.HTMLAttributes
 );
 TableBody.displayName = "TableBody";
 
-const TableRow = React.forwardRef<HTMLTableRowElement, React.HTMLAttributes<HTMLTableRowElement>>(
-  ({ className, ...props }, ref) => (
-    <tr ref={ref} className={cn("border-b transition-colors hover:bg-muted/50", className)} {...props} />
+type TableRowProps = React.HTMLAttributes<HTMLTableRowElement> & {
+  empty?: boolean;
+};
+
+const TableRow = React.forwardRef<HTMLTableRowElement, TableRowProps>(
+  ({ className, empty, ...props }, ref) => (
+    <tr
+      ref={ref}
+      data-empty={empty ? "true" : undefined}
+      className={cn("border-b transition-colors hover:bg-muted/50", className)}
+      {...props}
+    />
   )
 );
 TableRow.displayName = "TableRow";
@@ -35,23 +44,37 @@ const TableHead = React.forwardRef<HTMLTableCellElement, React.ThHTMLAttributes<
   ({ className, ...props }, ref) => (
     <th
       ref={ref}
-      className={cn("h-11 whitespace-nowrap px-4 text-left align-middle font-medium text-muted-foreground", className)}
+      className={cn(
+        "h-11 min-w-0 whitespace-normal break-words px-3 py-3 text-left align-middle font-medium leading-tight text-muted-foreground",
+        className
+      )}
       {...props}
     />
   )
 );
 TableHead.displayName = "TableHead";
 
-const TableCell = React.forwardRef<HTMLTableCellElement, React.TdHTMLAttributes<HTMLTableCellElement>>(
-  ({ className, ...props }, ref) => (
-    <td ref={ref} className={cn("p-4 align-middle", className)} {...props} />
+type TableCellProps = React.TdHTMLAttributes<HTMLTableCellElement> & {
+  label?: string;
+  actions?: boolean;
+};
+
+const TableCell = React.forwardRef<HTMLTableCellElement, TableCellProps>(
+  ({ className, label, actions, ...props }, ref) => (
+    <td
+      ref={ref}
+      data-label={label}
+      data-actions={actions ? "true" : undefined}
+      className={cn("min-w-0 whitespace-normal break-words px-3 py-3 align-middle leading-snug", className)}
+      {...props}
+    />
   )
 );
 TableCell.displayName = "TableCell";
 
 function TableEmptyRow({ colSpan, children }: { colSpan: number; children: React.ReactNode }) {
   return (
-    <TableRow>
+    <TableRow empty>
       <TableCell colSpan={colSpan} className="h-28 text-center text-sm text-muted-foreground">
         {children}
       </TableCell>

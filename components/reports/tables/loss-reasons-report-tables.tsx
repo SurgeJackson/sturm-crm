@@ -34,10 +34,10 @@ export function LossReasonsReportTables({
             <EmptyTableRow colSpan={4}>Нет проигранных сделок.</EmptyTableRow>
           ) : lostDeals.map((deal) => (
             <TableRow key={deal.id}>
-              <EntityLinkCell href={`/deals/${deal.id}`} title={deal.title} />
-              <TableCell>{deal.lossReason ? dealLossReasonLabels[deal.lossReason] : "Не указана"}</TableCell>
-              <MoneyCell value={deal.potentialAmount} emptyText="Нет" />
-              <TableCell>{deal.responsible.name}</TableCell>
+              <EntityLinkCell cellLabel="Сделка" href={`/deals/${deal.id}`} title={deal.title} />
+              <TableCell label="Причина">{deal.lossReason ? dealLossReasonLabels[deal.lossReason] : "Не указана"}</TableCell>
+              <MoneyCell cellLabel="Сумма" value={deal.potentialAmount} emptyText="Нет" />
+              <TableCell label="Ответственный">{deal.responsible.name}</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -57,10 +57,10 @@ export function LossReasonsReportTables({
             <EmptyTableRow colSpan={4}>Нет отклоненных КП.</EmptyTableRow>
           ) : declinedProposals.map((proposal) => (
             <TableRow key={proposal.id}>
-              <EntityLinkCell href={`/proposals/${proposal.id}`} title={proposal.proposalNumber} />
-              <TableCell>{proposal.declineReason ? proposalDeclineReasonLabels[proposal.declineReason] : "Не указана"}</TableCell>
-              <MoneyCell value={proposal.amount} />
-              <TableCell>{proposal.responsible.name}</TableCell>
+              <EntityLinkCell cellLabel="КП" href={`/proposals/${proposal.id}`} title={proposal.proposalNumber} />
+              <TableCell label="Причина">{proposal.declineReason ? proposalDeclineReasonLabels[proposal.declineReason] : "Не указана"}</TableCell>
+              <MoneyCell cellLabel="Сумма" value={proposal.amount} />
+              <TableCell label="Ответственный">{proposal.responsible.name}</TableCell>
             </TableRow>
           ))}
         </TableBody>

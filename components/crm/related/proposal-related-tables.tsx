@@ -51,15 +51,15 @@ export function ProposalVersionsTable({
           <EmptyTableRow colSpan={7}>Версий КП пока нет</EmptyTableRow>
         ) : versions.map((item) => (
           <TableRow key={item.id}>
-            <EntityLinkCell href={`/proposals/${item.id}`} title={item.proposalNumber} />
-            <VersionCell value={item.version} />
-            <DateCell>{formatRussianDate(item.createdAt)}</DateCell>
-            <MoneyCell value={item.amount} />
-            <BadgeCell variant={proposalStatusVariant(item.status)}>
+            <EntityLinkCell cellLabel="Номер" href={`/proposals/${item.id}`} title={item.proposalNumber} />
+            <VersionCell cellLabel="Версия" value={item.version} />
+            <DateCell cellLabel="Дата">{formatRussianDate(item.createdAt)}</DateCell>
+            <MoneyCell cellLabel="Сумма" value={item.amount} />
+            <BadgeCell cellLabel="Статус" variant={proposalStatusVariant(item.status)}>
               {commercialProposalStatusLabels[item.status]}
             </BadgeCell>
-            <FileLinkCell href={item.fileUrl} />
-            <TableCell>{item.responsible.name}</TableCell>
+            <FileLinkCell cellLabel="Файл" href={item.fileUrl} />
+            <TableCell label="Ответственный">{item.responsible.name}</TableCell>
           </TableRow>
         ))}
       </TableBody>

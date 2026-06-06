@@ -83,12 +83,12 @@ export function ObjectParticipantTable({
           <EmptyTableRow colSpan={columns.length + 2}>По объекту пока нет участников</EmptyTableRow>
         ) : participants.map((participant) => (
           <TableRow key={participant.id}>
-            <TextCell className="font-medium">{participant.fullName}</TextCell>
+            <TextCell cellLabel="ФИО" className="font-medium">{participant.fullName}</TextCell>
             {columns.map((column) => (
-              <TableCell key={column.head}>{column.render(participant)}</TableCell>
+              <TableCell key={column.head} label={column.head}>{column.render(participant)}</TableCell>
             ))}
-            <PersonCell name={participant.responsible?.name} />
-            <TableCell>
+            <PersonCell cellLabel="Ответственный" name={participant.responsible?.name} />
+            <TableCell actions>
               <ParticipantActions
                 objectId={objectId}
                 participantId={participant.id}

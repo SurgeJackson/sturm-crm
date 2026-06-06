@@ -34,16 +34,17 @@ export function DealsReportTable({ deals }: { deals: DealsReport["deals"] }) {
         ) : deals.map((deal) => (
           <TableRow key={deal.id}>
             <EntityLinkCell
+              cellLabel="Сделка"
               href={`/deals/${deal.id}`}
               title={deal.title}
               description={`${deal.client.name} / ${deal.projectObject.title}`}
             />
-            <BadgeCell variant={dealStageVariant(deal.stage)}>{dealStageLabels[deal.stage]}</BadgeCell>
-            <TableCell>{dealSourceLabels[deal.source]}</TableCell>
-            <TableCell>{deal.probability ? dealProbabilityLabels[deal.probability] : "Нет"}</TableCell>
-            <MoneyCell value={deal.potentialAmount} emptyText="Нет" />
-            <TableCell>{deal.responsible.name}</TableCell>
-            <DateCell>{formatRussianDate(deal.nextActionAt)}</DateCell>
+            <BadgeCell cellLabel="Стадия" variant={dealStageVariant(deal.stage)}>{dealStageLabels[deal.stage]}</BadgeCell>
+            <TableCell label="Источник">{dealSourceLabels[deal.source]}</TableCell>
+            <TableCell label="Вероятность">{deal.probability ? dealProbabilityLabels[deal.probability] : "Нет"}</TableCell>
+            <MoneyCell cellLabel="Сумма" value={deal.potentialAmount} emptyText="Нет" />
+            <TableCell label="Ответственный">{deal.responsible.name}</TableCell>
+            <DateCell cellLabel="Следующий шаг">{formatRussianDate(deal.nextActionAt)}</DateCell>
           </TableRow>
         ))}
       </TableBody>

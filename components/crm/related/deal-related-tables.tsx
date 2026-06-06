@@ -51,16 +51,16 @@ export function DealProposalsTable({
           <EmptyTableRow colSpan={8}>По сделке пока нет КП</EmptyTableRow>
         ) : proposals.map((proposal) => (
           <TableRow key={proposal.id}>
-            <EntityLinkCell href={`/proposals/${proposal.id}`} title={proposal.proposalNumber} />
-            <VersionCell value={proposal.version} />
-            <BadgeCell variant={proposalStatusVariant(proposal.status)}>
+            <EntityLinkCell cellLabel="Номер" href={`/proposals/${proposal.id}`} title={proposal.proposalNumber} />
+            <VersionCell cellLabel="Версия" value={proposal.version} />
+            <BadgeCell cellLabel="Статус" variant={proposalStatusVariant(proposal.status)}>
               {commercialProposalStatusLabels[proposal.status]}
             </BadgeCell>
-            <MoneyCell value={proposal.amount} />
-            <DateCell>{formatRussianDate(proposal.sentAt)}</DateCell>
-            <DateCell>{formatRussianDate(proposal.nextTouchAt)}</DateCell>
-            <FileLinkCell href={proposal.fileUrl} />
-            <TableCell>{proposal.responsible.name}</TableCell>
+            <MoneyCell cellLabel="Сумма" value={proposal.amount} />
+            <DateCell cellLabel="Отправлено">{formatRussianDate(proposal.sentAt)}</DateCell>
+            <DateCell cellLabel="Follow-up">{formatRussianDate(proposal.nextTouchAt)}</DateCell>
+            <FileLinkCell cellLabel="Файл" href={proposal.fileUrl} />
+            <TableCell label="Ответственный">{proposal.responsible.name}</TableCell>
           </TableRow>
         ))}
       </TableBody>

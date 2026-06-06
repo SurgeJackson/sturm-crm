@@ -35,20 +35,21 @@ export function ActivityReportTable({ rows }: { rows: ActivityReport["rows"] }) 
         ) : rows.map((row) => (
           <TableRow key={row.employee.id}>
             <EntityLinkCell
+              cellLabel="Сотрудник"
               href={`/reports/activity?responsibleId=${row.employee.id}`}
               title={row.employee.name}
               description={roleLabels[row.employee.role]}
             />
-            <CountCell value={row.clients} />
-            <CountCell value={row.designers} />
-            <CountCell value={row.objects} />
-            <CountCell value={row.deals} />
-            <CountCell value={row.proposals} />
-            <MoneyCell value={row.proposalAmount} />
-            <CountCell value={row.tasks} />
-            <CountCell value={row.doneTasks} />
-            <CountCell value={row.overdueTasks} />
-            <CountCell value={row.touches} />
+            <CountCell cellLabel="Клиенты" value={row.clients} />
+            <CountCell cellLabel="Дизайнеры" value={row.designers} />
+            <CountCell cellLabel="Объекты" value={row.objects} />
+            <CountCell cellLabel="Сделки" value={row.deals} />
+            <CountCell cellLabel="КП" value={row.proposals} />
+            <MoneyCell cellLabel="Сумма КП" value={row.proposalAmount} />
+            <CountCell cellLabel="Задачи" value={row.tasks} />
+            <CountCell cellLabel="Выполнено" value={row.doneTasks} />
+            <CountCell cellLabel="Просрочено" value={row.overdueTasks} />
+            <CountCell cellLabel="Касания" value={row.touches} />
           </TableRow>
         ))}
       </TableBody>

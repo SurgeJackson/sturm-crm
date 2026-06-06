@@ -35,15 +35,15 @@ export function ObjectProposalsTable({ proposals }: { proposals: ObjectDetail["p
           <EmptyTableRow colSpan={7}>По объекту пока нет КП</EmptyTableRow>
         ) : proposals.map((proposal) => (
           <TableRow key={proposal.id}>
-            <EntityLinkCell href={`/proposals/${proposal.id}`} title={proposal.proposalNumber} />
-            <TextLinkCell href={`/deals/${proposal.deal.id}`}>{proposal.deal.title}</TextLinkCell>
-            <BadgeCell variant={proposalStatusVariant(proposal.status)}>
+            <EntityLinkCell cellLabel="КП" href={`/proposals/${proposal.id}`} title={proposal.proposalNumber} />
+            <TextLinkCell cellLabel="Сделка" href={`/deals/${proposal.deal.id}`}>{proposal.deal.title}</TextLinkCell>
+            <BadgeCell cellLabel="Статус" variant={proposalStatusVariant(proposal.status)}>
               {commercialProposalStatusLabels[proposal.status]}
             </BadgeCell>
-            <MoneyCell value={proposal.amount} />
-            <VersionCell value={proposal.version} />
-            <DateCell>{formatRussianDate(proposal.nextTouchAt)}</DateCell>
-            <TableCell>{proposal.responsible.name}</TableCell>
+            <MoneyCell cellLabel="Сумма" value={proposal.amount} />
+            <VersionCell cellLabel="Версия" value={proposal.version} />
+            <DateCell cellLabel="Follow-up">{formatRussianDate(proposal.nextTouchAt)}</DateCell>
+            <TableCell label="Ответственный">{proposal.responsible.name}</TableCell>
           </TableRow>
         ))}
       </TableBody>

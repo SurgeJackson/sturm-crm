@@ -34,12 +34,12 @@ export function ObjectDealsTable({ objectId, deals }: { objectId: string; deals:
           <EmptyTableRow colSpan={6}>По объекту пока нет сделок</EmptyTableRow>
         ) : deals.map((deal) => (
           <TableRow key={deal.id}>
-            <EntityLinkCell href={`/deals/${deal.id}`} title={deal.title} />
-            <BadgeCell variant={dealStageVariant(deal.stage)}>{dealStageLabels[deal.stage]}</BadgeCell>
-            <MoneyCell value={deal.potentialAmount} />
-            <TableCell>{deal.probability ? dealProbabilityLabels[deal.probability] : "Не выбрана"}</TableCell>
-            <TableCell>{deal.responsible.name}</TableCell>
-            <DateCell>{formatRussianDate(deal.nextActionAt)}</DateCell>
+            <EntityLinkCell cellLabel="Сделка" href={`/deals/${deal.id}`} title={deal.title} />
+            <BadgeCell cellLabel="Стадия" variant={dealStageVariant(deal.stage)}>{dealStageLabels[deal.stage]}</BadgeCell>
+            <MoneyCell cellLabel="Сумма" value={deal.potentialAmount} />
+            <TableCell label="Вероятность">{deal.probability ? dealProbabilityLabels[deal.probability] : "Не выбрана"}</TableCell>
+            <TableCell label="Ответственный">{deal.responsible.name}</TableCell>
+            <DateCell cellLabel="Следующее действие">{formatRussianDate(deal.nextActionAt)}</DateCell>
           </TableRow>
         ))}
       </TableBody>
