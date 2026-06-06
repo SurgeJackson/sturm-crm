@@ -3,9 +3,14 @@ import { Plus } from "lucide-react";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
 import { CrmDisciplineBadge } from "@/components/crm/crm-discipline";
+import { PageHeader } from "@/components/layout/page-header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
+import { EmptyState } from "@/components/ui/empty-state";
+import { FilterActions, FilterBar } from "@/components/ui/filter-bar";
+import { NativeSelect } from "@/components/ui/native-select";
+import { Pagination } from "@/components/ui/pagination";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import {
   designerLoyaltyLabels,
@@ -50,12 +55,11 @@ export default async function DesignersPage({ searchParams }: DesignersPageProps
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold">Дизайнеры / архитекторы</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Партнерская база и воронка отношений.</p>
-        </div>
-        <div className="flex gap-2">
+      <PageHeader
+        title="Дизайнеры / архитекторы"
+        description="Партнерская база и воронка отношений."
+        actions={
+          <>
           <Button asChild variant="outline"><Link href="/designers/pipeline">Воронка</Link></Button>
           {canCreateDesigner(user) ? (
             <Button asChild>
@@ -65,34 +69,32 @@ export default async function DesignersPage({ searchParams }: DesignersPageProps
               </Link>
             </Button>
           ) : null}
-        </div>
-      </div>
+          </>
+        }
+      />
 
-      <Card>
-        <CardHeader><CardTitle>Фильтры</CardTitle></CardHeader>
-        <CardContent>
-          <form className="grid gap-3 md:grid-cols-3 xl:grid-cols-6">
+      <FilterBar className="md:grid-cols-3 xl:grid-cols-6">
             <input className="h-10 rounded-md border border-input bg-background px-3 text-sm" name="q" placeholder="Поиск" defaultValue={params.q ?? ""} />
-            <select className="h-10 rounded-md border border-input bg-background px-3 text-sm" name="role" defaultValue={params.role ?? ""}>
+            <NativeSelect name="role" defaultValue={params.role ?? ""}>
               <option value="">Все роли</option>
               {designerRoleOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
-            </select>
-            <select className="h-10 rounded-md border border-input bg-background px-3 text-sm" name="relationshipStage" defaultValue={params.relationshipStage ?? ""}>
+            </NativeSelect>
+            <NativeSelect name="relationshipStage" defaultValue={params.relationshipStage ?? ""}>
               <option value="">Все этапы</option>
               {designerRelationshipStageOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
-            </select>
-            <select className="h-10 rounded-md border border-input bg-background px-3 text-sm" name="potential" defaultValue={params.potential ?? ""}>
+            </NativeSelect>
+            <NativeSelect name="potential" defaultValue={params.potential ?? ""}>
               <option value="">Любой потенциал</option>
               {designerPotentialOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
-            </select>
-            <select className="h-10 rounded-md border border-input bg-background px-3 text-sm" name="loyalty" defaultValue={params.loyalty ?? ""}>
+            </NativeSelect>
+            <NativeSelect name="loyalty" defaultValue={params.loyalty ?? ""}>
               <option value="">Любая лояльность</option>
               {designerLoyaltyOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
-            </select>
-            <select className="h-10 rounded-md border border-input bg-background px-3 text-sm" name="responsibleId" defaultValue={params.responsibleId ?? ""}>
+            </NativeSelect>
+            <NativeSelect name="responsibleId" defaultValue={params.responsibleId ?? ""}>
               <option value="">Все ответственные</option>
               {users.map((manager) => <option key={manager.id} value={manager.id}>{manager.name}</option>)}
-            </select>
+            </NativeSelect>
             <label className="flex h-10 items-center gap-2 rounded-md border px-3 text-sm">
               <input type="checkbox" name="noNextStep" value="1" defaultChecked={params.noNextStep === "1"} />
               Без следующего шага
@@ -101,23 +103,21 @@ export default async function DesignersPage({ searchParams }: DesignersPageProps
               <input type="checkbox" name="noTouch60" value="1" defaultChecked={params.noTouch60 === "1"} />
               Без касаний 60+ дней
             </label>
-            <select className="h-10 rounded-md border border-input bg-background px-3 text-sm" name="sort" defaultValue={params.sort ?? ""}>
+            <NativeSelect name="sort" defaultValue={params.sort ?? ""}>
               <option value="">Сначала новые</option>
               <option value="name">По имени</option>
               <option value="nextStepAt">По следующему шагу</option>
-            </select>
-            <div className="flex gap-2 md:col-span-3">
+            </NativeSelect>
+            <FilterActions className="md:col-span-3">
               <Button type="submit">Применить</Button>
               <Button asChild variant="outline"><Link href="/designers">Сбросить</Link></Button>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
+            </FilterActions>
+      </FilterBar>
 
       <Card>
         <CardContent className="pt-5">
           {designers.items.length === 0 ? (
-            <div className="py-10 text-center text-sm text-muted-foreground">Дизайнеры не найдены.</div>
+            <EmptyState title="Дизайнеры не найдены" />
           ) : (
             <Table>
               <TableHeader>
@@ -157,13 +157,13 @@ export default async function DesignersPage({ searchParams }: DesignersPageProps
         </CardContent>
       </Card>
 
-      <div className="flex items-center justify-between text-sm text-muted-foreground">
-        <span>Всего: {designers.total}</span>
-        <div className="flex gap-2">
-          <Button asChild variant="outline" size="sm"><Link href={pageHref(params, Math.max(designers.page - 1, 1))}>Назад</Link></Button>
-          <Button asChild variant="outline" size="sm"><Link href={pageHref(params, Math.min(designers.page + 1, designers.pageCount))}>Вперед</Link></Button>
-        </div>
-      </div>
+      <Pagination
+        total={designers.total}
+        page={designers.page}
+        pageCount={designers.pageCount}
+        previousHref={designers.page > 1 ? pageHref(params, designers.page - 1) : undefined}
+        nextHref={designers.page < designers.pageCount ? pageHref(params, designers.page + 1) : undefined}
+      />
     </div>
   );
 }

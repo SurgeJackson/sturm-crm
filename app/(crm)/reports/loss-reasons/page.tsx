@@ -2,10 +2,9 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { BreakdownCard, CsvButton, MetricsGrid, ReportPeriodFilter } from "@/components/reports/report-widgets";
+import { BreakdownCard, MetricsGrid, ReportPageHeader, ReportPeriodFilter } from "@/components/reports/report-widgets";
 import { dealLossReasonLabels, objectTypeLabels, proposalDeclineReasonLabels } from "@/lib/constants";
 import { getLossReasonsReport, getReportFilterOptions, type ReportSearchParams } from "@/modules/reports/queries";
 
@@ -18,10 +17,7 @@ export default async function LossReasonsReportPage({ searchParams }: PageProps)
   const [report, filters] = await Promise.all([getLossReasonsReport(params, user), getReportFilterOptions(user)]);
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div><h1 className="text-2xl font-semibold">Причины проигрышей</h1><p className="mt-1 text-sm text-muted-foreground">Сделки, отклоненные КП и потерянные объекты.</p></div>
-        <div className="flex gap-2"><CsvButton report="loss-reasons" params={params} /><Button asChild variant="outline"><Link href="/reports">К отчетам</Link></Button></div>
-      </div>
+      <ReportPageHeader title="Причины проигрышей" description="Сделки, отклоненные КП и потерянные объекты." report="loss-reasons" params={params} />
       <ReportPeriodFilter params={params} users={filters.users} actionPath="/reports/loss-reasons" />
       <MetricsGrid metrics={report.metrics} />
       <div className="grid gap-4 xl:grid-cols-3">

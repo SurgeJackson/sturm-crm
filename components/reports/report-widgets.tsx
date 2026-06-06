@@ -1,10 +1,12 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { Download } from "lucide-react";
+import { PageHeader } from "@/components/layout/page-header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { NativeSelect } from "@/components/ui/native-select";
 import type { Metric, ReportSearchParams } from "@/modules/reports/queries";
 
 type Option = { id: string; name: string; email?: string; role?: string };
@@ -25,6 +27,31 @@ export function MetricsGrid({ metrics }: { metrics: Metric[] }) {
   );
 }
 
+export function ReportPageHeader({
+  title,
+  description,
+  report,
+  params
+}: {
+  title: string;
+  description: string;
+  report?: string;
+  params: ReportSearchParams;
+}) {
+  return (
+    <PageHeader
+      title={title}
+      description={description}
+      actions={
+        <>
+          {report ? <CsvButton report={report} params={params} /> : null}
+          <Button asChild variant="outline"><Link href="/reports">К отчетам</Link></Button>
+        </>
+      }
+    />
+  );
+}
+
 export function ReportPeriodFilter({
   params,
   users,
@@ -42,10 +69,10 @@ export function ReportPeriodFilter({
         <form className="grid gap-3 md:grid-cols-5">
           <Input name="from" type="date" defaultValue={params.from ?? ""} />
           <Input name="to" type="date" defaultValue={params.to ?? ""} />
-          <select name="responsibleId" defaultValue={params.responsibleId ?? ""} className="h-10 rounded-md border border-input bg-background px-3 text-sm">
+          <NativeSelect name="responsibleId" defaultValue={params.responsibleId ?? ""}>
             <option value="">Все ответственные</option>
             {users.map((user) => <option key={user.id} value={user.id}>{user.name}</option>)}
-          </select>
+          </NativeSelect>
           {children}
           <div className="flex flex-wrap gap-2 md:col-span-5">
             <Button type="submit" variant="secondary">Показать</Button>
@@ -53,6 +80,40 @@ export function ReportPeriodFilter({
           </div>
         </form>
       </CardContent>
+    </Card>
+  );
+}
+
+export function ReportFilterSelect({
+  name,
+  value,
+  placeholder,
+  options
+}: {
+  name: string;
+  value?: string;
+  placeholder: string;
+  options: Array<{ value: string; label: string }>;
+}) {
+  return (
+    <NativeSelect name={name} defaultValue={value ?? ""}>
+      <option value="">{placeholder}</option>
+      {options.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
+    </NativeSelect>
+  );
+}
+
+export function ReportListCard({
+  title,
+  children
+}: {
+  title: string;
+  children: ReactNode;
+}) {
+  return (
+    <Card>
+      <CardHeader><CardTitle>{title}</CardTitle></CardHeader>
+      <CardContent className="space-y-3 text-sm">{children}</CardContent>
     </Card>
   );
 }

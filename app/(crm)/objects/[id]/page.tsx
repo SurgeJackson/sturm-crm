@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Archive, Edit, MessageSquarePlus, Plus } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { Detail } from "@/components/crm/detail";
+import { Detail, DetailGrid } from "@/components/crm/detail";
 import { CrmDisciplinePanel } from "@/components/crm/crm-discipline";
 import { TaskActivityTable } from "@/components/tasks/task-activity-table";
 import { Badge } from "@/components/ui/badge";
@@ -165,7 +165,7 @@ export default async function ObjectPage({ params, searchParams }: ObjectPagePro
           <Card>
             <CardHeader><CardTitle>Данные объекта</CardTitle></CardHeader>
             <CardContent>
-              <dl className="grid gap-5 md:grid-cols-3">
+              <DetailGrid>
                 <Detail label="Город" value={projectObject.city} />
                 <Detail label="Регион" value={projectObject.region} />
                 <Detail label="Адрес" value={projectObject.address} />
@@ -178,7 +178,7 @@ export default async function ObjectPage({ params, searchParams }: ObjectPagePro
                 <Detail label="Бюджет" value={projectObject.budget ? `${projectObject.budget.toLocaleString("ru-RU")} ₽` : null} />
                 <Detail label="Количество санузлов" value={projectObject.bathroomsCount} />
                 <Detail label="Создан" value={formatRussianDate(projectObject.createdAt)} />
-              </dl>
+              </DetailGrid>
               <div className="mt-6 space-y-4">
                 <div>
                   <div className="text-xs text-muted-foreground">Категории интереса</div>

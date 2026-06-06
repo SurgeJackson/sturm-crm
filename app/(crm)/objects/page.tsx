@@ -3,10 +3,14 @@ import { redirect } from "next/navigation";
 import { Plus, Search } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
 import { BonusEligibilityBadge, CrmDisciplineBadge } from "@/components/crm/crm-discipline";
+import { PageHeader } from "@/components/layout/page-header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { FilterActions, FilterBar } from "@/components/ui/filter-bar";
 import { Input } from "@/components/ui/input";
+import { NativeSelect } from "@/components/ui/native-select";
+import { Pagination } from "@/components/ui/pagination";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import {
   objectStageLabels,
@@ -63,14 +67,10 @@ export default async function ObjectsPage({ searchParams }: ObjectsPageProps) {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold">Объекты</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Проектные продажи, комплектации и контроль участников объекта.
-          </p>
-        </div>
-        {canCreateObject(user) ? (
+      <PageHeader
+        title="Объекты"
+        description="Проектные продажи, комплектации и контроль участников объекта."
+        actions={canCreateObject(user) ? (
           <Button asChild>
             <Link href="/objects/new">
               <Plus className="h-4 w-4" />
@@ -78,59 +78,57 @@ export default async function ObjectsPage({ searchParams }: ObjectsPageProps) {
             </Link>
           </Button>
         ) : null}
-      </div>
+      />
 
-      <Card>
-        <CardContent className="pt-5">
-          <form className="grid gap-3 lg:grid-cols-4">
+      <FilterBar className="lg:grid-cols-4">
             <div className="relative lg:col-span-2">
               <Search className="pointer-events-none absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
               <Input className="pl-9" name="q" defaultValue={params.q ?? ""} placeholder="Поиск по названию, адресу, городу" />
             </div>
-            <select className="h-10 rounded-md border border-input bg-background px-3 text-sm" name="objectType" defaultValue={params.objectType ?? ""}>
+            <NativeSelect name="objectType" defaultValue={params.objectType ?? ""}>
               <option value="">Все типы</option>
               {objectTypeOptions.map((option) => (
                 <option key={option.value} value={option.value}>{option.label}</option>
               ))}
-            </select>
-            <select className="h-10 rounded-md border border-input bg-background px-3 text-sm" name="stage" defaultValue={params.stage ?? ""}>
+            </NativeSelect>
+            <NativeSelect name="stage" defaultValue={params.stage ?? ""}>
               <option value="">Все стадии</option>
               {objectStageOptions.map((option) => (
                 <option key={option.value} value={option.value}>{option.label}</option>
               ))}
-            </select>
-            <select className="h-10 rounded-md border border-input bg-background px-3 text-sm" name="status" defaultValue={params.status ?? ""}>
+            </NativeSelect>
+            <NativeSelect name="status" defaultValue={params.status ?? ""}>
               <option value="">Все статусы</option>
               {objectStatusOptions.map((option) => (
                 <option key={option.value} value={option.value}>{option.label}</option>
               ))}
-            </select>
-            <select className="h-10 rounded-md border border-input bg-background px-3 text-sm" name="responsibleId" defaultValue={params.responsibleId ?? ""}>
+            </NativeSelect>
+            <NativeSelect name="responsibleId" defaultValue={params.responsibleId ?? ""}>
               <option value="">Все ответственные</option>
               {users.map((item) => (
                 <option key={item.id} value={item.id}>{item.name}</option>
               ))}
-            </select>
-            <select className="h-10 rounded-md border border-input bg-background px-3 text-sm" name="clientId" defaultValue={params.clientId ?? ""}>
+            </NativeSelect>
+            <NativeSelect name="clientId" defaultValue={params.clientId ?? ""}>
               <option value="">Все клиенты</option>
               {clients.map((client) => (
                 <option key={client.id} value={client.id}>{client.name}</option>
               ))}
-            </select>
-            <select className="h-10 rounded-md border border-input bg-background px-3 text-sm" name="designerId" defaultValue={params.designerId ?? ""}>
+            </NativeSelect>
+            <NativeSelect name="designerId" defaultValue={params.designerId ?? ""}>
               <option value="">Все дизайнеры</option>
               {designers.map((designer) => (
                 <option key={designer.id} value={designer.id}>
                   {designer.name}{designer.studio ? `, ${designer.studio}` : ""}
                 </option>
               ))}
-            </select>
-            <select className="h-10 rounded-md border border-input bg-background px-3 text-sm" name="sort" defaultValue={params.sort ?? ""}>
+            </NativeSelect>
+            <NativeSelect name="sort" defaultValue={params.sort ?? ""}>
               <option value="">Сначала новые</option>
               <option value="title">По названию</option>
               <option value="implementationStartAt">По сроку реализации</option>
-            </select>
-            <div className="flex flex-wrap gap-2 lg:col-span-4">
+            </NativeSelect>
+            <FilterActions className="lg:col-span-4">
               <Button type="submit" variant="secondary">Применить</Button>
               <Button asChild variant="outline"><Link href="/objects">Сбросить</Link></Button>
               <Button asChild variant="outline"><Link href={currentUrl(params, { noResponsible: "1", page: undefined })}>Без ответственного</Link></Button>
@@ -141,10 +139,8 @@ export default async function ObjectsPage({ searchParams }: ObjectsPageProps) {
               <Button asChild variant="outline"><Link href={currentUrl(params, { stage: "APPROVAL", page: undefined })}>В согласовании</Link></Button>
               <Button asChild variant="outline"><Link href={currentUrl(params, { frozen: "1", page: undefined })}>Замороженные</Link></Button>
               <Button asChild variant="outline"><Link href={currentUrl(params, { lost: "1", page: undefined })}>Потерянные</Link></Button>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
+            </FilterActions>
+      </FilterBar>
 
       <Card>
         <CardContent className="p-0">
@@ -204,22 +200,13 @@ export default async function ObjectsPage({ searchParams }: ObjectsPageProps) {
         </CardContent>
       </Card>
 
-      <div className="flex items-center justify-between text-sm text-muted-foreground">
-        <span>Всего: {objects.total}</span>
-        <div className="flex gap-2">
-          {objects.page > 1 ? (
-            <Button asChild variant="outline" size="sm">
-              <Link href={currentUrl(params, { page: String(objects.page - 1) })}>Назад</Link>
-            </Button>
-          ) : null}
-          <span className="py-2">Страница {objects.page} из {objects.pageCount}</span>
-          {objects.page < objects.pageCount ? (
-            <Button asChild variant="outline" size="sm">
-              <Link href={currentUrl(params, { page: String(objects.page + 1) })}>Вперед</Link>
-            </Button>
-          ) : null}
-        </div>
-      </div>
+      <Pagination
+        total={objects.total}
+        page={objects.page}
+        pageCount={objects.pageCount}
+        previousHref={objects.page > 1 ? currentUrl(params, { page: String(objects.page - 1) }) : undefined}
+        nextHref={objects.page < objects.pageCount ? currentUrl(params, { page: String(objects.page + 1) }) : undefined}
+      />
     </div>
   );
 }

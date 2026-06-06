@@ -2,7 +2,7 @@
 
 import { useActionState } from "react";
 import type { Designer, User } from "@/generated/prisma/client";
-import { Button } from "@/components/ui/button";
+import { dateInputValue, FieldError, FormActions, FormSection } from "@/components/crm/form-fields";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -28,16 +28,6 @@ type DesignerFormProps = {
 
 const initialState: DesignerActionState = {};
 
-function dateValue(date?: Date | string | null) {
-  if (!date) return "";
-  return new Date(date).toISOString().slice(0, 10);
-}
-
-function FieldError({ name, state }: { name: string; state: DesignerActionState }) {
-  const message = state.errors?.[name]?.[0];
-  return message ? <p className="text-sm text-destructive">{message}</p> : null;
-}
-
 export function DesignerForm({
   action,
   designer,
@@ -54,7 +44,7 @@ export function DesignerForm({
     <form action={formAction} className="grid gap-5">
       {state.message ? <p className="rounded-md border border-destructive p-3 text-sm text-destructive">{state.message}</p> : null}
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <FormSection>
         <div className="space-y-2">
           <Label htmlFor="name">Имя *</Label>
           <Input id="name" name="name" defaultValue={designer?.name ?? ""} required />
@@ -168,15 +158,15 @@ export function DesignerForm({
         </div>
         <div className="space-y-2">
           <Label htmlFor="firstContactAt">Первый контакт</Label>
-          <Input id="firstContactAt" name="firstContactAt" type="date" defaultValue={dateValue(designer?.firstContactAt)} />
+          <Input id="firstContactAt" name="firstContactAt" type="date" defaultValue={dateInputValue(designer?.firstContactAt)} />
         </div>
         <div className="space-y-2">
           <Label htmlFor="lastTouchAt">Последнее касание</Label>
-          <Input id="lastTouchAt" name="lastTouchAt" type="date" defaultValue={dateValue(designer?.lastTouchAt)} />
+          <Input id="lastTouchAt" name="lastTouchAt" type="date" defaultValue={dateInputValue(designer?.lastTouchAt)} />
         </div>
         <div className="space-y-2">
           <Label htmlFor="nextStepAt">Дата следующего шага *</Label>
-          <Input id="nextStepAt" name="nextStepAt" type="date" defaultValue={dateValue(designer?.nextStepAt)} required />
+          <Input id="nextStepAt" name="nextStepAt" type="date" defaultValue={dateInputValue(designer?.nextStepAt)} required />
           <FieldError name="nextStepAt" state={state} />
         </div>
         <div className="space-y-2">
@@ -184,7 +174,7 @@ export function DesignerForm({
           <Input id="nextStepText" name="nextStepText" defaultValue={designer?.nextStepText ?? ""} required />
           <FieldError name="nextStepText" state={state} />
         </div>
-      </div>
+      </FormSection>
 
       <div className="space-y-2">
         <Label>Специализация</Label>
@@ -203,7 +193,7 @@ export function DesignerForm({
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <FormSection>
         <div className="space-y-2">
           <Label htmlFor="cooperationTerms">Условия сотрудничества</Label>
           <Textarea id="cooperationTerms" name="cooperationTerms" defaultValue={designer?.cooperationTerms ?? ""} />
@@ -212,16 +202,9 @@ export function DesignerForm({
           <Label htmlFor="comment">Комментарий</Label>
           <Textarea id="comment" name="comment" defaultValue={designer?.comment ?? ""} />
         </div>
-      </div>
+      </FormSection>
 
-      <div className="flex gap-3">
-        <Button type="submit" disabled={isPending}>
-          {isPending ? "Сохранение..." : submitLabel}
-        </Button>
-        <Button type="button" variant="outline" onClick={() => window.history.back()}>
-          Отменить
-        </Button>
-      </div>
+      <FormActions isPending={isPending} submitLabel={submitLabel} />
     </form>
   );
 }

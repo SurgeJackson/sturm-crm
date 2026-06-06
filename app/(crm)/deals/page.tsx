@@ -3,10 +3,14 @@ import { redirect } from "next/navigation";
 import { Plus, Search } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
 import { BonusEligibilityBadge, CrmDisciplineBadge } from "@/components/crm/crm-discipline";
+import { PageHeader } from "@/components/layout/page-header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { FilterActions, FilterBar } from "@/components/ui/filter-bar";
 import { Input } from "@/components/ui/input";
+import { NativeSelect } from "@/components/ui/native-select";
+import { Pagination } from "@/components/ui/pagination";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import {
   dealProbabilityLabels,
@@ -60,14 +64,11 @@ export default async function DealsPage({ searchParams }: DealsPageProps) {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold">Сделки</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Воронка продаж по клиентам, объектам и дизайнерам.
-          </p>
-        </div>
-        <div className="flex gap-2">
+      <PageHeader
+        title="Сделки"
+        description="Воронка продаж по клиентам, объектам и дизайнерам."
+        actions={
+          <>
           <Button asChild variant="outline"><Link href="/deals/pipeline">Воронка</Link></Button>
           {canCreateDeal(user) ? (
             <Button asChild>
@@ -77,53 +78,52 @@ export default async function DealsPage({ searchParams }: DealsPageProps) {
               </Link>
             </Button>
           ) : null}
-        </div>
-      </div>
+          </>
+        }
+      />
 
-      <Card>
-        <CardContent className="pt-5">
-          <form className="grid gap-3 lg:grid-cols-4">
+      <FilterBar className="lg:grid-cols-4">
             <div className="relative lg:col-span-2">
               <Search className="pointer-events-none absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
               <Input className="pl-9" name="q" defaultValue={params.q ?? ""} placeholder="Поиск по сделке, клиенту, объекту" />
             </div>
-            <select name="stage" defaultValue={params.stage ?? ""} className="h-10 rounded-md border border-input bg-background px-3 text-sm">
+            <NativeSelect name="stage" defaultValue={params.stage ?? ""}>
               <option value="">Все стадии</option>
               {dealStageOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
-            </select>
-            <select name="responsibleId" defaultValue={params.responsibleId ?? ""} className="h-10 rounded-md border border-input bg-background px-3 text-sm">
+            </NativeSelect>
+            <NativeSelect name="responsibleId" defaultValue={params.responsibleId ?? ""}>
               <option value="">Все ответственные</option>
               {users.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}
-            </select>
-            <select name="clientId" defaultValue={params.clientId ?? ""} className="h-10 rounded-md border border-input bg-background px-3 text-sm">
+            </NativeSelect>
+            <NativeSelect name="clientId" defaultValue={params.clientId ?? ""}>
               <option value="">Все клиенты</option>
               {clients.map((client) => <option key={client.id} value={client.id}>{client.name}</option>)}
-            </select>
-            <select name="objectId" defaultValue={params.objectId ?? ""} className="h-10 rounded-md border border-input bg-background px-3 text-sm">
+            </NativeSelect>
+            <NativeSelect name="objectId" defaultValue={params.objectId ?? ""}>
               <option value="">Все объекты</option>
               {objects.map((object) => <option key={object.id} value={object.id}>{object.title}</option>)}
-            </select>
-            <select name="designerId" defaultValue={params.designerId ?? ""} className="h-10 rounded-md border border-input bg-background px-3 text-sm">
+            </NativeSelect>
+            <NativeSelect name="designerId" defaultValue={params.designerId ?? ""}>
               <option value="">Все дизайнеры</option>
               {designers.map((designer) => (
                 <option key={designer.id} value={designer.id}>{designer.name}{designer.studio ? `, ${designer.studio}` : ""}</option>
               ))}
-            </select>
-            <select name="source" defaultValue={params.source ?? ""} className="h-10 rounded-md border border-input bg-background px-3 text-sm">
+            </NativeSelect>
+            <NativeSelect name="source" defaultValue={params.source ?? ""}>
               <option value="">Все источники</option>
               {dealSourceOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
-            </select>
-            <select name="probability" defaultValue={params.probability ?? ""} className="h-10 rounded-md border border-input bg-background px-3 text-sm">
+            </NativeSelect>
+            <NativeSelect name="probability" defaultValue={params.probability ?? ""}>
               <option value="">Все вероятности</option>
               {dealProbabilityOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
-            </select>
-            <select name="sort" defaultValue={params.sort ?? ""} className="h-10 rounded-md border border-input bg-background px-3 text-sm">
+            </NativeSelect>
+            <NativeSelect name="sort" defaultValue={params.sort ?? ""}>
               <option value="">Сначала новые</option>
               <option value="title">По названию</option>
               <option value="nextActionAt">По следующему действию</option>
               <option value="potentialAmount">По сумме</option>
-            </select>
-            <div className="flex flex-wrap gap-2 lg:col-span-4">
+            </NativeSelect>
+            <FilterActions className="lg:col-span-4">
               <Button type="submit" variant="secondary">Применить</Button>
               <Button asChild variant="outline"><Link href="/deals">Сбросить</Link></Button>
               <Button asChild variant="outline"><Link href={currentUrl(params, { noNextAction: "1", page: undefined })}>Без следующего шага</Link></Button>
@@ -134,10 +134,8 @@ export default async function DealsPage({ searchParams }: DealsPageProps) {
               <Button asChild variant="outline"><Link href={currentUrl(params, { highProbability: "1", page: undefined })}>Высокая вероятность</Link></Button>
               <Button asChild variant="outline"><Link href={currentUrl(params, { lost: "1", page: undefined })}>Проигранные</Link></Button>
               <Button asChild variant="outline"><Link href={currentUrl(params, { active: "1", page: undefined })}>Активные</Link></Button>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
+            </FilterActions>
+      </FilterBar>
 
       <Card>
         <CardContent className="p-0">
@@ -198,22 +196,13 @@ export default async function DealsPage({ searchParams }: DealsPageProps) {
         </CardContent>
       </Card>
 
-      <div className="flex items-center justify-between text-sm text-muted-foreground">
-        <span>Всего: {deals.total}</span>
-        <div className="flex gap-2">
-          {deals.page > 1 ? (
-            <Button asChild variant="outline" size="sm">
-              <Link href={currentUrl(params, { page: String(deals.page - 1) })}>Назад</Link>
-            </Button>
-          ) : null}
-          <span className="py-2">Страница {deals.page} из {deals.pageCount}</span>
-          {deals.page < deals.pageCount ? (
-            <Button asChild variant="outline" size="sm">
-              <Link href={currentUrl(params, { page: String(deals.page + 1) })}>Вперед</Link>
-            </Button>
-          ) : null}
-        </div>
-      </div>
+      <Pagination
+        total={deals.total}
+        page={deals.page}
+        pageCount={deals.pageCount}
+        previousHref={deals.page > 1 ? currentUrl(params, { page: String(deals.page - 1) }) : undefined}
+        nextHref={deals.page < deals.pageCount ? currentUrl(params, { page: String(deals.page + 1) }) : undefined}
+      />
     </div>
   );
 }

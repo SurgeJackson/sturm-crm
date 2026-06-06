@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { NativeSelect } from "@/components/ui/native-select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { CsvButton, MetricsGrid, ReportPeriodFilter } from "@/components/reports/report-widgets";
+import { MetricsGrid, ReportFilterSelect, ReportPageHeader, ReportPeriodFilter } from "@/components/reports/report-widgets";
 import { roleLabels } from "@/lib/constants";
 import { taskActionTypeOptions } from "@/modules/crm/options";
 import { getEmployeeActivityReport, getReportFilterOptions, type ReportSearchParams } from "@/modules/reports/queries";
@@ -41,23 +41,14 @@ export default async function ActivityReportPage({ searchParams }: ActivityRepor
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold">Активность сотрудников</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Клиенты, дизайнеры, объекты, сделки, КП, задачи и касания за период.</p>
-        </div>
-        <div className="flex gap-2"><CsvButton report="activity" params={params} /><Button asChild variant="outline"><Link href="/reports">К отчетам</Link></Button></div>
-      </div>
+      <ReportPageHeader title="Активность сотрудников" description="Клиенты, дизайнеры, объекты, сделки, КП, задачи и касания за период." report="activity" params={params} />
 
       <ReportPeriodFilter params={params} users={filters.users} actionPath="/reports/activity">
-        <select name="role" defaultValue={params.role ?? ""} className="h-10 rounded-md border border-input bg-background px-3 text-sm">
+        <NativeSelect name="role" defaultValue={params.role ?? ""}>
           <option value="">Все роли</option>
           {Object.entries(roleLabels).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
-        </select>
-        <select name="actionType" defaultValue={params.actionType ?? ""} className="h-10 rounded-md border border-input bg-background px-3 text-sm">
-          <option value="">Все действия</option>
-          {taskActionTypeOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
-        </select>
+        </NativeSelect>
+        <ReportFilterSelect name="actionType" value={params.actionType} placeholder="Все действия" options={taskActionTypeOptions} />
       </ReportPeriodFilter>
 
       <MetricsGrid metrics={[

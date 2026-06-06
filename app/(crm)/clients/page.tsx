@@ -2,9 +2,14 @@ import Link from "next/link";
 import { Plus } from "lucide-react";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
+import { PageHeader } from "@/components/layout/page-header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
+import { EmptyState } from "@/components/ui/empty-state";
+import { FilterActions, FilterBar } from "@/components/ui/filter-bar";
+import { NativeSelect } from "@/components/ui/native-select";
+import { Pagination } from "@/components/ui/pagination";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { clientSourceLabels, clientStatusLabels, clientTypeLabels } from "@/lib/constants";
 import { formatRussianDate } from "@/utils/date";
@@ -36,12 +41,10 @@ export default async function ClientsPage({ searchParams }: ClientsPageProps) {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold">Клиенты</h1>
-          <p className="mt-1 text-sm text-muted-foreground">База клиентов STURM с ответственными и следующим контактом.</p>
-        </div>
-        {canCreateClient(user) ? (
+      <PageHeader
+        title="Клиенты"
+        description="База клиентов STURM с ответственными и следующим контактом."
+        actions={canCreateClient(user) ? (
           <Button asChild>
             <Link href="/clients/new">
               <Plus className="h-4 w-4" />
@@ -49,52 +52,45 @@ export default async function ClientsPage({ searchParams }: ClientsPageProps) {
             </Link>
           </Button>
         ) : null}
-      </div>
+      />
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Фильтры</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form className="grid gap-3 md:grid-cols-3 xl:grid-cols-6">
+      <FilterBar className="md:grid-cols-3 xl:grid-cols-6">
             <input className="h-10 rounded-md border border-input bg-background px-3 text-sm" name="q" placeholder="Поиск" defaultValue={params.q ?? ""} />
-            <select className="h-10 rounded-md border border-input bg-background px-3 text-sm" name="clientType" defaultValue={params.clientType ?? ""}>
+            <NativeSelect name="clientType" defaultValue={params.clientType ?? ""}>
               <option value="">Все типы</option>
               {clientTypeOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
-            </select>
-            <select className="h-10 rounded-md border border-input bg-background px-3 text-sm" name="source" defaultValue={params.source ?? ""}>
+            </NativeSelect>
+            <NativeSelect name="source" defaultValue={params.source ?? ""}>
               <option value="">Все источники</option>
               {clientSourceOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
-            </select>
-            <select className="h-10 rounded-md border border-input bg-background px-3 text-sm" name="status" defaultValue={params.status ?? ""}>
+            </NativeSelect>
+            <NativeSelect name="status" defaultValue={params.status ?? ""}>
               <option value="">Все статусы</option>
               {clientStatusOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
-            </select>
-            <select className="h-10 rounded-md border border-input bg-background px-3 text-sm" name="responsibleId" defaultValue={params.responsibleId ?? ""}>
+            </NativeSelect>
+            <NativeSelect name="responsibleId" defaultValue={params.responsibleId ?? ""}>
               <option value="">Все ответственные</option>
               {users.map((manager) => <option key={manager.id} value={manager.id}>{manager.name}</option>)}
-            </select>
-            <select className="h-10 rounded-md border border-input bg-background px-3 text-sm" name="sort" defaultValue={params.sort ?? ""}>
+            </NativeSelect>
+            <NativeSelect name="sort" defaultValue={params.sort ?? ""}>
               <option value="">Сначала новые</option>
               <option value="name">По названию</option>
               <option value="nextContactAt">По следующему контакту</option>
-            </select>
+            </NativeSelect>
             <label className="flex h-10 items-center gap-2 rounded-md border px-3 text-sm">
               <input type="checkbox" name="noNextContact" value="1" defaultChecked={params.noNextContact === "1"} />
               Без следующего контакта
             </label>
-            <div className="flex gap-2 md:col-span-2 xl:col-span-5">
+            <FilterActions className="md:col-span-2 xl:col-span-5">
               <Button type="submit">Применить</Button>
               <Button asChild variant="outline"><Link href="/clients">Сбросить</Link></Button>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
+            </FilterActions>
+      </FilterBar>
 
       <Card>
         <CardContent className="pt-5">
           {clients.items.length === 0 ? (
-            <div className="py-10 text-center text-sm text-muted-foreground">Клиенты не найдены.</div>
+            <EmptyState title="Клиенты не найдены" />
           ) : (
             <Table>
               <TableHeader>
@@ -137,17 +133,13 @@ export default async function ClientsPage({ searchParams }: ClientsPageProps) {
         </CardContent>
       </Card>
 
-      <div className="flex items-center justify-between text-sm text-muted-foreground">
-        <span>Всего: {clients.total}</span>
-        <div className="flex gap-2">
-          <Button asChild variant="outline" size="sm" disabled={clients.page <= 1}>
-            <Link href={pageHref(params, Math.max(clients.page - 1, 1))}>Назад</Link>
-          </Button>
-          <Button asChild variant="outline" size="sm" disabled={clients.page >= clients.pageCount}>
-            <Link href={pageHref(params, Math.min(clients.page + 1, clients.pageCount))}>Вперед</Link>
-          </Button>
-        </div>
-      </div>
+      <Pagination
+        total={clients.total}
+        page={clients.page}
+        pageCount={clients.pageCount}
+        previousHref={clients.page > 1 ? pageHref(params, clients.page - 1) : undefined}
+        nextHref={clients.page < clients.pageCount ? pageHref(params, clients.page + 1) : undefined}
+      />
     </div>
   );
 }

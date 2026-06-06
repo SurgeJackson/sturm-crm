@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Archive, Edit, MessageSquarePlus, Plus } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { Detail } from "@/components/crm/detail";
+import { Detail, DetailSection } from "@/components/crm/detail";
 import { CrmDisciplinePanel } from "@/components/crm/crm-discipline";
 import { TaskActivityTable } from "@/components/tasks/task-activity-table";
 import { Badge } from "@/components/ui/badge";
@@ -94,10 +94,7 @@ export default async function ClientPage({ params, searchParams }: ClientPagePro
           <TabsTrigger value="audit">История изменений</TabsTrigger>
         </TabsList>
         <TabsContent value="main">
-          <Card>
-            <CardHeader><CardTitle>Данные клиента</CardTitle></CardHeader>
-            <CardContent>
-              <dl className="grid gap-5 md:grid-cols-3">
+          <DetailSection title="Данные клиента">
                 <Detail label="Телефон" value={client.phone} />
                 <Detail label="Мессенджер" value={client.messenger} />
                 <Detail label="Email" value={client.email} />
@@ -107,9 +104,7 @@ export default async function ClientPage({ params, searchParams }: ClientPagePro
                 <Detail label="Создал" value={client.createdBy.name} />
                 <Detail label="Последний контакт" value={formatRussianDate(client.lastContactAt)} />
                 <Detail label="Следующий контакт" value={formatRussianDate(client.nextContactAt)} />
-              </dl>
-            </CardContent>
-          </Card>
+          </DetailSection>
         </TabsContent>
         <TabsContent value="comments">
           <Card>

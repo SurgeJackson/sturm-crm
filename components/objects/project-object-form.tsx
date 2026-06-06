@@ -2,7 +2,7 @@
 
 import { useActionState } from "react";
 import type { Client, Designer, ProjectObject, User } from "@/generated/prisma/client";
-import { Button } from "@/components/ui/button";
+import { dateInputValue, FieldError, FormActions, FormSection } from "@/components/crm/form-fields";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -27,16 +27,6 @@ type ProjectObjectFormProps = {
 
 const initialState: ProjectObjectActionState = {};
 
-function dateValue(date?: Date | string | null) {
-  if (!date) return "";
-  return new Date(date).toISOString().slice(0, 10);
-}
-
-function FieldError({ name, state }: { name: string; state: ProjectObjectActionState }) {
-  const message = state.errors?.[name]?.[0];
-  return message ? <p className="text-sm text-destructive">{message}</p> : null;
-}
-
 export function ProjectObjectForm({
   action,
   projectObject,
@@ -55,7 +45,7 @@ export function ProjectObjectForm({
     <form action={formAction} className="grid gap-5">
       {state.message ? <p className="rounded-md border border-destructive p-3 text-sm text-destructive">{state.message}</p> : null}
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <FormSection>
         <div className="space-y-2">
           <Label htmlFor="title">Название объекта *</Label>
           <Input id="title" name="title" defaultValue={projectObject?.title ?? ""} required />
@@ -186,7 +176,7 @@ export function ProjectObjectForm({
             id="implementationStartAt"
             name="implementationStartAt"
             type="date"
-            defaultValue={dateValue(projectObject?.implementationStartAt)}
+            defaultValue={dateInputValue(projectObject?.implementationStartAt)}
           />
         </div>
         <div className="space-y-2">
@@ -195,7 +185,7 @@ export function ProjectObjectForm({
             id="implementationEndAt"
             name="implementationEndAt"
             type="date"
-            defaultValue={dateValue(projectObject?.implementationEndAt)}
+            defaultValue={dateInputValue(projectObject?.implementationEndAt)}
           />
         </div>
         <div className="space-y-2">
@@ -206,7 +196,7 @@ export function ProjectObjectForm({
           <Label htmlFor="bathroomsCount">Количество санузлов</Label>
           <Input id="bathroomsCount" name="bathroomsCount" type="number" min="0" defaultValue={projectObject?.bathroomsCount ?? ""} />
         </div>
-      </div>
+      </FormSection>
 
       <div className="space-y-2">
         <Label>Категории интереса</Label>
@@ -225,7 +215,7 @@ export function ProjectObjectForm({
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <FormSection>
         <div className="space-y-2">
           <Label htmlFor="files">Файлы объекта</Label>
           <Textarea
@@ -239,16 +229,9 @@ export function ProjectObjectForm({
           <Label htmlFor="comment">Комментарий</Label>
           <Textarea id="comment" name="comment" defaultValue={projectObject?.comment ?? ""} />
         </div>
-      </div>
+      </FormSection>
 
-      <div className="flex gap-3">
-        <Button type="submit" disabled={isPending}>
-          {isPending ? "Сохранение..." : submitLabel}
-        </Button>
-        <Button type="button" variant="outline" onClick={() => window.history.back()}>
-          Отменить
-        </Button>
-      </div>
+      <FormActions isPending={isPending} submitLabel={submitLabel} />
     </form>
   );
 }

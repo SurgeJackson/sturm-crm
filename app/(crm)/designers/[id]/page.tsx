@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Archive, Edit, MessageSquarePlus, Plus } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { Detail } from "@/components/crm/detail";
+import { Detail, DetailGrid } from "@/components/crm/detail";
 import { CrmDisciplinePanel } from "@/components/crm/crm-discipline";
 import { TaskActivityTable } from "@/components/tasks/task-activity-table";
 import { Badge } from "@/components/ui/badge";
@@ -103,7 +103,7 @@ export default async function DesignerPage({ params, searchParams }: DesignerPag
           <Card>
             <CardHeader><CardTitle>Контакт</CardTitle></CardHeader>
             <CardContent>
-              <dl className="grid gap-5 md:grid-cols-3">
+              <DetailGrid>
                 <Detail label="Студия" value={designer.studio} />
                 <Detail label="Роль" value={designerRoleLabels[designer.role]} />
                 <Detail label="Телефон" value={designer.phone} />
@@ -113,7 +113,7 @@ export default async function DesignerPage({ params, searchParams }: DesignerPag
                 <Detail label="Город" value={designer.city} />
                 <Detail label="Ответственный" value={designer.responsible.name} />
                 <Detail label="Создал" value={designer.createdBy.name} />
-              </dl>
+              </DetailGrid>
             </CardContent>
           </Card>
         </TabsContent>
@@ -121,14 +121,14 @@ export default async function DesignerPage({ params, searchParams }: DesignerPag
           <Card>
             <CardHeader><CardTitle>Отношения</CardTitle></CardHeader>
             <CardContent>
-              <dl className="grid gap-5 md:grid-cols-3">
+              <DetailGrid>
                 <Detail label="Этап" value={designerRelationshipStageLabels[designer.relationshipStage]} />
                 <Detail label="Потенциал" value={designerPotentialLabels[designer.potential]} />
                 <Detail label="Лояльность" value={designerLoyaltyLabels[designer.loyalty]} />
                 <Detail label="Первый контакт" value={formatRussianDate(designer.firstContactAt)} />
                 <Detail label="Последнее касание" value={formatRussianDate(designer.lastTouchAt)} />
                 <Detail label="Следующий шаг" value={`${formatRussianDate(designer.nextStepAt)}: ${designer.nextStepText ?? ""}`} />
-              </dl>
+              </DetailGrid>
             </CardContent>
           </Card>
         </TabsContent>

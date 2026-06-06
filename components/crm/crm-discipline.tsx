@@ -35,17 +35,22 @@ const disciplineLabels = {
   critical: "Критические нарушения"
 };
 
-function disciplineVariant(status: ReturnType<typeof crmDisciplineStatus>) {
+export function disciplineVariant(status: ReturnType<typeof crmDisciplineStatus>) {
   if (status === "critical") return "warning" as const;
   if (status === "needs_fix") return "outline" as const;
   return "secondary" as const;
 }
 
-function bonusVariant(status: BonusEligibilityStatus) {
+export function bonusVariant(status: BonusEligibilityStatus) {
   if (status === "NOT_ELIGIBLE") return "warning" as const;
   if (status === "NEEDS_FIX") return "outline" as const;
   if (status === "NOT_APPLICABLE") return "outline" as const;
   return "secondary" as const;
+}
+
+export function crmSeverityVariant(severity: CrmViolationSeverity | "critical" | "medium" | "light") {
+  if (severity === "CRITICAL" || severity === "critical") return "warning" as const;
+  return "outline" as const;
 }
 
 export function CrmDisciplineBadges({
@@ -133,7 +138,7 @@ export function CrmDisciplinePanel({
                   <div className="space-y-2">
                     <div className="font-medium">{violation.message}</div>
                     <div className="flex flex-wrap gap-2">
-                      <Badge variant={violation.severity === "CRITICAL" ? "warning" : "outline"}>{crmViolationSeverityLabels[violation.severity]}</Badge>
+                      <Badge variant={crmSeverityVariant(violation.severity)}>{crmViolationSeverityLabels[violation.severity]}</Badge>
                       <Badge variant={violation.canAffectBonus ? "warning" : "outline"}>
                         {violation.canAffectBonus ? "Влияет на премирование" : "Не влияет на премирование"}
                       </Badge>

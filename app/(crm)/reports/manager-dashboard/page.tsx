@@ -3,8 +3,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { CsvButton, MetricsGrid, ReportPeriodFilter } from "@/components/reports/report-widgets";
+import { MetricsGrid, ReportPageHeader, ReportPeriodFilter } from "@/components/reports/report-widgets";
 import { getManagerDashboardReport, getReportFilterOptions, type ReportSearchParams } from "@/modules/reports/queries";
 
 type PageProps = { searchParams: Promise<ReportSearchParams> };
@@ -17,16 +16,7 @@ export default async function ManagerDashboardReportPage({ searchParams }: PageP
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold">Дашборд руководителя</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Продажи, потенциал, дизайнеры, объекты, задачи и дисциплина.</p>
-        </div>
-        <div className="flex gap-2">
-          <CsvButton report="manager-dashboard" params={params} />
-          <Button asChild variant="outline"><Link href="/reports">К отчетам</Link></Button>
-        </div>
-      </div>
+      <ReportPageHeader title="Дашборд руководителя" description="Продажи, потенциал, дизайнеры, объекты, задачи и дисциплина." report="manager-dashboard" params={params} />
       <ReportPeriodFilter params={params} users={filters.users} actionPath="/reports/manager-dashboard" />
       <MetricsGrid metrics={report.metrics} />
       <div className="grid gap-4 xl:grid-cols-2">

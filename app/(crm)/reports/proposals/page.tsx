@@ -2,10 +2,10 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { NativeSelect } from "@/components/ui/native-select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { BreakdownCard, CsvButton, MetricsGrid, ReportPeriodFilter } from "@/components/reports/report-widgets";
+import { BreakdownCard, MetricsGrid, ReportFilterSelect, ReportPageHeader, ReportPeriodFilter } from "@/components/reports/report-widgets";
 import { commercialProposalStatusLabels, proposalDeclineReasonLabels } from "@/lib/constants";
 import { commercialProposalStatusOptions } from "@/modules/crm/options";
 import { getProposalsReport, getReportFilterOptions, type ReportSearchParams } from "@/modules/reports/queries";
@@ -20,11 +20,11 @@ export default async function ProposalsReportPage({ searchParams }: PageProps) {
   const [report, filters] = await Promise.all([getProposalsReport(params, user), getReportFilterOptions(user)]);
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"><div><h1 className="text-2xl font-semibold">Отчет по КП</h1><p className="mt-1 text-sm text-muted-foreground">Потенциальная выручка, статусы, follow-up и причины отказов.</p></div><div className="flex gap-2"><CsvButton report="proposals" params={params} /><Button asChild variant="outline"><Link href="/reports">К отчетам</Link></Button></div></div>
+      <ReportPageHeader title="Отчет по КП" description="Потенциальная выручка, статусы, follow-up и причины отказов." report="proposals" params={params} />
       <ReportPeriodFilter params={params} users={filters.users} actionPath="/reports/proposals">
-        <select name="status" defaultValue={params.status ?? ""} className="h-10 rounded-md border border-input bg-background px-3 text-sm"><option value="">Все статусы</option>{commercialProposalStatusOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select>
-        <select name="clientId" defaultValue={params.clientId ?? ""} className="h-10 rounded-md border border-input bg-background px-3 text-sm"><option value="">Все клиенты</option>{filters.clients.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}</select>
-        <select name="designerId" defaultValue={params.designerId ?? ""} className="h-10 rounded-md border border-input bg-background px-3 text-sm"><option value="">Все дизайнеры</option>{filters.designers.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}</select>
+        <ReportFilterSelect name="status" value={params.status} placeholder="Все статусы" options={commercialProposalStatusOptions} />
+        <NativeSelect name="clientId" defaultValue={params.clientId ?? ""}><option value="">Все клиенты</option>{filters.clients.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}</NativeSelect>
+        <NativeSelect name="designerId" defaultValue={params.designerId ?? ""}><option value="">Все дизайнеры</option>{filters.designers.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}</NativeSelect>
       </ReportPeriodFilter>
       <MetricsGrid metrics={report.metrics} />
       <div className="grid gap-4 xl:grid-cols-3">

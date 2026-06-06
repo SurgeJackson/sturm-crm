@@ -2,6 +2,7 @@
 
 import { useActionState, useMemo, useState } from "react";
 import type { TaskActivity } from "@/generated/prisma/client";
+import { FieldError, FormSection } from "@/components/crm/form-fields";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -64,11 +65,6 @@ function defaultDueAt(recordType: string) {
   const date = new Date();
   date.setHours(date.getHours() + (recordType === "TOUCH" ? 0 : 2));
   return date.toISOString().slice(0, 16);
-}
-
-function FieldError({ name, state }: { name: string; state: TaskActionState }) {
-  const message = state.errors?.[name]?.[0];
-  return message ? <p className="text-sm text-destructive">{message}</p> : null;
 }
 
 export function TaskActivityForm({
@@ -150,7 +146,7 @@ export function TaskActivityForm({
     <form action={formAction} className="grid gap-5">
       {state.message ? <p className="rounded-md border border-destructive p-3 text-sm text-destructive">{state.message}</p> : null}
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <FormSection>
         <div className="space-y-2">
           <Label htmlFor="recordType">Тип записи *</Label>
           <select id="recordType" name="recordType" value={recordType} onChange={(event) => setRecordType(event.target.value)} className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm">
@@ -214,9 +210,9 @@ export function TaskActivityForm({
           <Label htmlFor="description">Описание</Label>
           <Textarea id="description" name="description" defaultValue={task?.description ?? ""} rows={3} />
         </div>
-      </div>
+      </FormSection>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <FormSection>
         <div className="space-y-2">
           <Label htmlFor="clientId">Клиент</Label>
           <select id="clientId" name="clientId" value={clientId} onChange={(event) => setClientId(event.target.value)} className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm">
@@ -272,9 +268,9 @@ export function TaskActivityForm({
             ))}
           </select>
         </div>
-      </div>
+      </FormSection>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <FormSection>
         <div className="space-y-2 md:col-span-2">
           <Label htmlFor="result">{recordType === "TOUCH" ? "Результат касания *" : "Результат выполнения"}</Label>
           <Textarea id="result" name="result" defaultValue={task?.result ?? ""} rows={3} />
@@ -289,7 +285,7 @@ export function TaskActivityForm({
           <Label htmlFor="nextStepAt">Дата следующего шага</Label>
           <Input id="nextStepAt" name="nextStepAt" type="datetime-local" defaultValue={dateTimeValue(task?.nextStepAt)} />
         </div>
-      </div>
+      </FormSection>
 
       <div className="flex justify-end gap-2">
         <Button type="submit" disabled={isPending}>{isPending ? "Сохранение..." : submitLabel}</Button>

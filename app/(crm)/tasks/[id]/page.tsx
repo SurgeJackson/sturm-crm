@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Ban, Edit } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { Detail } from "@/components/crm/detail";
+import { Detail, DetailGrid } from "@/components/crm/detail";
 import { CrmDisciplinePanel } from "@/components/crm/crm-discipline";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -90,14 +90,14 @@ export default async function TaskPage({ params, searchParams }: TaskPageProps) 
       <Card>
         <CardHeader><CardTitle>Основное</CardTitle></CardHeader>
         <CardContent>
-          <dl className="grid gap-5 md:grid-cols-3">
+          <DetailGrid>
             <Detail label="Ответственный" value={task.responsible.name} />
             <Detail label="Создал" value={task.createdBy.name} />
             <Detail label="Приоритет" value={taskPriorityLabels[task.priority]} />
             <Detail label="Срок / дата факта" value={formatRussianDateTime(task.dueAt)} />
             <Detail label="Выполнено" value={formatRussianDateTime(task.completedAt)} />
             <Detail label="Автоправило" value={task.autoRule ? taskAutoRuleLabels[task.autoRule] : null} />
-          </dl>
+          </DetailGrid>
           <div className="mt-6 grid gap-4 md:grid-cols-2">
             <div>
               <div className="text-xs text-muted-foreground">Связанные сущности</div>

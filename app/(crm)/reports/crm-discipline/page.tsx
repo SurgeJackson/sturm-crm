@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
+import { crmSeverityVariant } from "@/components/crm/crm-discipline";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { NativeSelect } from "@/components/ui/native-select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { CsvButton, MetricsGrid, ReportPeriodFilter } from "@/components/reports/report-widgets";
+import { MetricsGrid, ReportPageHeader, ReportPeriodFilter } from "@/components/reports/report-widgets";
 import { getCrmDisciplineReport, getReportFilterOptions, type ReportSearchParams } from "@/modules/reports/queries";
 
 type PageProps = { searchParams: Promise<ReportSearchParams> };
@@ -19,21 +20,15 @@ export default async function CrmDisciplineReportPage({ searchParams }: PageProp
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold">CRM-дисциплина</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Score = 100 - критичные нарушения * 10 - средние * 5 - легкие * 2.</p>
-        </div>
-        <div className="flex gap-2"><CsvButton report="crm-discipline" params={params} /><Button asChild variant="outline"><Link href="/reports">К отчетам</Link></Button></div>
-      </div>
+      <ReportPageHeader title="CRM-дисциплина" description="Score = 100 - критичные нарушения * 10 - средние * 5 - легкие * 2." report="crm-discipline" params={params} />
       <ReportPeriodFilter params={params} users={filters.users} actionPath="/reports/crm-discipline">
-        <select name="severity" defaultValue={params.severity ?? ""} className="h-10 rounded-md border border-input bg-background px-3 text-sm">
+        <NativeSelect name="severity" defaultValue={params.severity ?? ""}>
           <option value="">Все нарушения</option>
           <option value="critical">Критичные</option>
           <option value="medium">Средние</option>
           <option value="low">Легкие</option>
-        </select>
-        <select name="entity" defaultValue={params.entity ?? ""} className="h-10 rounded-md border border-input bg-background px-3 text-sm">
+        </NativeSelect>
+        <NativeSelect name="entity" defaultValue={params.entity ?? ""}>
           <option value="">Все сущности</option>
           <option value="CLIENT">Клиенты</option>
           <option value="DESIGNER">Дизайнеры</option>
@@ -41,7 +36,7 @@ export default async function CrmDisciplineReportPage({ searchParams }: PageProp
           <option value="DEAL">Сделки</option>
           <option value="PROPOSAL">КП</option>
           <option value="TASK">Задачи</option>
-        </select>
+        </NativeSelect>
         <input name="violationCode" defaultValue={params.violationCode ?? ""} placeholder="Код нарушения" className="h-10 rounded-md border border-input bg-background px-3 text-sm" />
       </ReportPeriodFilter>
       <MetricsGrid metrics={[
@@ -109,7 +104,7 @@ export default async function CrmDisciplineReportPage({ searchParams }: PageProp
                 <TableRow key={`${problem.area}-${problem.href}-${problem.issue}`}>
                   <TableCell>{problem.area}</TableCell>
                   <TableCell>{problem.issue}</TableCell>
-                  <TableCell><Badge variant={problem.severity === "critical" ? "warning" : "outline"}>{severityLabels[problem.severity]}</Badge></TableCell>
+                  <TableCell><Badge variant={crmSeverityVariant(problem.severity)}>{severityLabels[problem.severity]}</Badge></TableCell>
                   <TableCell>{problem.responsibleName}</TableCell>
                   <TableCell>{problem.violationCode}</TableCell>
                   <TableCell>{problem.canAffectBonus ? "Влияет" : "Не влияет"}</TableCell>

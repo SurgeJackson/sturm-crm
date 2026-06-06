@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Archive, Edit, MessageSquarePlus, Plus } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { Detail } from "@/components/crm/detail";
+import { Detail, DetailGrid } from "@/components/crm/detail";
 import { CrmDisciplinePanel } from "@/components/crm/crm-discipline";
 import { DealLossDialog } from "@/components/deals/deal-loss-dialog";
 import { TaskActivityTable } from "@/components/tasks/task-activity-table";
@@ -113,7 +113,7 @@ export default async function DealPage({ params, searchParams }: DealPageProps) 
           <Card>
             <CardHeader><CardTitle>Данные сделки</CardTitle></CardHeader>
             <CardContent>
-              <dl className="grid gap-5 md:grid-cols-3">
+              <DetailGrid>
                 <Detail label="Клиент" value={deal.client.name} />
                 <Detail label="Объект" value={deal.projectObject.title} />
                 <Detail label="Дизайнер" value={deal.designer?.name} />
@@ -126,7 +126,7 @@ export default async function DealPage({ params, searchParams }: DealPageProps) 
                 <Detail label="Источник" value={dealSourceLabels[deal.source]} />
                 <Detail label="Закрыта" value={formatRussianDate(deal.closedAt)} />
                 <Detail label="Причина проигрыша" value={deal.lossReason ? dealLossReasonLabels[deal.lossReason] : null} />
-              </dl>
+              </DetailGrid>
               <div className="mt-6 grid gap-4 md:grid-cols-2">
                 <div>
                   <div className="text-xs text-muted-foreground">Комментарий</div>

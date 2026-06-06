@@ -2,10 +2,9 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { BreakdownCard, CsvButton, MetricsGrid, ReportPeriodFilter } from "@/components/reports/report-widgets";
+import { BreakdownCard, MetricsGrid, ReportFilterSelect, ReportPageHeader, ReportPeriodFilter } from "@/components/reports/report-widgets";
 import { objectStageLabels, objectStatusLabels, objectTypeLabels } from "@/lib/constants";
 import { objectStageOptions, objectStatusOptions, objectTypeOptions } from "@/modules/crm/options";
 import { getObjectsReport, getReportFilterOptions, type ReportSearchParams } from "@/modules/reports/queries";
@@ -19,11 +18,11 @@ export default async function ObjectsReportPage({ searchParams }: PageProps) {
   const [report, filters] = await Promise.all([getObjectsReport(params, user), getReportFilterOptions(user)]);
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"><div><h1 className="text-2xl font-semibold">Отчет по объектам</h1><p className="mt-1 text-sm text-muted-foreground">Стадии, типы, участники и объекты без движения.</p></div><div className="flex gap-2"><CsvButton report="objects" params={params} /><Button asChild variant="outline"><Link href="/reports">К отчетам</Link></Button></div></div>
+      <ReportPageHeader title="Отчет по объектам" description="Стадии, типы, участники и объекты без движения." report="objects" params={params} />
       <ReportPeriodFilter params={params} users={filters.users} actionPath="/reports/objects">
-        <select name="stage" defaultValue={params.stage ?? ""} className="h-10 rounded-md border border-input bg-background px-3 text-sm"><option value="">Все стадии</option>{objectStageOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select>
-        <select name="status" defaultValue={params.status ?? ""} className="h-10 rounded-md border border-input bg-background px-3 text-sm"><option value="">Все статусы</option>{objectStatusOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select>
-        <select name="type" defaultValue={params.type ?? ""} className="h-10 rounded-md border border-input bg-background px-3 text-sm"><option value="">Все типы</option>{objectTypeOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select>
+        <ReportFilterSelect name="stage" value={params.stage} placeholder="Все стадии" options={objectStageOptions} />
+        <ReportFilterSelect name="status" value={params.status} placeholder="Все статусы" options={objectStatusOptions} />
+        <ReportFilterSelect name="type" value={params.type} placeholder="Все типы" options={objectTypeOptions} />
       </ReportPeriodFilter>
       <MetricsGrid metrics={report.metrics} />
       <div className="grid gap-4 xl:grid-cols-2">

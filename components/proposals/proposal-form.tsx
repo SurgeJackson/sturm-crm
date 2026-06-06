@@ -2,7 +2,7 @@
 
 import { useActionState, useMemo, useState } from "react";
 import type { CommercialProposal, Deal, User } from "@/generated/prisma/client";
-import { Button } from "@/components/ui/button";
+import { dateInputValue, FieldError, FormActions, FormSection } from "@/components/crm/form-fields";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -33,11 +33,6 @@ type ProposalFormProps = {
 
 const initialState: ProposalActionState = {};
 
-function dateValue(date?: Date | string | null) {
-  if (!date) return "";
-  return new Date(date).toISOString().slice(0, 10);
-}
-
 function defaultNextTouchDate() {
   const date = new Date();
   let added = 0;
@@ -47,11 +42,6 @@ function defaultNextTouchDate() {
     if (day !== 0 && day !== 6) added += 1;
   }
   return date.toISOString().slice(0, 10);
-}
-
-function FieldError({ name, state }: { name: string; state: ProposalActionState }) {
-  const message = state.errors?.[name]?.[0];
-  return message ? <p className="text-sm text-destructive">{message}</p> : null;
 }
 
 export function ProposalForm({
@@ -84,7 +74,7 @@ export function ProposalForm({
     <form action={formAction} className="grid gap-5">
       {state.message ? <p className="rounded-md border border-destructive p-3 text-sm text-destructive">{state.message}</p> : null}
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <FormSection>
         <div className="space-y-2">
           <Label htmlFor="dealId">Сделка *</Label>
           <select
@@ -188,11 +178,11 @@ export function ProposalForm({
         </div>
         <div className="space-y-2">
           <Label htmlFor="sentAt">Дата отправки {isSent ? "*" : ""}</Label>
-          <Input id="sentAt" name="sentAt" type="date" defaultValue={dateValue(proposal?.sentAt) || (isSent ? new Date().toISOString().slice(0, 10) : "")} />
+          <Input id="sentAt" name="sentAt" type="date" defaultValue={dateInputValue(proposal?.sentAt) || (isSent ? new Date().toISOString().slice(0, 10) : "")} />
         </div>
         <div className="space-y-2">
           <Label htmlFor="nextTouchAt">Следующее касание {isSent ? "*" : ""}</Label>
-          <Input id="nextTouchAt" name="nextTouchAt" type="date" defaultValue={dateValue(proposal?.nextTouchAt) || (isSent ? defaultNextTouchDate() : "")} />
+          <Input id="nextTouchAt" name="nextTouchAt" type="date" defaultValue={dateInputValue(proposal?.nextTouchAt) || (isSent ? defaultNextTouchDate() : "")} />
           <FieldError name="nextTouchAt" state={state} />
         </div>
         <div className="space-y-2 md:col-span-2">
@@ -218,21 +208,14 @@ export function ProposalForm({
             </div>
           </>
         ) : null}
-      </div>
+      </FormSection>
 
       <div className="space-y-2">
         <Label htmlFor="comment">Комментарий</Label>
         <Textarea id="comment" name="comment" defaultValue={proposal?.comment ?? ""} />
       </div>
 
-      <div className="flex gap-3">
-        <Button type="submit" disabled={isPending}>
-          {isPending ? "Сохранение..." : submitLabel}
-        </Button>
-        <Button type="button" variant="outline" onClick={() => window.history.back()}>
-          Отменить
-        </Button>
-      </div>
+      <FormActions isPending={isPending} submitLabel={submitLabel} />
     </form>
   );
 }

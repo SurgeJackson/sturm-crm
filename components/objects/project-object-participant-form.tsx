@@ -2,7 +2,7 @@
 
 import { useActionState, useState } from "react";
 import type { ProjectObjectParticipant, User } from "@/generated/prisma/client";
-import { Button } from "@/components/ui/button";
+import { FieldError, FormActions, FormSection } from "@/components/crm/form-fields";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -29,11 +29,6 @@ type ProjectObjectParticipantFormProps = {
 
 const initialState: ProjectObjectParticipantActionState = {};
 
-function FieldError({ name, state }: { name: string; state: ProjectObjectParticipantActionState }) {
-  const message = state.errors?.[name]?.[0];
-  return message ? <p className="text-sm text-destructive">{message}</p> : null;
-}
-
 export function ProjectObjectParticipantForm({
   action,
   participant,
@@ -51,7 +46,7 @@ export function ProjectObjectParticipantForm({
     <form action={formAction} className="grid gap-5">
       {state.message ? <p className="rounded-md border border-destructive p-3 text-sm text-destructive">{state.message}</p> : null}
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <FormSection>
         <div className="space-y-2">
           <Label htmlFor="participantType">Тип участника *</Label>
           <select
@@ -199,21 +194,14 @@ export function ProjectObjectParticipantForm({
             </div>
           </>
         )}
-      </div>
+      </FormSection>
 
       <div className="space-y-2">
         <Label htmlFor="comment">Комментарий</Label>
         <Textarea id="comment" name="comment" defaultValue={participant?.comment ?? ""} />
       </div>
 
-      <div className="flex gap-3">
-        <Button type="submit" disabled={isPending}>
-          {isPending ? "Сохранение..." : submitLabel}
-        </Button>
-        <Button type="button" variant="outline" onClick={() => window.history.back()}>
-          Отменить
-        </Button>
-      </div>
+      <FormActions isPending={isPending} submitLabel={submitLabel} />
     </form>
   );
 }

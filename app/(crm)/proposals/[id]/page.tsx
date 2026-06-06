@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Archive, Edit, MessageSquarePlus, Plus } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { Detail } from "@/components/crm/detail";
+import { Detail, DetailGrid } from "@/components/crm/detail";
 import { CrmDisciplinePanel } from "@/components/crm/crm-discipline";
 import { TaskActivityTable } from "@/components/tasks/task-activity-table";
 import { Badge } from "@/components/ui/badge";
@@ -131,7 +131,7 @@ export default async function ProposalPage({ params, searchParams }: ProposalPag
           <Card>
             <CardHeader><CardTitle>Данные КП</CardTitle></CardHeader>
             <CardContent>
-              <dl className="grid gap-5 md:grid-cols-3">
+              <DetailGrid>
                 <Detail label="Сделка" value={proposal.deal.title} />
                 <Detail label="Клиент" value={proposal.client.name} />
                 <Detail label="Объект" value={proposal.projectObject.title} />
@@ -150,7 +150,7 @@ export default async function ProposalPage({ params, searchParams }: ProposalPag
                 <Detail label="Файл" value={proposal.fileName} />
                 <Detail label="Загрузил" value={proposal.uploadedBy?.name} />
                 <Detail label="Причина отклонения" value={proposal.declineReason ? proposalDeclineReasonLabels[proposal.declineReason] : null} />
-              </dl>
+              </DetailGrid>
               <div className="mt-6 grid gap-4 md:grid-cols-2">
                 <div>
                   <div className="text-xs text-muted-foreground">Файл КП</div>

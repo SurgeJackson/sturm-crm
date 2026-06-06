@@ -2,7 +2,7 @@
 
 import { useActionState } from "react";
 import type { Client, Designer, User } from "@/generated/prisma/client";
-import { Button } from "@/components/ui/button";
+import { dateInputValue, FieldError, FormActions, FormSection } from "@/components/crm/form-fields";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -25,16 +25,6 @@ type ClientFormProps = {
 
 const initialState: ClientActionState = {};
 
-function dateValue(date?: Date | string | null) {
-  if (!date) return "";
-  return new Date(date).toISOString().slice(0, 10);
-}
-
-function FieldError({ name, state }: { name: string; state: ClientActionState }) {
-  const message = state.errors?.[name]?.[0];
-  return message ? <p className="text-sm text-destructive">{message}</p> : null;
-}
-
 export function ClientForm({
   action,
   client,
@@ -51,7 +41,7 @@ export function ClientForm({
     <form action={formAction} className="grid gap-5">
       {state.message ? <p className="rounded-md border border-destructive p-3 text-sm text-destructive">{state.message}</p> : null}
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <FormSection>
         <div className="space-y-2">
           <Label htmlFor="name">Имя / название *</Label>
           <Input id="name" name="name" defaultValue={client?.name ?? ""} required />
@@ -166,27 +156,20 @@ export function ClientForm({
         </div>
         <div className="space-y-2">
           <Label htmlFor="lastContactAt">Последний контакт</Label>
-          <Input id="lastContactAt" name="lastContactAt" type="date" defaultValue={dateValue(client?.lastContactAt)} />
+          <Input id="lastContactAt" name="lastContactAt" type="date" defaultValue={dateInputValue(client?.lastContactAt)} />
         </div>
         <div className="space-y-2">
           <Label htmlFor="nextContactAt">Следующий контакт</Label>
-          <Input id="nextContactAt" name="nextContactAt" type="date" defaultValue={dateValue(client?.nextContactAt)} />
+          <Input id="nextContactAt" name="nextContactAt" type="date" defaultValue={dateInputValue(client?.nextContactAt)} />
         </div>
-      </div>
+      </FormSection>
 
       <div className="space-y-2">
         <Label htmlFor="comment">Комментарий</Label>
         <Textarea id="comment" name="comment" defaultValue={client?.comment ?? ""} />
       </div>
 
-      <div className="flex gap-3">
-        <Button type="submit" disabled={isPending}>
-          {isPending ? "Сохранение..." : submitLabel}
-        </Button>
-        <Button type="button" variant="outline" onClick={() => window.history.back()}>
-          Отменить
-        </Button>
-      </div>
+      <FormActions isPending={isPending} submitLabel={submitLabel} />
     </form>
   );
 }

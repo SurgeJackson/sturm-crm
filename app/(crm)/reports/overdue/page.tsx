@@ -1,10 +1,9 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { CsvButton, MetricsGrid, ReportPeriodFilter } from "@/components/reports/report-widgets";
+import { MetricsGrid, ReportPageHeader, ReportPeriodFilter } from "@/components/reports/report-widgets";
 import { getOverdueReport, getReportFilterOptions, type ReportSearchParams } from "@/modules/reports/queries";
 import { formatRussianDate, formatRussianDateTime } from "@/utils/date";
 
@@ -17,10 +16,7 @@ export default async function OverdueReportPage({ searchParams }: PageProps) {
   const [report, filters] = await Promise.all([getOverdueReport(params, user), getReportFilterOptions(user)]);
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div><h1 className="text-2xl font-semibold">Просрочки</h1><p className="mt-1 text-sm text-muted-foreground">Задачи, follow-up, сделки, дизайнеры, объекты и клиенты без движения.</p></div>
-        <div className="flex gap-2"><CsvButton report="overdue" params={params} /><Button asChild variant="outline"><Link href="/reports">К отчетам</Link></Button></div>
-      </div>
+      <ReportPageHeader title="Просрочки" description="Задачи, follow-up, сделки, дизайнеры, объекты и клиенты без движения." report="overdue" params={params} />
       <ReportPeriodFilter params={params} users={filters.users} actionPath="/reports/overdue" />
       <MetricsGrid metrics={report.metrics} />
       <div className="grid gap-4 xl:grid-cols-2">

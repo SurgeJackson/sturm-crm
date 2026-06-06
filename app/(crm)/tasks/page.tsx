@@ -2,9 +2,13 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { CalendarDays, MessageSquarePlus, Plus, Search } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
+import { PageHeader } from "@/components/layout/page-header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { FilterActions, FilterBar } from "@/components/ui/filter-bar";
 import { Input } from "@/components/ui/input";
+import { NativeSelect } from "@/components/ui/native-select";
+import { Pagination } from "@/components/ui/pagination";
 import { TaskActivityTable } from "@/components/tasks/task-activity-table";
 import { taskPriorityOptions, taskRecordTypeOptions, taskStatusOptions } from "@/modules/crm/options";
 import { ensureAutomaticTasks } from "@/modules/tasks/actions";
@@ -36,12 +40,11 @@ export default async function TasksPage({ searchParams }: TasksPageProps) {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold">Задачи / касания</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Ежедневные действия, факты контактов и контроль просрочек.</p>
-        </div>
-        <div className="flex flex-wrap gap-2">
+      <PageHeader
+        title="Задачи / касания"
+        description="Ежедневные действия, факты контактов и контроль просрочек."
+        actions={
+          <>
           <Button asChild variant="outline">
             <Link href="/tasks/calendar">
               <CalendarDays className="h-4 w-4" />
@@ -64,34 +67,33 @@ export default async function TasksPage({ searchParams }: TasksPageProps) {
               </Button>
             </>
           ) : null}
-        </div>
-      </div>
+          </>
+        }
+      />
 
-      <Card>
-        <CardContent className="pt-5">
-          <form className="grid gap-3 lg:grid-cols-4">
+      <FilterBar className="lg:grid-cols-4">
             <div className="relative lg:col-span-2">
               <Search className="pointer-events-none absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
               <Input className="pl-9" name="q" defaultValue={params.q ?? ""} placeholder="Поиск по названию, описанию, результату" />
             </div>
-            <select name="recordType" defaultValue={params.recordType ?? ""} className="h-10 rounded-md border border-input bg-background px-3 text-sm">
+            <NativeSelect name="recordType" defaultValue={params.recordType ?? ""}>
               <option value="">Все записи</option>
               {taskRecordTypeOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
-            </select>
-            <select name="responsibleId" defaultValue={params.responsibleId ?? ""} className="h-10 rounded-md border border-input bg-background px-3 text-sm">
+            </NativeSelect>
+            <NativeSelect name="responsibleId" defaultValue={params.responsibleId ?? ""}>
               <option value="">Все ответственные</option>
               {context.users.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}
-            </select>
-            <select name="status" defaultValue={params.status ?? ""} className="h-10 rounded-md border border-input bg-background px-3 text-sm">
+            </NativeSelect>
+            <NativeSelect name="status" defaultValue={params.status ?? ""}>
               <option value="">Все статусы</option>
               {taskStatusOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
-            </select>
-            <select name="priority" defaultValue={params.priority ?? ""} className="h-10 rounded-md border border-input bg-background px-3 text-sm">
+            </NativeSelect>
+            <NativeSelect name="priority" defaultValue={params.priority ?? ""}>
               <option value="">Все приоритеты</option>
               {taskPriorityOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
-            </select>
+            </NativeSelect>
             <Input name="due" type="date" defaultValue={params.due ?? ""} />
-            <div className="flex flex-wrap gap-2 lg:col-span-4">
+            <FilterActions className="lg:col-span-4">
               <Button type="submit" variant="secondary">Применить</Button>
               <Button asChild variant="outline"><Link href="/tasks">Сбросить</Link></Button>
               <Button asChild variant="outline"><Link href={currentUrl(params, { today: "1", overdue: undefined, page: undefined })}>На сегодня</Link></Button>
@@ -99,10 +101,8 @@ export default async function TasksPage({ searchParams }: TasksPageProps) {
               <Button asChild variant="outline"><Link href={currentUrl(params, { noResult: "1", page: undefined })}>Без результата</Link></Button>
               <Button asChild variant="outline"><Link href={currentUrl(params, { recordType: "TASK", page: undefined })}>Только задачи</Link></Button>
               <Button asChild variant="outline"><Link href={currentUrl(params, { recordType: "TOUCH", page: undefined })}>Только касания</Link></Button>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
+            </FilterActions>
+      </FilterBar>
 
       <Card>
         <CardContent className="p-0">
@@ -110,13 +110,13 @@ export default async function TasksPage({ searchParams }: TasksPageProps) {
         </CardContent>
       </Card>
 
-      <div className="flex items-center justify-between text-sm text-muted-foreground">
-        <span>Всего: {tasks.total}</span>
-        <div className="flex gap-2">
-          {tasks.page > 1 ? <Button asChild variant="outline" size="sm"><Link href={currentUrl(params, { page: String(tasks.page - 1) })}>Назад</Link></Button> : null}
-          {tasks.page < tasks.pageCount ? <Button asChild variant="outline" size="sm"><Link href={currentUrl(params, { page: String(tasks.page + 1) })}>Вперед</Link></Button> : null}
-        </div>
-      </div>
+      <Pagination
+        total={tasks.total}
+        page={tasks.page}
+        pageCount={tasks.pageCount}
+        previousHref={tasks.page > 1 ? currentUrl(params, { page: String(tasks.page - 1) }) : undefined}
+        nextHref={tasks.page < tasks.pageCount ? currentUrl(params, { page: String(tasks.page + 1) }) : undefined}
+      />
     </div>
   );
 }

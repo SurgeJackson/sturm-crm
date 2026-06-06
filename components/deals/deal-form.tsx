@@ -2,7 +2,7 @@
 
 import { useActionState, useMemo, useState } from "react";
 import type { Client, Deal, Designer, ProjectObject, User } from "@/generated/prisma/client";
-import { Button } from "@/components/ui/button";
+import { dateInputValue, FieldError, FormActions, FormSection } from "@/components/crm/form-fields";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -33,16 +33,6 @@ type DealFormProps = {
 };
 
 const initialState: DealActionState = {};
-
-function dateValue(date?: Date | string | null) {
-  if (!date) return "";
-  return new Date(date).toISOString().slice(0, 10);
-}
-
-function FieldError({ name, state }: { name: string; state: DealActionState }) {
-  const message = state.errors?.[name]?.[0];
-  return message ? <p className="text-sm text-destructive">{message}</p> : null;
-}
 
 export function DealForm({
   action,
@@ -85,7 +75,7 @@ export function DealForm({
     <form action={formAction} className="grid gap-5">
       {state.message ? <p className="rounded-md border border-destructive p-3 text-sm text-destructive">{state.message}</p> : null}
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <FormSection>
         <div className="space-y-2">
           <Label htmlFor="title">Название сделки *</Label>
           <Input id="title" name="title" value={title} onChange={(event) => setTitle(event.target.value)} required />
@@ -202,7 +192,7 @@ export function DealForm({
         </div>
         <div className="space-y-2">
           <Label htmlFor="nextActionAt">Дата следующего действия {!isClosedStage ? "*" : ""}</Label>
-          <Input id="nextActionAt" name="nextActionAt" type="date" defaultValue={dateValue(deal?.nextActionAt)} disabled={isClosedStage} />
+          <Input id="nextActionAt" name="nextActionAt" type="date" defaultValue={dateInputValue(deal?.nextActionAt)} disabled={isClosedStage} />
           <FieldError name="nextActionAt" state={state} />
         </div>
         <div className="space-y-2 md:col-span-2">
@@ -228,21 +218,14 @@ export function DealForm({
             </div>
           </>
         ) : null}
-      </div>
+      </FormSection>
 
       <div className="space-y-2">
         <Label htmlFor="comment">Комментарий</Label>
         <Textarea id="comment" name="comment" defaultValue={deal?.comment ?? ""} />
       </div>
 
-      <div className="flex gap-3">
-        <Button type="submit" disabled={isPending}>
-          {isPending ? "Сохранение..." : submitLabel}
-        </Button>
-        <Button type="button" variant="outline" onClick={() => window.history.back()}>
-          Отменить
-        </Button>
-      </div>
+      <FormActions isPending={isPending} submitLabel={submitLabel} />
     </form>
   );
 }
