@@ -14,6 +14,7 @@ import {
   TextField,
   dateInputValue
 } from "@/components/crm/form-fields";
+import { InfoTile } from "@/components/ui/bordered-list-item";
 import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
 import type { ProposalActionState } from "@/modules/proposals/actions";
@@ -42,6 +43,16 @@ type ProposalFormProps = {
 };
 
 const initialState: ProposalActionState = {};
+
+function SelectedDealSummary({ deal }: { deal?: DealOption }) {
+  return (
+    <>
+      <InfoTile label="Клиент">{deal?.client.name ?? "Не выбран"}</InfoTile>
+      <InfoTile label="Объект">{deal?.projectObject.title ?? "Не выбран"}</InfoTile>
+      <InfoTile label="Дизайнер">{deal?.designer?.name ?? "Не выбран"}</InfoTile>
+    </>
+  );
+}
 
 function defaultNextTouchDate() {
   const date = new Date();
@@ -106,18 +117,7 @@ export function ProposalForm({
           state={state}
           onChange={setResponsibleId}
         />
-        <div className="rounded-md border p-3 text-sm">
-          <div className="text-xs text-muted-foreground">Клиент</div>
-          <div className="mt-1">{selectedDeal?.client.name ?? "Не выбран"}</div>
-        </div>
-        <div className="rounded-md border p-3 text-sm">
-          <div className="text-xs text-muted-foreground">Объект</div>
-          <div className="mt-1">{selectedDeal?.projectObject.title ?? "Не выбран"}</div>
-        </div>
-        <div className="rounded-md border p-3 text-sm">
-          <div className="text-xs text-muted-foreground">Дизайнер</div>
-          <div className="mt-1">{selectedDeal?.designer?.name ?? "Не выбран"}</div>
-        </div>
+        <SelectedDealSummary deal={selectedDeal} />
         <FormField name="status" label="Статус *">
           <NativeSelect
             id="status"

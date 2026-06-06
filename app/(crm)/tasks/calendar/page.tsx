@@ -1,25 +1,14 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
 import { PageHeader } from "@/components/layout/page-header";
+import { TaskCalendarDayList, TaskCalendarFilters, TaskCalendarRangeNav } from "@/components/tasks/task-calendar";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { NativeSelect } from "@/components/ui/native-select";
-import { TaskActivityTable } from "@/components/tasks/task-activity-table";
 import { getTaskCalendar, getTaskFormContext, type TaskCalendarSearchParams } from "@/modules/tasks/queries";
-import { formatRussianDate } from "@/utils/date";
 
 type TaskCalendarPageProps = {
   searchParams: Promise<TaskCalendarSearchParams>;
 };
-
-function shiftWeek(dateValue: string | undefined, delta: number) {
-  const date = dateValue ? new Date(`${dateValue}T00:00:00.000`) : new Date();
-  date.setDate(date.getDate() + delta * 7);
-  return date.toISOString().slice(0, 10);
-}
 
 export default async function TaskCalendarPage({ searchParams }: TaskCalendarPageProps) {
   const user = await getCurrentUser();
@@ -39,52 +28,9 @@ export default async function TaskCalendarPage({ searchParams }: TaskCalendarPag
         actions={<Button asChild variant="outline"><Link href="/tasks">К списку</Link></Button>}
       />
 
-      <Card>
-        <CardContent className="pt-5">
-          <form className="grid gap-3 md:grid-cols-4">
-            <Input name="date" type="date" defaultValue={params.date ?? new Date().toISOString().slice(0, 10)} />
-            <NativeSelect name="responsibleId" defaultValue={params.responsibleId ?? ""}>
-              <option value="">Все ответственные</option>
-              {context.users.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}
-            </NativeSelect>
-            <label className="flex h-10 items-center gap-2 rounded-md border px-3 text-sm">
-              <input type="checkbox" name="mine" value="1" defaultChecked={params.mine === "1"} />
-              Мои задачи
-            </label>
-            <div className="flex gap-2">
-              <Button type="submit" variant="secondary">Показать</Button>
-              <Button asChild variant="outline"><Link href="/tasks/calendar">Сбросить</Link></Button>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
-
-      <div className="flex items-center justify-between">
-        <Button asChild variant="outline" size="sm">
-          <Link href={`/tasks/calendar?date=${shiftWeek(params.date, -1)}`}>
-            <ChevronLeft className="h-4 w-4" />
-            Предыдущая
-          </Link>
-        </Button>
-        <div className="text-sm text-muted-foreground">{formatRussianDate(calendar.range.start)} — {formatRussianDate(calendar.range.end)}</div>
-        <Button asChild variant="outline" size="sm">
-          <Link href={`/tasks/calendar?date=${shiftWeek(params.date, 1)}`}>
-            Следующая
-            <ChevronRight className="h-4 w-4" />
-          </Link>
-        </Button>
-      </div>
-
-      <div className="grid gap-4">
-        {calendar.days.map((day) => (
-          <Card key={day.date.toISOString()}>
-            <CardHeader><CardTitle>{formatRussianDate(day.date)}</CardTitle></CardHeader>
-            <CardContent className="p-0">
-              <TaskActivityTable items={day.items} emptyText="На сегодня задач нет" compact />
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      <TaskCalendarFilters params={params} users={context.users} />
+      <TaskCalendarRangeNav params={params} range={calendar.range} />
+      <TaskCalendarDayList days={calendar.days} />
     </div>
   );
 }

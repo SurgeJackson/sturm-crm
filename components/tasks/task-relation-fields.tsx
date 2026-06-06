@@ -8,6 +8,38 @@ type ObjectOption = { id: string; title: string; clientId: string; designerId: s
 type DealOption = { id: string; title: string; clientId: string; objectId: string; designerId: string | null; responsibleId: string };
 type ProposalOption = { id: string; proposalNumber: string; dealId: string; clientId: string; objectId: string; designerId: string | null; responsibleId: string };
 type ParticipantOption = { id: string; fullName: string; objectId: string; responsibleId: string | null };
+type RelationOption = { id: string };
+
+function RelationSelectField<TOption extends RelationOption>({
+  name,
+  label,
+  state,
+  value,
+  emptyLabel,
+  options,
+  renderOption,
+  onChange
+}: {
+  name: string;
+  label: string;
+  state?: TaskActionState;
+  value: string;
+  emptyLabel: string;
+  options: TOption[];
+  renderOption: (option: TOption) => string;
+  onChange: (value: string) => void;
+}) {
+  return (
+    <FormField name={name} label={label} state={state}>
+      <NativeSelect id={name} name={name} value={value} onChange={(event) => onChange(event.target.value)}>
+        <option value="">{emptyLabel}</option>
+        {options.map((option) => (
+          <option key={option.id} value={option.id}>{renderOption(option)}</option>
+        ))}
+      </NativeSelect>
+    </FormField>
+  );
+}
 
 export function TaskRelationFields({
   state,
@@ -52,54 +84,61 @@ export function TaskRelationFields({
 }) {
   return (
     <FormSection>
-      <FormField name="clientId" label="Клиент" state={state}>
-        <NativeSelect id="clientId" name="clientId" value={clientId} onChange={(event) => setClientId(event.target.value)}>
-          <option value="">Не выбран</option>
-          {clients.map((client) => (
-            <option key={client.id} value={client.id}>{client.name}</option>
-          ))}
-        </NativeSelect>
-      </FormField>
-      <FormField name="designerId" label="Дизайнер">
-        <NativeSelect id="designerId" name="designerId" value={designerId} onChange={(event) => setDesignerId(event.target.value)}>
-          <option value="">Не выбран</option>
-          {designers.map((designer) => (
-            <option key={designer.id} value={designer.id}>{designer.name}{designer.studio ? `, ${designer.studio}` : ""}</option>
-          ))}
-        </NativeSelect>
-      </FormField>
-      <FormField name="objectId" label="Объект">
-        <NativeSelect id="objectId" name="objectId" value={objectId} onChange={(event) => applyObject(event.target.value)}>
-          <option value="">Не выбран</option>
-          {objects.map((object) => (
-            <option key={object.id} value={object.id}>{object.title}</option>
-          ))}
-        </NativeSelect>
-      </FormField>
-      <FormField name="dealId" label="Сделка">
-        <NativeSelect id="dealId" name="dealId" value={dealId} onChange={(event) => applyDeal(event.target.value)}>
-          <option value="">Не выбрана</option>
-          {deals.map((deal) => (
-            <option key={deal.id} value={deal.id}>{deal.title}</option>
-          ))}
-        </NativeSelect>
-      </FormField>
-      <FormField name="proposalId" label="КП">
-        <NativeSelect id="proposalId" name="proposalId" value={proposalId} onChange={(event) => applyProposal(event.target.value)}>
-          <option value="">Не выбрано</option>
-          {proposals.map((proposal) => (
-            <option key={proposal.id} value={proposal.id}>{proposal.proposalNumber}</option>
-          ))}
-        </NativeSelect>
-      </FormField>
-      <FormField name="objectParticipantId" label="Участник объекта">
-        <NativeSelect id="objectParticipantId" name="objectParticipantId" value={objectParticipantId} onChange={(event) => applyParticipant(event.target.value)}>
-          <option value="">Не выбран</option>
-          {participants.map((participant) => (
-            <option key={participant.id} value={participant.id}>{participant.fullName}</option>
-          ))}
-        </NativeSelect>
-      </FormField>
+      <RelationSelectField
+        name="clientId"
+        label="Клиент"
+        state={state}
+        value={clientId}
+        emptyLabel="Не выбран"
+        options={clients}
+        renderOption={(client) => client.name}
+        onChange={setClientId}
+      />
+      <RelationSelectField
+        name="designerId"
+        label="Дизайнер"
+        value={designerId}
+        emptyLabel="Не выбран"
+        options={designers}
+        renderOption={(designer) => `${designer.name}${designer.studio ? `, ${designer.studio}` : ""}`}
+        onChange={setDesignerId}
+      />
+      <RelationSelectField
+        name="objectId"
+        label="Объект"
+        value={objectId}
+        emptyLabel="Не выбран"
+        options={objects}
+        renderOption={(object) => object.title}
+        onChange={applyObject}
+      />
+      <RelationSelectField
+        name="dealId"
+        label="Сделка"
+        value={dealId}
+        emptyLabel="Не выбрана"
+        options={deals}
+        renderOption={(deal) => deal.title}
+        onChange={applyDeal}
+      />
+      <RelationSelectField
+        name="proposalId"
+        label="КП"
+        value={proposalId}
+        emptyLabel="Не выбрано"
+        options={proposals}
+        renderOption={(proposal) => proposal.proposalNumber}
+        onChange={applyProposal}
+      />
+      <RelationSelectField
+        name="objectParticipantId"
+        label="Участник объекта"
+        value={objectParticipantId}
+        emptyLabel="Не выбран"
+        options={participants}
+        renderOption={(participant) => participant.fullName}
+        onChange={applyParticipant}
+      />
     </FormSection>
   );
 }

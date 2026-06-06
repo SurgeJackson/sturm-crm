@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { TimelineListItem } from "@/components/ui/bordered-list-item";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 type AuditLog = {
@@ -68,12 +69,7 @@ export function AuditLogCard({
           <p className="text-sm text-muted-foreground">История пока пустая.</p>
         ) : (
           logs.map((log) => (
-            <div key={log.id} className="rounded-md border p-3 text-sm">
-              <div className="flex justify-between gap-3">
-                <span className="font-medium">{log.action}</span>
-                <span className="text-muted-foreground">{formatDate(log.createdAt)}</span>
-              </div>
-            </div>
+            <TimelineListItem key={log.id} title={log.action} meta={formatDate(log.createdAt)} />
           ))
         )}
       </CardContent>

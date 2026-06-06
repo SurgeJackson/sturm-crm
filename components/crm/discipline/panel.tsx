@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { AuditEntityType } from "@/generated/prisma/client";
 import { Badge } from "@/components/ui/badge";
+import { InlineNotice } from "@/components/ui/bordered-list-item";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   bonusEligibilityLabels,
@@ -44,13 +45,13 @@ export function CrmDisciplinePanel({
       </CardHeader>
       <CardContent className="space-y-4">
         {bonusStatus === "NOT_ELIGIBLE" ? (
-          <div className="rounded-md border border-accent bg-accent/15 p-3 text-sm">
+          <InlineNotice tone="accent">
             Эта запись не учитывается в премировании до устранения критических нарушений.
-          </div>
+          </InlineNotice>
         ) : bonusStatus === "NEEDS_FIX" ? (
-          <div className="rounded-md border p-3 text-sm">
+          <InlineNotice>
             Запись требует исправления для корректного учета.
-          </div>
+          </InlineNotice>
         ) : null}
 
         {violations.length === 0 ? (

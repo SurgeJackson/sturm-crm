@@ -1,6 +1,7 @@
 import type { ObjectInterestCategory } from "@/generated/prisma/client";
 import { EntityInfoCard } from "@/components/crm/detail-page";
 import { Badge } from "@/components/ui/badge";
+import { BorderedListItem } from "@/components/ui/bordered-list-item";
 import { objectInterestCategoryLabels } from "@/lib/constants";
 
 export function ObjectInterestCategories({
@@ -32,7 +33,7 @@ export function ObjectFilesCard({ files }: { files: string[] }) {
           <p className="text-muted-foreground">По объекту пока нет файлов</p>
         ) : (
           files.map((file) => (
-            <div key={file} className="rounded-md border p-3">{file}</div>
+            <BorderedListItem key={file}>{file}</BorderedListItem>
           ))
         )}
       </div>

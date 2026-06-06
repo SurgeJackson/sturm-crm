@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { AlertTriangle } from "lucide-react";
+import { BorderedListItem } from "@/components/ui/bordered-list-item";
 import { Button } from "@/components/ui/button";
 import { NativeSelect } from "@/components/ui/native-select";
 import { dealProbabilityLabels } from "@/lib/constants";
@@ -19,7 +20,7 @@ export function DealPipelineCard({ deal }: { deal: DealPipelineItem }) {
   const overdue = isOverdue(deal.nextActionAt, deal.stage);
 
   return (
-    <div className="rounded-md border p-3 text-sm">
+    <BorderedListItem>
       <div className="flex items-start justify-between gap-3">
         <Link href={`/deals/${deal.id}`} className="font-medium hover:underline">{deal.title}</Link>
         {overdue ? <AlertTriangle className="h-4 w-4 shrink-0 text-warning" /> : null}
@@ -40,6 +41,6 @@ export function DealPipelineCard({ deal }: { deal: DealPipelineItem }) {
         </NativeSelect>
         <Button type="submit" size="sm" variant="secondary">ОК</Button>
       </form>
-    </div>
+    </BorderedListItem>
   );
 }

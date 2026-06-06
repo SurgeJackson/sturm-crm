@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { InlineNotice } from "@/components/ui/bordered-list-item";
 
 export type PageNotice = {
   show: boolean;
@@ -14,17 +14,12 @@ export function PageNoticeStack({ notices }: { notices: PageNotice[] }) {
   return (
     <>
       {visibleNotices.map((notice) => (
-        <div
+        <InlineNotice
           key={notice.message}
-          className={cn(
-            "rounded-md border p-3 text-sm",
-            notice.tone === "destructive"
-              ? "border-destructive text-destructive"
-              : "border-primary text-primary"
-          )}
+          tone={notice.tone === "destructive" ? "destructive" : "primary"}
         >
           {notice.message}
-        </div>
+        </InlineNotice>
       ))}
     </>
   );

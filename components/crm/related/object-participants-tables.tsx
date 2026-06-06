@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { EmptyTableRow, TableCard } from "@/components/ui/data-table";
@@ -13,6 +14,11 @@ import type { getProjectObjectForUser } from "@/modules/objects/queries";
 
 type ObjectDetail = Awaited<ReturnType<typeof getProjectObjectForUser>>;
 type ArchiveParticipantAction = (participantId: string) => () => Promise<void>;
+type ParticipantType = "PURCHASE_INFLUENCER" | "IMPLEMENTATION_CONTACT";
+
+function fieldValue(value?: string | null) {
+  return value || "Нет данных";
+}
 
 export function ObjectParticipantsTables({
   objectId,
@@ -70,6 +76,36 @@ function ParticipantActions({
   );
 }
 
+function ParticipantTableCard({
+  title,
+  objectId,
+  participantType,
+  canManageParticipants,
+  children
+}: {
+  title: string;
+  objectId: string;
+  participantType: ParticipantType;
+  canManageParticipants: boolean;
+  children: ReactNode;
+}) {
+  return (
+    <TableCard
+      title={title}
+      actions={canManageParticipants ? (
+        <Button asChild size="sm">
+          <Link href={`/objects/${objectId}/participants/new?type=${participantType}`}>
+            <Plus className="h-4 w-4" />
+            Добавить
+          </Link>
+        </Button>
+      ) : null}
+    >
+      {children}
+    </TableCard>
+  );
+}
+
 function PurchaseInfluencersTable({
   objectId,
   participants,
@@ -82,16 +118,11 @@ function PurchaseInfluencersTable({
   archiveParticipantAction: ArchiveParticipantAction;
 }) {
   return (
-    <TableCard
+    <ParticipantTableCard
       title="Влияющие на закупку"
-      actions={canManageParticipants ? (
-        <Button asChild size="sm">
-          <Link href={`/objects/${objectId}/participants/new?type=PURCHASE_INFLUENCER`}>
-            <Plus className="h-4 w-4" />
-            Добавить
-          </Link>
-        </Button>
-      ) : null}
+      objectId={objectId}
+      participantType="PURCHASE_INFLUENCER"
+      canManageParticipants={canManageParticipants}
     >
       <TableHeader>
         <TableRow>
@@ -113,11 +144,11 @@ function PurchaseInfluencersTable({
           <TableRow key={participant.id}>
             <TableCell className="font-medium">{participant.fullName}</TableCell>
             <TableCell>{participant.role}</TableCell>
-            <TableCell>{participant.company || "Нет данных"}</TableCell>
+            <TableCell>{fieldValue(participant.company)}</TableCell>
             <TableCell>{participant.influenceLevel ? influenceLevelLabels[participant.influenceLevel] : "Нет данных"}</TableCell>
             <TableCell>{participant.influenceType ? influenceTypeLabels[participant.influenceType] : "Нет данных"}</TableCell>
             <TableCell>{participant.attitudeToSturm ? attitudeToSturmLabels[participant.attitudeToSturm] : "Нет данных"}</TableCell>
-            <TableCell>{participant.decisionFactors || "Нет данных"}</TableCell>
+            <TableCell>{fieldValue(participant.decisionFactors)}</TableCell>
             <TableCell>{participant.responsible?.name || "Не выбран"}</TableCell>
             <TableCell>
               <ParticipantActions
@@ -130,7 +161,7 @@ function PurchaseInfluencersTable({
           </TableRow>
         ))}
       </TableBody>
-    </TableCard>
+    </ParticipantTableCard>
   );
 }
 
@@ -146,16 +177,11 @@ function ImplementationContactsTable({
   archiveParticipantAction: ArchiveParticipantAction;
 }) {
   return (
-    <TableCard
+    <ParticipantTableCard
       title="Контактные лица реализации"
-      actions={canManageParticipants ? (
-        <Button asChild size="sm">
-          <Link href={`/objects/${objectId}/participants/new?type=IMPLEMENTATION_CONTACT`}>
-            <Plus className="h-4 w-4" />
-            Добавить
-          </Link>
-        </Button>
-      ) : null}
+      objectId={objectId}
+      participantType="IMPLEMENTATION_CONTACT"
+      canManageParticipants={canManageParticipants}
     >
       <TableHeader>
         <TableRow>
@@ -176,10 +202,10 @@ function ImplementationContactsTable({
           <TableRow key={participant.id}>
             <TableCell className="font-medium">{participant.fullName}</TableCell>
             <TableCell>{participant.role}</TableCell>
-            <TableCell>{participant.company || "Нет данных"}</TableCell>
-            <TableCell>{participant.responsibilityZone || "Нет данных"}</TableCell>
+            <TableCell>{fieldValue(participant.company)}</TableCell>
+            <TableCell>{fieldValue(participant.responsibilityZone)}</TableCell>
             <TableCell>{participant.canApproveChanges ? changeApprovalLabels[participant.canApproveChanges] : "Нет данных"}</TableCell>
-            <TableCell>{participant.whenToInvolve || "Нет данных"}</TableCell>
+            <TableCell>{fieldValue(participant.whenToInvolve)}</TableCell>
             <TableCell>{participant.responsible?.name || "Не выбран"}</TableCell>
             <TableCell>
               <ParticipantActions
@@ -192,6 +218,6 @@ function ImplementationContactsTable({
           </TableRow>
         ))}
       </TableBody>
-    </TableCard>
+    </ParticipantTableCard>
   );
 }

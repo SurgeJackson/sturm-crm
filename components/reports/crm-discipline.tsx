@@ -1,7 +1,5 @@
 import { crmSeverityVariant } from "@/components/crm/discipline/variants";
-import { ReportValueListCard } from "@/components/reports/cards";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ReportScoreGrid, ReportValueListCard } from "@/components/reports/cards";
 import { BadgeCell, EmptyTableRow, EntityLinkCell, TableCard } from "@/components/ui/data-table";
 import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import type { getCrmDisciplineReport } from "@/modules/reports/queries";
@@ -22,24 +20,19 @@ const severityLabels: Record<string, string> = {
 
 export function CrmScoreGrid({ scores }: { scores: CrmScore[] }) {
   return (
-    <div className="grid gap-4 md:grid-cols-3">
-      {scores.length === 0 ? (
-        <Card><CardContent className="pt-5 text-sm text-muted-foreground">Нарушений нет. Score 100%.</CardContent></Card>
-      ) : scores.map((score) => (
-        <Card key={score.name}>
-          <CardHeader><CardTitle>{score.name}</CardTitle></CardHeader>
-          <CardContent>
-            <div className="text-3xl font-semibold">{score.score}%</div>
-            <div className="mt-3 flex flex-wrap gap-2 text-xs">
-              <Badge variant={score.score < 60 ? "warning" : "secondary"}>{score.total} наруш.</Badge>
-              <Badge variant="warning">Крит: {score.critical}</Badge>
-              <Badge variant="outline">Сред: {score.medium}</Badge>
-              <Badge variant="outline">Легк: {score.light}</Badge>
-            </div>
-          </CardContent>
-        </Card>
-      ))}
-    </div>
+    <ReportScoreGrid
+      items={scores}
+      emptyText="Нарушений нет. Score 100%."
+      getKey={(score) => score.name}
+      renderTitle={(score) => score.name}
+      renderValue={(score) => `${score.score}%`}
+      renderBadges={(score) => [
+        { label: `${score.total} наруш.`, variant: score.score < 60 ? "warning" : "secondary" },
+        { label: `Крит: ${score.critical}`, variant: "warning" },
+        { label: `Сред: ${score.medium}` },
+        { label: `Легк: ${score.light}` }
+      ]}
+    />
   );
 }
 

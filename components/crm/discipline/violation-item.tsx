@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import { BorderedListItem } from "@/components/ui/bordered-list-item";
 import { Button } from "@/components/ui/button";
 import { ignoreCrmViolationAction } from "@/modules/crm-discipline/actions";
 import { crmViolationSeverityLabels } from "@/modules/crm-discipline/service";
@@ -22,7 +23,7 @@ export function CrmViolationItem({
   const canIgnore = canIgnoreCrmViolation(user);
 
   return (
-    <div className="rounded-md border p-3 text-sm">
+    <BorderedListItem>
       <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
         <div className="space-y-2">
           <div className="font-medium">{violation.message}</div>
@@ -50,6 +51,6 @@ export function CrmViolationItem({
           ) : null}
         </div>
       </div>
-    </div>
+    </BorderedListItem>
   );
 }
