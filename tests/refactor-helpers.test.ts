@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { roleLabels } from "../lib/constants";
 import { enumParam, flagParam, upperEnumParam } from "../modules/crm/param-parsing";
+import { namedAmountRows, namedCountRows, uniqueIds } from "../modules/dashboard/utils";
 import { isFrozenObjectTransition } from "../modules/objects/service";
 import { automaticTaskCreateData, automaticTaskDedupeWhere } from "../modules/tasks/automatic-tasks";
 import { buildEmployeeActivityRows } from "../modules/reports/activity";
@@ -113,5 +114,38 @@ describe("activity report helpers", () => {
       doneTasks: 3,
       overdueTasks: 0
     });
+  });
+});
+
+describe("dashboard aggregation helpers", () => {
+  it("deduplicates non-empty user ids", () => {
+    expect(uniqueIds(["user-1", null, "user-2", "user-1", undefined])).toEqual(["user-1", "user-2"]);
+  });
+
+  it("maps count rows to sorted named rows", () => {
+    expect(namedCountRows(
+      [
+        { responsibleId: "user-1", _count: { _all: 2 } },
+        { responsibleId: "missing", _count: { _all: 5 } }
+      ],
+      new Map([["user-1", "Manager"]])
+    )).toEqual([
+      { name: "Не назначен", count: 5 },
+      { name: "Manager", count: 2 }
+    ]);
+  });
+
+  it("maps amount rows to sorted named rows", () => {
+    expect(namedAmountRows(
+      [
+        { responsibleId: "user-1", value: 100 },
+        { responsibleId: "user-2", value: 250 }
+      ],
+      new Map([["user-1", "Manager"], ["user-2", "Lead"]]),
+      (row) => row.value
+    )).toEqual([
+      { name: "Lead", amount: 250 },
+      { name: "Manager", amount: 100 }
+    ]);
   });
 });

@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { closedTaskStatuses } from "@/modules/crm/domain-constants";
 import type { DashboardContext } from "@/modules/dashboard/context";
 import { groupRowsToCountMap } from "@/modules/dashboard/utils";
 
@@ -9,8 +10,8 @@ export async function getObjectMetrics(ctx: DashboardContext) {
     frozenObjects,
     lostObjects,
     objectsWithoutNextStep,
-    objectsWithoutResponsible,
-    objectsWithoutClient,
+    objectsWithoutDesigner,
+    objectsWithoutParticipants,
     objectsFromDesigners,
     activeObjectsByStage,
     topDesignersByObjects
@@ -19,9 +20,16 @@ export async function getObjectMetrics(ctx: DashboardContext) {
     prisma.projectObject.count({ where: { AND: [ctx.access.object, { createdAt: { gte: ctx.sevenDaysAgo } }] } }),
     prisma.projectObject.count({ where: { AND: [ctx.access.object, { OR: [{ status: "FROZEN" }, { stage: "FROZEN" }] }] } }),
     prisma.projectObject.count({ where: { AND: [ctx.access.object, { OR: [{ status: "LOST" }, { stage: "LOST" }] }] } }),
-    prisma.projectObject.count({ where: { AND: [ctx.access.object, { tasks: { none: { archivedAt: null } } }] } }),
-    prisma.projectObject.count({ where: { AND: [ctx.access.object, { responsibleId: "" }] } }),
-    prisma.projectObject.count({ where: { AND: [ctx.access.object, { clientId: "" }] } }),
+    prisma.projectObject.count({
+      where: {
+        AND: [
+          ctx.access.object,
+          { status: "ACTIVE", tasks: { none: { recordType: "TASK", archivedAt: null, status: { notIn: closedTaskStatuses } } } }
+        ]
+      }
+    }),
+    prisma.projectObject.count({ where: { AND: [ctx.access.object, { status: "ACTIVE", designerId: null }] } }),
+    prisma.projectObject.count({ where: { AND: [ctx.access.object, { status: "ACTIVE", participants: { none: { archivedAt: null } } }] } }),
     prisma.projectObject.count({ where: { AND: [ctx.access.object, { designerId: { not: null } }] } }),
     prisma.projectObject.groupBy({
       by: ["stage"],
@@ -42,8 +50,8 @@ export async function getObjectMetrics(ctx: DashboardContext) {
     frozenObjects,
     lostObjects,
     objectsWithoutNextStep,
-    objectsWithoutResponsible,
-    objectsWithoutClient,
+    objectsWithoutDesigner,
+    objectsWithoutParticipants,
     objectsFromDesigners,
     objectsByStage: groupRowsToCountMap(activeObjectsByStage, "stage"),
     topDesignersByObjects

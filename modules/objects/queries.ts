@@ -21,9 +21,8 @@ export type ObjectListSearchParams = {
   responsibleId?: string;
   clientId?: string;
   designerId?: string;
-  noResponsible?: string;
-  noClient?: string;
   noDesigner?: string;
+  noParticipants?: string;
   noTasks?: string;
   frozen?: string;
   lost?: string;
@@ -57,9 +56,8 @@ export async function getProjectObjects(params: ObjectListSearchParams, user: Pe
   if (params.responsibleId) filters.push({ responsibleId: params.responsibleId });
   if (params.clientId) filters.push({ clientId: params.clientId });
   if (params.designerId) filters.push({ designerId: params.designerId });
-  if (flagParam(params.noResponsible)) filters.push({ responsibleId: "" });
-  if (flagParam(params.noClient)) filters.push({ clientId: "" });
   if (flagParam(params.noDesigner)) filters.push({ designerId: null });
+  if (flagParam(params.noParticipants)) filters.push({ participants: { none: { archivedAt: null } } });
   if (flagParam(params.noTasks)) filters.push({ tasks: { none: { archivedAt: null } } });
   if (flagParam(params.frozen)) filters.push({ OR: [{ status: "FROZEN" }, { stage: "FROZEN" }] });
   if (flagParam(params.lost)) filters.push({ OR: [{ status: "LOST" }, { stage: "LOST" }] });

@@ -1,10 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import type { DashboardContext } from "@/modules/dashboard/context";
 import { closedTaskStatuses } from "@/modules/crm/domain-constants";
-
-function userNameMap(users: Array<{ id: string; name: string }>) {
-  return new Map(users.map((user) => [user.id, user.name]));
-}
+import { getUserNameMap, namedCountRows, uniqueIds } from "@/modules/dashboard/utils";
 
 export async function getActivityMetrics(ctx: DashboardContext) {
   const [
@@ -86,14 +83,11 @@ export async function getActivityMetrics(ctx: DashboardContext) {
     })
   ]);
 
-  const responsibleIds = Array.from(new Set([
+  const responsibleIds = uniqueIds([
     ...overdueTasksByResponsible.map((row) => row.responsibleId),
     ...managerActivity.map((row) => row.responsibleId)
-  ]));
-  const responsibleNames = userNameMap(await prisma.user.findMany({
-    where: { id: { in: responsibleIds } },
-    select: { id: true, name: true }
-  }));
+  ]);
+  const responsibleNames = await getUserNameMap(responsibleIds);
 
   const managerActivityCounts = managerActivity.reduce<Record<string, { name: string; tasks: number; done: number; touches: number }>>((acc, item) => {
     acc[item.responsibleId] ??= { name: responsibleNames.get(item.responsibleId) ?? "Не назначен", tasks: 0, done: 0, touches: 0 };
@@ -109,9 +103,7 @@ export async function getActivityMetrics(ctx: DashboardContext) {
     tasksWithoutResult,
     doneTasksPeriod,
     touchesPeriod,
-    overdueTaskResponsibleCounts: overdueTasksByResponsible
-      .map((row) => ({ name: responsibleNames.get(row.responsibleId) ?? "Не назначен", count: row._count._all }))
-      .sort((a, b) => b.count - a.count),
+    overdueTaskResponsibleCounts: namedCountRows(overdueTasksByResponsible, responsibleNames),
     myTasksToday,
     myOverdueTasks,
     myTasksWeek,

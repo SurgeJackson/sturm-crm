@@ -51,9 +51,8 @@ export function ObjectsFilters({
           basePath="/objects"
           params={params}
           shortcuts={[
-            { label: "Без ответственного", patch: { noResponsible: "1", page: undefined } },
-            { label: "Без клиента", patch: { noClient: "1", page: undefined } },
             { label: "Без дизайнера", patch: { noDesigner: "1", page: undefined } },
+            { label: "Без участников", patch: { noParticipants: "1", page: undefined } },
             { label: "Без задач", patch: { noTasks: "1", page: undefined } },
             { label: "В расчете", patch: { stage: "CALCULATION", page: undefined } },
             { label: "В согласовании", patch: { stage: "APPROVAL", page: undefined } },

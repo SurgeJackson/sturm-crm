@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import type { DashboardContext } from "@/modules/dashboard/context";
-import { groupRowsToCountMap } from "@/modules/dashboard/utils";
+import { getUserNameMap, groupRowsToCountMap, namedAmountRows } from "@/modules/dashboard/utils";
 
 export async function getProposalMetrics(ctx: DashboardContext) {
   const [
@@ -48,22 +48,14 @@ export async function getProposalMetrics(ctx: DashboardContext) {
       where: { AND: [ctx.access.proposal, { status: "DECLINED", declineReason: { not: null } }] },
       _count: { _all: true }
     }),
-    prisma.commercialProposal.findMany({
+    prisma.commercialProposal.groupBy({
+      by: ["responsibleId"],
       where: ctx.access.proposal,
-      select: {
-        amount: true,
-        responsible: { select: { id: true, name: true } }
-      }
+      _sum: { amount: true }
     })
   ]);
 
-  const proposalResponsibleAmounts = proposalsByResponsible.reduce<Record<string, { name: string; amount: number }>>((acc, proposal) => {
-    acc[proposal.responsible.id] = {
-      name: proposal.responsible.name,
-      amount: (acc[proposal.responsible.id]?.amount ?? 0) + proposal.amount
-    };
-    return acc;
-  }, {});
+  const responsibleNames = await getUserNameMap(proposalsByResponsible.map((row) => row.responsibleId));
 
   return {
     activeProposals,
@@ -77,13 +69,12 @@ export async function getProposalMetrics(ctx: DashboardContext) {
     activeProposalsAmount: activeProposalsAmount._sum.amount ?? 0,
     proposalStatusCounts: groupRowsToCountMap(proposalsByStatus, "status"),
     proposalDeclineReasonCounts: groupRowsToCountMap(proposalDeclineReasons, "declineReason"),
-    proposalResponsibleAmounts: Object.values(proposalResponsibleAmounts).sort((a, b) => b.amount - a.amount),
+    proposalResponsibleAmounts: namedAmountRows(proposalsByResponsible, responsibleNames, (row) => row._sum.amount),
     myProposals,
     myProposalNoFollowUp,
     myProposalThinking,
     myProposalOverdueFollowUp,
     myAcceptedProposals,
-    myDeclinedProposals,
-    proposalsWithoutFollowUp: 0
+    myDeclinedProposals
   };
 }

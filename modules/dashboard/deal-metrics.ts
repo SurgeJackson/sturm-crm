@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import type { DashboardContext } from "@/modules/dashboard/context";
-import { groupRowsToCountMap } from "@/modules/dashboard/utils";
+import { getUserNameMap, groupRowsToCountMap, namedCountRows } from "@/modules/dashboard/utils";
 
 export async function getDealMetrics(ctx: DashboardContext) {
   const [
@@ -44,21 +44,14 @@ export async function getDealMetrics(ctx: DashboardContext) {
       where: { AND: [ctx.access.deal, { stage: "LOST", lossReason: { not: null } }] },
       _count: { _all: true }
     }),
-    prisma.deal.findMany({
+    prisma.deal.groupBy({
+      by: ["responsibleId"],
       where: ctx.access.deal,
-      select: {
-        responsible: { select: { id: true, name: true } }
-      }
+      _count: { _all: true }
     })
   ]);
 
-  const dealResponsibleCounts = dealsByResponsible.reduce<Record<string, { name: string; count: number }>>((acc, deal) => {
-    acc[deal.responsible.id] = {
-      name: deal.responsible.name,
-      count: (acc[deal.responsible.id]?.count ?? 0) + 1
-    };
-    return acc;
-  }, {});
+  const responsibleNames = await getUserNameMap(dealsByResponsible.map((row) => row.responsibleId));
 
   return {
     activeDeals,
@@ -70,7 +63,7 @@ export async function getDealMetrics(ctx: DashboardContext) {
     lostDealsPeriod,
     dealsByStage: groupRowsToCountMap(activeDealsByStage, "stage"),
     dealLossReasons: groupRowsToCountMap(lostDealReasons, "lossReason"),
-    dealResponsibleCounts: Object.values(dealResponsibleCounts).sort((a, b) => b.count - a.count),
+    dealResponsibleCounts: namedCountRows(dealsByResponsible, responsibleNames),
     myActiveDeals,
     myDealsWithoutNextStep,
     myOverdueNextActionDeals,
