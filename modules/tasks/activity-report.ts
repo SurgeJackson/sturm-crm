@@ -1,6 +1,8 @@
 import type { Prisma } from "@/generated/prisma/client";
+import { taskActionTypeLabels } from "@/lib/constants";
 import { prisma } from "@/lib/prisma";
 import { weekRange } from "@/modules/crm/date-ranges";
+import { enumParam } from "@/modules/crm/param-parsing";
 import type { PermissionUser } from "@/permissions";
 import { linkedEntityWhere, taskAccessWhere, taskInclude, type ActivityReportSearchParams } from "@/modules/tasks/query-shared";
 
@@ -11,7 +13,8 @@ export async function getActivityReport(params: ActivityReportSearchParams, user
   const to = params.to ? new Date(`${params.to}T23:59:59.999`) : fallback.end;
   const filters: Prisma.TaskActivityWhereInput[] = [taskAccessWhere(user), { createdAt: { gte: from, lte: to } }];
   if (params.responsibleId) filters.push({ responsibleId: params.responsibleId });
-  if (params.actionType) filters.push({ actionType: params.actionType as never });
+  const actionType = enumParam(params.actionType, taskActionTypeLabels);
+  if (actionType) filters.push({ actionType });
   const entityFilter = linkedEntityWhere(params.entityType, "__any__");
   if (entityFilter && params.entityType) {
     const field = Object.keys(entityFilter)[0] as keyof Prisma.TaskActivityWhereInput;

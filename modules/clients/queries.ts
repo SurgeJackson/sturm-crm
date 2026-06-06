@@ -1,8 +1,11 @@
 import type { Prisma } from "@/generated/prisma/client";
 import { notFound } from "next/navigation";
+import { clientSourceLabels, clientStatusLabels, clientTypeLabels } from "@/lib/constants";
 import { prisma } from "@/lib/prisma";
 import { clientAccessWhere } from "@/modules/crm/access-where";
-import { pageFromParam, paginatedResult } from "@/modules/crm/pagination";
+import { paginatedQuery, sortFromParam } from "@/modules/crm/list-query";
+import { enumParam, flagParam } from "@/modules/crm/param-parsing";
+import { pageFromParam } from "@/modules/crm/pagination";
 import { userSummarySelect } from "@/modules/crm/selects";
 import { withCrmViolations } from "@/modules/crm/violation-enrichment";
 import { taskInclude } from "@/modules/tasks/queries";
@@ -36,23 +39,26 @@ export async function getClients(params: ClientListSearchParams, user: Permissio
     });
   }
 
-  if (params.clientType) filters.push({ clientType: params.clientType as never });
-  if (params.source) filters.push({ source: params.source as never });
-  if (params.status) filters.push({ status: params.status as never });
+  const clientType = enumParam(params.clientType, clientTypeLabels);
+  const source = enumParam(params.source, clientSourceLabels);
+  const status = enumParam(params.status, clientStatusLabels);
+  if (clientType) filters.push({ clientType });
+  if (source) filters.push({ source });
+  if (status) filters.push({ status });
   if (params.responsibleId) filters.push({ responsibleId: params.responsibleId });
-  if (params.noNextContact === "1") filters.push({ nextContactAt: null });
+  if (flagParam(params.noNextContact)) filters.push({ nextContactAt: null });
 
   const where: Prisma.ClientWhereInput = { AND: filters };
 
-  const orderBy: Prisma.ClientOrderByWithRelationInput =
-    params.sort === "name"
-      ? { name: "asc" }
-      : params.sort === "nextContactAt"
-        ? { nextContactAt: "asc" }
-        : { createdAt: "desc" };
+  const orderBy = sortFromParam<Prisma.ClientOrderByWithRelationInput>(params.sort, {
+    name: { name: "asc" },
+    nextContactAt: { nextContactAt: "asc" }
+  }, { createdAt: "desc" });
 
-  const [rows, total] = await Promise.all([
-    prisma.client.findMany({
+  return paginatedQuery({
+    page,
+    pageSize: PAGE_SIZE,
+    findRows: () => prisma.client.findMany({
       where,
       orderBy,
       skip: (page - 1) * PAGE_SIZE,
@@ -62,10 +68,9 @@ export async function getClients(params: ClientListSearchParams, user: Permissio
         createdBy: { select: userSummarySelect }
       }
     }),
-    prisma.client.count({ where })
-  ]);
-  const items = await withCrmViolations("CLIENT", rows);
-  return paginatedResult(items, total, page, PAGE_SIZE);
+    countRows: () => prisma.client.count({ where }),
+    mapRows: (rows) => withCrmViolations("CLIENT", rows)
+  });
 }
 
 export async function getClientForUser(id: string, user: PermissionUser) {

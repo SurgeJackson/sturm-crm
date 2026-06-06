@@ -1,7 +1,9 @@
 import type { Prisma } from "@/generated/prisma/client";
+import { commercialProposalStatusLabels, dealProbabilityLabels, dealSourceLabels, dealStageLabels } from "@/lib/constants";
 import { prisma } from "@/lib/prisma";
 import { daysAgo } from "@/modules/crm/date-ranges";
 import { closedDealStages, closedProposalStatuses } from "@/modules/crm/domain-constants";
+import { enumParam } from "@/modules/crm/param-parsing";
 import type { PermissionUser } from "@/permissions";
 import { groupBy, groupCountRows, periodWhere, reportOwnerWhere, reportPeriod, sum, type Metric, type ReportSearchParams } from "./common";
 
@@ -9,9 +11,12 @@ export async function getDealsReport(params: ReportSearchParams, user: Permissio
   const { from, to } = reportPeriod(params);
   const now = new Date();
   const filters: Prisma.DealWhereInput[] = [reportOwnerWhere(user, params)];
-  if (params.stage) filters.push({ stage: params.stage as never });
-  if (params.source) filters.push({ source: params.source as never });
-  if (params.probability) filters.push({ probability: params.probability as never });
+  const stage = enumParam(params.stage, dealStageLabels);
+  const source = enumParam(params.source, dealSourceLabels);
+  const probability = enumParam(params.probability, dealProbabilityLabels);
+  if (stage) filters.push({ stage });
+  if (source) filters.push({ source });
+  if (probability) filters.push({ probability });
   if (params.designerId) filters.push({ designerId: params.designerId });
   if (params.objectId) filters.push({ objectId: params.objectId });
   filters.push({ createdAt: periodWhere(from, to) });
@@ -65,7 +70,8 @@ export async function getProposalsReport(params: ReportSearchParams, user: Permi
   const { from, to } = reportPeriod(params);
   const now = new Date();
   const filters: Prisma.CommercialProposalWhereInput[] = [reportOwnerWhere(user, params), { createdAt: periodWhere(from, to) }];
-  if (params.status) filters.push({ status: params.status as never });
+  const status = enumParam(params.status, commercialProposalStatusLabels);
+  if (status) filters.push({ status });
   if (params.designerId) filters.push({ designerId: params.designerId });
   if (params.objectId) filters.push({ objectId: params.objectId });
   if (params.clientId) filters.push({ clientId: params.clientId });

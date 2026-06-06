@@ -1,7 +1,16 @@
 import type { Prisma } from "@/generated/prisma/client";
 import { notFound } from "next/navigation";
+import {
+  designerLoyaltyLabels,
+  designerPotentialLabels,
+  designerRelationshipStageLabels,
+  designerRoleLabels
+} from "@/lib/constants";
 import { prisma } from "@/lib/prisma";
 import { designerAccessWhere } from "@/modules/crm/access-where";
+import { paginatedQuery, sortFromParam } from "@/modules/crm/list-query";
+import { enumParam, flagParam } from "@/modules/crm/param-parsing";
+import { pageFromParam } from "@/modules/crm/pagination";
 import { userSummarySelect } from "@/modules/crm/selects";
 import { taskInclude } from "@/modules/tasks/queries";
 import { computeBonusEligibilityStatus, getActiveViolationsForEntity, getActiveViolationsMap } from "@/modules/crm-discipline/service";
@@ -23,7 +32,7 @@ export type DesignerListSearchParams = {
 const PAGE_SIZE = 20;
 
 export async function getDesigners(params: DesignerListSearchParams, user: PermissionUser) {
-  const page = Math.max(Number(params.page ?? "1") || 1, 1);
+  const page = pageFromParam(params.page);
   const filters: Prisma.DesignerWhereInput[] = [designerAccessWhere(user)];
 
   if (params.q) {
@@ -37,15 +46,19 @@ export async function getDesigners(params: DesignerListSearchParams, user: Permi
     });
   }
 
-  if (params.role) filters.push({ role: params.role as never });
-  if (params.relationshipStage) filters.push({ relationshipStage: params.relationshipStage as never });
-  if (params.potential) filters.push({ potential: params.potential as never });
-  if (params.loyalty) filters.push({ loyalty: params.loyalty as never });
+  const role = enumParam(params.role, designerRoleLabels);
+  const relationshipStage = enumParam(params.relationshipStage, designerRelationshipStageLabels);
+  const potential = enumParam(params.potential, designerPotentialLabels);
+  const loyalty = enumParam(params.loyalty, designerLoyaltyLabels);
+  if (role) filters.push({ role });
+  if (relationshipStage) filters.push({ relationshipStage });
+  if (potential) filters.push({ potential });
+  if (loyalty) filters.push({ loyalty });
   if (params.responsibleId) filters.push({ responsibleId: params.responsibleId });
-  if (params.noNextStep === "1") {
+  if (flagParam(params.noNextStep)) {
     filters.push({ OR: [{ nextStepAt: null }, { nextStepText: null }] });
   }
-  if (params.noTouch60 === "1") {
+  if (flagParam(params.noTouch60)) {
     const threshold = new Date();
     threshold.setDate(threshold.getDate() - 60);
     filters.push({ OR: [{ lastTouchAt: null }, { lastTouchAt: { lt: threshold } }] });
@@ -53,15 +66,15 @@ export async function getDesigners(params: DesignerListSearchParams, user: Permi
 
   const where: Prisma.DesignerWhereInput = { AND: filters };
 
-  const orderBy: Prisma.DesignerOrderByWithRelationInput =
-    params.sort === "name"
-      ? { name: "asc" }
-      : params.sort === "nextStepAt"
-        ? { nextStepAt: "asc" }
-        : { createdAt: "desc" };
+  const orderBy = sortFromParam<Prisma.DesignerOrderByWithRelationInput>(params.sort, {
+    name: { name: "asc" },
+    nextStepAt: { nextStepAt: "asc" }
+  }, { createdAt: "desc" });
 
-  const [rows, total] = await Promise.all([
-    prisma.designer.findMany({
+  return paginatedQuery({
+    page,
+    pageSize: PAGE_SIZE,
+    findRows: () => prisma.designer.findMany({
       where,
       orderBy,
       skip: (page - 1) * PAGE_SIZE,
@@ -71,25 +84,19 @@ export async function getDesigners(params: DesignerListSearchParams, user: Permi
         createdBy: { select: userSummarySelect }
       }
     }),
-    prisma.designer.count({ where })
-  ]);
-  const violations = await getActiveViolationsMap("DESIGNER", rows.map((item) => item.id));
-  const items = rows.map((item) => {
-    const crmViolations = violations.get(item.id) ?? [];
-    return {
-      ...item,
-      crmViolations,
-      bonusEligibilityStatus: computeBonusEligibilityStatus(crmViolations, false)
-    };
+    countRows: () => prisma.designer.count({ where }),
+    mapRows: async (rows) => {
+      const violations = await getActiveViolationsMap("DESIGNER", rows.map((item) => item.id));
+      return rows.map((item) => {
+        const crmViolations = violations.get(item.id) ?? [];
+        return {
+          ...item,
+          crmViolations,
+          bonusEligibilityStatus: computeBonusEligibilityStatus(crmViolations, false)
+        };
+      });
+    }
   });
-
-  return {
-    items,
-    total,
-    page,
-    pageSize: PAGE_SIZE,
-    pageCount: Math.max(Math.ceil(total / PAGE_SIZE), 1)
-  };
 }
 
 export async function getDesignerForUser(id: string, user: PermissionUser) {

@@ -1,7 +1,10 @@
 import type { Prisma } from "@/generated/prisma/client";
+import { taskPriorityLabels, taskRecordTypeLabels, taskStatusLabels } from "@/lib/constants";
 import { prisma } from "@/lib/prisma";
 import { dateOnlyRange } from "@/modules/crm/date-ranges";
-import { pageFromParam, paginatedResult } from "@/modules/crm/pagination";
+import { paginatedQuery } from "@/modules/crm/list-query";
+import { enumParam, flagParam } from "@/modules/crm/param-parsing";
+import { pageFromParam } from "@/modules/crm/pagination";
 import { withCrmViolations } from "@/modules/crm/violation-enrichment";
 import type { PermissionUser } from "@/permissions";
 import {
@@ -27,16 +30,19 @@ export async function getTasks(params: TaskListSearchParams, user: PermissionUse
       ]
     });
   }
-  if (params.recordType) filters.push({ recordType: params.recordType as never });
+  const recordType = enumParam(params.recordType, taskRecordTypeLabels);
+  const status = enumParam(params.status, taskStatusLabels);
+  const priority = enumParam(params.priority, taskPriorityLabels);
+  if (recordType) filters.push({ recordType });
   if (params.responsibleId) filters.push({ responsibleId: params.responsibleId });
-  if (params.status) filters.push({ status: params.status as never });
-  if (params.priority) filters.push({ priority: params.priority as never });
-  if (params.noResult === "1") filters.push({ result: null });
-  if (params.today === "1") {
+  if (status) filters.push({ status });
+  if (priority) filters.push({ priority });
+  if (flagParam(params.noResult)) filters.push({ result: null });
+  if (flagParam(params.today)) {
     const range = dateOnlyRange();
     if (range) filters.push({ dueAt: { gte: range.start, lte: range.end } });
   }
-  if (params.overdue === "1") filters.push(activeTaskWhere(now));
+  if (flagParam(params.overdue)) filters.push(activeTaskWhere(now));
   if (params.due) {
     const range = dateOnlyRange(params.due);
     if (range) filters.push({ dueAt: { gte: range.start, lte: range.end } });
@@ -45,16 +51,17 @@ export async function getTasks(params: TaskListSearchParams, user: PermissionUse
   if (entityFilter) filters.push(entityFilter);
 
   const where: Prisma.TaskActivityWhereInput = { AND: filters };
-  const [rows, total] = await Promise.all([
-    prisma.taskActivity.findMany({
+  return paginatedQuery({
+    page,
+    pageSize: TASK_PAGE_SIZE,
+    findRows: () => prisma.taskActivity.findMany({
       where,
       orderBy: [{ dueAt: "asc" }, { createdAt: "desc" }],
       skip: (page - 1) * TASK_PAGE_SIZE,
       take: TASK_PAGE_SIZE,
       include: taskInclude()
     }),
-    prisma.taskActivity.count({ where })
-  ]);
-  const items = await withCrmViolations("TASK", rows, false);
-  return paginatedResult(items, total, page, TASK_PAGE_SIZE);
+    countRows: () => prisma.taskActivity.count({ where }),
+    mapRows: (rows) => withCrmViolations("TASK", rows, false)
+  });
 }

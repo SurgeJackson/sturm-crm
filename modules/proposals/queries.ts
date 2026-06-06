@@ -1,10 +1,13 @@
 import type { Prisma } from "@/generated/prisma/client";
 import { notFound } from "next/navigation";
+import { commercialProposalStatusLabels } from "@/lib/constants";
 import { prisma } from "@/lib/prisma";
 import { proposalAccessWhere } from "@/modules/crm/access-where";
 import { daysAgo } from "@/modules/crm/date-ranges";
 import { closedProposalStatuses } from "@/modules/crm/domain-constants";
-import { pageFromParam, paginatedResult } from "@/modules/crm/pagination";
+import { paginatedQuery, sortFromParam } from "@/modules/crm/list-query";
+import { enumParam, flagParam } from "@/modules/crm/param-parsing";
+import { pageFromParam } from "@/modules/crm/pagination";
 import { clientNameSelect, dealTitleSelect, designerNameSelect, objectTitleSelect, userSummarySelect } from "@/modules/crm/selects";
 import { withCrmViolations } from "@/modules/crm/violation-enrichment";
 import { taskInclude } from "@/modules/tasks/queries";
@@ -61,45 +64,44 @@ export async function getProposals(params: ProposalListSearchParams, user: Permi
     });
   }
 
-  if (params.status) filters.push({ status: params.status as never });
+  const status = enumParam(params.status, commercialProposalStatusLabels);
+  if (status) filters.push({ status });
   if (params.responsibleId) filters.push({ responsibleId: params.responsibleId });
   if (params.clientId) filters.push({ clientId: params.clientId });
   if (params.objectId) filters.push({ objectId: params.objectId });
   if (params.dealId) filters.push({ dealId: params.dealId });
   if (params.designerId) filters.push({ designerId: params.designerId });
-  if (params.noFile === "1") filters.push({ fileUrl: null });
-  if (params.noFollowUp === "1") filters.push({ nextTouchAt: null });
-  if (params.overdueFollowUp === "1") {
+  if (flagParam(params.noFile)) filters.push({ fileUrl: null });
+  if (flagParam(params.noFollowUp)) filters.push({ nextTouchAt: null });
+  if (flagParam(params.overdueFollowUp)) {
     filters.push({ nextTouchAt: { lt: now }, status: { notIn: closedProposalStatuses } });
   }
-  if (params.thinking7 === "1") filters.push({ status: "CLIENT_THINKING", sentAt: { lt: thinkingThreshold } });
-  if (params.internalReview === "1") filters.push({ status: "INTERNAL_REVIEW" });
-  if (params.needsRecalculation === "1") filters.push({ status: "NEEDS_RECALCULATION" });
-  if (params.accepted === "1") filters.push({ status: "ACCEPTED" });
-  if (params.declined === "1") filters.push({ status: "DECLINED" });
+  if (flagParam(params.thinking7)) filters.push({ status: "CLIENT_THINKING", sentAt: { lt: thinkingThreshold } });
+  if (flagParam(params.internalReview)) filters.push({ status: "INTERNAL_REVIEW" });
+  if (flagParam(params.needsRecalculation)) filters.push({ status: "NEEDS_RECALCULATION" });
+  if (flagParam(params.accepted)) filters.push({ status: "ACCEPTED" });
+  if (flagParam(params.declined)) filters.push({ status: "DECLINED" });
 
   const where: Prisma.CommercialProposalWhereInput = { AND: filters };
-  const orderBy: Prisma.CommercialProposalOrderByWithRelationInput =
-    params.sort === "proposalNumber"
-      ? { proposalNumber: "asc" }
-      : params.sort === "amount"
-        ? { amount: "desc" }
-        : params.sort === "nextTouchAt"
-          ? { nextTouchAt: "asc" }
-          : { createdAt: "desc" };
+  const orderBy = sortFromParam<Prisma.CommercialProposalOrderByWithRelationInput>(params.sort, {
+    proposalNumber: { proposalNumber: "asc" },
+    amount: { amount: "desc" },
+    nextTouchAt: { nextTouchAt: "asc" }
+  }, { createdAt: "desc" });
 
-  const [rows, total] = await Promise.all([
-    prisma.commercialProposal.findMany({
+  return paginatedQuery({
+    page,
+    pageSize: PAGE_SIZE,
+    findRows: () => prisma.commercialProposal.findMany({
       where,
       orderBy,
       skip: (page - 1) * PAGE_SIZE,
       take: PAGE_SIZE,
       include: proposalListInclude()
     }),
-    prisma.commercialProposal.count({ where })
-  ]);
-  const items = await withCrmViolations("PROPOSAL", rows);
-  return paginatedResult(items, total, page, PAGE_SIZE);
+    countRows: () => prisma.commercialProposal.count({ where }),
+    mapRows: (rows) => withCrmViolations("PROPOSAL", rows)
+  });
 }
 
 export async function getProposalForUser(id: string, user: PermissionUser) {

@@ -1,6 +1,8 @@
 import type { Prisma } from "@/generated/prisma/client";
+import { auditEntityTypeLabels } from "@/lib/constants";
 import { prisma } from "@/lib/prisma";
-import { crmEntityHref, violationAccessWhere } from "@/modules/crm-discipline/service";
+import { enumParam, upperEnumParam } from "@/modules/crm/param-parsing";
+import { crmEntityHref, crmViolationSeverityLabels, violationAccessWhere } from "@/modules/crm-discipline/service";
 import { canViewAllData, type PermissionUser } from "@/permissions";
 import { entityArea, entityLabel, groupBy, periodWhere, reportPeriod, scoreRows, type ProblemRow, type ReportSearchParams } from "./common";
 
@@ -62,9 +64,11 @@ export async function getCrmDisciplineReport(params: ReportSearchParams, user: P
     { status: "ACTIVE", detectedAt: periodWhere(from, to) }
   ];
   if (canViewAllData(user) && params.responsibleId) filters.push({ responsibleId: params.responsibleId });
-  if (params.entity) filters.push({ entityType: params.entity as never });
+  const entityType = enumParam(params.entity, auditEntityTypeLabels);
+  const severity = upperEnumParam(params.severity, crmViolationSeverityLabels);
+  if (entityType) filters.push({ entityType });
   if (params.violationCode) filters.push({ violationCode: params.violationCode });
-  if (params.severity) filters.push({ severity: params.severity.toUpperCase() as never });
+  if (severity) filters.push({ severity });
 
   const activeWhere: Prisma.CrmViolationWhereInput = { AND: filters };
   const resolvedWhere: Prisma.CrmViolationWhereInput = {

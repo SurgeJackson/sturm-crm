@@ -1,9 +1,12 @@
 import type { Prisma } from "@/generated/prisma/client";
 import { notFound } from "next/navigation";
+import { dealProbabilityLabels, dealSourceLabels, dealStageLabels } from "@/lib/constants";
 import { prisma } from "@/lib/prisma";
 import { dealAccessWhere } from "@/modules/crm/access-where";
 import { closedDealStages } from "@/modules/crm/domain-constants";
-import { pageFromParam, paginatedResult } from "@/modules/crm/pagination";
+import { paginatedQuery, sortFromParam } from "@/modules/crm/list-query";
+import { enumParam, flagParam } from "@/modules/crm/param-parsing";
+import { pageFromParam } from "@/modules/crm/pagination";
 import { clientNameSelect, designerNameSelect, objectTitleSelect, userSummarySelect } from "@/modules/crm/selects";
 import { withCrmViolations } from "@/modules/crm/violation-enrichment";
 import { taskInclude } from "@/modules/tasks/queries";
@@ -54,42 +57,43 @@ export async function getDeals(params: DealListSearchParams, user: PermissionUse
     });
   }
 
-  if (params.stage) filters.push({ stage: params.stage as never });
+  const stage = enumParam(params.stage, dealStageLabels);
+  const source = enumParam(params.source, dealSourceLabels);
+  const probability = enumParam(params.probability, dealProbabilityLabels);
+  if (stage) filters.push({ stage });
   if (params.responsibleId) filters.push({ responsibleId: params.responsibleId });
   if (params.clientId) filters.push({ clientId: params.clientId });
   if (params.objectId) filters.push({ objectId: params.objectId });
   if (params.designerId) filters.push({ designerId: params.designerId });
-  if (params.source) filters.push({ source: params.source as never });
-  if (params.probability) filters.push({ probability: params.probability as never });
-  if (params.noNextAction === "1") filters.push({ OR: [{ nextActionAt: null }, { nextActionText: null }] });
-  if (params.overdueNextAction === "1") filters.push({ nextActionAt: { lt: now }, stage: { notIn: closedDealStages } });
-  if (params.lost === "1") filters.push({ stage: "LOST" });
-  if (params.active === "1") filters.push(activeDealWhere());
-  if (params.noAmount === "1") filters.push({ potentialAmount: null });
-  if (params.highProbability === "1") filters.push({ probability: { in: ["HIGH", "VERY_HIGH"] } });
+  if (source) filters.push({ source });
+  if (probability) filters.push({ probability });
+  if (flagParam(params.noNextAction)) filters.push({ OR: [{ nextActionAt: null }, { nextActionText: null }] });
+  if (flagParam(params.overdueNextAction)) filters.push({ nextActionAt: { lt: now }, stage: { notIn: closedDealStages } });
+  if (flagParam(params.lost)) filters.push({ stage: "LOST" });
+  if (flagParam(params.active)) filters.push(activeDealWhere());
+  if (flagParam(params.noAmount)) filters.push({ potentialAmount: null });
+  if (flagParam(params.highProbability)) filters.push({ probability: { in: ["HIGH", "VERY_HIGH"] } });
 
   const where: Prisma.DealWhereInput = { AND: filters };
-  const orderBy: Prisma.DealOrderByWithRelationInput =
-    params.sort === "title"
-      ? { title: "asc" }
-      : params.sort === "nextActionAt"
-        ? { nextActionAt: "asc" }
-        : params.sort === "potentialAmount"
-          ? { potentialAmount: "desc" }
-          : { createdAt: "desc" };
+  const orderBy = sortFromParam<Prisma.DealOrderByWithRelationInput>(params.sort, {
+    title: { title: "asc" },
+    nextActionAt: { nextActionAt: "asc" },
+    potentialAmount: { potentialAmount: "desc" }
+  }, { createdAt: "desc" });
 
-  const [rows, total] = await Promise.all([
-    prisma.deal.findMany({
+  return paginatedQuery({
+    page,
+    pageSize: PAGE_SIZE,
+    findRows: () => prisma.deal.findMany({
       where,
       orderBy,
       skip: (page - 1) * PAGE_SIZE,
       take: PAGE_SIZE,
       include: dealListInclude()
     }),
-    prisma.deal.count({ where })
-  ]);
-  const items = await withCrmViolations("DEAL", rows);
-  return paginatedResult(items, total, page, PAGE_SIZE);
+    countRows: () => prisma.deal.count({ where }),
+    mapRows: (rows) => withCrmViolations("DEAL", rows)
+  });
 }
 
 export function dealListInclude() {

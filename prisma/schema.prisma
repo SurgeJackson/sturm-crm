@@ -720,6 +720,10 @@ model TaskActivity {
   @@index([proposalId])
   @@index([objectParticipantId])
   @@index([responsibleId, recordType, status, dueAt])
+  @@index([responsibleId, recordType, createdAt])
+  @@index([responsibleId, status, completedAt])
+  @@index([responsibleId, actionType, createdAt])
+  @@index([responsibleId, recordType, completedAt])
   @@index([archivedAt, status, dueAt])
   @@index([autoRule, archivedAt, status])
 }

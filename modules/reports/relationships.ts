@@ -1,5 +1,15 @@
 import type { Prisma } from "@/generated/prisma/client";
+import {
+  designerLoyaltyLabels,
+  designerPotentialLabels,
+  designerRelationshipStageLabels,
+  designerSourceLabels,
+  objectStageLabels,
+  objectStatusLabels,
+  objectTypeLabels
+} from "@/lib/constants";
 import { prisma } from "@/lib/prisma";
+import { enumParam } from "@/modules/crm/param-parsing";
 import { daysAgo } from "@/modules/crm/date-ranges";
 import type { PermissionUser } from "@/permissions";
 import { groupBy, periodWhere, reportOwnerWhere, reportPeriod, sum, type Metric, type ReportSearchParams } from "./common";
@@ -7,11 +17,15 @@ import { groupBy, periodWhere, reportOwnerWhere, reportPeriod, sum, type Metric,
 export async function getDesignersReport(params: ReportSearchParams, user: PermissionUser) {
   const { from, to } = reportPeriod(params);
   const filters: Prisma.DesignerWhereInput[] = [reportOwnerWhere(user, params)];
-  if (params.stage) filters.push({ relationshipStage: params.stage as never });
-  if (params.probability) filters.push({ potential: params.probability as never });
-  if (params.status) filters.push({ loyalty: params.status as never });
+  const stage = enumParam(params.stage, designerRelationshipStageLabels);
+  const potential = enumParam(params.probability, designerPotentialLabels);
+  const loyalty = enumParam(params.status, designerLoyaltyLabels);
+  const source = enumParam(params.source, designerSourceLabels);
+  if (stage) filters.push({ relationshipStage: stage });
+  if (potential) filters.push({ potential });
+  if (loyalty) filters.push({ loyalty });
   if (params.city) filters.push({ city: { contains: params.city, mode: "insensitive" } });
-  if (params.source) filters.push({ source: params.source as never });
+  if (source) filters.push({ source });
   filters.push({ createdAt: periodWhere(from, to) });
   const designers = await prisma.designer.findMany({
     where: { AND: filters },
@@ -46,9 +60,12 @@ export async function getObjectsReport(params: ReportSearchParams, user: Permiss
   const filters: Prisma.ProjectObjectWhereInput[] = [reportOwnerWhere(user, params), { createdAt: periodWhere(from, to) }];
   if (params.designerId) filters.push({ designerId: params.designerId });
   if (params.clientId) filters.push({ clientId: params.clientId });
-  if (params.stage) filters.push({ stage: params.stage as never });
-  if (params.status) filters.push({ status: params.status as never });
-  if (params.type) filters.push({ objectType: params.type as never });
+  const stage = enumParam(params.stage, objectStageLabels);
+  const status = enumParam(params.status, objectStatusLabels);
+  const objectType = enumParam(params.type, objectTypeLabels);
+  if (stage) filters.push({ stage });
+  if (status) filters.push({ status });
+  if (objectType) filters.push({ objectType });
   if (params.city) filters.push({ city: { contains: params.city, mode: "insensitive" } });
   const objects = await prisma.projectObject.findMany({
     where: { AND: filters },

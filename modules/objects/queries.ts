@@ -1,8 +1,11 @@
 import type { Prisma } from "@/generated/prisma/client";
 import { notFound } from "next/navigation";
+import { objectStageLabels, objectStatusLabels, objectTypeLabels } from "@/lib/constants";
 import { prisma } from "@/lib/prisma";
 import { objectAccessWhere } from "@/modules/crm/access-where";
-import { pageFromParam, paginatedResult } from "@/modules/crm/pagination";
+import { paginatedQuery, sortFromParam } from "@/modules/crm/list-query";
+import { enumParam, flagParam } from "@/modules/crm/param-parsing";
+import { pageFromParam } from "@/modules/crm/pagination";
 import { userSummarySelect } from "@/modules/crm/selects";
 import { withCrmViolations } from "@/modules/crm/violation-enrichment";
 import { taskInclude } from "@/modules/tasks/queries";
@@ -44,29 +47,32 @@ export async function getProjectObjects(params: ObjectListSearchParams, user: Pe
     });
   }
 
-  if (params.objectType) filters.push({ objectType: params.objectType as never });
-  if (params.stage) filters.push({ stage: params.stage as never });
-  if (params.status) filters.push({ status: params.status as never });
+  const objectType = enumParam(params.objectType, objectTypeLabels);
+  const stage = enumParam(params.stage, objectStageLabels);
+  const status = enumParam(params.status, objectStatusLabels);
+  if (objectType) filters.push({ objectType });
+  if (stage) filters.push({ stage });
+  if (status) filters.push({ status });
   if (params.responsibleId) filters.push({ responsibleId: params.responsibleId });
   if (params.clientId) filters.push({ clientId: params.clientId });
   if (params.designerId) filters.push({ designerId: params.designerId });
-  if (params.noResponsible === "1") filters.push({ responsibleId: "" });
-  if (params.noClient === "1") filters.push({ clientId: "" });
-  if (params.noDesigner === "1") filters.push({ designerId: null });
-  if (params.noTasks === "1") filters.push({ tasks: { none: { archivedAt: null } } });
-  if (params.frozen === "1") filters.push({ OR: [{ status: "FROZEN" }, { stage: "FROZEN" }] });
-  if (params.lost === "1") filters.push({ OR: [{ status: "LOST" }, { stage: "LOST" }] });
+  if (flagParam(params.noResponsible)) filters.push({ responsibleId: "" });
+  if (flagParam(params.noClient)) filters.push({ clientId: "" });
+  if (flagParam(params.noDesigner)) filters.push({ designerId: null });
+  if (flagParam(params.noTasks)) filters.push({ tasks: { none: { archivedAt: null } } });
+  if (flagParam(params.frozen)) filters.push({ OR: [{ status: "FROZEN" }, { stage: "FROZEN" }] });
+  if (flagParam(params.lost)) filters.push({ OR: [{ status: "LOST" }, { stage: "LOST" }] });
 
   const where: Prisma.ProjectObjectWhereInput = { AND: filters };
-  const orderBy: Prisma.ProjectObjectOrderByWithRelationInput =
-    params.sort === "title"
-      ? { title: "asc" }
-      : params.sort === "implementationStartAt"
-        ? { implementationStartAt: "asc" }
-        : { createdAt: "desc" };
+  const orderBy = sortFromParam<Prisma.ProjectObjectOrderByWithRelationInput>(params.sort, {
+    title: { title: "asc" },
+    implementationStartAt: { implementationStartAt: "asc" }
+  }, { createdAt: "desc" });
 
-  const [rows, total] = await Promise.all([
-    prisma.projectObject.findMany({
+  return paginatedQuery({
+    page,
+    pageSize: PAGE_SIZE,
+    findRows: () => prisma.projectObject.findMany({
       where,
       orderBy,
       skip: (page - 1) * PAGE_SIZE,
@@ -78,10 +84,9 @@ export async function getProjectObjects(params: ObjectListSearchParams, user: Pe
         _count: { select: { participants: true, tasks: true, deals: true, proposals: true } }
       }
     }),
-    prisma.projectObject.count({ where })
-  ]);
-  const items = await withCrmViolations("OBJECT", rows);
-  return paginatedResult(items, total, page, PAGE_SIZE);
+    countRows: () => prisma.projectObject.count({ where }),
+    mapRows: (rows) => withCrmViolations("OBJECT", rows)
+  });
 }
 
 export async function getProjectObjectForUser(id: string, user: PermissionUser) {

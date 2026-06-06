@@ -43,16 +43,21 @@ export async function createDesignerAction(_prevState: DesignerActionState, form
     archivedAt: null
   };
 
-  const designer = await prisma.designer.create({
-    data: document
-  });
+  const designer = await prisma.$transaction(async (tx) => {
+    const created = await tx.designer.create({
+      data: document
+    });
 
-  await writeEntityAuditLog({
-    entityType: "DESIGNER",
-    entityId: designer.id,
-    action: "CREATE",
-    userId: user.id,
-    after: designer
+    await writeEntityAuditLog({
+      entityType: "DESIGNER",
+      entityId: created.id,
+      action: "CREATE",
+      userId: user.id,
+      after: created,
+      client: tx
+    });
+
+    return created;
   });
 
   await syncDesignerDiscipline(designer.id, user.id);
@@ -89,34 +94,36 @@ export async function updateDesignerAction(id: string, _prevState: DesignerActio
     ...toDesignerDocument(parsed.data, responsibleId)
   };
 
-  const after = await prisma.designer.update({
-    where: { id },
-    data: update
-  });
+  await prisma.$transaction(async (tx) => {
+    const after = await tx.designer.update({
+      where: { id },
+      data: update
+    });
 
-  await writeEntityAuditLog({
-    entityType: "DESIGNER",
-    entityId: id,
-    action: "UPDATE",
-    userId: user.id,
-    before,
-    after
-  });
+    await writeEntityAuditLog({
+      entityType: "DESIGNER",
+      entityId: id,
+      action: "UPDATE",
+      userId: user.id,
+      before,
+      after,
+      client: tx
+    });
 
-  const trackedFields = [
-    ["responsibleId", "CHANGE_RESPONSIBLE", before.responsibleId, responsibleId],
-    ["relationshipStage", "CHANGE_RELATIONSHIP_STAGE", before.relationshipStage, parsed.data.relationshipStage],
-    ["potential", "CHANGE_POTENTIAL", before.potential, parsed.data.potential],
-    ["loyalty", "CHANGE_LOYALTY", before.loyalty, parsed.data.loyalty],
-    ["nextStepText", "CHANGE_NEXT_STEP", before.nextStepText, parsed.data.nextStepText],
-    ["nextStepAt", "CHANGE_NEXT_STEP", before.nextStepAt?.toISOString?.(), update.nextStepAt?.toISOString?.()]
-  ] as const;
-
-  await writeTrackedFieldAuditLogs({
-    entityType: "DESIGNER",
-    entityId: id,
-    userId: user.id,
-    fields: trackedFields
+    await writeTrackedFieldAuditLogs({
+      entityType: "DESIGNER",
+      entityId: id,
+      userId: user.id,
+      client: tx,
+      fields: [
+        ["responsibleId", "CHANGE_RESPONSIBLE", before.responsibleId, responsibleId],
+        ["relationshipStage", "CHANGE_RELATIONSHIP_STAGE", before.relationshipStage, parsed.data.relationshipStage],
+        ["potential", "CHANGE_POTENTIAL", before.potential, parsed.data.potential],
+        ["loyalty", "CHANGE_LOYALTY", before.loyalty, parsed.data.loyalty],
+        ["nextStepText", "CHANGE_NEXT_STEP", before.nextStepText, parsed.data.nextStepText],
+        ["nextStepAt", "CHANGE_NEXT_STEP", before.nextStepAt?.toISOString?.(), update.nextStepAt?.toISOString?.()]
+      ]
+    });
   });
 
   await syncDesignerDiscipline(id, user.id);
@@ -145,18 +152,21 @@ export async function archiveDesignerAction(id: string) {
     archivedAt: new Date(),
     updatedAt: new Date()
   };
-  const after = await prisma.designer.update({
-    where: { id },
-    data: update
-  });
+  await prisma.$transaction(async (tx) => {
+    const after = await tx.designer.update({
+      where: { id },
+      data: update
+    });
 
-  await writeEntityAuditLog({
-    entityType: "DESIGNER",
-    entityId: id,
-    action: "ARCHIVE",
-    userId: user.id,
-    before,
-    after
+    await writeEntityAuditLog({
+      entityType: "DESIGNER",
+      entityId: id,
+      action: "ARCHIVE",
+      userId: user.id,
+      before,
+      after,
+      client: tx
+    });
   });
 
   await expireViolationsForEntity("DESIGNER", id, user.id);
@@ -186,19 +196,24 @@ export async function changeDesignerStageAction(id: string, formData: FormData) 
     redirect("/designers/pipeline?error=permission");
   }
 
-  await prisma.designer.update({
-    where: { id },
-    data: { relationshipStage: stage as DesignerRelationshipStage }
+  await prisma.$transaction(async (tx) => {
+    await tx.designer.update({
+      where: { id },
+      data: { relationshipStage: stage as DesignerRelationshipStage }
+    });
+
+    await writeEntityAuditLog({
+      entityType: "DESIGNER",
+      entityId: id,
+      action: "CHANGE_RELATIONSHIP_STAGE",
+      userId: user.id,
+      before: { relationshipStage: before.relationshipStage },
+      after: { relationshipStage: stage },
+      client: tx
+    });
   });
 
-  await writeEntityAuditLog({
-    entityType: "DESIGNER",
-    entityId: id,
-    action: "CHANGE_RELATIONSHIP_STAGE",
-    userId: user.id,
-    before: { relationshipStage: before.relationshipStage },
-    after: { relationshipStage: stage }
-  });
+  await syncDesignerDiscipline(id, user.id);
 
   redirect("/designers/pipeline?saved=1");
 }

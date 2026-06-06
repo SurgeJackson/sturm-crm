@@ -38,16 +38,21 @@ export async function createClientAction(_prevState: ClientActionState, formData
     archivedAt: parsed.data.status === "ARCHIVED" ? new Date() : null
   };
 
-  const client = await prisma.client.create({
-    data: document
-  });
+  const client = await prisma.$transaction(async (tx) => {
+    const created = await tx.client.create({
+      data: document
+    });
 
-  await writeEntityAuditLog({
-    entityType: "CLIENT",
-    entityId: client.id,
-    action: "CREATE",
-    userId: user.id,
-    after: client
+    await writeEntityAuditLog({
+      entityType: "CLIENT",
+      entityId: created.id,
+      action: "CREATE",
+      userId: user.id,
+      after: created,
+      client: tx
+    });
+
+    return created;
   });
 
   await syncClientDiscipline(client.id, user.id);
@@ -84,28 +89,32 @@ export async function updateClientAction(id: string, _prevState: ClientActionSta
     ...toClientDocument(parsed.data, responsibleId)
   };
 
-  const after = await prisma.client.update({
-    where: { id },
-    data: update
-  });
+  await prisma.$transaction(async (tx) => {
+    const after = await tx.client.update({
+      where: { id },
+      data: update
+    });
 
-  await writeEntityAuditLog({
-    entityType: "CLIENT",
-    entityId: id,
-    action: "UPDATE",
-    userId: user.id,
-    before,
-    after
-  });
+    await writeEntityAuditLog({
+      entityType: "CLIENT",
+      entityId: id,
+      action: "UPDATE",
+      userId: user.id,
+      before,
+      after,
+      client: tx
+    });
 
-  await writeTrackedFieldAuditLogs({
-    entityType: "CLIENT",
-    entityId: id,
-    userId: user.id,
-    fields: [
-      ["responsibleId", "CHANGE_RESPONSIBLE", before.responsibleId, responsibleId],
-      ["status", "CHANGE_STATUS", before.status, parsed.data.status]
-    ]
+    await writeTrackedFieldAuditLogs({
+      entityType: "CLIENT",
+      entityId: id,
+      userId: user.id,
+      client: tx,
+      fields: [
+        ["responsibleId", "CHANGE_RESPONSIBLE", before.responsibleId, responsibleId],
+        ["status", "CHANGE_STATUS", before.status, parsed.data.status]
+      ]
+    });
   });
 
   await syncClientDiscipline(id, user.id);
@@ -134,18 +143,21 @@ export async function archiveClientAction(id: string) {
     archivedAt: new Date(),
     updatedAt: new Date()
   };
-  const after = await prisma.client.update({
-    where: { id },
-    data: update
-  });
+  await prisma.$transaction(async (tx) => {
+    const after = await tx.client.update({
+      where: { id },
+      data: update
+    });
 
-  await writeEntityAuditLog({
-    entityType: "CLIENT",
-    entityId: id,
-    action: "ARCHIVE",
-    userId: user.id,
-    before,
-    after
+    await writeEntityAuditLog({
+      entityType: "CLIENT",
+      entityId: id,
+      action: "ARCHIVE",
+      userId: user.id,
+      before,
+      after,
+      client: tx
+    });
   });
 
   await expireViolationsForEntity("CLIENT", id, user.id);
