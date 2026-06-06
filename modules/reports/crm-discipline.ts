@@ -4,6 +4,57 @@ import { crmEntityHref, violationAccessWhere } from "@/modules/crm-discipline/se
 import { canViewAllData, type PermissionUser } from "@/permissions";
 import { entityArea, entityLabel, groupBy, periodWhere, reportPeriod, scoreRows, type ProblemRow, type ReportSearchParams } from "./common";
 
+const crmViolationReportSelect = {
+  entityType: true,
+  entityId: true,
+  message: true,
+  severity: true,
+  responsibleId: true,
+  responsible: { select: { id: true, name: true } },
+  violationCode: true,
+  canAffectBonus: true,
+  detectedAt: true
+} satisfies Prisma.CrmViolationSelect;
+
+type CrmViolationReportRow = Prisma.CrmViolationGetPayload<{ select: typeof crmViolationReportSelect }>;
+type ResolvedViolationReportRow = {
+  resolvedAt: Date | null;
+  violationCode: string;
+  responsible: { id: string; name: string } | null;
+};
+
+function employeeDisciplineSummary(violations: CrmViolationReportRow[]) {
+  return Object.values(violations.reduce<Record<string, { name: string; total: number; critical: number; medium: number; low: number; bonus: number }>>((acc, violation) => {
+    const id = violation.responsibleId ?? "unknown";
+    acc[id] ??= { name: violation.responsible?.name ?? "Не назначен", total: 0, critical: 0, medium: 0, low: 0, bonus: 0 };
+    acc[id].total += 1;
+    if (violation.severity === "CRITICAL") acc[id].critical += 1;
+    if (violation.severity === "MEDIUM") acc[id].medium += 1;
+    if (violation.severity === "LOW") acc[id].low += 1;
+    if (violation.canAffectBonus) acc[id].bonus += 1;
+    return acc;
+  }, {})).sort((a, b) => b.total - a.total);
+}
+
+function countByEntity(violations: CrmViolationReportRow[]) {
+  return Object.entries(groupBy(violations.map((violation) => entityLabel(violation.entityType))))
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => b.count - a.count);
+}
+
+function frequentViolationCodes(violations: CrmViolationReportRow[]) {
+  return Object.entries(groupBy(violations.map((violation) => violation.violationCode)))
+    .map(([code, count]) => ({ code, count }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 10);
+}
+
+function resolvedViolationDynamics(resolved: ResolvedViolationReportRow[]) {
+  return Object.entries(groupBy(resolved.map((violation) => violation.resolvedAt?.toISOString().slice(0, 10))))
+    .map(([date, count]) => ({ date, count }))
+    .sort((a, b) => a.date.localeCompare(b.date));
+}
+
 export async function getCrmDisciplineReport(params: ReportSearchParams, user: PermissionUser) {
   const { from, to } = reportPeriod(params);
   const filters: Prisma.CrmViolationWhereInput[] = [
@@ -27,7 +78,7 @@ export async function getCrmDisciplineReport(params: ReportSearchParams, user: P
     prisma.crmViolation.findMany({
       where: activeWhere,
       orderBy: [{ severity: "asc" }, { detectedAt: "desc" }],
-      include: { responsible: { select: { id: true, name: true } } }
+      select: crmViolationReportSelect
     }),
     prisma.crmViolation.findMany({
       where: resolvedWhere,
@@ -50,28 +101,6 @@ export async function getCrmDisciplineReport(params: ReportSearchParams, user: P
     detectedAt: violation.detectedAt
   }));
 
-  const byEmployee = Object.values(violations.reduce<Record<string, { name: string; total: number; critical: number; medium: number; low: number; bonus: number }>>((acc, violation) => {
-    const id = violation.responsibleId ?? "unknown";
-    acc[id] ??= { name: violation.responsible?.name ?? "Не назначен", total: 0, critical: 0, medium: 0, low: 0, bonus: 0 };
-    acc[id].total += 1;
-    if (violation.severity === "CRITICAL") acc[id].critical += 1;
-    if (violation.severity === "MEDIUM") acc[id].medium += 1;
-    if (violation.severity === "LOW") acc[id].low += 1;
-    if (violation.canAffectBonus) acc[id].bonus += 1;
-    return acc;
-  }, {})).sort((a, b) => b.total - a.total);
-
-  const byEntity = Object.entries(groupBy(violations.map((violation) => entityLabel(violation.entityType))))
-    .map(([name, count]) => ({ name, count }))
-    .sort((a, b) => b.count - a.count);
-  const frequent = Object.entries(groupBy(violations.map((violation) => violation.violationCode)))
-    .map(([code, count]) => ({ code, count }))
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 10);
-  const resolvedDynamics = Object.entries(groupBy(resolved.map((violation) => violation.resolvedAt?.toISOString().slice(0, 10))))
-    .map(([date, count]) => ({ date, count }))
-    .sort((a, b) => a.date.localeCompare(b.date));
-
   return {
     period: { from, to },
     problems,
@@ -84,9 +113,9 @@ export async function getCrmDisciplineReport(params: ReportSearchParams, user: P
       bonus: violations.filter((violation) => violation.canAffectBonus).length,
       resolved: resolved.length
     },
-    byEmployee,
-    byEntity,
-    frequent,
-    resolvedDynamics
+    byEmployee: employeeDisciplineSummary(violations),
+    byEntity: countByEntity(violations),
+    frequent: frequentViolationCodes(violations),
+    resolvedDynamics: resolvedViolationDynamics(resolved)
   };
 }

@@ -18,6 +18,16 @@ export type BonusEligibilityRow = {
 
 type RawViolation = Pick<CrmViolation, "violationCode" | "severity" | "message" | "canAffectBonus" | "detectedAt" | "status">;
 type InternalBonusEligibilityRow = BonusEligibilityRow & { rawViolations: RawViolation[] };
+type BonusEntityRecord = {
+  id: string;
+  title: string;
+  responsible: { name: string };
+};
+type BonusEntityConfig = {
+  entityType: BonusEligibilityRow["entityType"];
+  entity: string;
+  load: (owner: ReturnType<typeof reportOwnerWhere>, createdAt: ReturnType<typeof periodWhere>) => Promise<BonusEntityRecord[]>;
+};
 
 function violationMatchesFilters(violations: RawViolation[], params: ReportSearchParams) {
   if (!params.violationCode && !params.severity) return true;
@@ -51,51 +61,79 @@ function bonusRow(
   };
 }
 
+const bonusEntityConfigs: BonusEntityConfig[] = [
+  {
+    entityType: "DEAL",
+    entity: "Сделка",
+    load: (owner, createdAt) => prisma.deal.findMany({
+      where: { AND: [owner, { archivedAt: null, createdAt }] },
+      select: { id: true, title: true, responsible: { select: { name: true } } },
+      orderBy: { createdAt: "desc" }
+    })
+  },
+  {
+    entityType: "PROPOSAL",
+    entity: "КП",
+    load: async (owner, createdAt) => {
+      const proposals = await prisma.commercialProposal.findMany({
+        where: { AND: [owner, { archivedAt: null, createdAt }] },
+        select: { id: true, proposalNumber: true, responsible: { select: { name: true } } },
+        orderBy: { createdAt: "desc" }
+      });
+      return proposals.map((proposal) => ({
+        id: proposal.id,
+        title: proposal.proposalNumber,
+        responsible: proposal.responsible
+      }));
+    }
+  },
+  {
+    entityType: "CLIENT",
+    entity: "Клиент",
+    load: (owner, createdAt) => prisma.client.findMany({
+      where: { AND: [owner, { archivedAt: null, createdAt }] },
+      select: { id: true, name: true, responsible: { select: { name: true } } },
+      orderBy: { createdAt: "desc" }
+    }).then((clients) => clients.map((client) => ({
+      id: client.id,
+      title: client.name,
+      responsible: client.responsible
+    })))
+  },
+  {
+    entityType: "OBJECT",
+    entity: "Объект",
+    load: (owner, createdAt) => prisma.projectObject.findMany({
+      where: { AND: [owner, { archivedAt: null, createdAt }] },
+      select: { id: true, title: true, responsible: { select: { name: true } } },
+      orderBy: { createdAt: "desc" }
+    })
+  }
+];
+
+async function bonusRowsForEntity(config: BonusEntityConfig, owner: ReturnType<typeof reportOwnerWhere>, createdAt: ReturnType<typeof periodWhere>) {
+  const records = await config.load(owner, createdAt);
+  const violations = await getActiveViolationsMap(config.entityType, records.map((record) => record.id));
+  return records.map((record) => bonusRow(
+    config.entityType,
+    config.entity,
+    record.id,
+    record.title,
+    record.responsible.name,
+    violations.get(record.id) ?? []
+  ));
+}
+
 export async function getBonusEligibilityReport(params: ReportSearchParams, user: PermissionUser) {
   const { from, to } = reportPeriod(params);
   const owner = reportOwnerWhere(user, params);
   const entityTypes = (params.entity ? [params.entity] : ["DEAL", "PROPOSAL", "CLIENT", "OBJECT"]) as Array<BonusEligibilityRow["entityType"]>;
-  const rows: InternalBonusEligibilityRow[] = [];
-
-  if (entityTypes.includes("DEAL")) {
-    const deals = await prisma.deal.findMany({
-      where: { AND: [owner, { archivedAt: null, createdAt: periodWhere(from, to) }] },
-      include: { responsible: { select: { name: true } } },
-      orderBy: { createdAt: "desc" }
-    });
-    const violations = await getActiveViolationsMap("DEAL", deals.map((deal) => deal.id));
-    rows.push(...deals.map((deal) => bonusRow("DEAL", "Сделка", deal.id, deal.title, deal.responsible.name, violations.get(deal.id) ?? [])));
-  }
-
-  if (entityTypes.includes("PROPOSAL")) {
-    const proposals = await prisma.commercialProposal.findMany({
-      where: { AND: [owner, { archivedAt: null, createdAt: periodWhere(from, to) }] },
-      include: { responsible: { select: { name: true } } },
-      orderBy: { createdAt: "desc" }
-    });
-    const violations = await getActiveViolationsMap("PROPOSAL", proposals.map((proposal) => proposal.id));
-    rows.push(...proposals.map((proposal) => bonusRow("PROPOSAL", "КП", proposal.id, proposal.proposalNumber, proposal.responsible.name, violations.get(proposal.id) ?? [])));
-  }
-
-  if (entityTypes.includes("CLIENT")) {
-    const clients = await prisma.client.findMany({
-      where: { AND: [owner, { archivedAt: null, createdAt: periodWhere(from, to) }] },
-      include: { responsible: { select: { name: true } } },
-      orderBy: { createdAt: "desc" }
-    });
-    const violations = await getActiveViolationsMap("CLIENT", clients.map((client) => client.id));
-    rows.push(...clients.map((client) => bonusRow("CLIENT", "Клиент", client.id, client.name, client.responsible.name, violations.get(client.id) ?? [])));
-  }
-
-  if (entityTypes.includes("OBJECT")) {
-    const objects = await prisma.projectObject.findMany({
-      where: { AND: [owner, { archivedAt: null, createdAt: periodWhere(from, to) }] },
-      include: { responsible: { select: { name: true } } },
-      orderBy: { createdAt: "desc" }
-    });
-    const violations = await getActiveViolationsMap("OBJECT", objects.map((object) => object.id));
-    rows.push(...objects.map((object) => bonusRow("OBJECT", "Объект", object.id, object.title, object.responsible.name, violations.get(object.id) ?? [])));
-  }
+  const createdAt = periodWhere(from, to);
+  const rows = (await Promise.all(
+    bonusEntityConfigs
+      .filter((config) => entityTypes.includes(config.entityType))
+      .map((config) => bonusRowsForEntity(config, owner, createdAt))
+  )).flat();
 
   const filtered = rows.filter((row) => {
     if (params.bonusStatus && row.status !== params.bonusStatus) return false;

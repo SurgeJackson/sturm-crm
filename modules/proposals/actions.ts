@@ -12,7 +12,7 @@ import {
   canEditRecord
 } from "@/permissions";
 import { writeEntityAuditLog, writeTrackedFieldAuditLogs } from "@/modules/crm/audit-helpers";
-import { expireViolationsForEntity, syncDealDiscipline, syncProposalDiscipline } from "@/modules/crm-discipline/service";
+import { expireViolationsForEntity, syncProposalDiscipline } from "@/modules/crm-discipline/service";
 import {
   ensureSentRequirements,
   parseProposalForm,
@@ -21,8 +21,10 @@ import {
 import { getProposalFile, saveProposalFile } from "@/modules/proposals/files";
 import {
   createProposalFollowUpTask,
+  createProposalVersion,
   generateProposalNumber,
-  getDealForProposal
+  getDealForProposal,
+  moveDealToInvoiceFromProposal
 } from "@/modules/proposals/service";
 
 export type ProposalActionState = {
@@ -218,79 +220,7 @@ export async function createProposalVersionAction(id: string) {
   const source = await prisma.commercialProposal.findUnique({ where: { id } });
   if (!source || !canEditRecord(user, source)) redirect(`/proposals/${id}?error=version`);
 
-  const rootId = source.parentProposalId ?? source.id;
-  const latest = await prisma.commercialProposal.findFirst({
-    where: { OR: [{ id: rootId }, { parentProposalId: rootId }] },
-    orderBy: { version: "desc" },
-    select: { version: true }
-  });
-  const proposalNumber = await generateProposalNumber();
-  const nextVersion = (latest?.version ?? source.version) + 1;
-
-  const newProposal = await prisma.$transaction(async (tx) => {
-    const created = await tx.commercialProposal.create({
-      data: {
-        proposalNumber,
-        dealId: source.dealId,
-        clientId: source.clientId,
-        objectId: source.objectId,
-        designerId: source.designerId,
-        responsibleId: source.responsibleId,
-        version: nextVersion,
-        parentProposalId: rootId,
-        amount: source.amount,
-        discountPercent: source.discountPercent,
-        discountAmount: source.discountAmount,
-        status: "DRAFT",
-        recipientType: source.recipientType,
-        recipientName: source.recipientName,
-        recipientContact: source.recipientContact,
-        approvalRequiredFrom: source.approvalRequiredFrom,
-        sentAt: null,
-        nextTouchAt: source.nextTouchAt,
-        fileUrl: source.fileUrl,
-        fileName: source.fileName,
-        fileSize: source.fileSize,
-        fileMimeType: source.fileMimeType,
-        uploadedById: source.uploadedById,
-        uploadedAt: source.uploadedAt,
-        declineReason: null,
-        declineComment: null,
-        comment: source.comment,
-        createdById: user.id,
-        notes: source.notes
-      }
-    });
-
-    await tx.commercialProposal.update({
-      where: { id: source.id },
-      data: { status: "NEW_VERSION_CREATED" }
-    });
-
-    await writeEntityAuditLog({
-      entityType: "PROPOSAL",
-      entityId: source.id,
-      action: "CREATE_VERSION",
-      userId: user.id,
-      before: { id: source.id, version: source.version },
-      after: { id: created.id, version: created.version },
-      client: tx
-    });
-
-    await writeEntityAuditLog({
-      entityType: "PROPOSAL",
-      entityId: created.id,
-      action: "CREATE",
-      userId: user.id,
-      after: created,
-      client: tx
-    });
-
-    return created;
-  });
-
-  await syncProposalDiscipline(source.id, user.id);
-  await syncProposalDiscipline(newProposal.id, user.id);
+  const newProposal = await createProposalVersion(source, user.id);
 
   redirect(`/proposals/${newProposal.id}/edit?version=1`);
 }
@@ -305,25 +235,7 @@ export async function moveDealToInvoiceFromProposalAction(id: string) {
   });
   if (!proposal || !canEditRecord(user, proposal)) redirect(`/proposals/${id}?error=permission`);
 
-  const beforeStage = proposal.deal.stage;
-  await prisma.$transaction(async (tx) => {
-    await tx.deal.update({
-      where: { id: proposal.dealId },
-      data: { stage: "INVOICE_OR_ORDER" }
-    });
-
-    await writeEntityAuditLog({
-      entityType: "DEAL",
-      entityId: proposal.dealId,
-      action: "CHANGE_STAGE_FROM_ACCEPTED_PROPOSAL",
-      userId: user.id,
-      before: { stage: beforeStage, proposalId: proposal.id },
-      after: { stage: "INVOICE_OR_ORDER", proposalId: proposal.id },
-      client: tx
-    });
-  });
-
-  await syncDealDiscipline(proposal.dealId, user.id);
+  await moveDealToInvoiceFromProposal(proposal, user.id);
 
   redirect(`/proposals/${id}?dealStage=1`);
 }

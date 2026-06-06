@@ -14,8 +14,8 @@ import {
 import { writeEntityAuditLog, writeTrackedFieldAuditLogs } from "@/modules/crm/audit-helpers";
 import { compactString } from "@/modules/crm/form-utils";
 import { expireViolationsForEntity, syncDealDiscipline } from "@/modules/crm-discipline/service";
-import { closedAtForStage, dealLossReasons, dealStages, parseDealForm, toDealDocument } from "@/modules/deals/form";
-import { getObjectForDeal } from "@/modules/deals/service";
+import { dealLossReasons, dealStages, parseDealForm, toDealDocument } from "@/modules/deals/form";
+import { changeDealStage, getObjectForDeal, markDealAsLost } from "@/modules/deals/service";
 
 export type DealActionState = {
   errors?: Record<string, string[]>;
@@ -219,30 +219,7 @@ export async function changeDealStageAction(id: string, formData: FormData) {
     redirect("/deals/pipeline?error=permission");
   }
 
-  await prisma.$transaction(async (tx) => {
-    const updated = await tx.deal.update({
-      where: { id },
-      data: {
-        stage,
-        closedAt: closedAtForStage(stage as DealStage, before.closedAt),
-        nextActionAt: stage === "LOST" || stage === "COMPLETED" ? null : before.nextActionAt,
-        nextActionText: stage === "LOST" || stage === "COMPLETED" ? null : before.nextActionText
-      }
-    });
-
-    await writeEntityAuditLog({
-      entityType: "DEAL",
-      entityId: id,
-      action: stage === "COMPLETED" ? "MARK_COMPLETED" : "CHANGE_STAGE",
-      userId: user.id,
-      before: { stage: before.stage },
-      after: { stage: updated.stage },
-      client: tx
-    });
-
-  });
-
-  await syncDealDiscipline(id, user.id);
+  await changeDealStage(id, before, stage, user.id);
 
   redirect("/deals/pipeline?saved=1");
 }
@@ -267,41 +244,7 @@ export async function closeDealAsLostAction(id: string, formData: FormData) {
     redirect(`/deals/${id}?error=permission`);
   }
 
-  await prisma.$transaction(async (tx) => {
-    const after = await tx.deal.update({
-      where: { id },
-      data: {
-        stage: "LOST",
-        lossReason,
-        lossComment: lossComment || null,
-        closedAt: before.closedAt ?? new Date(),
-        nextActionAt: null,
-        nextActionText: null
-      }
-    });
-
-    await writeEntityAuditLog({
-      entityType: "DEAL",
-      entityId: id,
-      action: "MARK_LOST",
-      userId: user.id,
-      before,
-      after,
-      client: tx
-    });
-
-    await writeEntityAuditLog({
-      entityType: "DEAL",
-      entityId: id,
-      action: "SET_LOSS_REASON",
-      userId: user.id,
-      before: { lossReason: before.lossReason },
-      after: { lossReason },
-      client: tx
-    });
-  });
-
-  await syncDealDiscipline(id, user.id);
+  await markDealAsLost(id, before, lossReason as DealLossReason, lossComment ?? null, user.id);
 
   redirect(`/deals/${id}?lost=1`);
 }
