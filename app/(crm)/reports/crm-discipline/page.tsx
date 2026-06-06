@@ -1,12 +1,16 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { crmSeverityVariant } from "@/components/crm/crm-discipline";
+import { crmSeverityVariant } from "@/components/crm/discipline/variants";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { EmptyTableRow, TableCard } from "@/components/ui/data-table";
+import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { MetricsGrid, ReportPageHeader, ReportPeriodFilter } from "@/components/reports/report-widgets";
+import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { ReportPeriodFilter } from "@/components/reports/filters";
+import { ReportPageHeader } from "@/components/reports/layout";
+import { MetricsGrid } from "@/components/reports/metrics";
 import { getCrmDisciplineReport, getReportFilterOptions, type ReportSearchParams } from "@/modules/reports/queries";
 
 type PageProps = { searchParams: Promise<ReportSearchParams> };
@@ -37,7 +41,7 @@ export default async function CrmDisciplineReportPage({ searchParams }: PageProp
           <option value="PROPOSAL">КП</option>
           <option value="TASK">Задачи</option>
         </NativeSelect>
-        <input name="violationCode" defaultValue={params.violationCode ?? ""} placeholder="Код нарушения" className="h-10 rounded-md border border-input bg-background px-3 text-sm" />
+        <Input name="violationCode" defaultValue={params.violationCode ?? ""} placeholder="Код нарушения" />
       </ReportPeriodFilter>
       <MetricsGrid metrics={[
         { title: "Активные нарушения", value: report.summary.active, tone: report.summary.active ? "warning" : "secondary" },
@@ -94,27 +98,22 @@ export default async function CrmDisciplineReportPage({ searchParams }: PageProp
           </CardContent>
         </Card>
       </div>
-      <Card>
-        <CardHeader><CardTitle>Проблемные записи</CardTitle></CardHeader>
-        <CardContent className="p-0">
-          <Table>
-            <TableHeader><TableRow><TableHead>Раздел</TableHead><TableHead>Проблема</TableHead><TableHead>Серьезность</TableHead><TableHead>Ответственный</TableHead><TableHead>Код</TableHead><TableHead>Премирование</TableHead><TableHead>Запись</TableHead></TableRow></TableHeader>
-            <TableBody>
-              {report.problems.length === 0 ? <TableRow><TableCell colSpan={7} className="h-24 text-center text-sm text-muted-foreground">Нарушений нет.</TableCell></TableRow> : report.problems.map((problem) => (
-                <TableRow key={`${problem.area}-${problem.href}-${problem.issue}`}>
-                  <TableCell>{problem.area}</TableCell>
-                  <TableCell>{problem.issue}</TableCell>
-                  <TableCell><Badge variant={crmSeverityVariant(problem.severity)}>{severityLabels[problem.severity]}</Badge></TableCell>
-                  <TableCell>{problem.responsibleName}</TableCell>
-                  <TableCell>{problem.violationCode}</TableCell>
-                  <TableCell>{problem.canAffectBonus ? "Влияет" : "Не влияет"}</TableCell>
-                  <TableCell><Link className="font-medium hover:underline" href={problem.href}>{problem.entity}: {problem.title}</Link></TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+      <TableCard title="Проблемные записи">
+        <TableHeader><TableRow><TableHead>Раздел</TableHead><TableHead>Проблема</TableHead><TableHead>Серьезность</TableHead><TableHead>Ответственный</TableHead><TableHead>Код</TableHead><TableHead>Премирование</TableHead><TableHead>Запись</TableHead></TableRow></TableHeader>
+        <TableBody>
+          {report.problems.length === 0 ? <EmptyTableRow colSpan={7}>Нарушений нет.</EmptyTableRow> : report.problems.map((problem) => (
+            <TableRow key={`${problem.area}-${problem.href}-${problem.issue}`}>
+              <TableCell>{problem.area}</TableCell>
+              <TableCell>{problem.issue}</TableCell>
+              <TableCell><Badge variant={crmSeverityVariant(problem.severity)}>{severityLabels[problem.severity]}</Badge></TableCell>
+              <TableCell>{problem.responsibleName}</TableCell>
+              <TableCell>{problem.violationCode}</TableCell>
+              <TableCell>{problem.canAffectBonus ? "Влияет" : "Не влияет"}</TableCell>
+              <TableCell><Link className="font-medium hover:underline" href={problem.href}>{problem.entity}: {problem.title}</Link></TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </TableCard>
     </div>
   );
 }

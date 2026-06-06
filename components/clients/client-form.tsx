@@ -2,10 +2,19 @@
 
 import { useActionState } from "react";
 import type { Client, Designer, User } from "@/generated/prisma/client";
-import { dateInputValue, FieldError, FormActions, FormSection } from "@/components/crm/form-fields";
+import {
+  DateField,
+  FormActions,
+  FormField,
+  FormMessage,
+  FormSection,
+  SelectField,
+  TextareaField,
+  TextField,
+  dateInputValue
+} from "@/components/crm/form-fields";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { NativeSelect } from "@/components/ui/native-select";
 import type { ClientActionState } from "@/modules/clients/actions";
 import {
   clientSourceOptions,
@@ -39,135 +48,46 @@ export function ClientForm({
 
   return (
     <form action={formAction} className="grid gap-5">
-      {state.message ? <p className="rounded-md border border-destructive p-3 text-sm text-destructive">{state.message}</p> : null}
+      <FormMessage state={state} />
 
       <FormSection>
-        <div className="space-y-2">
-          <Label htmlFor="name">Имя / название *</Label>
-          <Input id="name" name="name" defaultValue={client?.name ?? ""} required />
-          <FieldError name="name" state={state} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="clientType">Тип клиента *</Label>
-          <select
-            id="clientType"
-            name="clientType"
-            defaultValue={client?.clientType ?? "INDIVIDUAL"}
-            className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
-          >
-            {clientTypeOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-          <FieldError name="clientType" state={state} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="phone">Телефон</Label>
-          <Input id="phone" name="phone" defaultValue={client?.phone ?? ""} />
-          <FieldError name="phone" state={state} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="messenger">Мессенджер</Label>
-          <Input id="messenger" name="messenger" defaultValue={client?.messenger ?? ""} />
-          <FieldError name="messenger" state={state} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="email">Email</Label>
-          <Input id="email" name="email" type="email" defaultValue={client?.email ?? ""} />
-          <FieldError name="email" state={state} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="city">Город</Label>
-          <Input id="city" name="city" defaultValue={client?.city ?? ""} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="source">Источник *</Label>
-          <select
-            id="source"
-            name="source"
-            defaultValue={client?.source ?? "SHOWROOM"}
-            className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
-          >
-            {clientSourceOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-          <FieldError name="source" state={state} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="status">Статус *</Label>
-          <select
-            id="status"
-            name="status"
-            defaultValue={client?.status ?? "NEW"}
-            className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
-          >
-            {clientStatusOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-          <FieldError name="status" state={state} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="responsibleId">Ответственный *</Label>
+        <TextField name="name" label="Имя / название *" defaultValue={client?.name ?? ""} state={state} required />
+        <SelectField name="clientType" label="Тип клиента *" defaultValue={client?.clientType ?? "INDIVIDUAL"} options={clientTypeOptions} state={state} />
+        <TextField name="phone" label="Телефон" defaultValue={client?.phone ?? ""} state={state} />
+        <TextField name="messenger" label="Мессенджер" defaultValue={client?.messenger ?? ""} state={state} />
+        <TextField name="email" label="Email" type="email" defaultValue={client?.email ?? ""} state={state} />
+        <TextField name="city" label="Город" defaultValue={client?.city ?? ""} />
+        <SelectField name="source" label="Источник *" defaultValue={client?.source ?? "SHOWROOM"} options={clientSourceOptions} state={state} />
+        <SelectField name="status" label="Статус *" defaultValue={client?.status ?? "NEW"} options={clientStatusOptions} state={state} />
+        <FormField name="responsibleId" label="Ответственный *" state={state}>
           {canChangeResponsible ? (
-            <select
-              id="responsibleId"
-              name="responsibleId"
-              defaultValue={responsibleId}
-              className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
-            >
+            <NativeSelect id="responsibleId" name="responsibleId" defaultValue={responsibleId}>
               {users.map((user) => (
                 <option key={user.id} value={user.id}>
                   {user.name}
                 </option>
               ))}
-            </select>
+            </NativeSelect>
           ) : (
             <>
               <Input value={users.find((user) => user.id === responsibleId)?.name ?? "Текущий пользователь"} disabled />
               <input type="hidden" name="responsibleId" value={responsibleId} />
             </>
           )}
-          <FieldError name="responsibleId" state={state} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="linkedDesignerId">Связанный дизайнер</Label>
-          <select
-            id="linkedDesignerId"
-            name="linkedDesignerId"
-            defaultValue={client?.linkedDesignerId ?? ""}
-            className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
-          >
-            <option value="">Не выбран</option>
-            {designers.map((designer) => (
-              <option key={designer.id} value={designer.id}>
-                {designer.name}
-                {designer.studio ? `, ${designer.studio}` : ""}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="lastContactAt">Последний контакт</Label>
-          <Input id="lastContactAt" name="lastContactAt" type="date" defaultValue={dateInputValue(client?.lastContactAt)} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="nextContactAt">Следующий контакт</Label>
-          <Input id="nextContactAt" name="nextContactAt" type="date" defaultValue={dateInputValue(client?.nextContactAt)} />
-        </div>
+        </FormField>
+        <SelectField name="linkedDesignerId" label="Связанный дизайнер" defaultValue={client?.linkedDesignerId ?? ""} placeholder="Не выбран">
+          {designers.map((designer) => (
+            <option key={designer.id} value={designer.id}>
+              {designer.name}
+              {designer.studio ? `, ${designer.studio}` : ""}
+            </option>
+          ))}
+        </SelectField>
+        <DateField name="lastContactAt" label="Последний контакт" defaultValue={dateInputValue(client?.lastContactAt)} />
+        <DateField name="nextContactAt" label="Следующий контакт" defaultValue={dateInputValue(client?.nextContactAt)} />
       </FormSection>
 
-      <div className="space-y-2">
-        <Label htmlFor="comment">Комментарий</Label>
-        <Textarea id="comment" name="comment" defaultValue={client?.comment ?? ""} />
-      </div>
+      <TextareaField name="comment" label="Комментарий" defaultValue={client?.comment ?? ""} />
 
       <FormActions isPending={isPending} submitLabel={submitLabel} />
     </form>

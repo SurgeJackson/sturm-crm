@@ -2,9 +2,10 @@
 
 import { useActionState, useMemo, useState } from "react";
 import type { CommercialProposal, Deal, User } from "@/generated/prisma/client";
-import { dateInputValue, FieldError, FormActions, FormSection } from "@/components/crm/form-fields";
+import { dateInputValue, FieldError, FormActions, FormMessage, FormSection } from "@/components/crm/form-fields";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { NativeSelect } from "@/components/ui/native-select";
 import { Textarea } from "@/components/ui/textarea";
 import type { ProposalActionState } from "@/modules/proposals/actions";
 import {
@@ -72,40 +73,38 @@ export function ProposalForm({
 
   return (
     <form action={formAction} className="grid gap-5">
-      {state.message ? <p className="rounded-md border border-destructive p-3 text-sm text-destructive">{state.message}</p> : null}
+      <FormMessage state={state} />
 
       <FormSection>
         <div className="space-y-2">
           <Label htmlFor="dealId">Сделка *</Label>
-          <select
+          <NativeSelect
             id="dealId"
             name="dealId"
             value={dealId}
             onChange={(event) => onDealChange(event.target.value)}
-            className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
             required
           >
             <option value="">Выберите сделку</option>
             {deals.map((deal) => (
               <option key={deal.id} value={deal.id}>{deal.title}</option>
             ))}
-          </select>
+          </NativeSelect>
           <FieldError name="dealId" state={state} />
         </div>
         <div className="space-y-2">
           <Label htmlFor="responsibleId">Ответственный *</Label>
           {canChangeResponsible ? (
-            <select
+            <NativeSelect
               id="responsibleId"
               name="responsibleId"
               value={responsibleId}
               onChange={(event) => setResponsibleId(event.target.value)}
-              className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
             >
               {users.map((user) => (
                 <option key={user.id} value={user.id}>{user.name}</option>
               ))}
-            </select>
+            </NativeSelect>
           ) : (
             <>
               <Input value={users.find((user) => user.id === responsibleId)?.name ?? "Текущий пользователь"} disabled />
@@ -128,17 +127,16 @@ export function ProposalForm({
         </div>
         <div className="space-y-2">
           <Label htmlFor="status">Статус *</Label>
-          <select
+          <NativeSelect
             id="status"
             name="status"
             value={status}
             onChange={(event) => setStatus(event.target.value as typeof status)}
-            className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
           >
             {commercialProposalStatusOptions.map((option) => (
               <option key={option.value} value={option.value}>{option.label}</option>
             ))}
-          </select>
+          </NativeSelect>
         </div>
         <div className="space-y-2">
           <Label htmlFor="amount">Сумма КП *</Label>
@@ -155,12 +153,12 @@ export function ProposalForm({
         </div>
         <div className="space-y-2">
           <Label htmlFor="recipientType">Тип получателя {isSent ? "*" : ""}</Label>
-          <select id="recipientType" name="recipientType" defaultValue={proposal?.recipientType ?? ""} className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm">
+          <NativeSelect id="recipientType" name="recipientType" defaultValue={proposal?.recipientType ?? ""}>
             <option value="">Не выбран</option>
             {recipientTypeOptions.map((option) => (
               <option key={option.value} value={option.value}>{option.label}</option>
             ))}
-          </select>
+          </NativeSelect>
           <FieldError name="recipientType" state={state} />
         </div>
         <div className="space-y-2">
@@ -194,12 +192,12 @@ export function ProposalForm({
           <>
             <div className="space-y-2">
               <Label htmlFor="declineReason">Причина отклонения *</Label>
-              <select id="declineReason" name="declineReason" defaultValue={proposal?.declineReason ?? ""} className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm">
+              <NativeSelect id="declineReason" name="declineReason" defaultValue={proposal?.declineReason ?? ""}>
                 <option value="">Выберите причину</option>
                 {proposalDeclineReasonOptions.map((option) => (
                   <option key={option.value} value={option.value}>{option.label}</option>
                 ))}
-              </select>
+              </NativeSelect>
               <FieldError name="declineReason" state={state} />
             </div>
             <div className="space-y-2">

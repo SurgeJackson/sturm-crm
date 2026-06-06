@@ -2,9 +2,10 @@
 
 import { useActionState } from "react";
 import type { Designer, User } from "@/generated/prisma/client";
-import { dateInputValue, FieldError, FormActions, FormSection } from "@/components/crm/form-fields";
+import { dateInputValue, FieldError, FormActions, FormMessage, FormSection } from "@/components/crm/form-fields";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { NativeSelect } from "@/components/ui/native-select";
 import { Textarea } from "@/components/ui/textarea";
 import type { DesignerActionState } from "@/modules/designers/actions";
 import {
@@ -42,7 +43,7 @@ export function DesignerForm({
 
   return (
     <form action={formAction} className="grid gap-5">
-      {state.message ? <p className="rounded-md border border-destructive p-3 text-sm text-destructive">{state.message}</p> : null}
+      <FormMessage state={state} />
 
       <FormSection>
         <div className="space-y-2">
@@ -56,13 +57,13 @@ export function DesignerForm({
         </div>
         <div className="space-y-2">
           <Label htmlFor="role">Роль *</Label>
-          <select id="role" name="role" defaultValue={designer?.role ?? "DESIGNER"} className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm">
+          <NativeSelect id="role" name="role" defaultValue={designer?.role ?? "DESIGNER"}>
             {designerRoleOptions.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>
             ))}
-          </select>
+          </NativeSelect>
         </div>
         <div className="space-y-2">
           <Label htmlFor="city">Город *</Label>
@@ -89,65 +90,65 @@ export function DesignerForm({
         </div>
         <div className="space-y-2">
           <Label htmlFor="source">Источник *</Label>
-          <select id="source" name="source" defaultValue={designer?.source ?? "DATABASE"} className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm">
+          <NativeSelect id="source" name="source" defaultValue={designer?.source ?? "DATABASE"}>
             {designerSourceOptions.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>
             ))}
-          </select>
+          </NativeSelect>
         </div>
         <div className="space-y-2">
           <Label htmlFor="projectSegment">Сегмент проектов</Label>
-          <select id="projectSegment" name="projectSegment" defaultValue={designer?.projectSegment ?? ""} className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm">
+          <NativeSelect id="projectSegment" name="projectSegment" defaultValue={designer?.projectSegment ?? ""}>
             <option value="">Не выбран</option>
             {designerProjectSegmentOptions.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>
             ))}
-          </select>
+          </NativeSelect>
         </div>
         <div className="space-y-2">
           <Label htmlFor="relationshipStage">Этап отношений *</Label>
-          <select id="relationshipStage" name="relationshipStage" defaultValue={designer?.relationshipStage ?? "NEW_CONTACT"} className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm">
+          <NativeSelect id="relationshipStage" name="relationshipStage" defaultValue={designer?.relationshipStage ?? "NEW_CONTACT"}>
             {designerRelationshipStageOptions.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>
             ))}
-          </select>
+          </NativeSelect>
         </div>
         <div className="space-y-2">
           <Label htmlFor="potential">Потенциал *</Label>
-          <select id="potential" name="potential" defaultValue={designer?.potential ?? "B"} className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm">
+          <NativeSelect id="potential" name="potential" defaultValue={designer?.potential ?? "B"}>
             {designerPotentialOptions.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>
             ))}
-          </select>
+          </NativeSelect>
         </div>
         <div className="space-y-2">
           <Label htmlFor="loyalty">Лояльность *</Label>
-          <select id="loyalty" name="loyalty" defaultValue={designer?.loyalty ?? "NEUTRAL"} className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm">
+          <NativeSelect id="loyalty" name="loyalty" defaultValue={designer?.loyalty ?? "NEUTRAL"}>
             {designerLoyaltyOptions.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>
             ))}
-          </select>
+          </NativeSelect>
         </div>
         <div className="space-y-2">
           <Label htmlFor="responsibleId">Ответственный *</Label>
           {canChangeResponsible ? (
-            <select id="responsibleId" name="responsibleId" defaultValue={responsibleId} className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm">
+            <NativeSelect id="responsibleId" name="responsibleId" defaultValue={responsibleId}>
               {users.map((user) => (
                 <option key={user.id} value={user.id}>
                   {user.name}
                 </option>
               ))}
-            </select>
+            </NativeSelect>
           ) : (
             <>
               <Input value={users.find((user) => user.id === responsibleId)?.name ?? "Текущий пользователь"} disabled />

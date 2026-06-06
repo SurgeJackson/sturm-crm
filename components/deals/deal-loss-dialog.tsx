@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
+import { NativeSelect } from "@/components/ui/native-select";
 import { Textarea } from "@/components/ui/textarea";
 import { dealLossReasonOptions } from "@/modules/crm/options";
 
@@ -23,12 +24,12 @@ export function DealLossDialog({ action }: DealLossDialogProps) {
         <form action={action} className="mt-4 space-y-4">
           <div className="space-y-2">
             <Label htmlFor="lossReason">Причина *</Label>
-            <select id="lossReason" name="lossReason" required className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm">
+            <NativeSelect id="lossReason" name="lossReason" required>
               <option value="">Выберите причину</option>
               {dealLossReasonOptions.map((option) => (
                 <option key={option.value} value={option.value}>{option.label}</option>
               ))}
-            </select>
+            </NativeSelect>
           </div>
           <div className="space-y-2">
             <Label htmlFor="lossComment">Комментарий</Label>

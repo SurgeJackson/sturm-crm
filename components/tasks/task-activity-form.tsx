@@ -2,10 +2,10 @@
 
 import { useActionState, useMemo, useState } from "react";
 import type { TaskActivity } from "@/generated/prisma/client";
-import { FieldError, FormSection } from "@/components/crm/form-fields";
-import { Button } from "@/components/ui/button";
+import { FieldError, FormActions, FormMessage, FormSection } from "@/components/crm/form-fields";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { NativeSelect } from "@/components/ui/native-select";
 import { Textarea } from "@/components/ui/textarea";
 import type { TaskActionState } from "@/modules/tasks/actions";
 import {
@@ -144,24 +144,24 @@ export function TaskActivityForm({
 
   return (
     <form action={formAction} className="grid gap-5">
-      {state.message ? <p className="rounded-md border border-destructive p-3 text-sm text-destructive">{state.message}</p> : null}
+      <FormMessage state={state} />
 
       <FormSection>
         <div className="space-y-2">
           <Label htmlFor="recordType">Тип записи *</Label>
-          <select id="recordType" name="recordType" value={recordType} onChange={(event) => setRecordType(event.target.value)} className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm">
+          <NativeSelect id="recordType" name="recordType" value={recordType} onChange={(event) => setRecordType(event.target.value)}>
             {taskRecordTypeOptions.map((option) => (
               <option key={option.value} value={option.value}>{option.label}</option>
             ))}
-          </select>
+          </NativeSelect>
         </div>
         <div className="space-y-2">
           <Label htmlFor="actionType">Вид действия *</Label>
-          <select id="actionType" name="actionType" defaultValue={task?.actionType ?? defaults?.actionType ?? "CALL"} className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm">
+          <NativeSelect id="actionType" name="actionType" defaultValue={task?.actionType ?? defaults?.actionType ?? "CALL"}>
             {taskActionTypeOptions.map((option) => (
               <option key={option.value} value={option.value}>{option.label}</option>
             ))}
-          </select>
+          </NativeSelect>
           <FieldError name="actionType" state={state} />
         </div>
         <div className="space-y-2 md:col-span-2">
@@ -172,11 +172,11 @@ export function TaskActivityForm({
         <div className="space-y-2">
           <Label htmlFor="responsibleId">Ответственный *</Label>
           {canChangeResponsible ? (
-            <select id="responsibleId" name="responsibleId" value={responsibleId} onChange={(event) => setResponsibleId(event.target.value)} className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm">
+            <NativeSelect id="responsibleId" name="responsibleId" value={responsibleId} onChange={(event) => setResponsibleId(event.target.value)}>
               {users.map((user) => (
                 <option key={user.id} value={user.id}>{user.name}</option>
               ))}
-            </select>
+            </NativeSelect>
           ) : (
             <>
               <Input value={users.find((user) => user.id === responsibleId)?.name ?? "Текущий пользователь"} disabled />
@@ -187,19 +187,19 @@ export function TaskActivityForm({
         </div>
         <div className="space-y-2">
           <Label htmlFor="priority">Приоритет</Label>
-          <select id="priority" name="priority" defaultValue={task?.priority ?? "NORMAL"} className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm">
+          <NativeSelect id="priority" name="priority" defaultValue={task?.priority ?? "NORMAL"}>
             {taskPriorityOptions.map((option) => (
               <option key={option.value} value={option.value}>{option.label}</option>
             ))}
-          </select>
+          </NativeSelect>
         </div>
         <div className="space-y-2">
           <Label htmlFor="status">Статус</Label>
-          <select id="status" name="status" defaultValue={defaultStatus} className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm">
+          <NativeSelect id="status" name="status" defaultValue={defaultStatus}>
             {taskStatusOptions.map((option) => (
               <option key={option.value} value={option.value}>{option.label}</option>
             ))}
-          </select>
+          </NativeSelect>
         </div>
         <div className="space-y-2">
           <Label htmlFor="dueAt">{recordType === "TOUCH" ? "Дата касания" : "Срок"} *</Label>
@@ -215,58 +215,58 @@ export function TaskActivityForm({
       <FormSection>
         <div className="space-y-2">
           <Label htmlFor="clientId">Клиент</Label>
-          <select id="clientId" name="clientId" value={clientId} onChange={(event) => setClientId(event.target.value)} className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm">
+          <NativeSelect id="clientId" name="clientId" value={clientId} onChange={(event) => setClientId(event.target.value)}>
             <option value="">Не выбран</option>
             {clients.map((client) => (
               <option key={client.id} value={client.id}>{client.name}</option>
             ))}
-          </select>
+          </NativeSelect>
           <FieldError name="clientId" state={state} />
         </div>
         <div className="space-y-2">
           <Label htmlFor="designerId">Дизайнер</Label>
-          <select id="designerId" name="designerId" value={designerId} onChange={(event) => setDesignerId(event.target.value)} className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm">
+          <NativeSelect id="designerId" name="designerId" value={designerId} onChange={(event) => setDesignerId(event.target.value)}>
             <option value="">Не выбран</option>
             {designers.map((designer) => (
               <option key={designer.id} value={designer.id}>{designer.name}{designer.studio ? `, ${designer.studio}` : ""}</option>
             ))}
-          </select>
+          </NativeSelect>
         </div>
         <div className="space-y-2">
           <Label htmlFor="objectId">Объект</Label>
-          <select id="objectId" name="objectId" value={objectId} onChange={(event) => applyObject(event.target.value)} className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm">
+          <NativeSelect id="objectId" name="objectId" value={objectId} onChange={(event) => applyObject(event.target.value)}>
             <option value="">Не выбран</option>
             {objects.map((object) => (
               <option key={object.id} value={object.id}>{object.title}</option>
             ))}
-          </select>
+          </NativeSelect>
         </div>
         <div className="space-y-2">
           <Label htmlFor="dealId">Сделка</Label>
-          <select id="dealId" name="dealId" value={dealId} onChange={(event) => applyDeal(event.target.value)} className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm">
+          <NativeSelect id="dealId" name="dealId" value={dealId} onChange={(event) => applyDeal(event.target.value)}>
             <option value="">Не выбрана</option>
             {deals.map((deal) => (
               <option key={deal.id} value={deal.id}>{deal.title}</option>
             ))}
-          </select>
+          </NativeSelect>
         </div>
         <div className="space-y-2">
           <Label htmlFor="proposalId">КП</Label>
-          <select id="proposalId" name="proposalId" value={proposalId} onChange={(event) => applyProposal(event.target.value)} className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm">
+          <NativeSelect id="proposalId" name="proposalId" value={proposalId} onChange={(event) => applyProposal(event.target.value)}>
             <option value="">Не выбрано</option>
             {proposals.map((proposal) => (
               <option key={proposal.id} value={proposal.id}>{proposal.proposalNumber}</option>
             ))}
-          </select>
+          </NativeSelect>
         </div>
         <div className="space-y-2">
           <Label htmlFor="objectParticipantId">Участник объекта</Label>
-          <select id="objectParticipantId" name="objectParticipantId" value={objectParticipantId} onChange={(event) => applyParticipant(event.target.value)} className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm">
+          <NativeSelect id="objectParticipantId" name="objectParticipantId" value={objectParticipantId} onChange={(event) => applyParticipant(event.target.value)}>
             <option value="">Не выбран</option>
             {participants.map((participant) => (
               <option key={participant.id} value={participant.id}>{participant.fullName}</option>
             ))}
-          </select>
+          </NativeSelect>
         </div>
       </FormSection>
 
@@ -287,9 +287,7 @@ export function TaskActivityForm({
         </div>
       </FormSection>
 
-      <div className="flex justify-end gap-2">
-        <Button type="submit" disabled={isPending}>{isPending ? "Сохранение..." : submitLabel}</Button>
-      </div>
+      <FormActions isPending={isPending} submitLabel={submitLabel} />
     </form>
   );
 }

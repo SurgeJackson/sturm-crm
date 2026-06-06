@@ -2,9 +2,12 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { BreakdownCard, MetricsGrid, ReportFilterSelect, ReportPageHeader, ReportPeriodFilter } from "@/components/reports/report-widgets";
+import { EmptyTableRow, TableCard } from "@/components/ui/data-table";
+import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { BreakdownCard } from "@/components/reports/cards";
+import { ReportFilterSelect, ReportPeriodFilter } from "@/components/reports/filters";
+import { ReportPageHeader } from "@/components/reports/layout";
+import { MetricsGrid } from "@/components/reports/metrics";
 import { objectStageLabels, objectStatusLabels, objectTypeLabels } from "@/lib/constants";
 import { objectStageOptions, objectStatusOptions, objectTypeOptions } from "@/modules/crm/options";
 import { getObjectsReport, getReportFilterOptions, type ReportSearchParams } from "@/modules/reports/queries";
@@ -29,7 +32,10 @@ export default async function ObjectsReportPage({ searchParams }: PageProps) {
         <BreakdownCard title="Объекты по стадиям" data={Object.fromEntries(Object.entries(report.byStage).map(([key, value]) => [objectStageLabels[key as keyof typeof objectStageLabels] ?? key, value]))} />
         <BreakdownCard title="Объекты по типам" data={Object.fromEntries(Object.entries(report.byType).map(([key, value]) => [objectTypeLabels[key as keyof typeof objectTypeLabels] ?? key, value]))} />
       </div>
-      <Card><CardHeader><CardTitle>Объекты</CardTitle></CardHeader><CardContent className="p-0"><Table><TableHeader><TableRow><TableHead>Объект</TableHead><TableHead>Тип</TableHead><TableHead>Стадия</TableHead><TableHead>Статус</TableHead><TableHead>Клиент</TableHead><TableHead>Дизайнер</TableHead><TableHead>Задачи</TableHead><TableHead>Участники</TableHead></TableRow></TableHeader><TableBody>{report.objects.length === 0 ? <TableRow><TableCell colSpan={8} className="h-24 text-center text-sm text-muted-foreground">Объекты не найдены.</TableCell></TableRow> : report.objects.map((object) => <TableRow key={object.id}><TableCell><Link href={`/objects/${object.id}`} className="font-medium hover:underline">{object.title}</Link></TableCell><TableCell>{objectTypeLabels[object.objectType]}</TableCell><TableCell><Badge variant="outline">{objectStageLabels[object.stage]}</Badge></TableCell><TableCell>{objectStatusLabels[object.status]}</TableCell><TableCell>{object.client.name}</TableCell><TableCell>{object.designer?.name ?? "Нет"}</TableCell><TableCell>{object.tasks.length}</TableCell><TableCell>{object.participants.length}</TableCell></TableRow>)}</TableBody></Table></CardContent></Card>
+      <TableCard title="Объекты">
+        <TableHeader><TableRow><TableHead>Объект</TableHead><TableHead>Тип</TableHead><TableHead>Стадия</TableHead><TableHead>Статус</TableHead><TableHead>Клиент</TableHead><TableHead>Дизайнер</TableHead><TableHead>Задачи</TableHead><TableHead>Участники</TableHead></TableRow></TableHeader>
+        <TableBody>{report.objects.length === 0 ? <EmptyTableRow colSpan={8}>Объекты не найдены.</EmptyTableRow> : report.objects.map((object) => <TableRow key={object.id}><TableCell><Link href={`/objects/${object.id}`} className="font-medium hover:underline">{object.title}</Link></TableCell><TableCell>{objectTypeLabels[object.objectType]}</TableCell><TableCell><Badge variant="outline">{objectStageLabels[object.stage]}</Badge></TableCell><TableCell>{objectStatusLabels[object.status]}</TableCell><TableCell>{object.client.name}</TableCell><TableCell>{object.designer?.name ?? "Нет"}</TableCell><TableCell>{object.tasks.length}</TableCell><TableCell>{object.participants.length}</TableCell></TableRow>)}</TableBody>
+      </TableCard>
     </div>
   );
 }

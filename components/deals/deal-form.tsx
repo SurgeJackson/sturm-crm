@@ -2,9 +2,10 @@
 
 import { useActionState, useMemo, useState } from "react";
 import type { Client, Deal, Designer, ProjectObject, User } from "@/generated/prisma/client";
-import { dateInputValue, FieldError, FormActions, FormSection } from "@/components/crm/form-fields";
+import { dateInputValue, FieldError, FormActions, FormMessage, FormSection } from "@/components/crm/form-fields";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { NativeSelect } from "@/components/ui/native-select";
 import { Textarea } from "@/components/ui/textarea";
 import type { DealActionState } from "@/modules/deals/actions";
 import {
@@ -73,7 +74,7 @@ export function DealForm({
 
   return (
     <form action={formAction} className="grid gap-5">
-      {state.message ? <p className="rounded-md border border-destructive p-3 text-sm text-destructive">{state.message}</p> : null}
+      <FormMessage state={state} />
 
       <FormSection>
         <div className="space-y-2">
@@ -83,12 +84,11 @@ export function DealForm({
         </div>
         <div className="space-y-2">
           <Label htmlFor="objectId">Объект *</Label>
-          <select
+          <NativeSelect
             id="objectId"
             name="objectId"
             value={objectId}
             onChange={(event) => onObjectChange(event.target.value)}
-            className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
             required
           >
             <option value="">Выберите объект</option>
@@ -97,17 +97,16 @@ export function DealForm({
                 {object.title}
               </option>
             ))}
-          </select>
+          </NativeSelect>
           <FieldError name="objectId" state={state} />
         </div>
         <div className="space-y-2">
           <Label htmlFor="clientId">Клиент *</Label>
-          <select
+          <NativeSelect
             id="clientId"
             name="clientId"
             value={clientId}
             onChange={(event) => setClientId(event.target.value)}
-            className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
             required
           >
             <option value="">Выберите клиента</option>
@@ -116,17 +115,16 @@ export function DealForm({
                 {client.name}
               </option>
             ))}
-          </select>
+          </NativeSelect>
           <FieldError name="clientId" state={state} />
         </div>
         <div className="space-y-2">
           <Label htmlFor="designerId">Дизайнер / архитектор</Label>
-          <select
+          <NativeSelect
             id="designerId"
             name="designerId"
             value={designerId}
             onChange={(event) => setDesignerId(event.target.value)}
-            className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
           >
             <option value="">Не выбран</option>
             {designers.map((designer) => (
@@ -135,16 +133,16 @@ export function DealForm({
                 {designer.studio ? `, ${designer.studio}` : ""}
               </option>
             ))}
-          </select>
+          </NativeSelect>
         </div>
         <div className="space-y-2">
           <Label htmlFor="responsibleId">Ответственный *</Label>
           {canChangeResponsible ? (
-            <select id="responsibleId" name="responsibleId" defaultValue={responsibleId} className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm">
+            <NativeSelect id="responsibleId" name="responsibleId" defaultValue={responsibleId}>
               {users.map((user) => (
                 <option key={user.id} value={user.id}>{user.name}</option>
               ))}
-            </select>
+            </NativeSelect>
           ) : (
             <>
               <Input value={users.find((user) => user.id === responsibleId)?.name ?? "Текущий пользователь"} disabled />
@@ -155,17 +153,16 @@ export function DealForm({
         </div>
         <div className="space-y-2">
           <Label htmlFor="stage">Стадия *</Label>
-          <select
+          <NativeSelect
             id="stage"
             name="stage"
             value={stage}
             onChange={(event) => setStage(event.target.value as typeof stage)}
-            className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
           >
             {dealStageOptions.map((option) => (
               <option key={option.value} value={option.value}>{option.label}</option>
             ))}
-          </select>
+          </NativeSelect>
           <FieldError name="stage" state={state} />
         </div>
         <div className="space-y-2">
@@ -174,20 +171,20 @@ export function DealForm({
         </div>
         <div className="space-y-2">
           <Label htmlFor="probability">Вероятность</Label>
-          <select id="probability" name="probability" defaultValue={deal?.probability ?? ""} className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm">
+          <NativeSelect id="probability" name="probability" defaultValue={deal?.probability ?? ""}>
             <option value="">Не выбрана</option>
             {dealProbabilityOptions.map((option) => (
               <option key={option.value} value={option.value}>{option.label}</option>
             ))}
-          </select>
+          </NativeSelect>
         </div>
         <div className="space-y-2">
           <Label htmlFor="source">Источник *</Label>
-          <select id="source" name="source" defaultValue={defaultSource} className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm">
+          <NativeSelect id="source" name="source" defaultValue={defaultSource}>
             {dealSourceOptions.map((option) => (
               <option key={option.value} value={option.value}>{option.label}</option>
             ))}
-          </select>
+          </NativeSelect>
           <FieldError name="source" state={state} />
         </div>
         <div className="space-y-2">
@@ -204,12 +201,12 @@ export function DealForm({
           <>
             <div className="space-y-2">
               <Label htmlFor="lossReason">Причина проигрыша *</Label>
-              <select id="lossReason" name="lossReason" defaultValue={deal?.lossReason ?? ""} className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm">
+              <NativeSelect id="lossReason" name="lossReason" defaultValue={deal?.lossReason ?? ""}>
                 <option value="">Выберите причину</option>
                 {dealLossReasonOptions.map((option) => (
                   <option key={option.value} value={option.value}>{option.label}</option>
                 ))}
-              </select>
+              </NativeSelect>
               <FieldError name="lossReason" state={state} />
             </div>
             <div className="space-y-2">

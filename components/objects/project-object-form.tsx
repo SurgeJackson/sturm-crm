@@ -2,9 +2,10 @@
 
 import { useActionState } from "react";
 import type { Client, Designer, ProjectObject, User } from "@/generated/prisma/client";
-import { dateInputValue, FieldError, FormActions, FormSection } from "@/components/crm/form-fields";
+import { dateInputValue, FieldError, FormActions, FormMessage, FormSection } from "@/components/crm/form-fields";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { NativeSelect } from "@/components/ui/native-select";
 import { Textarea } from "@/components/ui/textarea";
 import type { ProjectObjectActionState } from "@/modules/objects/actions";
 import {
@@ -43,7 +44,7 @@ export function ProjectObjectForm({
 
   return (
     <form action={formAction} className="grid gap-5">
-      {state.message ? <p className="rounded-md border border-destructive p-3 text-sm text-destructive">{state.message}</p> : null}
+      <FormMessage state={state} />
 
       <FormSection>
         <div className="space-y-2">
@@ -53,18 +54,17 @@ export function ProjectObjectForm({
         </div>
         <div className="space-y-2">
           <Label htmlFor="objectType">Тип объекта *</Label>
-          <select
+          <NativeSelect
             id="objectType"
             name="objectType"
             defaultValue={projectObject?.objectType ?? "APARTMENT"}
-            className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
           >
             {objectTypeOptions.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>
             ))}
-          </select>
+          </NativeSelect>
           <FieldError name="objectType" state={state} />
         </div>
         <div className="space-y-2">
@@ -82,11 +82,10 @@ export function ProjectObjectForm({
         </div>
         <div className="space-y-2">
           <Label htmlFor="clientId">Клиент / заказчик *</Label>
-          <select
+          <NativeSelect
             id="clientId"
             name="clientId"
             defaultValue={projectObject?.clientId ?? ""}
-            className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
             required
           >
             <option value="">Выберите клиента</option>
@@ -95,16 +94,15 @@ export function ProjectObjectForm({
                 {client.name}
               </option>
             ))}
-          </select>
+          </NativeSelect>
           <FieldError name="clientId" state={state} />
         </div>
         <div className="space-y-2">
           <Label htmlFor="designerId">Дизайнер / архитектор</Label>
-          <select
+          <NativeSelect
             id="designerId"
             name="designerId"
             defaultValue={projectObject?.designerId ?? ""}
-            className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
           >
             <option value="">Не выбран</option>
             {designers.map((designer) => (
@@ -113,23 +111,22 @@ export function ProjectObjectForm({
                 {designer.studio ? `, ${designer.studio}` : ""}
               </option>
             ))}
-          </select>
+          </NativeSelect>
         </div>
         <div className="space-y-2">
           <Label htmlFor="responsibleId">Ответственный STURM *</Label>
           {canChangeResponsible ? (
-            <select
+            <NativeSelect
               id="responsibleId"
               name="responsibleId"
               defaultValue={responsibleId}
-              className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
             >
               {users.map((user) => (
                 <option key={user.id} value={user.id}>
                   {user.name}
                 </option>
               ))}
-            </select>
+            </NativeSelect>
           ) : (
             <>
               <Input value={users.find((user) => user.id === responsibleId)?.name ?? "Текущий пользователь"} disabled />
@@ -140,34 +137,32 @@ export function ProjectObjectForm({
         </div>
         <div className="space-y-2">
           <Label htmlFor="stage">Стадия *</Label>
-          <select
+          <NativeSelect
             id="stage"
             name="stage"
             defaultValue={projectObject?.stage ?? "NEW_OBJECT"}
-            className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
           >
             {objectStageOptions.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>
             ))}
-          </select>
+          </NativeSelect>
           <FieldError name="stage" state={state} />
         </div>
         <div className="space-y-2">
           <Label htmlFor="status">Статус *</Label>
-          <select
+          <NativeSelect
             id="status"
             name="status"
             defaultValue={projectObject?.status ?? "ACTIVE"}
-            className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
           >
             {objectStatusOptions.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>
             ))}
-          </select>
+          </NativeSelect>
           <FieldError name="status" state={state} />
         </div>
         <div className="space-y-2">

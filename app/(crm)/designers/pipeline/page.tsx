@@ -4,6 +4,7 @@ import { getCurrentUser } from "@/auth/get-current-user";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { NativeSelect } from "@/components/ui/native-select";
 import { designerLoyaltyLabels, designerPotentialLabels, designerRelationshipStageLabels } from "@/lib/constants";
 import { designerRelationshipStageOptions } from "@/modules/crm/options";
 import { changeDesignerStageAction } from "@/modules/designers/actions";
@@ -61,11 +62,11 @@ export default async function DesignerPipelinePage() {
                           {formatRussianDate(designer.nextStepAt)} · {designer.nextStepText ?? "Нет шага"}
                         </div>
                         <form action={action} className="flex gap-2">
-                          <select name="relationshipStage" defaultValue={designer.relationshipStage} className="h-9 min-w-0 flex-1 rounded-md border border-input bg-background px-2 text-xs">
+                          <NativeSelect name="relationshipStage" defaultValue={designer.relationshipStage} className="h-9 min-w-0 flex-1 px-2 text-xs">
                             {designerRelationshipStageOptions.map((option) => (
                               <option key={option.value} value={option.value}>{designerRelationshipStageLabels[option.value]}</option>
                             ))}
-                          </select>
+                          </NativeSelect>
                           <Button size="sm" type="submit">OK</Button>
                         </form>
                       </div>

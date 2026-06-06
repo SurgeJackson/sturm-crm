@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { Archive, Edit, MessageSquarePlus, Plus } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
 import { Detail, DetailGrid } from "@/components/crm/detail";
-import { CrmDisciplinePanel } from "@/components/crm/crm-discipline";
+import { CrmDisciplinePanel } from "@/components/crm/discipline/panel";
 import { DealLossDialog } from "@/components/deals/deal-loss-dialog";
 import { TaskActivityTable } from "@/components/tasks/task-activity-table";
 import { Badge } from "@/components/ui/badge";

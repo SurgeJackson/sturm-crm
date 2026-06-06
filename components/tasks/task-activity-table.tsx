@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { TaskActivity } from "@/generated/prisma/client";
-import { CrmDisciplineBadge, type CrmViolationView } from "@/components/crm/crm-discipline";
+import { CrmDisciplineBadge } from "@/components/crm/discipline/badges";
+import type { CrmViolationView } from "@/components/crm/discipline/types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";

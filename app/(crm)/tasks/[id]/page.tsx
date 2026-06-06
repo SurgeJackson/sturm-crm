@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { Ban, Edit } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
 import { Detail, DetailGrid } from "@/components/crm/detail";
-import { CrmDisciplinePanel } from "@/components/crm/crm-discipline";
+import { CrmDisciplinePanel } from "@/components/crm/discipline/panel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";

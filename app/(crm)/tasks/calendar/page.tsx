@@ -5,6 +5,7 @@ import { getCurrentUser } from "@/auth/get-current-user";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { NativeSelect } from "@/components/ui/native-select";
 import { TaskActivityTable } from "@/components/tasks/task-activity-table";
 import { getTaskCalendar, getTaskFormContext, type TaskCalendarSearchParams } from "@/modules/tasks/queries";
 import { formatRussianDate } from "@/utils/date";
@@ -43,10 +44,10 @@ export default async function TaskCalendarPage({ searchParams }: TaskCalendarPag
         <CardContent className="pt-5">
           <form className="grid gap-3 md:grid-cols-4">
             <Input name="date" type="date" defaultValue={params.date ?? new Date().toISOString().slice(0, 10)} />
-            <select name="responsibleId" defaultValue={params.responsibleId ?? ""} className="h-10 rounded-md border border-input bg-background px-3 text-sm">
+            <NativeSelect name="responsibleId" defaultValue={params.responsibleId ?? ""}>
               <option value="">Все ответственные</option>
               {context.users.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}
-            </select>
+            </NativeSelect>
             <label className="flex h-10 items-center gap-2 rounded-md border px-3 text-sm">
               <input type="checkbox" name="mine" value="1" defaultChecked={params.mine === "1"} />
               Мои задачи

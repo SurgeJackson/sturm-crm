@@ -3,9 +3,13 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { EmptyTableRow, TableCard } from "@/components/ui/data-table";
 import { NativeSelect } from "@/components/ui/native-select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { BreakdownCard, MetricsGrid, ReportFilterSelect, ReportPageHeader, ReportPeriodFilter } from "@/components/reports/report-widgets";
+import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { BreakdownCard } from "@/components/reports/cards";
+import { ReportFilterSelect, ReportPeriodFilter } from "@/components/reports/filters";
+import { ReportPageHeader } from "@/components/reports/layout";
+import { MetricsGrid } from "@/components/reports/metrics";
 import { commercialProposalStatusLabels, proposalDeclineReasonLabels } from "@/lib/constants";
 import { commercialProposalStatusOptions } from "@/modules/crm/options";
 import { getProposalsReport, getReportFilterOptions, type ReportSearchParams } from "@/modules/reports/queries";
@@ -32,7 +36,10 @@ export default async function ProposalsReportPage({ searchParams }: PageProps) {
         <BreakdownCard title="Причины отклонения" data={Object.fromEntries(Object.entries(report.declineReasons).map(([key, value]) => [proposalDeclineReasonLabels[key as keyof typeof proposalDeclineReasonLabels] ?? key, value]))} />
         <Card><CardHeader><CardTitle>Сумма КП по сотрудникам</CardTitle></CardHeader><CardContent className="space-y-2">{report.byResponsible.length === 0 ? <p className="text-sm text-muted-foreground">Данных нет.</p> : report.byResponsible.map((row) => <div key={row.name} className="flex items-center justify-between rounded-md border p-3 text-sm"><span>{row.name}</span><Badge variant="secondary">{row.count} / {row.amount.toLocaleString("ru-RU")} ₽</Badge></div>)}</CardContent></Card>
       </div>
-      <Card><CardHeader><CardTitle>КП</CardTitle></CardHeader><CardContent className="p-0"><Table><TableHeader><TableRow><TableHead>КП</TableHead><TableHead>Статус</TableHead><TableHead>Клиент</TableHead><TableHead>Сделка</TableHead><TableHead>Сумма</TableHead><TableHead>Follow-up</TableHead><TableHead>Ответственный</TableHead></TableRow></TableHeader><TableBody>{report.proposals.length === 0 ? <TableRow><TableCell colSpan={7} className="h-24 text-center text-sm text-muted-foreground">КП не найдены.</TableCell></TableRow> : report.proposals.map((proposal) => <TableRow key={proposal.id}><TableCell><Link href={`/proposals/${proposal.id}`} className="font-medium hover:underline">{proposal.proposalNumber}</Link></TableCell><TableCell><Badge variant="outline">{commercialProposalStatusLabels[proposal.status]}</Badge></TableCell><TableCell>{proposal.client.name}</TableCell><TableCell>{proposal.deal.title}</TableCell><TableCell>{proposal.amount.toLocaleString("ru-RU")} ₽</TableCell><TableCell>{formatRussianDate(proposal.nextTouchAt)}</TableCell><TableCell>{proposal.responsible.name}</TableCell></TableRow>)}</TableBody></Table></CardContent></Card>
+      <TableCard title="КП">
+        <TableHeader><TableRow><TableHead>КП</TableHead><TableHead>Статус</TableHead><TableHead>Клиент</TableHead><TableHead>Сделка</TableHead><TableHead>Сумма</TableHead><TableHead>Follow-up</TableHead><TableHead>Ответственный</TableHead></TableRow></TableHeader>
+        <TableBody>{report.proposals.length === 0 ? <EmptyTableRow colSpan={7}>КП не найдены.</EmptyTableRow> : report.proposals.map((proposal) => <TableRow key={proposal.id}><TableCell><Link href={`/proposals/${proposal.id}`} className="font-medium hover:underline">{proposal.proposalNumber}</Link></TableCell><TableCell><Badge variant="outline">{commercialProposalStatusLabels[proposal.status]}</Badge></TableCell><TableCell>{proposal.client.name}</TableCell><TableCell>{proposal.deal.title}</TableCell><TableCell>{proposal.amount.toLocaleString("ru-RU")} ₽</TableCell><TableCell>{formatRussianDate(proposal.nextTouchAt)}</TableCell><TableCell>{proposal.responsible.name}</TableCell></TableRow>)}</TableBody>
+      </TableCard>
     </div>
   );
 }

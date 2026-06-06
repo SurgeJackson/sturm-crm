@@ -5,6 +5,7 @@ import { getCurrentUser } from "@/auth/get-current-user";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { NativeSelect } from "@/components/ui/native-select";
 import { dealProbabilityLabels, dealStageLabels } from "@/lib/constants";
 import { dealStageOptions } from "@/modules/crm/options";
 import { changeDealStageAction } from "@/modules/deals/actions";
@@ -93,11 +94,11 @@ export default async function DealPipelinePage({ searchParams }: DealPipelinePag
                       </div>
                     </div>
                     <form action={changeDealStageAction.bind(null, deal.id)} className="mt-3 flex gap-2">
-                      <select name="stage" defaultValue={deal.stage} className="h-9 min-w-0 flex-1 rounded-md border border-input bg-background px-2 text-xs">
+                      <NativeSelect name="stage" defaultValue={deal.stage} className="h-9 min-w-0 flex-1 px-2 text-xs">
                         {dealStageOptions.map((option) => (
                           <option key={option.value} value={option.value}>{option.label}</option>
                         ))}
-                      </select>
+                      </NativeSelect>
                       <Button type="submit" size="sm" variant="secondary">ОК</Button>
                     </form>
                   </div>

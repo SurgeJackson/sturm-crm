@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { EmptyTableRow, TableCard } from "@/components/ui/data-table";
 import { NativeSelect } from "@/components/ui/native-select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { MetricsGrid, ReportFilterSelect, ReportPageHeader, ReportPeriodFilter } from "@/components/reports/report-widgets";
+import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { ReportFilterSelect, ReportPeriodFilter } from "@/components/reports/filters";
+import { ReportPageHeader } from "@/components/reports/layout";
+import { MetricsGrid } from "@/components/reports/metrics";
 import { roleLabels } from "@/lib/constants";
 import { taskActionTypeOptions } from "@/modules/crm/options";
 import { getEmployeeActivityReport, getReportFilterOptions, type ReportSearchParams } from "@/modules/reports/queries";
@@ -64,10 +66,7 @@ export default async function ActivityReportPage({ searchParams }: ActivityRepor
         { title: "Касания", value: totals.touches, tone: "secondary" }
       ]} />
 
-      <Card>
-        <CardHeader><CardTitle>Таблица активности</CardTitle></CardHeader>
-        <CardContent className="p-0">
-          <Table>
+      <TableCard title="Таблица активности">
             <TableHeader>
               <TableRow>
                 <TableHead>Сотрудник</TableHead>
@@ -85,7 +84,7 @@ export default async function ActivityReportPage({ searchParams }: ActivityRepor
             </TableHeader>
             <TableBody>
               {report.rows.length === 0 ? (
-                <TableRow><TableCell colSpan={11} className="h-24 text-center text-sm text-muted-foreground">Активности за период нет.</TableCell></TableRow>
+                <EmptyTableRow colSpan={11}>Активности за период нет.</EmptyTableRow>
               ) : report.rows.map((row) => (
                 <TableRow key={row.employee.id}>
                   <TableCell><Link className="font-medium hover:underline" href={`/reports/activity?responsibleId=${row.employee.id}`}>{row.employee.name}</Link><div className="text-xs text-muted-foreground">{roleLabels[row.employee.role]}</div></TableCell>
@@ -102,9 +101,7 @@ export default async function ActivityReportPage({ searchParams }: ActivityRepor
                 </TableRow>
               ))}
             </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+      </TableCard>
     </div>
   );
 }

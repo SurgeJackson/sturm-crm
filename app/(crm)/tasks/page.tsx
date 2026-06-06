@@ -1,16 +1,13 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { CalendarDays, MessageSquarePlus, Plus, Search } from "lucide-react";
+import { CalendarDays, MessageSquarePlus, Plus } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
 import { PageHeader } from "@/components/layout/page-header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { FilterActions, FilterBar } from "@/components/ui/filter-bar";
-import { Input } from "@/components/ui/input";
-import { NativeSelect } from "@/components/ui/native-select";
 import { Pagination } from "@/components/ui/pagination";
 import { TaskActivityTable } from "@/components/tasks/task-activity-table";
-import { taskPriorityOptions, taskRecordTypeOptions, taskStatusOptions } from "@/modules/crm/options";
+import { TasksFilters } from "@/components/tasks/tasks-filters";
 import { ensureAutomaticTasks } from "@/modules/tasks/actions";
 import { getTaskFormContext, getTasks, type TaskListSearchParams } from "@/modules/tasks/queries";
 import { canCreateTask } from "@/permissions";
@@ -71,38 +68,7 @@ export default async function TasksPage({ searchParams }: TasksPageProps) {
         }
       />
 
-      <FilterBar className="lg:grid-cols-4">
-            <div className="relative lg:col-span-2">
-              <Search className="pointer-events-none absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <Input className="pl-9" name="q" defaultValue={params.q ?? ""} placeholder="Поиск по названию, описанию, результату" />
-            </div>
-            <NativeSelect name="recordType" defaultValue={params.recordType ?? ""}>
-              <option value="">Все записи</option>
-              {taskRecordTypeOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
-            </NativeSelect>
-            <NativeSelect name="responsibleId" defaultValue={params.responsibleId ?? ""}>
-              <option value="">Все ответственные</option>
-              {context.users.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}
-            </NativeSelect>
-            <NativeSelect name="status" defaultValue={params.status ?? ""}>
-              <option value="">Все статусы</option>
-              {taskStatusOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
-            </NativeSelect>
-            <NativeSelect name="priority" defaultValue={params.priority ?? ""}>
-              <option value="">Все приоритеты</option>
-              {taskPriorityOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
-            </NativeSelect>
-            <Input name="due" type="date" defaultValue={params.due ?? ""} />
-            <FilterActions className="lg:col-span-4">
-              <Button type="submit" variant="secondary">Применить</Button>
-              <Button asChild variant="outline"><Link href="/tasks">Сбросить</Link></Button>
-              <Button asChild variant="outline"><Link href={currentUrl(params, { today: "1", overdue: undefined, page: undefined })}>На сегодня</Link></Button>
-              <Button asChild variant="outline"><Link href={currentUrl(params, { overdue: "1", today: undefined, page: undefined })}>Просроченные</Link></Button>
-              <Button asChild variant="outline"><Link href={currentUrl(params, { noResult: "1", page: undefined })}>Без результата</Link></Button>
-              <Button asChild variant="outline"><Link href={currentUrl(params, { recordType: "TASK", page: undefined })}>Только задачи</Link></Button>
-              <Button asChild variant="outline"><Link href={currentUrl(params, { recordType: "TOUCH", page: undefined })}>Только касания</Link></Button>
-            </FilterActions>
-      </FilterBar>
+      <TasksFilters params={params} users={context.users} />
 
       <Card>
         <CardContent className="p-0">

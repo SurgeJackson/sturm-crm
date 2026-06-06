@@ -1,13 +1,17 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { bonusVariant } from "@/components/crm/crm-discipline";
+import { bonusVariant } from "@/components/crm/discipline/variants";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { EmptyTableRow } from "@/components/ui/data-table";
+import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { MetricsGrid, ReportPageHeader, ReportPeriodFilter } from "@/components/reports/report-widgets";
+import { ReportPeriodFilter } from "@/components/reports/filters";
+import { ReportPageHeader } from "@/components/reports/layout";
+import { MetricsGrid } from "@/components/reports/metrics";
 import { bonusEligibilityLabels } from "@/modules/crm-discipline/service";
 import { getBonusEligibilityReport, getReportFilterOptions, type BonusEligibilityRow, type ReportSearchParams } from "@/modules/reports/queries";
 import { formatRussianDate } from "@/utils/date";
@@ -37,7 +41,7 @@ function RowsTable({ rows }: { rows: BonusEligibilityRow[] }) {
       </TableHeader>
       <TableBody>
         {rows.length === 0 ? (
-          <TableRow><TableCell colSpan={7} className="h-24 text-center text-sm text-muted-foreground">Записей нет.</TableCell></TableRow>
+          <EmptyTableRow colSpan={7}>Записей нет.</EmptyTableRow>
         ) : rows.map((row) => (
           <TableRow key={`${row.entityType}-${row.href}`}>
             <TableCell>{row.entity}</TableCell>
@@ -82,7 +86,7 @@ export default async function BonusEligibilityReportPage({ searchParams }: PageP
           <option value="medium">Средние</option>
           <option value="low">Легкие</option>
         </NativeSelect>
-        <input name="violationCode" defaultValue={params.violationCode ?? ""} placeholder="Код нарушения" className="h-10 rounded-md border border-input bg-background px-3 text-sm" />
+        <Input name="violationCode" defaultValue={params.violationCode ?? ""} placeholder="Код нарушения" />
       </ReportPeriodFilter>
 
       <MetricsGrid metrics={report.metrics} />

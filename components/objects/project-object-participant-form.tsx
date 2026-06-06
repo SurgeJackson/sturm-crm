@@ -2,9 +2,10 @@
 
 import { useActionState, useState } from "react";
 import type { ProjectObjectParticipant, User } from "@/generated/prisma/client";
-import { FieldError, FormActions, FormSection } from "@/components/crm/form-fields";
+import { FieldError, FormActions, FormMessage, FormSection } from "@/components/crm/form-fields";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { NativeSelect } from "@/components/ui/native-select";
 import { Textarea } from "@/components/ui/textarea";
 import type { ProjectObjectParticipantActionState } from "@/modules/objects/actions";
 import {
@@ -44,24 +45,23 @@ export function ProjectObjectParticipantForm({
 
   return (
     <form action={formAction} className="grid gap-5">
-      {state.message ? <p className="rounded-md border border-destructive p-3 text-sm text-destructive">{state.message}</p> : null}
+      <FormMessage state={state} />
 
       <FormSection>
         <div className="space-y-2">
           <Label htmlFor="participantType">Тип участника *</Label>
-          <select
+          <NativeSelect
             id="participantType"
             name="participantType"
             value={participantType}
             onChange={(event) => setParticipantType(event.target.value as typeof participantType)}
-            className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
           >
             {projectObjectParticipantTypeOptions.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>
             ))}
-          </select>
+          </NativeSelect>
           <FieldError name="participantType" state={state} />
         </div>
         <div className="space-y-2">
@@ -93,11 +93,10 @@ export function ProjectObjectParticipantForm({
         </div>
         <div className="space-y-2">
           <Label htmlFor="responsibleId">Ответственный</Label>
-          <select
+          <NativeSelect
             id="responsibleId"
             name="responsibleId"
             defaultValue={responsibleId}
-            className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
           >
             <option value="">Не выбран</option>
             {users.map((user) => (
@@ -105,18 +104,17 @@ export function ProjectObjectParticipantForm({
                 {user.name}
               </option>
             ))}
-          </select>
+          </NativeSelect>
         </div>
 
         {isInfluencer ? (
           <>
             <div className="space-y-2">
               <Label htmlFor="influenceLevel">Уровень влияния *</Label>
-              <select
+              <NativeSelect
                 id="influenceLevel"
                 name="influenceLevel"
                 defaultValue={participant?.influenceLevel ?? ""}
-                className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
               >
                 <option value="">Выберите уровень</option>
                 {influenceLevelOptions.map((option) => (
@@ -124,16 +122,15 @@ export function ProjectObjectParticipantForm({
                     {option.label}
                   </option>
                 ))}
-              </select>
+              </NativeSelect>
               <FieldError name="influenceLevel" state={state} />
             </div>
             <div className="space-y-2">
               <Label htmlFor="influenceType">Тип влияния *</Label>
-              <select
+              <NativeSelect
                 id="influenceType"
                 name="influenceType"
                 defaultValue={participant?.influenceType ?? ""}
-                className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
               >
                 <option value="">Выберите тип</option>
                 {influenceTypeOptions.map((option) => (
@@ -141,23 +138,22 @@ export function ProjectObjectParticipantForm({
                     {option.label}
                   </option>
                 ))}
-              </select>
+              </NativeSelect>
               <FieldError name="influenceType" state={state} />
             </div>
             <div className="space-y-2">
               <Label htmlFor="attitudeToSturm">Отношение к STURM</Label>
-              <select
+              <NativeSelect
                 id="attitudeToSturm"
                 name="attitudeToSturm"
                 defaultValue={participant?.attitudeToSturm ?? "UNKNOWN"}
-                className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
               >
                 {attitudeToSturmOptions.map((option) => (
                   <option key={option.value} value={option.value}>
                     {option.label}
                   </option>
                 ))}
-              </select>
+              </NativeSelect>
             </div>
             <div className="space-y-2">
               <Label htmlFor="decisionFactors">Что важно</Label>
@@ -173,11 +169,10 @@ export function ProjectObjectParticipantForm({
             </div>
             <div className="space-y-2">
               <Label htmlFor="canApproveChanges">Может согласовывать изменения *</Label>
-              <select
+              <NativeSelect
                 id="canApproveChanges"
                 name="canApproveChanges"
                 defaultValue={participant?.canApproveChanges ?? ""}
-                className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
               >
                 <option value="">Выберите вариант</option>
                 {changeApprovalOptions.map((option) => (
@@ -185,7 +180,7 @@ export function ProjectObjectParticipantForm({
                     {option.label}
                   </option>
                 ))}
-              </select>
+              </NativeSelect>
               <FieldError name="canApproveChanges" state={state} />
             </div>
             <div className="space-y-2 md:col-span-2">
