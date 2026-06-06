@@ -13,8 +13,13 @@ import {
 import type { getProjectObjectForUser } from "@/modules/objects/queries";
 
 type ObjectDetail = Awaited<ReturnType<typeof getProjectObjectForUser>>;
+type Participant = ObjectDetail["participants"][number];
 type ArchiveParticipantAction = (participantId: string) => () => Promise<void>;
 type ParticipantType = "PURCHASE_INFLUENCER" | "IMPLEMENTATION_CONTACT";
+type ParticipantColumn = {
+  head: string;
+  render: (participant: Participant) => ReactNode;
+};
 
 function fieldValue(value?: string | null) {
   return value || "Нет данных";
@@ -106,6 +111,106 @@ function ParticipantTableCard({
   );
 }
 
+function ParticipantRows({
+  participants,
+  columns,
+  objectId,
+  canManageParticipants,
+  archiveParticipantAction
+}: {
+  participants: Participant[];
+  columns: ParticipantColumn[];
+  objectId: string;
+  canManageParticipants: boolean;
+  archiveParticipantAction: ArchiveParticipantAction;
+}) {
+  return (
+    <TableBody>
+      {participants.length === 0 ? (
+        <EmptyTableRow colSpan={columns.length + 2}>По объекту пока нет участников</EmptyTableRow>
+      ) : participants.map((participant) => (
+        <TableRow key={participant.id}>
+          <TableCell className="font-medium">{participant.fullName}</TableCell>
+          {columns.map((column) => (
+            <TableCell key={column.head}>{column.render(participant)}</TableCell>
+          ))}
+          <TableCell>{participant.responsible?.name || "Не выбран"}</TableCell>
+          <TableCell>
+            <ParticipantActions
+              objectId={objectId}
+              participantId={participant.id}
+              canManageParticipants={canManageParticipants}
+              archiveParticipantAction={archiveParticipantAction}
+            />
+          </TableCell>
+        </TableRow>
+      ))}
+    </TableBody>
+  );
+}
+
+function ParticipantsTable({
+  title,
+  participantType,
+  objectId,
+  participants,
+  canManageParticipants,
+  archiveParticipantAction,
+  columns
+}: {
+  title: string;
+  participantType: ParticipantType;
+  objectId: string;
+  participants: Participant[];
+  canManageParticipants: boolean;
+  archiveParticipantAction: ArchiveParticipantAction;
+  columns: ParticipantColumn[];
+}) {
+  return (
+    <ParticipantTableCard
+      title={title}
+      objectId={objectId}
+      participantType={participantType}
+      canManageParticipants={canManageParticipants}
+    >
+      <TableHeader>
+        <TableRow>
+          <TableHead>ФИО</TableHead>
+          {columns.map((column) => (
+            <TableHead key={column.head}>{column.head}</TableHead>
+          ))}
+          <TableHead>Ответственный</TableHead>
+          <TableHead>Действия</TableHead>
+        </TableRow>
+      </TableHeader>
+      <ParticipantRows
+        participants={participants}
+        columns={columns}
+        objectId={objectId}
+        canManageParticipants={canManageParticipants}
+        archiveParticipantAction={archiveParticipantAction}
+      />
+    </ParticipantTableCard>
+  );
+}
+
+const purchaseInfluencerColumns: ParticipantColumn[] = [
+  { head: "Роль", render: (participant) => participant.role },
+  { head: "Компания", render: (participant) => fieldValue(participant.company) },
+  { head: "Уровень", render: (participant) => participant.influenceLevel ? influenceLevelLabels[participant.influenceLevel] : "Нет данных" },
+  { head: "Тип влияния", render: (participant) => participant.influenceType ? influenceTypeLabels[participant.influenceType] : "Нет данных" },
+  { head: "Отношение", render: (participant) => participant.attitudeToSturm ? attitudeToSturmLabels[participant.attitudeToSturm] : "Нет данных" },
+  { head: "Что важно", render: (participant) => fieldValue(participant.decisionFactors) }
+];
+
+const implementationContactColumns: ParticipantColumn[] = [
+  { head: "Роль", render: (participant) => participant.role },
+  { head: "Компания", render: (participant) => fieldValue(participant.company) },
+  { head: "Зона", render: (participant) => fieldValue(participant.responsibilityZone) },
+  { head: "Согласует", render: (participant) => participant.canApproveChanges ? changeApprovalLabels[participant.canApproveChanges] : "Нет данных" },
+  { head: "Когда подключать", render: (participant) => fieldValue(participant.whenToInvolve) }
+];
+
 function PurchaseInfluencersTable({
   objectId,
   participants,
@@ -113,55 +218,20 @@ function PurchaseInfluencersTable({
   archiveParticipantAction
 }: {
   objectId: string;
-  participants: ObjectDetail["participants"];
+  participants: Participant[];
   canManageParticipants: boolean;
   archiveParticipantAction: ArchiveParticipantAction;
 }) {
   return (
-    <ParticipantTableCard
+    <ParticipantsTable
       title="Влияющие на закупку"
-      objectId={objectId}
       participantType="PURCHASE_INFLUENCER"
+      objectId={objectId}
+      participants={participants}
       canManageParticipants={canManageParticipants}
-    >
-      <TableHeader>
-        <TableRow>
-          <TableHead>ФИО</TableHead>
-          <TableHead>Роль</TableHead>
-          <TableHead>Компания</TableHead>
-          <TableHead>Уровень</TableHead>
-          <TableHead>Тип влияния</TableHead>
-          <TableHead>Отношение</TableHead>
-          <TableHead>Что важно</TableHead>
-          <TableHead>Ответственный</TableHead>
-          <TableHead>Действия</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {participants.length === 0 ? (
-          <EmptyTableRow colSpan={9}>По объекту пока нет участников</EmptyTableRow>
-        ) : participants.map((participant) => (
-          <TableRow key={participant.id}>
-            <TableCell className="font-medium">{participant.fullName}</TableCell>
-            <TableCell>{participant.role}</TableCell>
-            <TableCell>{fieldValue(participant.company)}</TableCell>
-            <TableCell>{participant.influenceLevel ? influenceLevelLabels[participant.influenceLevel] : "Нет данных"}</TableCell>
-            <TableCell>{participant.influenceType ? influenceTypeLabels[participant.influenceType] : "Нет данных"}</TableCell>
-            <TableCell>{participant.attitudeToSturm ? attitudeToSturmLabels[participant.attitudeToSturm] : "Нет данных"}</TableCell>
-            <TableCell>{fieldValue(participant.decisionFactors)}</TableCell>
-            <TableCell>{participant.responsible?.name || "Не выбран"}</TableCell>
-            <TableCell>
-              <ParticipantActions
-                objectId={objectId}
-                participantId={participant.id}
-                canManageParticipants={canManageParticipants}
-                archiveParticipantAction={archiveParticipantAction}
-              />
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </ParticipantTableCard>
+      archiveParticipantAction={archiveParticipantAction}
+      columns={purchaseInfluencerColumns}
+    />
   );
 }
 
@@ -172,52 +242,19 @@ function ImplementationContactsTable({
   archiveParticipantAction
 }: {
   objectId: string;
-  participants: ObjectDetail["participants"];
+  participants: Participant[];
   canManageParticipants: boolean;
   archiveParticipantAction: ArchiveParticipantAction;
 }) {
   return (
-    <ParticipantTableCard
+    <ParticipantsTable
       title="Контактные лица реализации"
-      objectId={objectId}
       participantType="IMPLEMENTATION_CONTACT"
+      objectId={objectId}
+      participants={participants}
       canManageParticipants={canManageParticipants}
-    >
-      <TableHeader>
-        <TableRow>
-          <TableHead>ФИО</TableHead>
-          <TableHead>Роль</TableHead>
-          <TableHead>Компания</TableHead>
-          <TableHead>Зона</TableHead>
-          <TableHead>Согласует</TableHead>
-          <TableHead>Когда подключать</TableHead>
-          <TableHead>Ответственный</TableHead>
-          <TableHead>Действия</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {participants.length === 0 ? (
-          <EmptyTableRow colSpan={8}>По объекту пока нет участников</EmptyTableRow>
-        ) : participants.map((participant) => (
-          <TableRow key={participant.id}>
-            <TableCell className="font-medium">{participant.fullName}</TableCell>
-            <TableCell>{participant.role}</TableCell>
-            <TableCell>{fieldValue(participant.company)}</TableCell>
-            <TableCell>{fieldValue(participant.responsibilityZone)}</TableCell>
-            <TableCell>{participant.canApproveChanges ? changeApprovalLabels[participant.canApproveChanges] : "Нет данных"}</TableCell>
-            <TableCell>{fieldValue(participant.whenToInvolve)}</TableCell>
-            <TableCell>{participant.responsible?.name || "Не выбран"}</TableCell>
-            <TableCell>
-              <ParticipantActions
-                objectId={objectId}
-                participantId={participant.id}
-                canManageParticipants={canManageParticipants}
-                archiveParticipantAction={archiveParticipantAction}
-              />
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </ParticipantTableCard>
+      archiveParticipantAction={archiveParticipantAction}
+      columns={implementationContactColumns}
+    />
   );
 }

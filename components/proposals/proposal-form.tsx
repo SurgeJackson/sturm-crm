@@ -8,15 +8,14 @@ import {
   FormField,
   FormMessage,
   FormSection,
-  ResponsibleField,
   SelectField,
   TextareaField,
   TextField,
   dateInputValue
 } from "@/components/crm/form-fields";
+import { ResponsibleField } from "@/components/crm/responsible-field";
 import { InfoTile } from "@/components/ui/bordered-list-item";
 import { Input } from "@/components/ui/input";
-import { NativeSelect } from "@/components/ui/native-select";
 import type { ProposalActionState } from "@/modules/proposals/actions";
 import {
   commercialProposalStatusOptions,
@@ -96,20 +95,19 @@ export function ProposalForm({
       <FormMessage state={state} />
 
       <FormSection>
-        <FormField name="dealId" label="Сделка *" state={state}>
-          <NativeSelect
-            id="dealId"
-            name="dealId"
-            value={dealId}
-            onChange={(event) => onDealChange(event.target.value)}
-            required
-          >
-            <option value="">Выберите сделку</option>
-            {deals.map((deal) => (
-              <option key={deal.id} value={deal.id}>{deal.title}</option>
-            ))}
-          </NativeSelect>
-        </FormField>
+        <SelectField
+          name="dealId"
+          label="Сделка *"
+          state={state}
+          value={dealId}
+          onChange={(event) => onDealChange(event.target.value)}
+          placeholder="Выберите сделку"
+          required
+        >
+          {deals.map((deal) => (
+            <option key={deal.id} value={deal.id}>{deal.title}</option>
+          ))}
+        </SelectField>
         <ResponsibleField
           users={users}
           responsibleId={responsibleId}
@@ -118,18 +116,13 @@ export function ProposalForm({
           onChange={setResponsibleId}
         />
         <SelectedDealSummary deal={selectedDeal} />
-        <FormField name="status" label="Статус *">
-          <NativeSelect
-            id="status"
-            name="status"
-            value={status}
-            onChange={(event) => setStatus(event.target.value as typeof status)}
-          >
-            {commercialProposalStatusOptions.map((option) => (
-              <option key={option.value} value={option.value}>{option.label}</option>
-            ))}
-          </NativeSelect>
-        </FormField>
+        <SelectField
+          name="status"
+          label="Статус *"
+          value={status}
+          onChange={(event) => setStatus(event.target.value as typeof status)}
+          options={commercialProposalStatusOptions}
+        />
         <TextField name="amount" label="Сумма КП *" inputMode="decimal" defaultValue={proposal?.amount ?? ""} state={state} required />
         <TextField name="discountPercent" label="Скидка, %" inputMode="decimal" defaultValue={proposal?.discountPercent ?? ""} />
         <TextField name="discountAmount" label="Скидка, сумма" inputMode="decimal" defaultValue={proposal?.discountAmount ?? ""} />

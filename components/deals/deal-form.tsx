@@ -8,14 +8,13 @@ import {
   FormField,
   FormMessage,
   FormSection,
-  ResponsibleField,
   SelectField,
   TextareaField,
   TextField,
   dateInputValue
 } from "@/components/crm/form-fields";
+import { ResponsibleField } from "@/components/crm/responsible-field";
 import { Input } from "@/components/ui/input";
-import { NativeSelect } from "@/components/ui/native-select";
 import type { DealActionState } from "@/modules/deals/actions";
 import {
   dealLossReasonOptions,
@@ -89,72 +88,64 @@ export function DealForm({
         <FormField name="title" label="Название сделки *" state={state}>
           <Input id="title" name="title" value={title} onChange={(event) => setTitle(event.target.value)} required />
         </FormField>
-        <FormField name="objectId" label="Объект *" state={state}>
-          <NativeSelect
-            id="objectId"
-            name="objectId"
-            value={objectId}
-            onChange={(event) => onObjectChange(event.target.value)}
-            required
-          >
-            <option value="">Выберите объект</option>
-            {objects.map((object) => (
-              <option key={object.id} value={object.id}>
-                {object.title}
-              </option>
-            ))}
-          </NativeSelect>
-        </FormField>
-        <FormField name="clientId" label="Клиент *" state={state}>
-          <NativeSelect
-            id="clientId"
-            name="clientId"
-            value={clientId}
-            onChange={(event) => setClientId(event.target.value)}
-            required
-          >
-            <option value="">Выберите клиента</option>
-            {clients.map((client) => (
-              <option key={client.id} value={client.id}>
-                {client.name}
-              </option>
-            ))}
-          </NativeSelect>
-        </FormField>
-        <FormField name="designerId" label="Дизайнер / архитектор">
-          <NativeSelect
-            id="designerId"
-            name="designerId"
-            value={designerId}
-            onChange={(event) => setDesignerId(event.target.value)}
-          >
-            <option value="">Не выбран</option>
-            {designers.map((designer) => (
-              <option key={designer.id} value={designer.id}>
-                {designer.name}
-                {designer.studio ? `, ${designer.studio}` : ""}
-              </option>
-            ))}
-          </NativeSelect>
-        </FormField>
+        <SelectField
+          name="objectId"
+          label="Объект *"
+          state={state}
+          value={objectId}
+          onChange={(event) => onObjectChange(event.target.value)}
+          placeholder="Выберите объект"
+          required
+        >
+          {objects.map((object) => (
+            <option key={object.id} value={object.id}>
+              {object.title}
+            </option>
+          ))}
+        </SelectField>
+        <SelectField
+          name="clientId"
+          label="Клиент *"
+          state={state}
+          value={clientId}
+          onChange={(event) => setClientId(event.target.value)}
+          placeholder="Выберите клиента"
+          required
+        >
+          {clients.map((client) => (
+            <option key={client.id} value={client.id}>
+              {client.name}
+            </option>
+          ))}
+        </SelectField>
+        <SelectField
+          name="designerId"
+          label="Дизайнер / архитектор"
+          value={designerId}
+          onChange={(event) => setDesignerId(event.target.value)}
+          placeholder="Не выбран"
+        >
+          {designers.map((designer) => (
+            <option key={designer.id} value={designer.id}>
+              {designer.name}
+              {designer.studio ? `, ${designer.studio}` : ""}
+            </option>
+          ))}
+        </SelectField>
         <ResponsibleField
           users={users}
           responsibleId={responsibleId}
           canChangeResponsible={canChangeResponsible}
           state={state}
         />
-        <FormField name="stage" label="Стадия *" state={state}>
-          <NativeSelect
-            id="stage"
-            name="stage"
-            value={stage}
-            onChange={(event) => setStage(event.target.value as typeof stage)}
-          >
-            {dealStageOptions.map((option) => (
-              <option key={option.value} value={option.value}>{option.label}</option>
-            ))}
-          </NativeSelect>
-        </FormField>
+        <SelectField
+          name="stage"
+          label="Стадия *"
+          state={state}
+          value={stage}
+          onChange={(event) => setStage(event.target.value as typeof stage)}
+          options={dealStageOptions}
+        />
         <TextField name="potentialAmount" label="Потенциальная сумма" inputMode="decimal" defaultValue={deal?.potentialAmount ?? ""} />
         <SelectField name="probability" label="Вероятность" defaultValue={deal?.probability ?? ""} placeholder="Не выбрана" options={dealProbabilityOptions} />
         <SelectField name="source" label="Источник *" defaultValue={defaultSource} options={dealSourceOptions} state={state} />

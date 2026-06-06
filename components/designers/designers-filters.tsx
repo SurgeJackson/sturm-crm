@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { FilterActions, FilterBar } from "@/components/ui/filter-bar";
+import { FilterActions, FilterBar, FilterCheckbox } from "@/components/ui/filter-bar";
 import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
 import {
@@ -37,14 +37,12 @@ export function DesignersFilters({ params, users }: { params: DesignerListSearch
         <option value="">Все ответственные</option>
         {users.map((manager) => <option key={manager.id} value={manager.id}>{manager.name}</option>)}
       </NativeSelect>
-      <label className="flex h-10 items-center gap-2 rounded-md border px-3 text-sm">
-        <input type="checkbox" name="noNextStep" value="1" defaultChecked={params.noNextStep === "1"} />
+      <FilterCheckbox name="noNextStep" defaultChecked={params.noNextStep === "1"}>
         Без следующего шага
-      </label>
-      <label className="flex h-10 items-center gap-2 rounded-md border px-3 text-sm">
-        <input type="checkbox" name="noTouch60" value="1" defaultChecked={params.noTouch60 === "1"} />
+      </FilterCheckbox>
+      <FilterCheckbox name="noTouch60" defaultChecked={params.noTouch60 === "1"}>
         Без касаний 60+ дней
-      </label>
+      </FilterCheckbox>
       <NativeSelect name="sort" defaultValue={params.sort ?? ""}>
         <option value="">Сначала новые</option>
         <option value="name">По имени</option>

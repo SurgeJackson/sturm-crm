@@ -9,12 +9,12 @@ import {
   FormField,
   FormMessage,
   FormSection,
-  ResponsibleField,
   SelectField,
   TextareaField,
   TextField,
   dateInputValue
 } from "@/components/crm/form-fields";
+import { ResponsibleField } from "@/components/crm/responsible-field";
 import type { DesignerActionState } from "@/modules/designers/actions";
 import {
   designerLoyaltyOptions,

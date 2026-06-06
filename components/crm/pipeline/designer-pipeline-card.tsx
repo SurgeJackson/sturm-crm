@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PipelineItemCard } from "@/components/crm/pipeline/pipeline-item-card";
 import { designerPotentialVariant } from "@/components/crm/status-variants";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -19,7 +20,7 @@ export function DesignerPipelineCard({ designer }: { designer: DesignerPipelineI
   const action = changeDesignerStageAction.bind(null, designer.id);
 
   return (
-    <div className="space-y-3 rounded-md border bg-background p-3">
+    <PipelineItemCard className="space-y-3">
       <div>
         <Link href={`/designers/${designer.id}`} className="font-medium hover:underline">{designer.name}</Link>
         <div className="text-xs text-muted-foreground">{designer.studio ?? designer.responsible.name}</div>
@@ -39,6 +40,6 @@ export function DesignerPipelineCard({ designer }: { designer: DesignerPipelineI
         </NativeSelect>
         <Button size="sm" type="submit">OK</Button>
       </form>
-    </div>
+    </PipelineItemCard>
   );
 }

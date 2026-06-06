@@ -1,5 +1,4 @@
-import { FormField, FormSection } from "@/components/crm/form-fields";
-import { NativeSelect } from "@/components/ui/native-select";
+import { FormSection, SelectField } from "@/components/crm/form-fields";
 import type { TaskActionState } from "@/modules/tasks/actions";
 
 type ClientOption = { id: string; name: string; responsibleId: string };
@@ -30,14 +29,18 @@ function RelationSelectField<TOption extends RelationOption>({
   onChange: (value: string) => void;
 }) {
   return (
-    <FormField name={name} label={label} state={state}>
-      <NativeSelect id={name} name={name} value={value} onChange={(event) => onChange(event.target.value)}>
-        <option value="">{emptyLabel}</option>
-        {options.map((option) => (
-          <option key={option.id} value={option.id}>{renderOption(option)}</option>
-        ))}
-      </NativeSelect>
-    </FormField>
+    <SelectField
+      name={name}
+      label={label}
+      state={state}
+      value={value}
+      placeholder={emptyLabel}
+      onChange={(event) => onChange(event.target.value)}
+    >
+      {options.map((option) => (
+        <option key={option.id} value={option.id}>{renderOption(option)}</option>
+      ))}
+    </SelectField>
   );
 }
 

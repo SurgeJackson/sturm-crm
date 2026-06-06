@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import { cn } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 export function FilterBar({
   children,
@@ -22,4 +22,23 @@ export function FilterBar({
 
 export function FilterActions({ children, className }: { children: ReactNode; className?: string }) {
   return <div className={cn("flex flex-wrap gap-2 md:col-span-full", className)}>{children}</div>;
+}
+
+export function FilterCheckbox({
+  name,
+  children,
+  value = "1",
+  defaultChecked
+}: {
+  name: string;
+  children: ReactNode;
+  value?: string;
+  defaultChecked?: boolean;
+}) {
+  return (
+    <label className="flex h-10 items-center gap-2 rounded-md border px-3 text-sm">
+      <input type="checkbox" name={name} value={value} defaultChecked={defaultChecked} />
+      {children}
+    </label>
+  );
 }

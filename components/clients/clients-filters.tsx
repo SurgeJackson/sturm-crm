@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { FilterActions, FilterBar } from "@/components/ui/filter-bar";
+import { FilterActions, FilterBar, FilterCheckbox } from "@/components/ui/filter-bar";
 import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
 import { clientSourceOptions, clientStatusOptions, clientTypeOptions } from "@/modules/crm/options";
@@ -33,10 +33,9 @@ export function ClientsFilters({ params, users }: { params: ClientListSearchPara
         <option value="name">По названию</option>
         <option value="nextContactAt">По следующему контакту</option>
       </NativeSelect>
-      <label className="flex h-10 items-center gap-2 rounded-md border px-3 text-sm">
-        <input type="checkbox" name="noNextContact" value="1" defaultChecked={params.noNextContact === "1"} />
+      <FilterCheckbox name="noNextContact" defaultChecked={params.noNextContact === "1"}>
         Без следующего контакта
-      </label>
+      </FilterCheckbox>
       <FilterActions className="md:col-span-2 xl:col-span-5">
         <Button type="submit">Применить</Button>
         <Button asChild variant="outline"><Link href="/clients">Сбросить</Link></Button>

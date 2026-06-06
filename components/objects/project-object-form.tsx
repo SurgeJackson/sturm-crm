@@ -9,12 +9,12 @@ import {
   FormField,
   FormMessage,
   FormSection,
-  ResponsibleField,
   SelectField,
   TextareaField,
   TextField,
   dateInputValue
 } from "@/components/crm/form-fields";
+import { ResponsibleField } from "@/components/crm/responsible-field";
 import type { ProjectObjectActionState } from "@/modules/objects/actions";
 import {
   objectInterestCategoryOptions,

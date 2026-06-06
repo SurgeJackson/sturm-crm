@@ -1,14 +1,12 @@
 import type { Dispatch, SetStateAction } from "react";
 import type { TaskActivity } from "@/generated/prisma/client";
 import {
-  FormField,
   FormSection,
-  ResponsibleField,
   SelectField,
   TextareaField,
   TextField
 } from "@/components/crm/form-fields";
-import { NativeSelect } from "@/components/ui/native-select";
+import { ResponsibleField } from "@/components/crm/responsible-field";
 import type { TaskActionState } from "@/modules/tasks/actions";
 import {
   taskActionTypeOptions,
@@ -47,13 +45,13 @@ export function TaskMainFields({
 
   return (
     <FormSection>
-      <FormField name="recordType" label="Тип записи *">
-        <NativeSelect id="recordType" name="recordType" value={recordType} onChange={(event) => setRecordType(event.target.value)}>
-          {taskRecordTypeOptions.map((option) => (
-            <option key={option.value} value={option.value}>{option.label}</option>
-          ))}
-        </NativeSelect>
-      </FormField>
+      <SelectField
+        name="recordType"
+        label="Тип записи *"
+        value={recordType}
+        onChange={(event) => setRecordType(event.target.value)}
+        options={taskRecordTypeOptions}
+      />
       <SelectField
         name="actionType"
         label="Вид действия *"

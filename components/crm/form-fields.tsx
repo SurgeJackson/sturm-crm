@@ -1,4 +1,5 @@
 import type { InputHTMLAttributes, ReactNode, SelectHTMLAttributes, TextareaHTMLAttributes } from "react";
+import { InlineNotice } from "@/components/ui/bordered-list-item";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,11 +16,6 @@ type SelectOption = {
   label: string;
 };
 
-type ResponsibleOption = {
-  id: string;
-  name: string;
-};
-
 export function dateInputValue(date?: Date | string | null) {
   if (!date) return "";
   return new Date(date).toISOString().slice(0, 10);
@@ -32,7 +28,7 @@ export function FieldError({ name, state }: { name: string; state: FormState }) 
 
 export function FormMessage({ state }: { state: FormState & { message?: string } }) {
   return state.message ? (
-    <p className="rounded-md border border-destructive p-3 text-sm text-destructive">{state.message}</p>
+    <InlineNotice tone="destructive">{state.message}</InlineNotice>
   ) : null;
 }
 
@@ -141,45 +137,6 @@ export function SelectField({
         ))}
         {children}
       </NativeSelect>
-    </FormField>
-  );
-}
-
-export function ResponsibleField({
-  users,
-  responsibleId,
-  canChangeResponsible,
-  state,
-  label = "Ответственный *",
-  onChange
-}: {
-  users: ResponsibleOption[];
-  responsibleId: string;
-  canChangeResponsible: boolean;
-  state?: FormState;
-  label?: ReactNode;
-  onChange?: (value: string) => void;
-}) {
-  return (
-    <FormField name="responsibleId" label={label} state={state}>
-      {canChangeResponsible ? (
-        <NativeSelect
-          id="responsibleId"
-          name="responsibleId"
-          value={onChange ? responsibleId : undefined}
-          defaultValue={onChange ? undefined : responsibleId}
-          onChange={onChange ? (event) => onChange(event.target.value) : undefined}
-        >
-          {users.map((user) => (
-            <option key={user.id} value={user.id}>{user.name}</option>
-          ))}
-        </NativeSelect>
-      ) : (
-        <>
-          <Input value={users.find((user) => user.id === responsibleId)?.name ?? "Текущий пользователь"} disabled />
-          <input type="hidden" name="responsibleId" value={responsibleId} />
-        </>
-      )}
     </FormField>
   );
 }

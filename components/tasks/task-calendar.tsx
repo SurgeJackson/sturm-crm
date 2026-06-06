@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { FilterCheckbox } from "@/components/ui/filter-bar";
 import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
 import { TaskActivityTable } from "@/components/tasks/task-activity-table";
@@ -33,10 +34,9 @@ export function TaskCalendarFilters({
             <option value="">Все ответственные</option>
             {users.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}
           </NativeSelect>
-          <label className="flex h-10 items-center gap-2 rounded-md border px-3 text-sm">
-            <input type="checkbox" name="mine" value="1" defaultChecked={params.mine === "1"} />
+          <FilterCheckbox name="mine" defaultChecked={params.mine === "1"}>
             Мои задачи
-          </label>
+          </FilterCheckbox>
           <div className="flex gap-2">
             <Button type="submit" variant="secondary">Показать</Button>
             <Button asChild variant="outline"><Link href="/tasks/calendar">Сбросить</Link></Button>
