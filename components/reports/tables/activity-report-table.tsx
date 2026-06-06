@@ -1,10 +1,11 @@
 import {
+  CountCell,
   EntityLinkCell,
   EmptyTableRow,
   MoneyCell,
   TableCard
 } from "@/components/ui/data-table";
-import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { roleLabels } from "@/lib/constants";
 import type { getEmployeeActivityReport } from "@/modules/reports/queries";
 
@@ -38,16 +39,16 @@ export function ActivityReportTable({ rows }: { rows: ActivityReport["rows"] }) 
               title={row.employee.name}
               description={roleLabels[row.employee.role]}
             />
-            <TableCell>{row.clients}</TableCell>
-            <TableCell>{row.designers}</TableCell>
-            <TableCell>{row.objects}</TableCell>
-            <TableCell>{row.deals}</TableCell>
-            <TableCell>{row.proposals}</TableCell>
+            <CountCell value={row.clients} />
+            <CountCell value={row.designers} />
+            <CountCell value={row.objects} />
+            <CountCell value={row.deals} />
+            <CountCell value={row.proposals} />
             <MoneyCell value={row.proposalAmount} />
-            <TableCell>{row.tasks}</TableCell>
-            <TableCell>{row.doneTasks}</TableCell>
-            <TableCell>{row.overdueTasks}</TableCell>
-            <TableCell>{row.touches}</TableCell>
+            <CountCell value={row.tasks} />
+            <CountCell value={row.doneTasks} />
+            <CountCell value={row.overdueTasks} />
+            <CountCell value={row.touches} />
           </TableRow>
         ))}
       </TableBody>

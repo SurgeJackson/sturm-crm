@@ -1,8 +1,7 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { AuditLogCard, EntityDetailShell, EntityDetailTabs, EntityInfoCard, EntityPageHeader, EntityTasksCard, NoticeStack } from "@/components/crm/detail-page";
+import { AuditLogCard, EntityDetailShell, EntityDetailTabs, EntityInfoCard, EntityTasksCard } from "@/components/crm/detail-page";
 import { EntityDetailsCard } from "@/components/crm/detail";
-import { CrmDisciplinePanel } from "@/components/crm/discipline/panel";
 import { ClientRelatedTables } from "@/components/crm/related";
 import { Badge } from "@/components/ui/badge";
 import { archiveClientAction } from "@/modules/clients/actions";
@@ -14,6 +13,7 @@ import {
   clientTypeLabels
 } from "@/lib/constants";
 import { formatRussianDate } from "@/utils/date";
+import { buildTaskHref } from "@/utils/task-href";
 import { canArchiveRecord, canCreateTask, canEditRecord } from "@/permissions";
 
 type ClientPageProps = {
@@ -35,38 +35,30 @@ export default async function ClientPage({ params, searchParams }: ClientPagePro
 
   return (
     <EntityDetailShell
-      header={(
-        <EntityPageHeader
-        title={client.name}
-        badges={
-          <>
-            <Badge variant={client.status === "ARCHIVED" ? "outline" : "secondary"}>{clientStatusLabels[client.status]}</Badge>
-            <Badge variant="outline">{clientTypeLabels[client.clientType]}</Badge>
-          </>
-        }
-        editHref={`/clients/${id}/edit`}
-        canEdit={canEditRecord(user, client)}
-        archiveAction={archiveAction}
-        canArchive={canArchiveRecord(user, client) && !client.archivedAt}
-        />
-      )}
-      notices={(
-        <NoticeStack notices={[
+      title={client.name}
+      badges={
+        <>
+          <Badge variant={client.status === "ARCHIVED" ? "outline" : "secondary"}>{clientStatusLabels[client.status]}</Badge>
+          <Badge variant="outline">{clientTypeLabels[client.clientType]}</Badge>
+        </>
+      }
+      editHref={`/clients/${id}/edit`}
+      canEdit={canEditRecord(user, client)}
+      archiveAction={archiveAction}
+      canArchive={canArchiveRecord(user, client) && !client.archivedAt}
+      notices={[
         { show: Boolean(query.saved), message: "Клиент сохранен." },
         { show: Boolean(query.archived), message: "Клиент архивирован." },
         { show: Boolean(query.error), tone: "destructive", message: "Действие недоступно для вашей роли." }
-        ]} />
-      )}
-      discipline={(
-        <CrmDisciplinePanel
-        entityType="CLIENT"
-        entityId={client.id}
-        editHref={`/clients/${id}/edit`}
-        returnTo={`/clients/${id}`}
-        violations={client.crmViolations}
-        user={user}
-        />
-      )}
+      ]}
+      discipline={{
+        entityType: "CLIENT",
+        entityId: client.id,
+        editHref: `/clients/${id}/edit`,
+        returnTo: `/clients/${id}`,
+        violations: client.crmViolations,
+        user
+      }}
     >
 
       <EntityDetailTabs
@@ -112,8 +104,8 @@ export default async function ClientPage({ params, searchParams }: ClientPagePro
               <EntityTasksCard
                 items={client.tasks}
                 canCreate={canCreateTask(user)}
-                taskHref={`/tasks/new?clientId=${client.id}&responsibleId=${client.responsibleId}`}
-                touchHref={`/tasks/new?recordType=TOUCH&clientId=${client.id}&responsibleId=${client.responsibleId}`}
+                taskHref={buildTaskHref({ clientId: client.id, responsibleId: client.responsibleId })}
+                touchHref={buildTaskHref({ recordType: "TOUCH", clientId: client.id, responsibleId: client.responsibleId })}
               />
             )
           },

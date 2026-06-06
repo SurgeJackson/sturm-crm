@@ -6,7 +6,7 @@ type DetailField = {
   value?: ReactNode | null;
 };
 
-export function Detail({ label, value }: { label: string; value?: ReactNode | null }) {
+function Detail({ label, value }: { label: string; value?: ReactNode | null }) {
   return (
     <div>
       <dt className="text-xs text-muted-foreground">{label}</dt>
@@ -15,21 +15,8 @@ export function Detail({ label, value }: { label: string; value?: ReactNode | nu
   );
 }
 
-export function DetailGrid({ children }: { children: ReactNode }) {
+function DetailGrid({ children }: { children: ReactNode }) {
   return <dl className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">{children}</dl>;
-}
-
-export function DetailSection({ title, children }: { title: string; children: ReactNode }) {
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <DetailGrid>{children}</DetailGrid>
-      </CardContent>
-    </Card>
-  );
 }
 
 export function EntityDetailsCard({

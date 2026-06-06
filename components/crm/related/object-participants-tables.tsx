@@ -1,29 +1,17 @@
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  BadgeCell,
-  EmptyTableRow,
-  EntityLinkCell,
-  MoneyCell,
-  TableCard,
-  TextLinkCell
-} from "@/components/ui/data-table";
+import { EmptyTableRow, TableCard } from "@/components/ui/data-table";
 import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import {
   attitudeToSturmLabels,
   changeApprovalLabels,
-  commercialProposalStatusLabels,
-  dealProbabilityLabels,
-  dealStageLabels,
   influenceLevelLabels,
   influenceTypeLabels
 } from "@/lib/constants";
 import type { getProjectObjectForUser } from "@/modules/objects/queries";
-import { formatRussianDate } from "@/utils/date";
 
 type ObjectDetail = Awaited<ReturnType<typeof getProjectObjectForUser>>;
-
 type ArchiveParticipantAction = (participantId: string) => () => Promise<void>;
 
 export function ObjectParticipantsTables({
@@ -201,77 +189,6 @@ function ImplementationContactsTable({
                 archiveParticipantAction={archiveParticipantAction}
               />
             </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </TableCard>
-  );
-}
-
-export function ObjectDealsTable({ objectId, deals }: { objectId: string; deals: ObjectDetail["deals"] }) {
-  return (
-    <TableCard
-      title="Сделки"
-      actions={
-        <Button asChild size="sm">
-          <Link href={`/deals/new?objectId=${objectId}`}>Создать сделку по объекту</Link>
-        </Button>
-      }
-    >
-      <TableHeader>
-        <TableRow>
-          <TableHead>Сделка</TableHead>
-          <TableHead>Стадия</TableHead>
-          <TableHead>Сумма</TableHead>
-          <TableHead>Вероятность</TableHead>
-          <TableHead>Ответственный</TableHead>
-          <TableHead>Следующее действие</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {deals.length === 0 ? (
-          <EmptyTableRow colSpan={6}>По объекту пока нет сделок</EmptyTableRow>
-        ) : deals.map((deal) => (
-          <TableRow key={deal.id}>
-            <EntityLinkCell href={`/deals/${deal.id}`} title={deal.title} />
-            <BadgeCell>{dealStageLabels[deal.stage]}</BadgeCell>
-            <MoneyCell value={deal.potentialAmount} />
-            <TableCell>{deal.probability ? dealProbabilityLabels[deal.probability] : "Не выбрана"}</TableCell>
-            <TableCell>{deal.responsible.name}</TableCell>
-            <TableCell>{formatRussianDate(deal.nextActionAt)}</TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </TableCard>
-  );
-}
-
-export function ObjectProposalsTable({ proposals }: { proposals: ObjectDetail["proposals"] }) {
-  return (
-    <TableCard title="КП">
-      <TableHeader>
-        <TableRow>
-          <TableHead>КП</TableHead>
-          <TableHead>Сделка</TableHead>
-          <TableHead>Статус</TableHead>
-          <TableHead>Сумма</TableHead>
-          <TableHead>Версия</TableHead>
-          <TableHead>Follow-up</TableHead>
-          <TableHead>Ответственный</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {proposals.length === 0 ? (
-          <EmptyTableRow colSpan={7}>По объекту пока нет КП</EmptyTableRow>
-        ) : proposals.map((proposal) => (
-          <TableRow key={proposal.id}>
-            <EntityLinkCell href={`/proposals/${proposal.id}`} title={proposal.proposalNumber} />
-            <TextLinkCell href={`/deals/${proposal.deal.id}`}>{proposal.deal.title}</TextLinkCell>
-            <BadgeCell>{commercialProposalStatusLabels[proposal.status]}</BadgeCell>
-            <MoneyCell value={proposal.amount} />
-            <TableCell>v{proposal.version}</TableCell>
-            <TableCell>{formatRussianDate(proposal.nextTouchAt)}</TableCell>
-            <TableCell>{proposal.responsible.name}</TableCell>
           </TableRow>
         ))}
       </TableBody>

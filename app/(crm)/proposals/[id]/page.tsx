@@ -7,13 +7,10 @@ import {
   AuditLogCard,
   EntityDetailShell,
   EntityDetailTabs,
-  EntityPageHeader,
   EntityTasksCard,
-  NoticeStack,
   TextBlock
 } from "@/components/crm/detail-page";
 import { EntityDetailsCard } from "@/components/crm/detail";
-import { CrmDisciplinePanel } from "@/components/crm/discipline/panel";
 import { ProposalVersionsTable } from "@/components/crm/related";
 import { proposalStatusVariant } from "@/components/crm/status-variants";
 import { Badge } from "@/components/ui/badge";
@@ -32,15 +29,13 @@ import {
 import { getProposalForUser, getProposalVersionGroup } from "@/modules/proposals/queries";
 import { canArchiveRecord, canCreateTask, canEditRecord } from "@/permissions";
 import { formatRussianDate } from "@/utils/date";
+import { formatMoney } from "@/utils/money";
+import { buildTaskHref } from "@/utils/task-href";
 
 type ProposalPageProps = {
   params: Promise<{ id: string }>;
   searchParams: Promise<{ saved?: string; archived?: string; dealStage?: string; error?: string }>;
 };
-
-function formatMoney(value?: number | null) {
-  return value ? `${value.toLocaleString("ru-RU")} ₽` : "0 ₽";
-}
 
 export default async function ProposalPage({ params, searchParams }: ProposalPageProps) {
   const user = await getCurrentUser();
@@ -59,48 +54,40 @@ export default async function ProposalPage({ params, searchParams }: ProposalPag
 
   return (
     <EntityDetailShell
-      header={(
-        <EntityPageHeader
-        title={proposal.proposalNumber}
-        badges={
-          <>
-            <Badge variant={proposalStatusVariant(proposal.status)}>{commercialProposalStatusLabels[proposal.status]}</Badge>
-            <Badge variant="outline">v{proposal.version}</Badge>
-            <Badge variant="outline">{formatMoney(proposal.amount)}</Badge>
-          </>
-        }
-        editHref={`/proposals/${id}/edit`}
-        canEdit={canEditRecord(user, proposal)}
-        actions={canEditRecord(user, proposal) ? (
-              <form action={createVersionAction}>
-                <Button type="submit" variant="secondary">
-                  <Plus className="h-4 w-4" />
-                  Новая версия
-                </Button>
-              </form>
-        ) : null}
-        archiveAction={archiveAction}
-        canArchive={canArchiveRecord(user, proposal) && !proposal.archivedAt}
-        />
-      )}
-      notices={(
-        <NoticeStack notices={[
+      title={proposal.proposalNumber}
+      badges={
+        <>
+          <Badge variant={proposalStatusVariant(proposal.status)}>{commercialProposalStatusLabels[proposal.status]}</Badge>
+          <Badge variant="outline">v{proposal.version}</Badge>
+            <Badge variant="outline">{formatMoney(proposal.amount, "0 ₽")}</Badge>
+        </>
+      }
+      editHref={`/proposals/${id}/edit`}
+      canEdit={canEditRecord(user, proposal)}
+      actions={canEditRecord(user, proposal) ? (
+        <form action={createVersionAction}>
+          <Button type="submit" variant="secondary">
+            <Plus className="h-4 w-4" />
+            Новая версия
+          </Button>
+        </form>
+      ) : null}
+      archiveAction={archiveAction}
+      canArchive={canArchiveRecord(user, proposal) && !proposal.archivedAt}
+      notices={[
         { show: Boolean(query.saved), message: "КП сохранено." },
         { show: Boolean(query.archived), message: "КП архивировано." },
         { show: Boolean(query.dealStage), message: "Сделка переведена в стадию “Счет / заказ”." },
         { show: Boolean(query.error), tone: "destructive", message: "Действие недоступно или данные не заполнены." }
-        ]} />
-      )}
-      discipline={(
-        <CrmDisciplinePanel
-        entityType="PROPOSAL"
-        entityId={proposal.id}
-        editHref={`/proposals/${id}/edit`}
-        returnTo={`/proposals/${id}`}
-        violations={proposal.crmViolations}
-        user={user}
-        />
-      )}
+      ]}
+      discipline={{
+        entityType: "PROPOSAL",
+        entityId: proposal.id,
+        editHref: `/proposals/${id}/edit`,
+        returnTo: `/proposals/${id}`,
+        violations: proposal.crmViolations,
+        user
+      }}
     >
 
       {proposal.status === "ACCEPTED" && proposal.deal.stage !== "INVOICE_OR_ORDER" ? (
@@ -129,9 +116,9 @@ export default async function ProposalPage({ params, searchParams }: ProposalPag
                   { label: "Дизайнер", value: proposal.designer?.name },
                   { label: "Ответственный", value: proposal.responsible.name },
                   { label: "Создал", value: proposal.createdBy.name },
-                  { label: "Сумма", value: formatMoney(proposal.amount) },
+                  { label: "Сумма", value: formatMoney(proposal.amount, "0 ₽") },
                   { label: "Скидка, %", value: proposal.discountPercent },
-                  { label: "Скидка, сумма", value: formatMoney(proposal.discountAmount) },
+                  { label: "Скидка, сумма", value: formatMoney(proposal.discountAmount, "0 ₽") },
                   { label: "Получатель", value: proposal.recipientName },
                   { label: "Тип получателя", value: proposal.recipientType ? recipientTypeLabels[proposal.recipientType] : null },
                   { label: "Контакт получателя", value: proposal.recipientContact },
@@ -171,8 +158,8 @@ export default async function ProposalPage({ params, searchParams }: ProposalPag
               <EntityTasksCard
                 items={proposal.tasks}
                 canCreate={canCreateTask(user)}
-                taskHref={`/tasks/new?proposalId=${proposal.id}&dealId=${proposal.dealId}&clientId=${proposal.clientId}&objectId=${proposal.objectId}&responsibleId=${proposal.responsibleId}${proposal.designerId ? `&designerId=${proposal.designerId}` : ""}`}
-                touchHref={`/tasks/new?recordType=TOUCH&proposalId=${proposal.id}&dealId=${proposal.dealId}&clientId=${proposal.clientId}&objectId=${proposal.objectId}&responsibleId=${proposal.responsibleId}${proposal.designerId ? `&designerId=${proposal.designerId}` : ""}`}
+                taskHref={buildTaskHref({ proposalId: proposal.id, dealId: proposal.dealId, clientId: proposal.clientId, objectId: proposal.objectId, responsibleId: proposal.responsibleId, designerId: proposal.designerId })}
+                touchHref={buildTaskHref({ recordType: "TOUCH", proposalId: proposal.id, dealId: proposal.dealId, clientId: proposal.clientId, objectId: proposal.objectId, responsibleId: proposal.responsibleId, designerId: proposal.designerId })}
               />
             )
           },

@@ -1,8 +1,15 @@
-import Link from "next/link";
 import { BonusEligibilityBadge, CrmDisciplineBadge } from "@/components/crm/discipline/badges";
 import { proposalStatusVariant } from "@/components/crm/status-variants";
-import { Badge } from "@/components/ui/badge";
-import { DateCell, EmptyTableRow, EntityLinkCell, MoneyCell, TableCard } from "@/components/ui/data-table";
+import {
+  BadgeCell,
+  DateCell,
+  EmptyTableRow,
+  EntityLinkCell,
+  FileLinkCell,
+  MoneyCell,
+  TableCard,
+  TextLinkCell
+} from "@/components/ui/data-table";
 import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { commercialProposalStatusLabels } from "@/lib/constants";
 import type { getProposals } from "@/modules/proposals/queries";
@@ -35,14 +42,14 @@ export function ProposalsTable({ proposals }: { proposals: ProposalItem[] }) {
           proposals.map((proposal) => (
             <TableRow key={proposal.id}>
               <EntityLinkCell href={`/proposals/${proposal.id}`} title={proposal.proposalNumber} description={proposal.projectObject.title} />
-              <TableCell><Link href={`/deals/${proposal.deal.id}`} className="hover:underline">{proposal.deal.title}</Link></TableCell>
-              <TableCell><Link href={`/clients/${proposal.client.id}`} className="hover:underline">{proposal.client.name}</Link></TableCell>
-              <TableCell><Badge variant={proposalStatusVariant(proposal.status)}>{commercialProposalStatusLabels[proposal.status]}</Badge></TableCell>
+              <TextLinkCell href={`/deals/${proposal.deal.id}`}>{proposal.deal.title}</TextLinkCell>
+              <TextLinkCell href={`/clients/${proposal.client.id}`}>{proposal.client.name}</TextLinkCell>
+              <BadgeCell variant={proposalStatusVariant(proposal.status)}>{commercialProposalStatusLabels[proposal.status]}</BadgeCell>
               <TableCell>v{proposal.version}</TableCell>
               <MoneyCell value={proposal.amount} />
               <DateCell>{formatRussianDate(proposal.sentAt)}</DateCell>
               <DateCell>{formatRussianDate(proposal.nextTouchAt)}</DateCell>
-              <TableCell>{proposal.fileUrl ? <Link className="hover:underline" href={proposal.fileUrl}>Скачать</Link> : "Нет файла"}</TableCell>
+              <FileLinkCell href={proposal.fileUrl} />
               <TableCell><CrmDisciplineBadge violations={proposal.crmViolations} /></TableCell>
               <TableCell><BonusEligibilityBadge violations={proposal.crmViolations} /></TableCell>
             </TableRow>

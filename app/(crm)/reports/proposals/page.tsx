@@ -9,6 +9,7 @@ import { ProposalsReportTable } from "@/components/reports/tables";
 import { commercialProposalStatusLabels, proposalDeclineReasonLabels } from "@/lib/constants";
 import { commercialProposalStatusOptions } from "@/modules/crm/options";
 import { getProposalsReport, getReportFilterOptions, type ReportSearchParams } from "@/modules/reports/queries";
+import { formatMoney } from "@/utils/money";
 
 type PageProps = { searchParams: Promise<ReportSearchParams> };
 
@@ -42,7 +43,7 @@ export default async function ProposalsReportPage({ searchParams }: PageProps) {
           items={report.byResponsible}
           getKey={(row) => row.name}
           renderLabel={(row) => row.name}
-          renderValue={(row) => `${row.count} / ${row.amount.toLocaleString("ru-RU")} ₽`}
+          renderValue={(row) => `${row.count} / ${formatMoney(row.amount, "0 ₽")}`}
         />
       </div>
       <ProposalsReportTable proposals={report.proposals} />

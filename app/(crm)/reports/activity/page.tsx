@@ -8,6 +8,7 @@ import { ActivityReportTable } from "@/components/reports/tables";
 import { roleLabels } from "@/lib/constants";
 import { taskActionTypeOptions } from "@/modules/crm/options";
 import { getEmployeeActivityReport, getReportFilterOptions, type ReportSearchParams } from "@/modules/reports/queries";
+import { formatMoney } from "@/utils/money";
 
 type ActivityReportPageProps = {
   searchParams: Promise<ReportSearchParams>;
@@ -57,7 +58,7 @@ export default async function ActivityReportPage({ searchParams }: ActivityRepor
         { title: "Объекты", value: totals.objects },
         { title: "Сделки", value: totals.deals },
         { title: "КП", value: totals.proposals },
-        { title: "Сумма КП", value: `${totals.proposalAmount.toLocaleString("ru-RU")} ₽` },
+        { title: "Сумма КП", value: formatMoney(totals.proposalAmount, "0 ₽") },
         { title: "Задачи", value: totals.tasks },
         { title: "Выполнено", value: totals.doneTasks, tone: "secondary" },
         { title: "Просрочено", value: totals.overdueTasks, tone: "warning" },

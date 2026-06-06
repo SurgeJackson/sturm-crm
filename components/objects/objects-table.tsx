@@ -1,8 +1,6 @@
-import Link from "next/link";
 import { BonusEligibilityBadge, CrmDisciplineBadge } from "@/components/crm/discipline/badges";
 import { objectStatusVariant } from "@/components/crm/status-variants";
-import { Badge } from "@/components/ui/badge";
-import { EmptyTableRow, EntityLinkCell, TableCard } from "@/components/ui/data-table";
+import { BadgeCell, EmptyTableRow, EntityLinkCell, MutedCell, TableCard, TextLinkCell } from "@/components/ui/data-table";
 import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { objectStageLabels, objectStatusLabels, objectTypeLabels } from "@/lib/constants";
 import type { getProjectObjects } from "@/modules/objects/queries";
@@ -37,17 +35,15 @@ export function ObjectsTable({ objects }: { objects: ObjectItem[] }) {
                 description={[object.city, object.address].filter(Boolean).join(", ")}
               />
               <TableCell>{objectTypeLabels[object.objectType]}</TableCell>
-              <TableCell><Link className="hover:underline" href={`/clients/${object.client.id}`}>{object.client.name}</Link></TableCell>
-              <TableCell>
-                {object.designer ? (
-                  <Link className="hover:underline" href={`/designers/${object.designer.id}`}>{object.designer.name}</Link>
-                ) : (
-                  <span className="text-muted-foreground">Не выбран</span>
-                )}
-              </TableCell>
+              <TextLinkCell href={`/clients/${object.client.id}`}>{object.client.name}</TextLinkCell>
+              {object.designer ? (
+                <TextLinkCell href={`/designers/${object.designer.id}`}>{object.designer.name}</TextLinkCell>
+              ) : (
+                <MutedCell>Не выбран</MutedCell>
+              )}
               <TableCell>{object.responsible.name}</TableCell>
-              <TableCell><Badge variant="outline">{objectStageLabels[object.stage]}</Badge></TableCell>
-              <TableCell><Badge variant={objectStatusVariant(object.status)}>{objectStatusLabels[object.status]}</Badge></TableCell>
+              <BadgeCell>{objectStageLabels[object.stage]}</BadgeCell>
+              <BadgeCell variant={objectStatusVariant(object.status)}>{objectStatusLabels[object.status]}</BadgeCell>
               <TableCell><CrmDisciplineBadge violations={object.crmViolations} /></TableCell>
               <TableCell><BonusEligibilityBadge violations={object.crmViolations} /></TableCell>
             </TableRow>

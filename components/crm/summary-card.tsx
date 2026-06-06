@@ -23,6 +23,28 @@ export function SummaryCard({
   );
 }
 
+export function CompactMetricCard({
+  title,
+  value,
+  description
+}: {
+  title: string;
+  value: ReactNode;
+  description?: ReactNode;
+}) {
+  return (
+    <Card>
+      <CardHeader className="pb-2">
+        <CardTitle className="text-sm font-medium text-muted-foreground">{title}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="text-2xl font-semibold tabular-nums">{value}</div>
+        {description ? <div className="mt-1 text-xs text-muted-foreground">{description}</div> : null}
+      </CardContent>
+    </Card>
+  );
+}
+
 export function SummaryBreakdownCard({
   title,
   data,

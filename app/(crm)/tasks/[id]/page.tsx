@@ -2,9 +2,8 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Ban } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { AuditLogCard, EntityDetailShell, EntityPageHeader, NoticeStack, TextBlock } from "@/components/crm/detail-page";
+import { AuditLogCard, EntityDetailShell, TextBlock } from "@/components/crm/detail-page";
 import { EntityDetailsCard } from "@/components/crm/detail";
-import { CrmDisciplinePanel } from "@/components/crm/discipline/panel";
 import { taskStatusVariant } from "@/components/crm/status-variants";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -47,40 +46,34 @@ export default async function TaskPage({ params, searchParams }: TaskPageProps) 
 
   return (
     <EntityDetailShell
-      header={(
-        <EntityPageHeader
-        title={task.title}
-        badges={
-          <>
-            <Badge variant="outline">{taskRecordTypeLabels[task.recordType]}</Badge>
-            <Badge variant="outline">{taskActionTypeLabels[task.actionType]}</Badge>
-            <Badge variant={taskStatusVariant(task.status)}>{taskStatusLabels[task.status]}</Badge>
-          </>
-        }
-        editHref={`/tasks/${id}/edit`}
-        canEdit={canEditRecord(user, task)}
-        actions={canCancelTask(user, task) && task.status !== "CANCELLED" ? (
-            <form action={cancelAction}>
-              <Button type="submit" variant="destructive">
-                <Ban className="h-4 w-4" />
-                Отменить
-              </Button>
-            </form>
-        ) : null}
-        />
-      )}
-      notices={<NoticeStack notices={[{ show: Boolean(query.saved), message: "Запись сохранена." }]} />}
-      discipline={(
-        <CrmDisciplinePanel
-        entityType="TASK"
-        entityId={task.id}
-        editHref={`/tasks/${id}/edit`}
-        returnTo={`/tasks/${id}`}
-        violations={task.crmViolations}
-        user={user}
-        bonusApplies={false}
-        />
-      )}
+      title={task.title}
+      badges={
+        <>
+          <Badge variant="outline">{taskRecordTypeLabels[task.recordType]}</Badge>
+          <Badge variant="outline">{taskActionTypeLabels[task.actionType]}</Badge>
+          <Badge variant={taskStatusVariant(task.status)}>{taskStatusLabels[task.status]}</Badge>
+        </>
+      }
+      editHref={`/tasks/${id}/edit`}
+      canEdit={canEditRecord(user, task)}
+      actions={canCancelTask(user, task) && task.status !== "CANCELLED" ? (
+        <form action={cancelAction}>
+          <Button type="submit" variant="destructive">
+            <Ban className="h-4 w-4" />
+            Отменить
+          </Button>
+        </form>
+      ) : null}
+      notices={[{ show: Boolean(query.saved), message: "Запись сохранена." }]}
+      discipline={{
+        entityType: "TASK",
+        entityId: task.id,
+        editHref: `/tasks/${id}/edit`,
+        returnTo: `/tasks/${id}`,
+        violations: task.crmViolations,
+        user,
+        bonusApplies: false
+      }}
     >
 
       <EntityDetailsCard

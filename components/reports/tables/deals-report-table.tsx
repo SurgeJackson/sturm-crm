@@ -5,6 +5,7 @@ import {
   MoneyCell,
   TableCard
 } from "@/components/ui/data-table";
+import { dealStageVariant } from "@/components/crm/status-variants";
 import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { dealProbabilityLabels, dealSourceLabels, dealStageLabels } from "@/lib/constants";
 import type { getDealsReport } from "@/modules/reports/queries";
@@ -36,7 +37,7 @@ export function DealsReportTable({ deals }: { deals: DealsReport["deals"] }) {
               title={deal.title}
               description={`${deal.client.name} / ${deal.projectObject.title}`}
             />
-            <BadgeCell>{dealStageLabels[deal.stage]}</BadgeCell>
+            <BadgeCell variant={dealStageVariant(deal.stage)}>{dealStageLabels[deal.stage]}</BadgeCell>
             <TableCell>{dealSourceLabels[deal.source]}</TableCell>
             <TableCell>{deal.probability ? dealProbabilityLabels[deal.probability] : "Нет"}</TableCell>
             <MoneyCell value={deal.potentialAmount} emptyText="Нет" />

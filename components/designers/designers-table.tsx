@@ -1,7 +1,6 @@
 import { CrmDisciplineBadge } from "@/components/crm/discipline/badges";
 import { designerPotentialVariant } from "@/components/crm/status-variants";
-import { Badge } from "@/components/ui/badge";
-import { DateCell, EmptyTableRow, EntityLinkCell, TableCard } from "@/components/ui/data-table";
+import { BadgeCell, DateCell, EmptyTableRow, EntityLinkCell, TableCard } from "@/components/ui/data-table";
 import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import {
   designerLoyaltyLabels,
@@ -41,8 +40,8 @@ export function DesignersTable({ designers }: { designers: DesignerItem[] }) {
             <TableRow key={designer.id}>
               <EntityLinkCell href={`/designers/${designer.id}`} title={designer.name} description={designer.studio ?? designer.city ?? "Нет студии"} />
               <TableCell>{designerRoleLabels[designer.role]}</TableCell>
-              <TableCell><Badge variant="secondary">{designerRelationshipStageLabels[designer.relationshipStage]}</Badge></TableCell>
-              <TableCell><Badge variant={designerPotentialVariant(designer.potential)}>{designerPotentialLabels[designer.potential]}</Badge></TableCell>
+              <BadgeCell variant="secondary">{designerRelationshipStageLabels[designer.relationshipStage]}</BadgeCell>
+              <BadgeCell variant={designerPotentialVariant(designer.potential)}>{designerPotentialLabels[designer.potential]}</BadgeCell>
               <TableCell>{designerLoyaltyLabels[designer.loyalty]}</TableCell>
               <TableCell>{designer.responsible.name}</TableCell>
               <DateCell warning={isOverdue(designer.nextStepAt)} muted={designer.nextStepText ?? "Не указан"}>

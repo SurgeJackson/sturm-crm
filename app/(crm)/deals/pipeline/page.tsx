@@ -10,6 +10,7 @@ import { dealStageOptions } from "@/modules/crm/options";
 import { changeDealStageAction } from "@/modules/deals/actions";
 import { getDealPipeline } from "@/modules/deals/queries";
 import { formatRussianDate } from "@/utils/date";
+import { formatMoney } from "@/utils/money";
 
 type DealPipelinePageProps = {
   searchParams: Promise<{ saved?: string; error?: string }>;
@@ -29,10 +30,6 @@ const stageOrder = [
   "COMPLETED",
   "LOST"
 ] as const;
-
-function formatMoney(value?: number | null) {
-  return value ? `${value.toLocaleString("ru-RU")} ₽` : "Без суммы";
-}
 
 function isOverdue(date?: Date | null, stage?: string) {
   return Boolean(date && date < new Date() && stage !== "LOST" && stage !== "COMPLETED");

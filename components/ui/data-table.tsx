@@ -4,6 +4,7 @@ import { Badge, type BadgeProps } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableCell, TableEmptyRow } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
+import { formatMoney } from "@/utils/money";
 
 export function TableCard({
   title,
@@ -76,28 +77,16 @@ export function TextLinkCell({
 
 export function BadgeCell({
   children,
-  variant = "outline"
-}: {
-  children: ReactNode;
-  variant?: BadgeProps["variant"];
-}) {
-  return (
-    <TableCell>
-      <Badge variant={variant}>{children}</Badge>
-    </TableCell>
-  );
-}
-
-export function StatusBadgeCell({
   label,
   variant = "outline"
 }: {
-  label: ReactNode;
+  children?: ReactNode;
+  label?: ReactNode;
   variant?: BadgeProps["variant"];
 }) {
   return (
     <TableCell>
-      <Badge variant={variant}>{label}</Badge>
+      <Badge variant={variant}>{label ?? children}</Badge>
     </TableCell>
   );
 }
@@ -146,5 +135,5 @@ export function MoneyCell({
   value?: number | null;
   emptyText?: string;
 }) {
-  return <TableCell>{value != null ? `${value.toLocaleString("ru-RU")} ₽` : emptyText}</TableCell>;
+  return <TableCell>{formatMoney(value, emptyText)}</TableCell>;
 }

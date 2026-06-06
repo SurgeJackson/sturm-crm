@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
 import { Archive, Edit, MessageSquarePlus, Plus } from "lucide-react";
+import { CrmDisciplinePanel } from "@/components/crm/discipline/panel";
 import { TaskActivityTable } from "@/components/tasks/task-activity-table";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -92,21 +93,41 @@ export function NoticeStack({ notices }: { notices: Notice[] }) {
 }
 
 export function EntityDetailShell({
-  header,
+  title,
+  badges,
+  editHref,
+  canEdit,
+  archiveAction,
+  canArchive,
+  actions,
   notices,
   discipline,
   children
 }: {
-  header: ReactNode;
-  notices?: ReactNode;
-  discipline?: ReactNode;
+  title: ReactNode;
+  badges?: ReactNode;
+  editHref?: string;
+  canEdit?: boolean;
+  archiveAction?: () => Promise<void>;
+  canArchive?: boolean;
+  actions?: ReactNode;
+  notices?: Notice[];
+  discipline?: ComponentProps<typeof CrmDisciplinePanel>;
   children: ReactNode;
 }) {
   return (
     <div className="space-y-6">
-      {header}
-      {notices}
-      {discipline}
+      <EntityPageHeader
+        title={title}
+        badges={badges}
+        editHref={editHref}
+        canEdit={canEdit}
+        archiveAction={archiveAction}
+        canArchive={canArchive}
+        actions={actions}
+      />
+      {notices ? <NoticeStack notices={notices} /> : null}
+      {discipline ? <CrmDisciplinePanel {...discipline} /> : null}
       {children}
     </div>
   );

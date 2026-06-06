@@ -3,8 +3,8 @@ import type { TaskActivity } from "@/generated/prisma/client";
 import { CrmDisciplineBadge } from "@/components/crm/discipline/badges";
 import type { CrmViolationView } from "@/components/crm/discipline/types";
 import { taskStatusVariant } from "@/components/crm/status-variants";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { BadgeCell, DateCell, EntityLinkCell } from "@/components/ui/data-table";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { taskActionTypeLabels, taskPriorityLabels, taskRecordTypeLabels, taskStatusLabels } from "@/lib/constants";
 import { formatRussianDateTime } from "@/utils/date";
@@ -27,7 +27,7 @@ type TaskActivityTableProps = {
 };
 
 function isOverdue(task: TaskRow) {
-  return task.recordType === "TASK" && task.dueAt && task.dueAt < new Date() && !["DONE", "CANCELLED", "CLOSED"].includes(task.status);
+  return Boolean(task.recordType === "TASK" && task.dueAt && task.dueAt < new Date() && !["DONE", "CANCELLED", "CLOSED"].includes(task.status));
 }
 
 function statusVariant(task: TaskRow) {
@@ -69,15 +69,12 @@ export function TaskActivityTable({ items, emptyText, compact = false }: TaskAct
         ) : (
           items.map((task) => (
             <TableRow key={task.id} className={isOverdue(task) ? "bg-warning/10" : undefined}>
-              <TableCell>
-                <Link href={`/tasks/${task.id}`} className="font-medium hover:underline">{task.title}</Link>
-                <div className="text-xs text-muted-foreground">{taskRecordTypeLabels[task.recordType]}</div>
-              </TableCell>
+              <EntityLinkCell href={`/tasks/${task.id}`} title={task.title} description={taskRecordTypeLabels[task.recordType]} />
               <TableCell>{taskActionTypeLabels[task.actionType]}</TableCell>
               <TableCell>{task.responsible.name}</TableCell>
-              <TableCell className={isOverdue(task) ? "text-warning" : undefined}>{formatRussianDateTime(task.dueAt)}</TableCell>
+              <DateCell warning={isOverdue(task)}>{formatRussianDateTime(task.dueAt)}</DateCell>
               {!compact ? <TableCell>{linkedEntity(task)}</TableCell> : null}
-              <TableCell><Badge variant={statusVariant(task)}>{taskStatusLabels[task.status]}</Badge></TableCell>
+              <BadgeCell variant={statusVariant(task)}>{taskStatusLabels[task.status]}</BadgeCell>
               <TableCell><CrmDisciplineBadge violations={task.crmViolations ?? []} /></TableCell>
               {!compact ? <TableCell>{taskPriorityLabels[task.priority]}</TableCell> : null}
               <TableCell className="text-right">

@@ -1,9 +1,8 @@
-import Link from "next/link";
 import { crmSeverityVariant } from "@/components/crm/discipline/variants";
 import { ReportValueListCard } from "@/components/reports/cards";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { EmptyTableRow, TableCard } from "@/components/ui/data-table";
+import { BadgeCell, EmptyTableRow, EntityLinkCell, TableCard } from "@/components/ui/data-table";
 import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import type { getCrmDisciplineReport } from "@/modules/reports/queries";
 
@@ -105,11 +104,11 @@ export function CrmProblemsTable({ problems }: { problems: CrmProblem[] }) {
           <TableRow key={`${problem.area}-${problem.href}-${problem.issue}`}>
             <TableCell>{problem.area}</TableCell>
             <TableCell>{problem.issue}</TableCell>
-            <TableCell><Badge variant={crmSeverityVariant(problem.severity)}>{severityLabels[problem.severity]}</Badge></TableCell>
+            <BadgeCell variant={crmSeverityVariant(problem.severity)}>{severityLabels[problem.severity]}</BadgeCell>
             <TableCell>{problem.responsibleName}</TableCell>
             <TableCell>{problem.violationCode}</TableCell>
             <TableCell>{problem.canAffectBonus ? "Влияет" : "Не влияет"}</TableCell>
-            <TableCell><Link className="font-medium hover:underline" href={problem.href}>{problem.entity}: {problem.title}</Link></TableCell>
+            <EntityLinkCell href={problem.href} title={`${problem.entity}: ${problem.title}`} />
           </TableRow>
         ))}
       </TableBody>

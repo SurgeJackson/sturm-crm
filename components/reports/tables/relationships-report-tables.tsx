@@ -1,9 +1,11 @@
 import {
   BadgeCell,
+  CountCell,
   EntityLinkCell,
   EmptyTableRow,
   TableCard
 } from "@/components/ui/data-table";
+import { designerPotentialVariant, objectStatusVariant } from "@/components/crm/status-variants";
 import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import {
   designerLoyaltyLabels,
@@ -44,10 +46,12 @@ export function DesignersReportTable({ designers }: { designers: DesignersReport
               description={designer.studio}
             />
             <BadgeCell>{designerRelationshipStageLabels[designer.relationshipStage]}</BadgeCell>
-            <TableCell>{designerPotentialLabels[designer.potential]}</TableCell>
+            <BadgeCell variant={designerPotentialVariant(designer.potential)}>
+              {designerPotentialLabels[designer.potential]}
+            </BadgeCell>
             <TableCell>{designerLoyaltyLabels[designer.loyalty]}</TableCell>
-            <TableCell>{designer.projectObjects.length}</TableCell>
-            <TableCell>{designer.proposals.length}</TableCell>
+            <CountCell value={designer.projectObjects.length} />
+            <CountCell value={designer.proposals.length} />
             <TableCell>{formatRussianDate(designer.lastTouchAt)}</TableCell>
           </TableRow>
         ))}
@@ -79,11 +83,11 @@ export function ObjectsReportTable({ objects }: { objects: ObjectsReport["object
             <EntityLinkCell href={`/objects/${object.id}`} title={object.title} />
             <TableCell>{objectTypeLabels[object.objectType]}</TableCell>
             <BadgeCell>{objectStageLabels[object.stage]}</BadgeCell>
-            <TableCell>{objectStatusLabels[object.status]}</TableCell>
+            <BadgeCell variant={objectStatusVariant(object.status)}>{objectStatusLabels[object.status]}</BadgeCell>
             <TableCell>{object.client.name}</TableCell>
             <TableCell>{object.designer?.name ?? "Нет"}</TableCell>
-            <TableCell>{object.tasks.length}</TableCell>
-            <TableCell>{object.participants.length}</TableCell>
+            <CountCell value={object.tasks.length} />
+            <CountCell value={object.participants.length} />
           </TableRow>
         ))}
       </TableBody>

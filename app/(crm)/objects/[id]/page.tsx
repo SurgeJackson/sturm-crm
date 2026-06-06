@@ -6,13 +6,10 @@ import {
   EntityDetailShell,
   EntityDetailTabs,
   EntityInfoCard,
-  EntityPageHeader,
   EntityTasksCard,
-  NoticeStack,
   TextBlock
 } from "@/components/crm/detail-page";
 import { EntityDetailsCard } from "@/components/crm/detail";
-import { CrmDisciplinePanel } from "@/components/crm/discipline/panel";
 import { ObjectDealsTable, ObjectParticipantsTables, ObjectProposalsTable } from "@/components/crm/related";
 import { objectStatusVariant } from "@/components/crm/status-variants";
 import { Badge } from "@/components/ui/badge";
@@ -32,6 +29,8 @@ import {
 import { getProjectObjectForUser } from "@/modules/objects/queries";
 import { canArchiveRecord, canCreateTask, canEditRecord, canManageObjectParticipants } from "@/permissions";
 import { formatRussianDate } from "@/utils/date";
+import { formatMoney } from "@/utils/money";
+import { buildTaskHref } from "@/utils/task-href";
 
 type ObjectPageProps = {
   params: Promise<{ id: string }>;
@@ -87,42 +86,34 @@ export default async function ObjectPage({ params, searchParams }: ObjectPagePro
 
   return (
     <EntityDetailShell
-      header={(
-        <EntityPageHeader
-        title={projectObject.title}
-        badges={
-          <>
-            <Badge variant="outline">{objectTypeLabels[projectObject.objectType]}</Badge>
-            <Badge variant="outline">{objectStageLabels[projectObject.stage]}</Badge>
-            <Badge variant={objectStatusVariant(projectObject.status)}>{objectStatusLabels[projectObject.status]}</Badge>
-          </>
-        }
-        editHref={`/objects/${id}/edit`}
-        canEdit={canEditRecord(user, projectObject)}
-        archiveAction={archiveAction}
-        canArchive={canArchiveRecord(user, projectObject) && !projectObject.archivedAt}
-        />
-      )}
-      notices={(
-        <NoticeStack notices={[
+      title={projectObject.title}
+      badges={
+        <>
+          <Badge variant="outline">{objectTypeLabels[projectObject.objectType]}</Badge>
+          <Badge variant="outline">{objectStageLabels[projectObject.stage]}</Badge>
+          <Badge variant={objectStatusVariant(projectObject.status)}>{objectStatusLabels[projectObject.status]}</Badge>
+        </>
+      }
+      editHref={`/objects/${id}/edit`}
+      canEdit={canEditRecord(user, projectObject)}
+      archiveAction={archiveAction}
+      canArchive={canArchiveRecord(user, projectObject) && !projectObject.archivedAt}
+      notices={[
         { show: Boolean(query.saved), message: "Объект сохранен." },
         { show: Boolean(query.archived), message: "Объект архивирован." },
         { show: Boolean(query.participantSaved), message: "Участник сохранен." },
         { show: Boolean(query.participantArchived), message: "Участник архивирован." },
         { show: Boolean(query.designerStage), message: "Этап дизайнера обновлен." },
         { show: Boolean(query.error), tone: "destructive", message: "Действие недоступно или данные не найдены." }
-        ]} />
-      )}
-      discipline={(
-        <CrmDisciplinePanel
-        entityType="OBJECT"
-        entityId={projectObject.id}
-        editHref={`/objects/${id}/edit`}
-        returnTo={`/objects/${id}`}
-        violations={projectObject.crmViolations}
-        user={user}
-        />
-      )}
+      ]}
+      discipline={{
+        entityType: "OBJECT",
+        entityId: projectObject.id,
+        editHref: `/objects/${id}/edit`,
+        returnTo: `/objects/${id}`,
+        violations: projectObject.crmViolations,
+        user
+      }}
     >
 
       {projectObject.designer && shouldOfferDesignerStageUpdate(projectObject.designer.relationshipStage) ? (
@@ -158,7 +149,7 @@ export default async function ObjectPage({ params, searchParams }: ObjectPagePro
                   { label: "Создал", value: projectObject.createdBy.name },
                   { label: "Начало реализации", value: formatRussianDate(projectObject.implementationStartAt) },
                   { label: "Завершение реализации", value: formatRussianDate(projectObject.implementationEndAt) },
-                  { label: "Бюджет", value: projectObject.budget ? `${projectObject.budget.toLocaleString("ru-RU")} ₽` : null },
+                  { label: "Бюджет", value: formatMoney(projectObject.budget, "Нет данных") },
                   { label: "Количество санузлов", value: projectObject.bathroomsCount },
                   { label: "Создан", value: formatRussianDate(projectObject.createdAt) }
                 ]}
@@ -212,8 +203,8 @@ export default async function ObjectPage({ params, searchParams }: ObjectPagePro
               <EntityTasksCard
                 items={projectObject.tasks}
                 canCreate={canCreateTask(user)}
-                taskHref={`/tasks/new?objectId=${projectObject.id}&clientId=${projectObject.clientId}&responsibleId=${projectObject.responsibleId}${projectObject.designerId ? `&designerId=${projectObject.designerId}` : ""}`}
-                touchHref={`/tasks/new?recordType=TOUCH&objectId=${projectObject.id}&clientId=${projectObject.clientId}&responsibleId=${projectObject.responsibleId}${projectObject.designerId ? `&designerId=${projectObject.designerId}` : ""}`}
+                taskHref={buildTaskHref({ objectId: projectObject.id, clientId: projectObject.clientId, responsibleId: projectObject.responsibleId, designerId: projectObject.designerId })}
+                touchHref={buildTaskHref({ recordType: "TOUCH", objectId: projectObject.id, clientId: projectObject.clientId, responsibleId: projectObject.responsibleId, designerId: projectObject.designerId })}
               />
             )
           },

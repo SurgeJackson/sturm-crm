@@ -1,6 +1,5 @@
 import { BonusEligibilityBadge, CrmDisciplineBadge } from "@/components/crm/discipline/badges";
-import { Badge } from "@/components/ui/badge";
-import { DateCell, EmptyTableRow, EntityLinkCell, TableCard } from "@/components/ui/data-table";
+import { BadgeCell, DateCell, EmptyTableRow, EntityLinkCell, TableCard } from "@/components/ui/data-table";
 import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { clientSourceLabels, clientStatusLabels, clientTypeLabels } from "@/lib/constants";
 import type { getClients } from "@/modules/clients/queries";
@@ -38,7 +37,7 @@ export function ClientsTable({ clients }: { clients: ClientItem[] }) {
                 <div>{clientTypeLabels[client.clientType]}</div>
                 <div className="text-xs text-muted-foreground">{clientSourceLabels[client.source]}</div>
               </TableCell>
-              <TableCell><Badge variant={client.status === "ARCHIVED" ? "outline" : "secondary"}>{clientStatusLabels[client.status]}</Badge></TableCell>
+              <BadgeCell variant={client.status === "ARCHIVED" ? "outline" : "secondary"}>{clientStatusLabels[client.status]}</BadgeCell>
               <TableCell>{client.responsible.name}</TableCell>
               <DateCell>{formatRussianDate(client.nextContactAt)}</DateCell>
               <TableCell><CrmDisciplineBadge violations={client.crmViolations} /></TableCell>

@@ -12,6 +12,7 @@ import {
   objectStageLabels,
   proposalDeclineReasonLabels
 } from "@/lib/constants";
+import { formatMoney } from "@/utils/money";
 
 export default async function DashboardPage() {
   const user = await getCurrentUser();
@@ -44,7 +45,7 @@ export default async function DashboardPage() {
     { title: "Объекты от дизайнеров", value: metrics.objectsFromDesigners, icon: UserRound, variant: "default" as const },
     { title: "Новые сделки за 7 дней", value: metrics.newDeals, icon: BriefcaseBusiness, variant: "default" as const },
     { title: "Активные сделки", value: metrics.activeDeals, icon: BriefcaseBusiness, variant: "secondary" as const },
-    { title: "Сумма активных сделок", value: `${metrics.activeDealsAmount.toLocaleString("ru-RU")} ₽`, icon: BriefcaseBusiness, variant: "default" as const },
+    { title: "Сумма активных сделок", value: formatMoney(metrics.activeDealsAmount, "0 ₽"), icon: BriefcaseBusiness, variant: "default" as const },
     { title: "Сделки без следующего шага", value: metrics.dealsWithoutNextStep, icon: AlertTriangle, variant: "warning" as const },
     { title: "Просроченные следующие действия", value: metrics.overdueNextActionDeals, icon: AlertTriangle, variant: "warning" as const },
     { title: "Сделки в ожидании решения", value: metrics.waitingDecisionDeals, icon: CheckSquare, variant: "outline" as const },
@@ -56,9 +57,9 @@ export default async function DashboardPage() {
     { title: "Мои КП в работе", value: metrics.myProposalInProgressDeals, icon: FileText, variant: "outline" as const },
     { title: "Мои проигранные за 7 дней", value: metrics.myLostDealsPeriod, icon: AlertTriangle, variant: "outline" as const },
     { title: "Новые КП за 7 дней", value: metrics.newProposals, icon: FileText, variant: "default" as const },
-    { title: "Сумма новых КП", value: `${metrics.newProposalsAmount.toLocaleString("ru-RU")} ₽`, icon: FileText, variant: "default" as const },
+    { title: "Сумма новых КП", value: formatMoney(metrics.newProposalsAmount, "0 ₽"), icon: FileText, variant: "default" as const },
     { title: "Активные КП", value: metrics.activeProposals, icon: FileText, variant: "secondary" as const },
-    { title: "Сумма активных КП", value: `${metrics.activeProposalsAmount.toLocaleString("ru-RU")} ₽`, icon: FileText, variant: "default" as const },
+    { title: "Сумма активных КП", value: formatMoney(metrics.activeProposalsAmount, "0 ₽"), icon: FileText, variant: "default" as const },
     { title: "КП без follow-up", value: metrics.proposalNoFollowUp, icon: AlertTriangle, variant: "warning" as const },
     { title: "КП без файла", value: metrics.proposalNoFile, icon: AlertTriangle, variant: "warning" as const },
     { title: "Клиент думает 7+ дней", value: metrics.proposalThinking7, icon: AlertTriangle, variant: "warning" as const },
@@ -180,7 +181,7 @@ export default async function DashboardPage() {
           renderItem={(item) => (
             <div className="flex items-center justify-between rounded-md border p-3 text-sm">
               <span>{item.name}</span>
-              <Badge variant="secondary">{item.amount.toLocaleString("ru-RU")} ₽</Badge>
+              <Badge variant="secondary">{formatMoney(item.amount, "0 ₽")}</Badge>
             </div>
           )}
         />
