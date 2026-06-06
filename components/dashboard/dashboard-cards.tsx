@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
-import { SummaryBreakdownCard } from "@/components/crm/summary-card";
+import { MetricCard, SummaryBreakdownCard } from "@/components/crm/summary-card";
 import { Badge, type BadgeProps } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
@@ -16,21 +16,15 @@ export function DashboardMetricGrid({ cards }: { cards: DashboardMetric[] }) {
   return (
     <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
       {cards.map((card) => {
-        const Icon = card.icon;
-
         return (
-          <Card key={card.title}>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-              <CardTitle className="text-sm font-medium">{card.title}</CardTitle>
-              <Icon className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-semibold">{card.value}</div>
-              <Badge className="mt-3" variant={card.variant}>
-                CRM
-              </Badge>
-            </CardContent>
-          </Card>
+          <MetricCard
+            key={card.title}
+            title={card.title}
+            value={card.value}
+            icon={card.icon}
+            badgeLabel="CRM"
+            badgeVariant={card.variant}
+          />
         );
       })}
     </div>
@@ -65,6 +59,33 @@ export function DashboardListCard<T>({
         )}
       </CardContent>
     </Card>
+  );
+}
+
+export function DashboardListItem({
+  children,
+  className
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  return <div className={cn("rounded-md border p-3 text-sm", className)}>{children}</div>;
+}
+
+export function DashboardStatRow({
+  label,
+  value,
+  variant = "secondary"
+}: {
+  label: ReactNode;
+  value: ReactNode;
+  variant?: BadgeProps["variant"];
+}) {
+  return (
+    <DashboardListItem className="flex items-center justify-between gap-3">
+      <span className="min-w-0">{label}</span>
+      <Badge className="shrink-0" variant={variant}>{value}</Badge>
+    </DashboardListItem>
   );
 }
 

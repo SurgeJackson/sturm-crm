@@ -1,5 +1,5 @@
 import { bonusVariant } from "@/components/crm/discipline/variants";
-import { BadgeCell, EntityLinkCell, EmptyTableRow, TableCard } from "@/components/ui/data-table";
+import { BadgeCell, BooleanCell, DateCell, EntityLinkCell, EmptyTableRow, TableCard } from "@/components/ui/data-table";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { bonusEligibilityLabels } from "@/modules/crm-discipline/service";
 import type { getBonusEligibilityReport, getMyReport } from "@/modules/reports/queries";
@@ -57,8 +57,8 @@ export function BonusEligibilityRowsTable({ rows }: { rows: BonusEligibilityRepo
             <TableCell>{row.responsibleName}</TableCell>
             <BadgeCell variant={bonusVariant(row.status)}>{bonusEligibilityLabels[row.status]}</BadgeCell>
             <TableCell>{row.violations.length ? row.violations.join("; ") : "Нет активных нарушений"}</TableCell>
-            <TableCell>{row.affectsBonus ? "Да" : "Нет"}</TableCell>
-            <TableCell>{formatRussianDate(row.detectedAt)}</TableCell>
+            <BooleanCell value={row.affectsBonus} />
+            <DateCell>{formatRussianDate(row.detectedAt)}</DateCell>
           </TableRow>
         ))}
       </TableBody>

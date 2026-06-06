@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
 import { ProjectObjectForm } from "@/components/objects/project-object-form";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { FormPageShell } from "@/components/layout/form-page-shell";
 import { prisma } from "@/lib/prisma";
 import { updateProjectObjectAction } from "@/modules/objects/actions";
 import { getProjectObjectForUser } from "@/modules/objects/queries";
@@ -37,26 +37,17 @@ export default async function EditObjectPage({ params }: EditObjectPageProps) {
   const action = updateProjectObjectAction.bind(null, id);
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold">Редактировать объект</h1>
-        <p className="mt-1 text-sm text-muted-foreground">{projectObject.title}</p>
-      </div>
-      <Card>
-        <CardHeader><CardTitle>Основное</CardTitle></CardHeader>
-        <CardContent>
-          <ProjectObjectForm
-            action={action}
-            projectObject={projectObject}
-            users={users}
-            clients={clients}
-            designers={designers}
-            currentUserId={user.id}
-            canChangeResponsible={canChangeObjectResponsible(user)}
-            submitLabel="Сохранить"
-          />
-        </CardContent>
-      </Card>
-    </div>
+    <FormPageShell title="Редактировать объект" description={projectObject.title} cardTitle="Основное">
+      <ProjectObjectForm
+        action={action}
+        projectObject={projectObject}
+        users={users}
+        clients={clients}
+        designers={designers}
+        currentUserId={user.id}
+        canChangeResponsible={canChangeObjectResponsible(user)}
+        submitLabel="Сохранить"
+      />
+    </FormPageShell>
   );
 }

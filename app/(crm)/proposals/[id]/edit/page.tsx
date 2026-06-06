@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
+import { FormPageShell } from "@/components/layout/form-page-shell";
 import { ProposalForm } from "@/components/proposals/proposal-form";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { prisma } from "@/lib/prisma";
 import { updateProposalAction } from "@/modules/proposals/actions";
 import { getProposalForUser } from "@/modules/proposals/queries";
@@ -41,25 +41,16 @@ export default async function EditProposalPage({ params }: EditProposalPageProps
   if (!canEditRecord(user, proposal)) redirect(`/proposals/${id}`);
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold">Редактировать КП</h1>
-        <p className="mt-1 text-sm text-muted-foreground">{proposal.proposalNumber}</p>
-      </div>
-      <Card>
-        <CardHeader><CardTitle>Основное</CardTitle></CardHeader>
-        <CardContent>
-          <ProposalForm
-            action={updateProposalAction.bind(null, id)}
-            proposal={proposal}
-            deals={deals}
-            users={users}
-            currentUserId={user.id}
-            canChangeResponsible={canChangeProposalResponsible(user)}
-            submitLabel="Сохранить"
-          />
-        </CardContent>
-      </Card>
-    </div>
+    <FormPageShell title="Редактировать КП" description={proposal.proposalNumber} cardTitle="Основное">
+      <ProposalForm
+        action={updateProposalAction.bind(null, id)}
+        proposal={proposal}
+        deals={deals}
+        users={users}
+        currentUserId={user.id}
+        canChangeResponsible={canChangeProposalResponsible(user)}
+        submitLabel="Сохранить"
+      />
+    </FormPageShell>
   );
 }

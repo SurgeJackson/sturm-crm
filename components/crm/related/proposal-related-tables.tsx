@@ -2,11 +2,13 @@ import { proposalStatusVariant } from "@/components/crm/status-variants";
 import { Button } from "@/components/ui/button";
 import {
   BadgeCell,
+  DateCell,
   EmptyTableRow,
   EntityLinkCell,
   FileLinkCell,
   MoneyCell,
-  TableCard
+  TableCard,
+  VersionCell
 } from "@/components/ui/data-table";
 import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { commercialProposalStatusLabels } from "@/lib/constants";
@@ -50,8 +52,8 @@ export function ProposalVersionsTable({
         ) : versions.map((item) => (
           <TableRow key={item.id}>
             <EntityLinkCell href={`/proposals/${item.id}`} title={item.proposalNumber} />
-            <TableCell>v{item.version}</TableCell>
-            <TableCell>{formatRussianDate(item.createdAt)}</TableCell>
+            <VersionCell value={item.version} />
+            <DateCell>{formatRussianDate(item.createdAt)}</DateCell>
             <MoneyCell value={item.amount} />
             <BadgeCell variant={proposalStatusVariant(item.status)}>
               {commercialProposalStatusLabels[item.status]}

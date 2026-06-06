@@ -2,17 +2,11 @@ import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
 import { Archive, Edit, MessageSquarePlus, Plus } from "lucide-react";
 import { CrmDisciplinePanel } from "@/components/crm/discipline/panel";
+import { PageNoticeStack, type PageNotice } from "@/components/layout/page-notice";
 import { TaskActivityTable } from "@/components/tasks/task-activity-table";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { cn } from "@/lib/utils";
-
-type Notice = {
-  show: boolean;
-  tone?: "success" | "destructive";
-  message: string;
-};
 
 type AuditLog = {
   id: string;
@@ -72,26 +66,6 @@ export function EntityPageHeader({
   );
 }
 
-export function NoticeStack({ notices }: { notices: Notice[] }) {
-  return (
-    <>
-      {notices.filter((notice) => notice.show).map((notice) => (
-        <div
-          key={notice.message}
-          className={cn(
-            "rounded-md border p-3 text-sm",
-            notice.tone === "destructive"
-              ? "border-destructive text-destructive"
-              : "border-primary text-primary"
-          )}
-        >
-          {notice.message}
-        </div>
-      ))}
-    </>
-  );
-}
-
 export function EntityDetailShell({
   title,
   badges,
@@ -111,7 +85,7 @@ export function EntityDetailShell({
   archiveAction?: () => Promise<void>;
   canArchive?: boolean;
   actions?: ReactNode;
-  notices?: Notice[];
+  notices?: PageNotice[];
   discipline?: ComponentProps<typeof CrmDisciplinePanel>;
   children: ReactNode;
 }) {
@@ -126,7 +100,7 @@ export function EntityDetailShell({
         canArchive={canArchive}
         actions={actions}
       />
-      {notices ? <NoticeStack notices={notices} /> : null}
+      {notices ? <PageNoticeStack notices={notices} /> : null}
       {discipline ? <CrmDisciplinePanel {...discipline} /> : null}
       {children}
     </div>

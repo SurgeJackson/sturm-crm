@@ -8,7 +8,8 @@ import {
   FileLinkCell,
   MoneyCell,
   TableCard,
-  TextLinkCell
+  TextLinkCell,
+  VersionCell
 } from "@/components/ui/data-table";
 import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { commercialProposalStatusLabels } from "@/lib/constants";
@@ -45,7 +46,7 @@ export function ProposalsTable({ proposals }: { proposals: ProposalItem[] }) {
               <TextLinkCell href={`/deals/${proposal.deal.id}`}>{proposal.deal.title}</TextLinkCell>
               <TextLinkCell href={`/clients/${proposal.client.id}`}>{proposal.client.name}</TextLinkCell>
               <BadgeCell variant={proposalStatusVariant(proposal.status)}>{commercialProposalStatusLabels[proposal.status]}</BadgeCell>
-              <TableCell>v{proposal.version}</TableCell>
+              <VersionCell value={proposal.version} />
               <MoneyCell value={proposal.amount} />
               <DateCell>{formatRussianDate(proposal.sentAt)}</DateCell>
               <DateCell>{formatRussianDate(proposal.nextTouchAt)}</DateCell>

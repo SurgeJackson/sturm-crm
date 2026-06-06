@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BarChart3, BriefcaseBusiness, ClipboardCheck, FileText, ShieldCheck, Target, Timer, UserRound, UsersRound, Building2 } from "lucide-react";
+import { PageHeader } from "@/components/layout/page-header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const reports = [
@@ -19,10 +20,7 @@ const reports = [
 export default function ReportsPage() {
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold">Отчеты</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Управленческие отчеты, KPI и CRM-дисциплина.</p>
-      </div>
+      <PageHeader title="Отчеты" description="Управленческие отчеты, KPI и CRM-дисциплина." />
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {reports.map((report) => {
           const Icon = report.icon;

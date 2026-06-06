@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
 import { ClientForm } from "@/components/clients/client-form";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { FormPageShell } from "@/components/layout/form-page-shell";
 import { createClientAction } from "@/modules/clients/actions";
 import { getAssignableUsers } from "@/modules/users/queries";
 import { prisma } from "@/lib/prisma";
@@ -21,24 +21,15 @@ export default async function NewClientPage() {
   ]);
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold">Создать клиента</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Заполните обязательные поля и контакт клиента.</p>
-      </div>
-      <Card>
-        <CardHeader><CardTitle>Основное</CardTitle></CardHeader>
-        <CardContent>
-          <ClientForm
-            action={createClientAction}
-            users={users}
-            designers={designers}
-            currentUserId={user.id}
-            canChangeResponsible={canChangeRecordResponsible(user)}
-            submitLabel="Сохранить"
-          />
-        </CardContent>
-      </Card>
-    </div>
+    <FormPageShell title="Создать клиента" description="Заполните обязательные поля и контакт клиента." cardTitle="Основное">
+      <ClientForm
+        action={createClientAction}
+        users={users}
+        designers={designers}
+        currentUserId={user.id}
+        canChangeResponsible={canChangeRecordResponsible(user)}
+        submitLabel="Сохранить"
+      />
+    </FormPageShell>
   );
 }

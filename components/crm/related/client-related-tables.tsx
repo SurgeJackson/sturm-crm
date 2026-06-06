@@ -1,11 +1,13 @@
 import {
   BadgeCell,
+  DateCell,
   EmptyTableRow,
   EntityLinkCell,
   MoneyCell,
   TableCard,
   TextLinkCell
 } from "@/components/ui/data-table";
+import { dealStageVariant, objectStatusVariant, proposalStatusVariant } from "@/components/crm/status-variants";
 import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import {
   commercialProposalStatusLabels,
@@ -49,7 +51,7 @@ function ClientRelatedObjectsTable({ objects }: { objects: ClientDetail["project
             <TableCell>{object.designer?.name || "Не выбран"}</TableCell>
             <TableCell>{object.responsible.name}</TableCell>
             <BadgeCell>{objectStageLabels[object.stage]}</BadgeCell>
-            <BadgeCell variant="secondary">{objectStatusLabels[object.status]}</BadgeCell>
+            <BadgeCell variant={objectStatusVariant(object.status)}>{objectStatusLabels[object.status]}</BadgeCell>
           </TableRow>
         ))}
       </TableBody>
@@ -77,10 +79,10 @@ function ClientRelatedDealsTable({ deals }: { deals: ClientDetail["deals"] }) {
           <TableRow key={deal.id}>
             <EntityLinkCell href={`/deals/${deal.id}`} title={deal.title} />
             <TextLinkCell href={`/objects/${deal.projectObject.id}`}>{deal.projectObject.title}</TextLinkCell>
-            <BadgeCell>{dealStageLabels[deal.stage]}</BadgeCell>
+            <BadgeCell variant={dealStageVariant(deal.stage)}>{dealStageLabels[deal.stage]}</BadgeCell>
             <MoneyCell value={deal.potentialAmount} />
             <TableCell>{deal.responsible.name}</TableCell>
-            <TableCell>{formatRussianDate(deal.nextActionAt)}</TableCell>
+            <DateCell>{formatRussianDate(deal.nextActionAt)}</DateCell>
           </TableRow>
         ))}
       </TableBody>
@@ -109,9 +111,11 @@ function ClientRelatedProposalsTable({ proposals }: { proposals: ClientDetail["p
             <EntityLinkCell href={`/proposals/${proposal.id}`} title={proposal.proposalNumber} />
             <TextLinkCell href={`/deals/${proposal.deal.id}`}>{proposal.deal.title}</TextLinkCell>
             <TextLinkCell href={`/objects/${proposal.projectObject.id}`}>{proposal.projectObject.title}</TextLinkCell>
-            <BadgeCell>{commercialProposalStatusLabels[proposal.status]}</BadgeCell>
+            <BadgeCell variant={proposalStatusVariant(proposal.status)}>
+              {commercialProposalStatusLabels[proposal.status]}
+            </BadgeCell>
             <MoneyCell value={proposal.amount} />
-            <TableCell>{formatRussianDate(proposal.nextTouchAt)}</TableCell>
+            <DateCell>{formatRussianDate(proposal.nextTouchAt)}</DateCell>
           </TableRow>
         ))}
       </TableBody>

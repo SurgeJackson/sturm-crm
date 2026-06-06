@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
 import { DealForm } from "@/components/deals/deal-form";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { FormPageShell } from "@/components/layout/form-page-shell";
 import { prisma } from "@/lib/prisma";
 import { createDealAction } from "@/modules/deals/actions";
 import { getAssignableUsers } from "@/modules/users/queries";
@@ -36,27 +36,18 @@ export default async function NewDealPage({ searchParams }: NewDealPageProps) {
   ]);
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold">Создать сделку</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Свяжите сделку с объектом, клиентом и ответственным менеджером.</p>
-      </div>
-      <Card>
-        <CardHeader><CardTitle>Основное</CardTitle></CardHeader>
-        <CardContent>
-          <DealForm
-            action={createDealAction}
-            users={users}
-            clients={clients}
-            objects={objects}
-            designers={designers}
-            currentUserId={user.id}
-            canChangeResponsible={canChangeDealResponsible(user)}
-            preselectedObjectId={query.objectId}
-            submitLabel="Сохранить"
-          />
-        </CardContent>
-      </Card>
-    </div>
+    <FormPageShell title="Создать сделку" description="Свяжите сделку с объектом, клиентом и ответственным менеджером." cardTitle="Основное">
+      <DealForm
+        action={createDealAction}
+        users={users}
+        clients={clients}
+        objects={objects}
+        designers={designers}
+        currentUserId={user.id}
+        canChangeResponsible={canChangeDealResponsible(user)}
+        preselectedObjectId={query.objectId}
+        submitLabel="Сохранить"
+      />
+    </FormPageShell>
   );
 }

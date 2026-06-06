@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
 import { ProjectObjectForm } from "@/components/objects/project-object-form";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { FormPageShell } from "@/components/layout/form-page-shell";
 import { prisma } from "@/lib/prisma";
 import { createProjectObjectAction } from "@/modules/objects/actions";
 import { getAssignableUsers } from "@/modules/users/queries";
@@ -27,25 +27,16 @@ export default async function NewObjectPage() {
   ]);
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold">Создать объект</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Укажите клиента, ответственного и базовую структуру проектной продажи.</p>
-      </div>
-      <Card>
-        <CardHeader><CardTitle>Основное</CardTitle></CardHeader>
-        <CardContent>
-          <ProjectObjectForm
-            action={createProjectObjectAction}
-            users={users}
-            clients={clients}
-            designers={designers}
-            currentUserId={user.id}
-            canChangeResponsible={canChangeObjectResponsible(user)}
-            submitLabel="Сохранить"
-          />
-        </CardContent>
-      </Card>
-    </div>
+    <FormPageShell title="Создать объект" description="Укажите клиента, ответственного и базовую структуру проектной продажи." cardTitle="Основное">
+      <ProjectObjectForm
+        action={createProjectObjectAction}
+        users={users}
+        clients={clients}
+        designers={designers}
+        currentUserId={user.id}
+        canChangeResponsible={canChangeObjectResponsible(user)}
+        submitLabel="Сохранить"
+      />
+    </FormPageShell>
   );
 }

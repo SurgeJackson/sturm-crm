@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
+import { PageHeader } from "@/components/layout/page-header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -32,13 +33,11 @@ export default async function TaskCalendarPage({ searchParams }: TaskCalendarPag
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold">Календарь задач</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Недельный список задач и касаний.</p>
-        </div>
-        <Button asChild variant="outline"><Link href="/tasks">К списку</Link></Button>
-      </div>
+      <PageHeader
+        title="Календарь задач"
+        description="Недельный список задач и касаний."
+        actions={<Button asChild variant="outline"><Link href="/tasks">К списку</Link></Button>}
+      />
 
       <Card>
         <CardContent className="pt-5">

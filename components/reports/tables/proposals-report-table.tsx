@@ -1,5 +1,6 @@
 import {
   BadgeCell,
+  DateCell,
   EntityLinkCell,
   EmptyTableRow,
   MoneyCell,
@@ -39,7 +40,7 @@ export function ProposalsReportTable({ proposals }: { proposals: ProposalsReport
             <TableCell>{proposal.client.name}</TableCell>
             <TableCell>{proposal.deal.title}</TableCell>
             <MoneyCell value={proposal.amount} />
-            <TableCell>{formatRussianDate(proposal.nextTouchAt)}</TableCell>
+            <DateCell>{formatRussianDate(proposal.nextTouchAt)}</DateCell>
             <TableCell>{proposal.responsible.name}</TableCell>
           </TableRow>
         ))}

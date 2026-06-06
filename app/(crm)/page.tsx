@@ -1,9 +1,16 @@
 import { AlertTriangle, BriefcaseBusiness, Building2, CheckSquare, FileText, UserRound, UsersRound } from "lucide-react";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { getDashboardMetrics } from "@/modules/dashboard/dashboard-metrics";
-import { DashboardBreakdownCard, DashboardListCard, DashboardMetricGrid } from "@/components/dashboard/dashboard-cards";
+import {
+  DashboardBreakdownCard,
+  DashboardListCard,
+  DashboardListItem,
+  DashboardMetricGrid,
+  DashboardStatRow
+} from "@/components/dashboard/dashboard-cards";
+import { PageHeader } from "@/components/layout/page-header";
 import { Badge } from "@/components/ui/badge";
+import { getDashboardMetrics } from "@/modules/dashboard/dashboard-metrics";
 import {
   commercialProposalStatusLabels,
   dealLossReasonLabels,
@@ -82,12 +89,7 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold">Рабочий стол</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Базовые контрольные показатели для руководителя и отдела продаж.
-        </p>
-      </div>
+      <PageHeader title="Рабочий стол" description="Базовые контрольные показатели для руководителя и отдела продаж." />
 
       <DashboardMetricGrid cards={cards} />
 
@@ -97,12 +99,7 @@ export default async function DashboardPage() {
           items={metrics.overdueTaskResponsibleCounts}
           emptyText="Просроченных задач нет."
           getKey={(item) => item.name}
-          renderItem={(item) => (
-            <div className="flex items-center justify-between rounded-md border p-3 text-sm">
-              <span>{item.name}</span>
-              <Badge variant="warning">{item.count}</Badge>
-            </div>
-          )}
+          renderItem={(item) => <DashboardStatRow label={item.name} value={item.count} variant="warning" />}
         />
 
         <DashboardListCard
@@ -111,14 +108,14 @@ export default async function DashboardPage() {
           emptyText="Активности пока нет."
           getKey={(item) => item.name}
           renderItem={(item) => (
-            <div className="rounded-md border p-3 text-sm">
+            <DashboardListItem>
               <div className="font-medium">{item.name}</div>
               <div className="mt-2 flex flex-wrap gap-2">
                 <Badge variant="outline">Задачи: {item.tasks}</Badge>
                 <Badge variant="secondary">Выполнено: {item.done}</Badge>
                 <Badge variant="outline">Касания: {item.touches}</Badge>
               </div>
-            </div>
+            </DashboardListItem>
           )}
         />
 
@@ -142,12 +139,7 @@ export default async function DashboardPage() {
           items={metrics.dealResponsibleCounts}
           emptyText="Пока нет сделок."
           getKey={(item) => item.name}
-          renderItem={(item) => (
-            <div className="flex items-center justify-between rounded-md border p-3 text-sm">
-              <span>{item.name}</span>
-              <Badge variant="secondary">{item.count}</Badge>
-            </div>
-          )}
+          renderItem={(item) => <DashboardStatRow label={item.name} value={item.count} />}
         />
       </div>
 
@@ -178,12 +170,7 @@ export default async function DashboardPage() {
           items={metrics.proposalResponsibleAmounts}
           emptyText="Пока нет КП."
           getKey={(item) => item.name}
-          renderItem={(item) => (
-            <div className="flex items-center justify-between rounded-md border p-3 text-sm">
-              <span>{item.name}</span>
-              <Badge variant="secondary">{formatMoney(item.amount, "0 ₽")}</Badge>
-            </div>
-          )}
+          renderItem={(item) => <DashboardStatRow label={item.name} value={formatMoney(item.amount, "0 ₽")} />}
         />
       </div>
 
@@ -202,10 +189,10 @@ export default async function DashboardPage() {
           emptyText="Пока нет переданных объектов."
           getKey={(designer) => designer.id}
           renderItem={(designer) => (
-            <div className="flex items-center justify-between rounded-md border p-3 text-sm">
-              <span>{designer.name}{designer.studio ? `, ${designer.studio}` : ""}</span>
-              <Badge variant="secondary">{designer.transferredObjectsCount}</Badge>
-            </div>
+            <DashboardStatRow
+              label={`${designer.name}${designer.studio ? `, ${designer.studio}` : ""}`}
+              value={designer.transferredObjectsCount}
+            />
           )}
         />
       </div>

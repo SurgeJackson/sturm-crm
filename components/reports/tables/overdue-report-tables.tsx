@@ -1,4 +1,5 @@
 import {
+  DateCell,
   EntityLinkCell,
   EmptyTableRow,
   TableCard
@@ -27,7 +28,7 @@ export function OverdueReportTables({ report }: { report: OverdueReport }) {
           ) : report.tasks.map((task) => (
             <TableRow key={task.id}>
               <EntityLinkCell href={`/tasks/${task.id}`} title={task.title} />
-              <TableCell>{formatRussianDateTime(task.dueAt)}</TableCell>
+              <DateCell>{formatRussianDateTime(task.dueAt)}</DateCell>
               <TableCell>{task.responsible.name}</TableCell>
             </TableRow>
           ))}
@@ -48,7 +49,7 @@ export function OverdueReportTables({ report }: { report: OverdueReport }) {
           ) : report.proposalFollowUps.map((proposal) => (
             <TableRow key={proposal.id}>
               <EntityLinkCell href={`/proposals/${proposal.id}`} title={proposal.proposalNumber} />
-              <TableCell>{formatRussianDate(proposal.nextTouchAt)}</TableCell>
+              <DateCell>{formatRussianDate(proposal.nextTouchAt)}</DateCell>
               <TableCell>{proposal.responsible.name}</TableCell>
             </TableRow>
           ))}
@@ -69,7 +70,7 @@ export function OverdueReportTables({ report }: { report: OverdueReport }) {
           ) : report.deals.map((deal) => (
             <TableRow key={deal.id}>
               <EntityLinkCell href={`/deals/${deal.id}`} title={deal.title} />
-              <TableCell>{formatRussianDate(deal.nextActionAt)}</TableCell>
+              <DateCell>{formatRussianDate(deal.nextActionAt)}</DateCell>
               <TableCell>{deal.responsible.name}</TableCell>
             </TableRow>
           ))}
@@ -90,7 +91,7 @@ export function OverdueReportTables({ report }: { report: OverdueReport }) {
           ) : report.designers.map((designer) => (
             <TableRow key={designer.id}>
               <EntityLinkCell href={`/designers/${designer.id}`} title={designer.name} />
-              <TableCell>{formatRussianDate(designer.lastTouchAt)}</TableCell>
+              <DateCell>{formatRussianDate(designer.lastTouchAt)}</DateCell>
               <TableCell>{designer.responsible.name}</TableCell>
             </TableRow>
           ))}

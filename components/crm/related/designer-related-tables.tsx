@@ -6,6 +6,7 @@ import {
   TableCard,
   TextLinkCell
 } from "@/components/ui/data-table";
+import { dealStageVariant, objectStatusVariant, proposalStatusVariant } from "@/components/crm/status-variants";
 import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import {
   commercialProposalStatusLabels,
@@ -38,7 +39,7 @@ export function DesignerObjectsTable({ objects }: { objects: DesignerDetail["pro
             <TextLinkCell href={`/clients/${object.client.id}`}>{object.client.name}</TextLinkCell>
             <TableCell>{object.responsible.name}</TableCell>
             <BadgeCell>{objectStageLabels[object.stage]}</BadgeCell>
-            <BadgeCell variant="secondary">{objectStatusLabels[object.status]}</BadgeCell>
+            <BadgeCell variant={objectStatusVariant(object.status)}>{objectStatusLabels[object.status]}</BadgeCell>
           </TableRow>
         ))}
       </TableBody>
@@ -65,7 +66,7 @@ export function DesignerDealsTable({ deals }: { deals: DesignerDetail["deals"] }
           <TableRow key={deal.id}>
             <EntityLinkCell href={`/deals/${deal.id}`} title={deal.title} />
             <TextLinkCell href={`/objects/${deal.projectObject.id}`}>{deal.projectObject.title}</TextLinkCell>
-            <BadgeCell>{dealStageLabels[deal.stage]}</BadgeCell>
+            <BadgeCell variant={dealStageVariant(deal.stage)}>{dealStageLabels[deal.stage]}</BadgeCell>
             <MoneyCell value={deal.potentialAmount} />
             <TableCell>{deal.responsible.name}</TableCell>
           </TableRow>
@@ -96,7 +97,9 @@ export function DesignerProposalsTable({ proposals }: { proposals: DesignerDetai
             <EntityLinkCell href={`/proposals/${proposal.id}`} title={proposal.proposalNumber} />
             <TextLinkCell href={`/deals/${proposal.deal.id}`}>{proposal.deal.title}</TextLinkCell>
             <TextLinkCell href={`/objects/${proposal.projectObject.id}`}>{proposal.projectObject.title}</TextLinkCell>
-            <BadgeCell>{commercialProposalStatusLabels[proposal.status]}</BadgeCell>
+            <BadgeCell variant={proposalStatusVariant(proposal.status)}>
+              {commercialProposalStatusLabels[proposal.status]}
+            </BadgeCell>
             <MoneyCell value={proposal.amount} />
             <TableCell>{proposal.responsible.name}</TableCell>
           </TableRow>

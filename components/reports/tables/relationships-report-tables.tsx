@@ -1,6 +1,7 @@
 import {
   BadgeCell,
   CountCell,
+  DateCell,
   EntityLinkCell,
   EmptyTableRow,
   TableCard
@@ -52,7 +53,7 @@ export function DesignersReportTable({ designers }: { designers: DesignersReport
             <TableCell>{designerLoyaltyLabels[designer.loyalty]}</TableCell>
             <CountCell value={designer.projectObjects.length} />
             <CountCell value={designer.proposals.length} />
-            <TableCell>{formatRussianDate(designer.lastTouchAt)}</TableCell>
+            <DateCell>{formatRussianDate(designer.lastTouchAt)}</DateCell>
           </TableRow>
         ))}
       </TableBody>

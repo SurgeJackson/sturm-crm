@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { ComponentProps, ReactNode } from "react";
+import type { ReactNode } from "react";
 import { Badge, type BadgeProps } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableCell, TableEmptyRow } from "@/components/ui/table";
@@ -91,12 +91,24 @@ export function BadgeCell({
   );
 }
 
-export function SecondaryTextCell({ children }: { children: ReactNode }) {
-  return <TableCell className="text-muted-foreground">{children}</TableCell>;
-}
-
 export function CountCell({ value }: { value: number }) {
   return <TableCell className="tabular-nums">{value}</TableCell>;
+}
+
+export function VersionCell({ value }: { value: number }) {
+  return <TableCell className="tabular-nums">v{value}</TableCell>;
+}
+
+export function BooleanCell({
+  value,
+  trueText = "Да",
+  falseText = "Нет"
+}: {
+  value: boolean;
+  trueText?: string;
+  falseText?: string;
+}) {
+  return <TableCell>{value ? trueText : falseText}</TableCell>;
 }
 
 export function FileLinkCell({ href }: { href?: string | null }) {
@@ -122,10 +134,6 @@ export function DateCell({
       {muted ? <div className="text-xs text-muted-foreground">{muted}</div> : null}
     </TableCell>
   );
-}
-
-export function DateTableCell(props: ComponentProps<typeof DateCell>) {
-  return <DateCell {...props} />;
 }
 
 export function MoneyCell({

@@ -1,11 +1,13 @@
 import { proposalStatusVariant } from "@/components/crm/status-variants";
 import {
   BadgeCell,
+  DateCell,
   EmptyTableRow,
   EntityLinkCell,
   MoneyCell,
   TableCard,
-  TextLinkCell
+  TextLinkCell,
+  VersionCell
 } from "@/components/ui/data-table";
 import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { commercialProposalStatusLabels } from "@/lib/constants";
@@ -39,8 +41,8 @@ export function ObjectProposalsTable({ proposals }: { proposals: ObjectDetail["p
               {commercialProposalStatusLabels[proposal.status]}
             </BadgeCell>
             <MoneyCell value={proposal.amount} />
-            <TableCell>v{proposal.version}</TableCell>
-            <TableCell>{formatRussianDate(proposal.nextTouchAt)}</TableCell>
+            <VersionCell value={proposal.version} />
+            <DateCell>{formatRussianDate(proposal.nextTouchAt)}</DateCell>
             <TableCell>{proposal.responsible.name}</TableCell>
           </TableRow>
         ))}

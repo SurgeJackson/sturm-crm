@@ -1,12 +1,15 @@
 import Link from "next/link";
+import { proposalStatusVariant } from "@/components/crm/status-variants";
 import { Button } from "@/components/ui/button";
 import {
   BadgeCell,
+  DateCell,
   EmptyTableRow,
   EntityLinkCell,
   FileLinkCell,
   MoneyCell,
-  TableCard
+  TableCard,
+  VersionCell
 } from "@/components/ui/data-table";
 import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { commercialProposalStatusLabels } from "@/lib/constants";
@@ -49,11 +52,13 @@ export function DealProposalsTable({
         ) : proposals.map((proposal) => (
           <TableRow key={proposal.id}>
             <EntityLinkCell href={`/proposals/${proposal.id}`} title={proposal.proposalNumber} />
-            <TableCell>v{proposal.version}</TableCell>
-            <BadgeCell>{commercialProposalStatusLabels[proposal.status]}</BadgeCell>
+            <VersionCell value={proposal.version} />
+            <BadgeCell variant={proposalStatusVariant(proposal.status)}>
+              {commercialProposalStatusLabels[proposal.status]}
+            </BadgeCell>
             <MoneyCell value={proposal.amount} />
-            <TableCell>{formatRussianDate(proposal.sentAt)}</TableCell>
-            <TableCell>{formatRussianDate(proposal.nextTouchAt)}</TableCell>
+            <DateCell>{formatRussianDate(proposal.sentAt)}</DateCell>
+            <DateCell>{formatRussianDate(proposal.nextTouchAt)}</DateCell>
             <FileLinkCell href={proposal.fileUrl} />
             <TableCell>{proposal.responsible.name}</TableCell>
           </TableRow>

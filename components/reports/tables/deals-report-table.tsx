@@ -1,5 +1,6 @@
 import {
   BadgeCell,
+  DateCell,
   EntityLinkCell,
   EmptyTableRow,
   MoneyCell,
@@ -42,7 +43,7 @@ export function DealsReportTable({ deals }: { deals: DealsReport["deals"] }) {
             <TableCell>{deal.probability ? dealProbabilityLabels[deal.probability] : "Нет"}</TableCell>
             <MoneyCell value={deal.potentialAmount} emptyText="Нет" />
             <TableCell>{deal.responsible.name}</TableCell>
-            <TableCell>{formatRussianDate(deal.nextActionAt)}</TableCell>
+            <DateCell>{formatRussianDate(deal.nextActionAt)}</DateCell>
           </TableRow>
         ))}
       </TableBody>

@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
 import { DealForm } from "@/components/deals/deal-form";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { FormPageShell } from "@/components/layout/form-page-shell";
 import { prisma } from "@/lib/prisma";
 import { updateDealAction } from "@/modules/deals/actions";
 import { getDealForUser } from "@/modules/deals/queries";
@@ -41,27 +41,18 @@ export default async function EditDealPage({ params }: EditDealPageProps) {
   const action = updateDealAction.bind(null, id);
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold">Редактировать сделку</h1>
-        <p className="mt-1 text-sm text-muted-foreground">{deal.title}</p>
-      </div>
-      <Card>
-        <CardHeader><CardTitle>Основное</CardTitle></CardHeader>
-        <CardContent>
-          <DealForm
-            action={action}
-            deal={deal}
-            users={users}
-            clients={clients}
-            objects={objects}
-            designers={designers}
-            currentUserId={user.id}
-            canChangeResponsible={canChangeDealResponsible(user)}
-            submitLabel="Сохранить"
-          />
-        </CardContent>
-      </Card>
-    </div>
+    <FormPageShell title="Редактировать сделку" description={deal.title} cardTitle="Основное">
+      <DealForm
+        action={action}
+        deal={deal}
+        users={users}
+        clients={clients}
+        objects={objects}
+        designers={designers}
+        currentUserId={user.id}
+        canChangeResponsible={canChangeDealResponsible(user)}
+        submitLabel="Сохранить"
+      />
+    </FormPageShell>
   );
 }

@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
+import { FormPageShell } from "@/components/layout/form-page-shell";
 import { ProposalForm } from "@/components/proposals/proposal-form";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { prisma } from "@/lib/prisma";
 import { createProposalAction } from "@/modules/proposals/actions";
 import { getAssignableUsers } from "@/modules/users/queries";
@@ -38,25 +38,16 @@ export default async function NewProposalPage({ searchParams }: NewProposalPageP
   ]);
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold">Создать КП</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Выберите сделку, сумму, статус, получателя и файл КП.</p>
-      </div>
-      <Card>
-        <CardHeader><CardTitle>Основное</CardTitle></CardHeader>
-        <CardContent>
-          <ProposalForm
-            action={createProposalAction}
-            deals={deals}
-            users={users}
-            currentUserId={user.id}
-            canChangeResponsible={canChangeProposalResponsible(user)}
-            preselectedDealId={query.dealId}
-            submitLabel="Сохранить"
-          />
-        </CardContent>
-      </Card>
-    </div>
+    <FormPageShell title="Создать КП" description="Выберите сделку, сумму, статус, получателя и файл КП." cardTitle="Основное">
+      <ProposalForm
+        action={createProposalAction}
+        deals={deals}
+        users={users}
+        currentUserId={user.id}
+        canChangeResponsible={canChangeProposalResponsible(user)}
+        preselectedDealId={query.dealId}
+        submitLabel="Сохранить"
+      />
+    </FormPageShell>
   );
 }

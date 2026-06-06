@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
+import { FormPageShell } from "@/components/layout/form-page-shell";
 import { TaskActivityForm, type TaskFormDefaults } from "@/components/tasks/task-activity-form";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { createTaskAction } from "@/modules/tasks/actions";
 import { getTaskFormContext } from "@/modules/tasks/queries";
 import { canChangeTaskResponsible, canCreateTask } from "@/permissions";
@@ -19,24 +19,19 @@ export default async function NewTaskPage({ searchParams }: NewTaskPageProps) {
   const context = await getTaskFormContext(user);
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold">{defaults.recordType === "TOUCH" ? "Зафиксировать касание" : "Создать задачу"}</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Свяжите действие с клиентом, дизайнером, объектом, сделкой, КП или участником объекта.</p>
-      </div>
-      <Card>
-        <CardHeader><CardTitle>Данные записи</CardTitle></CardHeader>
-        <CardContent>
-          <TaskActivityForm
-            action={createTaskAction}
-            {...context}
-            currentUserId={user.id}
-            canChangeResponsible={canChangeTaskResponsible(user)}
-            defaults={defaults}
-            submitLabel="Сохранить"
-          />
-        </CardContent>
-      </Card>
-    </div>
+    <FormPageShell
+      title={defaults.recordType === "TOUCH" ? "Зафиксировать касание" : "Создать задачу"}
+      description="Свяжите действие с клиентом, дизайнером, объектом, сделкой, КП или участником объекта."
+      cardTitle="Данные записи"
+    >
+      <TaskActivityForm
+        action={createTaskAction}
+        {...context}
+        currentUserId={user.id}
+        canChangeResponsible={canChangeTaskResponsible(user)}
+        defaults={defaults}
+        submitLabel="Сохранить"
+      />
+    </FormPageShell>
   );
 }

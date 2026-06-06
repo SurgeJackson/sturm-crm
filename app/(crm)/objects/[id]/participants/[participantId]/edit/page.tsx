@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
+import { FormPageShell } from "@/components/layout/form-page-shell";
 import { ProjectObjectParticipantForm } from "@/components/objects/project-object-participant-form";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { updateProjectObjectParticipantAction } from "@/modules/objects/actions";
 import { getProjectObjectParticipantForUser } from "@/modules/objects/queries";
 import { getAssignableUsers } from "@/modules/users/queries";
@@ -26,23 +26,14 @@ export default async function EditObjectParticipantPage({ params }: EditParticip
   const action = updateProjectObjectParticipantAction.bind(null, id, participantId);
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold">Редактировать участника</h1>
-        <p className="mt-1 text-sm text-muted-foreground">{object.title}</p>
-      </div>
-      <Card>
-        <CardHeader><CardTitle>{participant.fullName}</CardTitle></CardHeader>
-        <CardContent>
-          <ProjectObjectParticipantForm
-            action={action}
-            participant={participant}
-            users={users}
-            currentUserId={user.id}
-            submitLabel="Сохранить"
-          />
-        </CardContent>
-      </Card>
-    </div>
+    <FormPageShell title="Редактировать участника" description={object.title} cardTitle={participant.fullName}>
+      <ProjectObjectParticipantForm
+        action={action}
+        participant={participant}
+        users={users}
+        currentUserId={user.id}
+        submitLabel="Сохранить"
+      />
+    </FormPageShell>
   );
 }

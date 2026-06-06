@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { BadgeCell, EmptyTableRow, EntityLinkCell, MoneyCell, TableCard } from "@/components/ui/data-table";
+import { BadgeCell, DateCell, EmptyTableRow, EntityLinkCell, MoneyCell, TableCard } from "@/components/ui/data-table";
 import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { dealStageVariant } from "@/components/crm/status-variants";
 import { dealProbabilityLabels, dealStageLabels } from "@/lib/constants";
@@ -39,7 +39,7 @@ export function ObjectDealsTable({ objectId, deals }: { objectId: string; deals:
             <MoneyCell value={deal.potentialAmount} />
             <TableCell>{deal.probability ? dealProbabilityLabels[deal.probability] : "Не выбрана"}</TableCell>
             <TableCell>{deal.responsible.name}</TableCell>
-            <TableCell>{formatRussianDate(deal.nextActionAt)}</TableCell>
+            <DateCell>{formatRussianDate(deal.nextActionAt)}</DateCell>
           </TableRow>
         ))}
       </TableBody>
