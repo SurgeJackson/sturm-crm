@@ -391,6 +391,7 @@ export const ModelName = {
   ProjectObjectParticipant: 'ProjectObjectParticipant',
   Deal: 'Deal',
   CommercialProposal: 'CommercialProposal',
+  ProposalCounter: 'ProposalCounter',
   TaskActivity: 'TaskActivity',
   AuditLog: 'AuditLog',
   CrmViolation: 'CrmViolation'
@@ -409,7 +410,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "client" | "designer" | "projectObject" | "projectObjectParticipant" | "deal" | "commercialProposal" | "taskActivity" | "auditLog" | "crmViolation"
+    modelProps: "user" | "client" | "designer" | "projectObject" | "projectObjectParticipant" | "deal" | "commercialProposal" | "proposalCounter" | "taskActivity" | "auditLog" | "crmViolation"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -931,6 +932,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ProposalCounter: {
+      payload: Prisma.$ProposalCounterPayload<ExtArgs>
+      fields: Prisma.ProposalCounterFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ProposalCounterFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProposalCounterPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ProposalCounterFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProposalCounterPayload>
+        }
+        findFirst: {
+          args: Prisma.ProposalCounterFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProposalCounterPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ProposalCounterFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProposalCounterPayload>
+        }
+        findMany: {
+          args: Prisma.ProposalCounterFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProposalCounterPayload>[]
+        }
+        create: {
+          args: Prisma.ProposalCounterCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProposalCounterPayload>
+        }
+        createMany: {
+          args: Prisma.ProposalCounterCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ProposalCounterCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProposalCounterPayload>[]
+        }
+        delete: {
+          args: Prisma.ProposalCounterDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProposalCounterPayload>
+        }
+        update: {
+          args: Prisma.ProposalCounterUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProposalCounterPayload>
+        }
+        deleteMany: {
+          args: Prisma.ProposalCounterDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ProposalCounterUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ProposalCounterUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProposalCounterPayload>[]
+        }
+        upsert: {
+          args: Prisma.ProposalCounterUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProposalCounterPayload>
+        }
+        aggregate: {
+          args: Prisma.ProposalCounterAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProposalCounter>
+        }
+        groupBy: {
+          args: Prisma.ProposalCounterGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProposalCounterGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ProposalCounterCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProposalCounterCountAggregateOutputType> | number
+        }
+      }
+    }
     TaskActivity: {
       payload: Prisma.$TaskActivityPayload<ExtArgs>
       fields: Prisma.TaskActivityFieldRefs
@@ -1394,6 +1469,16 @@ export const CommercialProposalScalarFieldEnum = {
 export type CommercialProposalScalarFieldEnum = (typeof CommercialProposalScalarFieldEnum)[keyof typeof CommercialProposalScalarFieldEnum]
 
 
+export const ProposalCounterScalarFieldEnum = {
+  year: 'year',
+  nextNumber: 'nextNumber',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProposalCounterScalarFieldEnum = (typeof ProposalCounterScalarFieldEnum)[keyof typeof ProposalCounterScalarFieldEnum]
+
+
 export const TaskActivityScalarFieldEnum = {
   id: 'id',
   recordType: 'recordType',
@@ -1415,6 +1500,7 @@ export const TaskActivityScalarFieldEnum = {
   result: 'result',
   nextStepText: 'nextStepText',
   nextStepAt: 'nextStepAt',
+  nextStepSourceTaskId: 'nextStepSourceTaskId',
   isAutoCreated: 'isAutoCreated',
   autoRule: 'autoRule',
   archivedAt: 'archivedAt',
@@ -2205,6 +2291,7 @@ export type GlobalOmitConfig = {
   projectObjectParticipant?: Prisma.ProjectObjectParticipantOmit
   deal?: Prisma.DealOmit
   commercialProposal?: Prisma.CommercialProposalOmit
+  proposalCounter?: Prisma.ProposalCounterOmit
   taskActivity?: Prisma.TaskActivityOmit
   auditLog?: Prisma.AuditLogOmit
   crmViolation?: Prisma.CrmViolationOmit

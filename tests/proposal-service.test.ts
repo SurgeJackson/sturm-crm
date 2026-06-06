@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { CommercialProposal } from "../generated/prisma/client";
-import { proposalVersionDocument } from "../modules/proposals/service";
+import { formatProposalNumber, proposalVersionDocument } from "../modules/proposals/service";
 
 function proposal(overrides: Partial<CommercialProposal> = {}): CommercialProposal {
   const now = new Date("2026-01-10T12:00:00.000Z");
@@ -43,6 +43,11 @@ function proposal(overrides: Partial<CommercialProposal> = {}): CommercialPropos
 }
 
 describe("proposalVersionDocument", () => {
+  it("formats proposal numbers with a year prefix and padded sequence", () => {
+    expect(formatProposalNumber(2026, 9)).toBe("КП-2026-0009");
+    expect(formatProposalNumber(2026, 120)).toBe("КП-2026-0120");
+  });
+
   it("creates a draft version while preserving commercial context", () => {
     const document = proposalVersionDocument(
       proposal({ parentProposalId: "root-proposal", version: 3 }),

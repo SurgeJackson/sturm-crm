@@ -13,10 +13,10 @@ CREATE UNIQUE INDEX "TaskActivity_active_designer_reactivation_uidx"
     AND "status" NOT IN ('DONE', 'CANCELLED', 'CLOSED');
 
 CREATE UNIQUE INDEX "TaskActivity_active_frozen_object_return_uidx"
-  ON "TaskActivity"("objectId")
+  ON "TaskActivity"("projectObjectId")
   WHERE "archivedAt" IS NULL
     AND "autoRule" = 'FROZEN_OBJECT_RETURN'
-    AND "objectId" IS NOT NULL
+    AND "projectObjectId" IS NOT NULL
     AND "status" NOT IN ('DONE', 'CANCELLED', 'CLOSED');
 
 CREATE UNIQUE INDEX "TaskActivity_active_deal_next_step_uidx"

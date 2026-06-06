@@ -3,7 +3,9 @@ import { roleLabels } from "../lib/constants";
 import { enumParam, flagParam, upperEnumParam } from "../modules/crm/param-parsing";
 import { namedAmountRows, namedCountRows, uniqueIds } from "../modules/dashboard/utils";
 import { isFrozenObjectTransition } from "../modules/objects/service";
+import type { TaskActivity } from "../generated/prisma/client";
 import { automaticTaskCreateData, automaticTaskDedupeWhere } from "../modules/tasks/automatic-tasks";
+import { nextStepTaskCreateData } from "../modules/tasks/next-step-service";
 import { buildEmployeeActivityRows } from "../modules/reports/activity";
 
 describe("query parameter parsing", () => {
@@ -77,6 +79,42 @@ describe("automatic task helpers", () => {
       dealId: "deal-1",
       proposalId: "proposal-1",
       notes: "Follow-up по КП КП-2026-0001"
+    });
+  });
+});
+
+describe("next-step task helpers", () => {
+  it("links a generated next-step task to its source task", () => {
+    const dueAt = new Date("2026-01-03T09:00:00.000Z");
+    const source = {
+      id: "task-1",
+      recordType: "TOUCH",
+      title: "Первичный звонок",
+      responsibleId: "manager-1",
+      clientId: "client-1",
+      designerId: null,
+      objectId: null,
+      dealId: "deal-1",
+      proposalId: null,
+      objectParticipantId: null,
+      priority: "HIGH",
+      nextStepText: "Отправить подборку",
+      nextStepAt: dueAt
+    } as TaskActivity;
+
+    expect(nextStepTaskCreateData(source, "creator-1")).toMatchObject({
+      recordType: "TASK",
+      actionType: "FOLLOW_UP",
+      title: "Отправить подборку",
+      description: "Следующий шаг после касания: Первичный звонок",
+      responsibleId: "manager-1",
+      createdById: "creator-1",
+      clientId: "client-1",
+      dealId: "deal-1",
+      nextStepSourceTaskId: "task-1",
+      status: "NEW",
+      priority: "HIGH",
+      dueAt
     });
   });
 });

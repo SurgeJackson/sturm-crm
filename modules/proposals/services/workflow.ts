@@ -5,20 +5,21 @@ import { expireViolationsForEntity, syncProposalDiscipline } from "@/modules/crm
 import { toProposalDocument, type ProposalFileData, type ProposalFormData } from "@/modules/proposals/form";
 import { proposalStatusAuditEvents, proposalTrackedFields } from "@/modules/proposals/services/audit";
 import { createProposalFollowUpTask } from "@/modules/proposals/services/follow-up";
+import { reserveProposalNumber } from "@/modules/proposals/services/numbering";
 
 export async function createProposal(input: {
   data: ProposalFormData;
   deal: { clientId: string; objectId: string; designerId: string | null; responsibleId: string };
   responsibleId: string;
-  proposalNumber: string;
   userId: string;
   fileData?: ProposalFileData;
 }) {
   const proposal = await prisma.$transaction(async (tx) => {
+    const proposalNumber = await reserveProposalNumber(tx);
     const created = await tx.commercialProposal.create({
       data: {
         ...toProposalDocument(input.data, input.deal, input.responsibleId, null, input.fileData),
-        proposalNumber: input.proposalNumber,
+        proposalNumber,
         version: 1,
         parentProposalId: null,
         createdById: input.userId

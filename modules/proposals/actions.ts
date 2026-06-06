@@ -20,7 +20,6 @@ import {
   archiveProposal,
   createProposal,
   createProposalVersion,
-  generateProposalNumber,
   getDealForProposal,
   getProposalForMutation,
   getProposalWithDealForMutation,
@@ -52,7 +51,6 @@ export async function createProposalAction(_prevState: ProposalActionState, form
   }
 
   const responsibleId = canChangeProposalResponsible(user) ? parsed.data.responsibleId : deal.responsibleId;
-  const proposalNumber = await generateProposalNumber();
   const document = toProposalDocument(parsed.data, deal, responsibleId, null, fileData);
   const sentError = await ensureSentRequirements(document.status, document.fileUrl, parsed.data);
   if (sentError) return { message: sentError };
@@ -61,7 +59,6 @@ export async function createProposalAction(_prevState: ProposalActionState, form
     data: parsed.data,
     deal,
     responsibleId,
-    proposalNumber,
     userId: user.id,
     fileData
   });

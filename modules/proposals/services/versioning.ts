@@ -2,7 +2,7 @@ import type { CommercialProposal } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { writeEntityAuditLog } from "@/modules/crm/audit-helpers";
 import { syncProposalDiscipline } from "@/modules/crm-discipline/service";
-import { generateProposalNumber } from "@/modules/proposals/services/numbering";
+import { reserveProposalNumber } from "@/modules/proposals/services/numbering";
 
 export function proposalVersionDocument(
   source: CommercialProposal,
@@ -46,15 +46,18 @@ export function proposalVersionDocument(
 
 export async function createProposalVersion(source: CommercialProposal, userId: string) {
   const rootId = source.parentProposalId ?? source.id;
-  const latest = await prisma.commercialProposal.findFirst({
-    where: { OR: [{ id: rootId }, { parentProposalId: rootId }] },
-    orderBy: { version: "desc" },
-    select: { version: true }
-  });
-  const proposalNumber = await generateProposalNumber();
-  const nextVersion = (latest?.version ?? source.version) + 1;
 
   const newProposal = await prisma.$transaction(async (tx) => {
+    await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${rootId}))`;
+
+    const latest = await tx.commercialProposal.findFirst({
+      where: { OR: [{ id: rootId }, { parentProposalId: rootId }] },
+      orderBy: { version: "desc" },
+      select: { version: true }
+    });
+    const proposalNumber = await reserveProposalNumber(tx);
+    const nextVersion = (latest?.version ?? source.version) + 1;
+
     const created = await tx.commercialProposal.create({
       data: proposalVersionDocument(source, proposalNumber, nextVersion, rootId, userId)
     });

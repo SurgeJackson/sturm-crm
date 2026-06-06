@@ -672,33 +672,41 @@ model CommercialProposal {
   @@index([responsibleId, createdAt])
 }
 
+model ProposalCounter {
+  year       Int      @id
+  nextNumber Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
 model TaskActivity {
-  id                  String         @id @default(cuid())
-  recordType          TaskRecordType @default(TASK)
-  actionType          TaskActionType @default(OTHER)
-  title               String
-  description         String?
-  responsibleId       String
-  createdById         String
-  clientId            String?
-  designerId          String?
-  objectId            String?        @map("projectObjectId")
-  dealId              String?
-  proposalId          String?
-  objectParticipantId String?
-  status              TaskStatus     @default(NEW)
-  priority            TaskPriority   @default(NORMAL)
-  dueAt               DateTime?
-  completedAt         DateTime?
-  result              String?
-  nextStepText        String?
-  nextStepAt          DateTime?
-  isAutoCreated       Boolean        @default(false)
-  autoRule            TaskAutoRule?
-  archivedAt          DateTime?
-  createdAt           DateTime       @default(now())
-  updatedAt           DateTime       @updatedAt
-  notes               String?
+  id                   String         @id @default(cuid())
+  recordType           TaskRecordType @default(TASK)
+  actionType           TaskActionType @default(OTHER)
+  title                String
+  description          String?
+  responsibleId        String
+  createdById          String
+  clientId             String?
+  designerId           String?
+  objectId             String?        @map("projectObjectId")
+  dealId               String?
+  proposalId           String?
+  objectParticipantId  String?
+  status               TaskStatus     @default(NEW)
+  priority             TaskPriority   @default(NORMAL)
+  dueAt                DateTime?
+  completedAt          DateTime?
+  result               String?
+  nextStepText         String?
+  nextStepAt           DateTime?
+  nextStepSourceTaskId String?        @unique
+  isAutoCreated        Boolean        @default(false)
+  autoRule             TaskAutoRule?
+  archivedAt           DateTime?
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
+  notes                String?
 
   responsible       User                      @relation("TaskResponsible", fields: [responsibleId], references: [id])
   createdBy         User                      @relation("TaskCreatedBy", fields: [createdById], references: [id])

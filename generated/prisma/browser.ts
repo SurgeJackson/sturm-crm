@@ -53,6 +53,11 @@ export type Deal = Prisma.DealModel
  */
 export type CommercialProposal = Prisma.CommercialProposalModel
 /**
+ * Model ProposalCounter
+ *
+ */
+export type ProposalCounter = Prisma.ProposalCounterModel
+/**
  * Model TaskActivity
  *
  */
