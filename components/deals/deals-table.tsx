@@ -1,5 +1,5 @@
-import { BonusEligibilityBadge, CrmDisciplineBadge } from "@/components/crm/discipline/badges";
 import { dealStageVariant } from "@/components/crm/status-variants";
+import { BonusEligibilityCell, CrmDisciplineCell } from "@/components/crm/table-cells";
 import {
   BadgeCell,
   DateCell,
@@ -64,8 +64,8 @@ export function DealsTable({ deals }: { deals: DealItem[] }) {
               <DateCell warning={isOverdue(deal.nextActionAt, deal.stage)} muted={deal.nextActionText || "Нет шага"}>
                 {formatRussianDate(deal.nextActionAt)}
               </DateCell>
-              <TableCell><CrmDisciplineBadge violations={deal.crmViolations} /></TableCell>
-              <TableCell><BonusEligibilityBadge violations={deal.crmViolations} /></TableCell>
+              <CrmDisciplineCell violations={deal.crmViolations} />
+              <BonusEligibilityCell violations={deal.crmViolations} />
             </TableRow>
           ))
         )}

@@ -9,13 +9,12 @@ import {
   FormField,
   FormMessage,
   FormSection,
+  ResponsibleField,
   SelectField,
   TextareaField,
   TextField,
   dateInputValue
 } from "@/components/crm/form-fields";
-import { Input } from "@/components/ui/input";
-import { NativeSelect } from "@/components/ui/native-select";
 import type { ProjectObjectActionState } from "@/modules/objects/actions";
 import {
   objectInterestCategoryOptions,
@@ -94,26 +93,13 @@ export function ProjectObjectForm({
             </option>
           ))}
         </SelectField>
-        <FormField name="responsibleId" label="Ответственный STURM *" state={state}>
-          {canChangeResponsible ? (
-            <NativeSelect
-              id="responsibleId"
-              name="responsibleId"
-              defaultValue={responsibleId}
-            >
-              {users.map((user) => (
-                <option key={user.id} value={user.id}>
-                  {user.name}
-                </option>
-              ))}
-            </NativeSelect>
-          ) : (
-            <>
-              <Input value={users.find((user) => user.id === responsibleId)?.name ?? "Текущий пользователь"} disabled />
-              <input type="hidden" name="responsibleId" value={responsibleId} />
-            </>
-          )}
-        </FormField>
+        <ResponsibleField
+          users={users}
+          responsibleId={responsibleId}
+          canChangeResponsible={canChangeResponsible}
+          state={state}
+          label="Ответственный STURM *"
+        />
         <SelectField
           name="stage"
           label="Стадия *"

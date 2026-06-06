@@ -1,5 +1,5 @@
-import { BonusEligibilityBadge, CrmDisciplineBadge } from "@/components/crm/discipline/badges";
 import { proposalStatusVariant } from "@/components/crm/status-variants";
+import { BonusEligibilityCell, CrmDisciplineCell } from "@/components/crm/table-cells";
 import {
   BadgeCell,
   DateCell,
@@ -51,8 +51,8 @@ export function ProposalsTable({ proposals }: { proposals: ProposalItem[] }) {
               <DateCell>{formatRussianDate(proposal.sentAt)}</DateCell>
               <DateCell>{formatRussianDate(proposal.nextTouchAt)}</DateCell>
               <FileLinkCell href={proposal.fileUrl} />
-              <TableCell><CrmDisciplineBadge violations={proposal.crmViolations} /></TableCell>
-              <TableCell><BonusEligibilityBadge violations={proposal.crmViolations} /></TableCell>
+              <CrmDisciplineCell violations={proposal.crmViolations} />
+              <BonusEligibilityCell violations={proposal.crmViolations} />
             </TableRow>
           ))
         )}

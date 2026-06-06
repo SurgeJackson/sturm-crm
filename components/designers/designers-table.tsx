@@ -1,5 +1,5 @@
-import { CrmDisciplineBadge } from "@/components/crm/discipline/badges";
 import { designerPotentialVariant } from "@/components/crm/status-variants";
+import { CrmDisciplineCell } from "@/components/crm/table-cells";
 import { BadgeCell, DateCell, EmptyTableRow, EntityLinkCell, TableCard } from "@/components/ui/data-table";
 import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import {
@@ -47,7 +47,7 @@ export function DesignersTable({ designers }: { designers: DesignerItem[] }) {
               <DateCell warning={isOverdue(designer.nextStepAt)} muted={designer.nextStepText ?? "Не указан"}>
                 {formatRussianDate(designer.nextStepAt)}
               </DateCell>
-              <TableCell><CrmDisciplineBadge violations={designer.crmViolations} /></TableCell>
+              <CrmDisciplineCell violations={designer.crmViolations} />
             </TableRow>
           ))
         )}

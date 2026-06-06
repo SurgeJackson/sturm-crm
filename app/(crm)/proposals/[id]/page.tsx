@@ -1,26 +1,14 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Plus } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
+import { ProposalHeaderBadges } from "@/components/crm/detail-header-badges";
+import { ProposalDetailTabs } from "@/components/crm/detail-tabs/proposal-detail-tabs";
 import {
   ActionPromptCard,
-  AuditLogCard,
-  EntityDetailShell,
-  EntityDetailTabs,
-  EntityTasksCard,
-  TextBlock
+  EntityDetailShell
 } from "@/components/crm/detail-page";
-import { EntityDetailsCard } from "@/components/crm/detail";
-import { ProposalVersionsTable } from "@/components/crm/related";
-import { proposalStatusVariant } from "@/components/crm/status-variants";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { getAuditLogs } from "@/lib/audit-log";
-import {
-  commercialProposalStatusLabels,
-  proposalDeclineReasonLabels,
-  recipientTypeLabels
-} from "@/lib/constants";
 import {
   archiveProposalAction,
   createProposalVersionAction,
@@ -28,9 +16,6 @@ import {
 } from "@/modules/proposals/actions";
 import { getProposalForUser, getProposalVersionGroup } from "@/modules/proposals/queries";
 import { canArchiveRecord, canCreateTask, canEditRecord } from "@/permissions";
-import { formatRussianDate } from "@/utils/date";
-import { formatMoney } from "@/utils/money";
-import { buildTaskHref } from "@/utils/task-href";
 
 type ProposalPageProps = {
   params: Promise<{ id: string }>;
@@ -55,13 +40,7 @@ export default async function ProposalPage({ params, searchParams }: ProposalPag
   return (
     <EntityDetailShell
       title={proposal.proposalNumber}
-      badges={
-        <>
-          <Badge variant={proposalStatusVariant(proposal.status)}>{commercialProposalStatusLabels[proposal.status]}</Badge>
-          <Badge variant="outline">v{proposal.version}</Badge>
-            <Badge variant="outline">{formatMoney(proposal.amount, "0 ₽")}</Badge>
-        </>
-      }
+      badges={<ProposalHeaderBadges status={proposal.status} version={proposal.version} amount={proposal.amount} />}
       editHref={`/proposals/${id}/edit`}
       canEdit={canEditRecord(user, proposal)}
       actions={canEditRecord(user, proposal) ? (
@@ -101,74 +80,13 @@ export default async function ProposalPage({ params, searchParams }: ProposalPag
         />
       ) : null}
 
-      <EntityDetailTabs
-        tabs={[
-          {
-            value: "main",
-            label: "Основное",
-            content: (
-              <EntityDetailsCard
-                title="Данные КП"
-                fields={[
-                  { label: "Сделка", value: proposal.deal.title },
-                  { label: "Клиент", value: proposal.client.name },
-                  { label: "Объект", value: proposal.projectObject.title },
-                  { label: "Дизайнер", value: proposal.designer?.name },
-                  { label: "Ответственный", value: proposal.responsible.name },
-                  { label: "Создал", value: proposal.createdBy.name },
-                  { label: "Сумма", value: formatMoney(proposal.amount, "0 ₽") },
-                  { label: "Скидка, %", value: proposal.discountPercent },
-                  { label: "Скидка, сумма", value: formatMoney(proposal.discountAmount, "0 ₽") },
-                  { label: "Получатель", value: proposal.recipientName },
-                  { label: "Тип получателя", value: proposal.recipientType ? recipientTypeLabels[proposal.recipientType] : null },
-                  { label: "Контакт получателя", value: proposal.recipientContact },
-                  { label: "Кто согласует", value: proposal.approvalRequiredFrom },
-                  { label: "Дата отправки", value: formatRussianDate(proposal.sentAt) },
-                  { label: "Следующее касание", value: formatRussianDate(proposal.nextTouchAt) },
-                  { label: "Файл", value: proposal.fileName },
-                  { label: "Загрузил", value: proposal.uploadedBy?.name },
-                  { label: "Причина отклонения", value: proposal.declineReason ? proposalDeclineReasonLabels[proposal.declineReason] : null }
-                ]}
-                footer={
-                  <div className="grid gap-4 md:grid-cols-2">
-                    <TextBlock label="Файл КП">
-                      {proposal.fileUrl ? <Link className="hover:underline" href={proposal.fileUrl}>Скачать {proposal.fileName}</Link> : "Файл не прикреплен."}
-                    </TextBlock>
-                    <TextBlock label="Комментарий">{proposal.comment || "Комментариев пока нет."}</TextBlock>
-                  </div>
-                }
-              />
-            )
-          },
-          {
-            value: "versions",
-            label: "Версии",
-            content: (
-              <ProposalVersionsTable
-                versions={versions}
-                canCreateVersion={canEditRecord(user, proposal)}
-                createVersionAction={createVersionAction}
-              />
-            )
-          },
-          {
-            value: "tasks",
-            label: "Задачи / касания",
-            content: (
-              <EntityTasksCard
-                items={proposal.tasks}
-                canCreate={canCreateTask(user)}
-                taskHref={buildTaskHref({ proposalId: proposal.id, dealId: proposal.dealId, clientId: proposal.clientId, objectId: proposal.objectId, responsibleId: proposal.responsibleId, designerId: proposal.designerId })}
-                touchHref={buildTaskHref({ recordType: "TOUCH", proposalId: proposal.id, dealId: proposal.dealId, clientId: proposal.clientId, objectId: proposal.objectId, responsibleId: proposal.responsibleId, designerId: proposal.designerId })}
-              />
-            )
-          },
-          {
-            value: "audit",
-            label: "История изменений",
-            content: <AuditLogCard logs={auditLogs} formatDate={formatRussianDate} />
-          }
-        ]}
+      <ProposalDetailTabs
+        proposal={proposal}
+        versions={versions}
+        auditLogs={auditLogs}
+        canCreateTasks={canCreateTask(user)}
+        canCreateVersion={canEditRecord(user, proposal)}
+        createVersionAction={createVersionAction}
       />
     </EntityDetailShell>
   );

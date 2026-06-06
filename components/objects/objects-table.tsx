@@ -1,5 +1,5 @@
-import { BonusEligibilityBadge, CrmDisciplineBadge } from "@/components/crm/discipline/badges";
 import { objectStatusVariant } from "@/components/crm/status-variants";
+import { BonusEligibilityCell, CrmDisciplineCell } from "@/components/crm/table-cells";
 import { BadgeCell, EmptyTableRow, EntityLinkCell, MutedCell, TableCard, TextLinkCell } from "@/components/ui/data-table";
 import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { objectStageLabels, objectStatusLabels, objectTypeLabels } from "@/lib/constants";
@@ -44,8 +44,8 @@ export function ObjectsTable({ objects }: { objects: ObjectItem[] }) {
               <TableCell>{object.responsible.name}</TableCell>
               <BadgeCell>{objectStageLabels[object.stage]}</BadgeCell>
               <BadgeCell variant={objectStatusVariant(object.status)}>{objectStatusLabels[object.status]}</BadgeCell>
-              <TableCell><CrmDisciplineBadge violations={object.crmViolations} /></TableCell>
-              <TableCell><BonusEligibilityBadge violations={object.crmViolations} /></TableCell>
+              <CrmDisciplineCell violations={object.crmViolations} />
+              <BonusEligibilityCell violations={object.crmViolations} />
             </TableRow>
           ))
         )}

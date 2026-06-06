@@ -1,26 +1,13 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
+import { ObjectHeaderBadges } from "@/components/crm/detail-header-badges";
 import {
   ActionPromptCard,
-  AuditLogCard,
-  EntityDetailShell,
-  EntityDetailTabs,
-  EntityInfoCard,
-  EntityTasksCard,
-  TextBlock
+  EntityDetailShell
 } from "@/components/crm/detail-page";
-import { EntityDetailsCard } from "@/components/crm/detail";
-import { ObjectDealsTable, ObjectParticipantsTables, ObjectProposalsTable } from "@/components/crm/related";
-import { objectStatusVariant } from "@/components/crm/status-variants";
-import { Badge } from "@/components/ui/badge";
+import { ObjectDetailTabs } from "@/components/crm/detail-tabs/object-detail-tabs";
 import { Button } from "@/components/ui/button";
 import { getAuditLogs } from "@/lib/audit-log";
-import {
-  objectInterestCategoryLabels,
-  objectStageLabels,
-  objectStatusLabels,
-  objectTypeLabels
-} from "@/lib/constants";
 import {
   archiveProjectObjectAction,
   archiveProjectObjectParticipantAction,
@@ -28,9 +15,6 @@ import {
 } from "@/modules/objects/actions";
 import { getProjectObjectForUser } from "@/modules/objects/queries";
 import { canArchiveRecord, canCreateTask, canEditRecord, canManageObjectParticipants } from "@/permissions";
-import { formatRussianDate } from "@/utils/date";
-import { formatMoney } from "@/utils/money";
-import { buildTaskHref } from "@/utils/task-href";
 
 type ObjectPageProps = {
   params: Promise<{ id: string }>;
@@ -80,20 +64,12 @@ export default async function ObjectPage({ params, searchParams }: ObjectPagePro
   const archiveAction = archiveProjectObjectAction.bind(null, id);
   const moveDesignerStageAction = moveDesignerToFirstObjectReceivedAction.bind(null, id);
   const archiveParticipantAction = (participantId: string) => archiveProjectObjectParticipantAction.bind(null, id, participantId);
-  const purchaseInfluencers = projectObject.participants.filter((participant) => participant.participantType === "PURCHASE_INFLUENCER");
-  const implementationContacts = projectObject.participants.filter((participant) => participant.participantType === "IMPLEMENTATION_CONTACT");
   const canManageParticipants = canManageObjectParticipants(user, projectObject);
 
   return (
     <EntityDetailShell
       title={projectObject.title}
-      badges={
-        <>
-          <Badge variant="outline">{objectTypeLabels[projectObject.objectType]}</Badge>
-          <Badge variant="outline">{objectStageLabels[projectObject.stage]}</Badge>
-          <Badge variant={objectStatusVariant(projectObject.status)}>{objectStatusLabels[projectObject.status]}</Badge>
-        </>
-      }
+      badges={<ObjectHeaderBadges objectType={projectObject.objectType} stage={projectObject.stage} status={projectObject.status} />}
       editHref={`/objects/${id}/edit`}
       canEdit={canEditRecord(user, projectObject)}
       archiveAction={archiveAction}
@@ -131,106 +107,13 @@ export default async function ObjectPage({ params, searchParams }: ObjectPagePro
         />
       ) : null}
 
-      <EntityDetailTabs
-        tabs={[
-          {
-            value: "main",
-            label: "Основное",
-            content: (
-              <EntityDetailsCard
-                title="Данные объекта"
-                fields={[
-                  { label: "Город", value: projectObject.city },
-                  { label: "Регион", value: projectObject.region },
-                  { label: "Адрес", value: projectObject.address },
-                  { label: "Клиент", value: projectObject.client.name },
-                  { label: "Дизайнер", value: projectObject.designer?.name },
-                  { label: "Ответственный", value: projectObject.responsible.name },
-                  { label: "Создал", value: projectObject.createdBy.name },
-                  { label: "Начало реализации", value: formatRussianDate(projectObject.implementationStartAt) },
-                  { label: "Завершение реализации", value: formatRussianDate(projectObject.implementationEndAt) },
-                  { label: "Бюджет", value: formatMoney(projectObject.budget, "Нет данных") },
-                  { label: "Количество санузлов", value: projectObject.bathroomsCount },
-                  { label: "Создан", value: formatRussianDate(projectObject.createdAt) }
-                ]}
-                footer={
-                  <div className="space-y-4">
-                    <div>
-                      <div className="text-xs text-muted-foreground">Категории интереса</div>
-                      <div className="mt-2 flex flex-wrap gap-2">
-                        {projectObject.interestCategories.length === 0 ? (
-                          <span className="text-sm text-muted-foreground">Не указаны</span>
-                        ) : (
-                          projectObject.interestCategories.map((category) => (
-                            <Badge key={category} variant="outline">{objectInterestCategoryLabels[category]}</Badge>
-                          ))
-                        )}
-                      </div>
-                    </div>
-                    <TextBlock label="Комментарий">{projectObject.comment || "Комментариев пока нет."}</TextBlock>
-                  </div>
-                }
-              />
-            )
-          },
-          {
-            value: "participants",
-            label: "Участники",
-            content: (
-              <ObjectParticipantsTables
-                objectId={id}
-                purchaseInfluencers={purchaseInfluencers}
-                implementationContacts={implementationContacts}
-                canManageParticipants={canManageParticipants}
-                archiveParticipantAction={archiveParticipantAction}
-              />
-            )
-          },
-          {
-            value: "deals",
-            label: "Сделки",
-            content: <ObjectDealsTable objectId={id} deals={projectObject.deals} />
-          },
-          {
-            value: "proposals",
-            label: "КП",
-            content: <ObjectProposalsTable proposals={projectObject.proposals} />
-          },
-          {
-            value: "tasks",
-            label: "Задачи / касания",
-            content: (
-              <EntityTasksCard
-                items={projectObject.tasks}
-                canCreate={canCreateTask(user)}
-                taskHref={buildTaskHref({ objectId: projectObject.id, clientId: projectObject.clientId, responsibleId: projectObject.responsibleId, designerId: projectObject.designerId })}
-                touchHref={buildTaskHref({ recordType: "TOUCH", objectId: projectObject.id, clientId: projectObject.clientId, responsibleId: projectObject.responsibleId, designerId: projectObject.designerId })}
-              />
-            )
-          },
-          {
-            value: "files",
-            label: "Файлы",
-            content: (
-              <EntityInfoCard title="Файлы объекта">
-                <div className="space-y-2 text-sm">
-                  {projectObject.files.length === 0 ? (
-                    <p className="text-muted-foreground">По объекту пока нет файлов</p>
-                  ) : (
-                    projectObject.files.map((file) => (
-                      <div key={file} className="rounded-md border p-3">{file}</div>
-                    ))
-                  )}
-                </div>
-              </EntityInfoCard>
-            )
-          },
-          {
-            value: "audit",
-            label: "История изменений",
-            content: <AuditLogCard logs={auditLogs} formatDate={formatRussianDate} />
-          }
-        ]}
+      <ObjectDetailTabs
+        objectId={id}
+        projectObject={projectObject}
+        auditLogs={auditLogs}
+        canCreateTasks={canCreateTask(user)}
+        canManageParticipants={canManageParticipants}
+        archiveParticipantAction={archiveParticipantAction}
       />
     </EntityDetailShell>
   );

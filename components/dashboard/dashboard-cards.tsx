@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
 import { MetricCard, SummaryBreakdownCard } from "@/components/crm/summary-card";
 import { Badge, type BadgeProps } from "@/components/ui/badge";
+import { BorderedListItem } from "@/components/ui/bordered-list-item";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
@@ -69,7 +70,7 @@ export function DashboardListItem({
   children: ReactNode;
   className?: string;
 }) {
-  return <div className={cn("rounded-md border p-3 text-sm", className)}>{children}</div>;
+  return <BorderedListItem className={className}>{children}</BorderedListItem>;
 }
 
 export function DashboardStatRow({

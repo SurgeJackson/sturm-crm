@@ -8,13 +8,12 @@ import {
   FormField,
   FormMessage,
   FormSection,
+  ResponsibleField,
   SelectField,
   TextareaField,
   TextField,
   dateInputValue
 } from "@/components/crm/form-fields";
-import { Input } from "@/components/ui/input";
-import { NativeSelect } from "@/components/ui/native-select";
 import type { ClientActionState } from "@/modules/clients/actions";
 import {
   clientSourceOptions,
@@ -59,22 +58,12 @@ export function ClientForm({
         <TextField name="city" label="Город" defaultValue={client?.city ?? ""} />
         <SelectField name="source" label="Источник *" defaultValue={client?.source ?? "SHOWROOM"} options={clientSourceOptions} state={state} />
         <SelectField name="status" label="Статус *" defaultValue={client?.status ?? "NEW"} options={clientStatusOptions} state={state} />
-        <FormField name="responsibleId" label="Ответственный *" state={state}>
-          {canChangeResponsible ? (
-            <NativeSelect id="responsibleId" name="responsibleId" defaultValue={responsibleId}>
-              {users.map((user) => (
-                <option key={user.id} value={user.id}>
-                  {user.name}
-                </option>
-              ))}
-            </NativeSelect>
-          ) : (
-            <>
-              <Input value={users.find((user) => user.id === responsibleId)?.name ?? "Текущий пользователь"} disabled />
-              <input type="hidden" name="responsibleId" value={responsibleId} />
-            </>
-          )}
-        </FormField>
+        <ResponsibleField
+          users={users}
+          responsibleId={responsibleId}
+          canChangeResponsible={canChangeResponsible}
+          state={state}
+        />
         <SelectField name="linkedDesignerId" label="Связанный дизайнер" defaultValue={client?.linkedDesignerId ?? ""} placeholder="Не выбран">
           {designers.map((designer) => (
             <option key={designer.id} value={designer.id}>

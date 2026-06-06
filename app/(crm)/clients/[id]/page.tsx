@@ -1,19 +1,11 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { AuditLogCard, EntityDetailShell, EntityDetailTabs, EntityInfoCard, EntityTasksCard } from "@/components/crm/detail-page";
-import { EntityDetailsCard } from "@/components/crm/detail";
-import { ClientRelatedTables } from "@/components/crm/related";
-import { Badge } from "@/components/ui/badge";
+import { ClientHeaderBadges } from "@/components/crm/detail-header-badges";
+import { ClientDetailTabs } from "@/components/crm/detail-tabs/client-detail-tabs";
+import { EntityDetailShell } from "@/components/crm/detail-page";
 import { archiveClientAction } from "@/modules/clients/actions";
 import { getClientForUser } from "@/modules/clients/queries";
 import { getAuditLogs } from "@/lib/audit-log";
-import {
-  clientSourceLabels,
-  clientStatusLabels,
-  clientTypeLabels
-} from "@/lib/constants";
-import { formatRussianDate } from "@/utils/date";
-import { buildTaskHref } from "@/utils/task-href";
 import { canArchiveRecord, canCreateTask, canEditRecord } from "@/permissions";
 
 type ClientPageProps = {
@@ -36,12 +28,7 @@ export default async function ClientPage({ params, searchParams }: ClientPagePro
   return (
     <EntityDetailShell
       title={client.name}
-      badges={
-        <>
-          <Badge variant={client.status === "ARCHIVED" ? "outline" : "secondary"}>{clientStatusLabels[client.status]}</Badge>
-          <Badge variant="outline">{clientTypeLabels[client.clientType]}</Badge>
-        </>
-      }
+      badges={<ClientHeaderBadges status={client.status} clientType={client.clientType} />}
       editHref={`/clients/${id}/edit`}
       canEdit={canEditRecord(user, client)}
       archiveAction={archiveAction}
@@ -61,61 +48,7 @@ export default async function ClientPage({ params, searchParams }: ClientPagePro
       }}
     >
 
-      <EntityDetailTabs
-        tabs={[
-          {
-            value: "main",
-            label: "Основное",
-            content: (
-              <EntityDetailsCard
-                title="Данные клиента"
-                fields={[
-                  { label: "Телефон", value: client.phone },
-                  { label: "Мессенджер", value: client.messenger },
-                  { label: "Email", value: client.email },
-                  { label: "Город", value: client.city },
-                  { label: "Источник", value: clientSourceLabels[client.source] },
-                  { label: "Ответственный", value: client.responsible.name },
-                  { label: "Создал", value: client.createdBy.name },
-                  { label: "Последний контакт", value: formatRussianDate(client.lastContactAt) },
-                  { label: "Следующий контакт", value: formatRussianDate(client.nextContactAt) }
-                ]}
-              />
-            )
-          },
-          {
-            value: "comments",
-            label: "Комментарии",
-            content: (
-              <EntityInfoCard title="Комментарии">
-                <div className="whitespace-pre-wrap text-sm">{client.comment || "Комментариев пока нет."}</div>
-              </EntityInfoCard>
-            )
-          },
-          {
-            value: "links",
-            label: "Связи",
-            content: <ClientRelatedTables client={client} />
-          },
-          {
-            value: "tasks",
-            label: "Задачи / касания",
-            content: (
-              <EntityTasksCard
-                items={client.tasks}
-                canCreate={canCreateTask(user)}
-                taskHref={buildTaskHref({ clientId: client.id, responsibleId: client.responsibleId })}
-                touchHref={buildTaskHref({ recordType: "TOUCH", clientId: client.id, responsibleId: client.responsibleId })}
-              />
-            )
-          },
-          {
-            value: "audit",
-            label: "История изменений",
-            content: <AuditLogCard logs={auditLogs} formatDate={formatRussianDate} />
-          }
-        ]}
-      />
+      <ClientDetailTabs client={client} auditLogs={auditLogs} canCreateTasks={canCreateTask(user)} />
     </EntityDetailShell>
   );
 }

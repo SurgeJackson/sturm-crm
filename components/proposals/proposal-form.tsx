@@ -8,6 +8,7 @@ import {
   FormField,
   FormMessage,
   FormSection,
+  ResponsibleField,
   SelectField,
   TextareaField,
   TextField,
@@ -98,25 +99,13 @@ export function ProposalForm({
             ))}
           </NativeSelect>
         </FormField>
-        <FormField name="responsibleId" label="Ответственный *" state={state}>
-          {canChangeResponsible ? (
-            <NativeSelect
-              id="responsibleId"
-              name="responsibleId"
-              value={responsibleId}
-              onChange={(event) => setResponsibleId(event.target.value)}
-            >
-              {users.map((user) => (
-                <option key={user.id} value={user.id}>{user.name}</option>
-              ))}
-            </NativeSelect>
-          ) : (
-            <>
-              <Input value={users.find((user) => user.id === responsibleId)?.name ?? "Текущий пользователь"} disabled />
-              <input type="hidden" name="responsibleId" value={responsibleId} />
-            </>
-          )}
-        </FormField>
+        <ResponsibleField
+          users={users}
+          responsibleId={responsibleId}
+          canChangeResponsible={canChangeResponsible}
+          state={state}
+          onChange={setResponsibleId}
+        />
         <div className="rounded-md border p-3 text-sm">
           <div className="text-xs text-muted-foreground">Клиент</div>
           <div className="mt-1">{selectedDeal?.client.name ?? "Не выбран"}</div>

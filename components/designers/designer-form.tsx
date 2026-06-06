@@ -9,13 +9,12 @@ import {
   FormField,
   FormMessage,
   FormSection,
+  ResponsibleField,
   SelectField,
   TextareaField,
   TextField,
   dateInputValue
 } from "@/components/crm/form-fields";
-import { Input } from "@/components/ui/input";
-import { NativeSelect } from "@/components/ui/native-select";
 import type { DesignerActionState } from "@/modules/designers/actions";
 import {
   designerLoyaltyOptions,
@@ -94,22 +93,12 @@ export function DesignerForm({
           options={designerLoyaltyOptions}
           defaultValue={designer?.loyalty ?? "NEUTRAL"}
         />
-        <FormField name="responsibleId" label="Ответственный *" state={state}>
-          {canChangeResponsible ? (
-            <NativeSelect id="responsibleId" name="responsibleId" defaultValue={responsibleId}>
-              {users.map((user) => (
-                <option key={user.id} value={user.id}>
-                  {user.name}
-                </option>
-              ))}
-            </NativeSelect>
-          ) : (
-            <>
-              <Input value={users.find((user) => user.id === responsibleId)?.name ?? "Текущий пользователь"} disabled />
-              <input type="hidden" name="responsibleId" value={responsibleId} />
-            </>
-          )}
-        </FormField>
+        <ResponsibleField
+          users={users}
+          responsibleId={responsibleId}
+          canChangeResponsible={canChangeResponsible}
+          state={state}
+        />
         <DateField name="firstContactAt" label="Первый контакт" defaultValue={dateInputValue(designer?.firstContactAt)} />
         <DateField name="lastTouchAt" label="Последнее касание" defaultValue={dateInputValue(designer?.lastTouchAt)} />
         <DateField

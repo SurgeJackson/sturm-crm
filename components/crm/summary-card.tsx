@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
 import { Badge, type BadgeProps } from "@/components/ui/badge";
+import { BorderedListItem, BorderedListLink } from "@/components/ui/bordered-list-item";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
@@ -92,10 +93,10 @@ export function SummaryBreakdownCard({
       {entries.length === 0 ? (
         <p className="text-sm text-muted-foreground">{emptyText}</p>
       ) : entries.map(([key, count]) => (
-        <div key={key} className="flex items-center justify-between gap-3 rounded-md border p-3 text-sm">
+        <BorderedListItem key={key} className="flex items-center justify-between gap-3">
           <span className="min-w-0">{labelFor(key)}</span>
           <Badge className="shrink-0" variant={valueVariant}>{count}</Badge>
-        </div>
+        </BorderedListItem>
       ))}
     </SummaryCard>
   );
@@ -133,20 +134,17 @@ export function SummaryValueListCard<T>({
             <Badge className="shrink-0" variant={valueVariant}>{renderValue(item)}</Badge>
           </>
         );
-        const className = cn(
-          "flex items-center justify-between gap-3 rounded-md border p-3 text-sm",
-          hrefFor ? "hover:border-primary" : undefined
-        );
+        const className = cn("flex items-center justify-between gap-3", hrefFor ? "hover:border-primary" : undefined);
         const href = hrefFor?.(item);
 
         return href ? (
-          <Link key={getKey(item)} href={href} className={className}>
+          <BorderedListLink key={getKey(item)} href={href} className={className}>
             {content}
-          </Link>
+          </BorderedListLink>
         ) : (
-          <div key={getKey(item)} className={className}>
+          <BorderedListItem key={getKey(item)} className={className}>
             {content}
-          </div>
+          </BorderedListItem>
         );
       })}
     </SummaryCard>

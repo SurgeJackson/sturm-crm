@@ -2,13 +2,12 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Ban } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
+import { TaskHeaderBadges } from "@/components/crm/detail-header-badges";
 import { AuditLogCard, EntityDetailShell, TextBlock } from "@/components/crm/detail-page";
-import { EntityDetailsCard } from "@/components/crm/detail";
-import { taskStatusVariant } from "@/components/crm/status-variants";
-import { Badge } from "@/components/ui/badge";
+import { detailText, EntityDetailsCard } from "@/components/crm/detail";
 import { Button } from "@/components/ui/button";
 import { getAuditLogs } from "@/lib/audit-log";
-import { taskActionTypeLabels, taskAutoRuleLabels, taskPriorityLabels, taskRecordTypeLabels, taskStatusLabels } from "@/lib/constants";
+import { taskAutoRuleLabels, taskPriorityLabels } from "@/lib/constants";
 import { cancelTaskAction } from "@/modules/tasks/actions";
 import { getTaskForUser } from "@/modules/tasks/queries";
 import { canCancelTask, canEditRecord } from "@/permissions";
@@ -47,13 +46,7 @@ export default async function TaskPage({ params, searchParams }: TaskPageProps) 
   return (
     <EntityDetailShell
       title={task.title}
-      badges={
-        <>
-          <Badge variant="outline">{taskRecordTypeLabels[task.recordType]}</Badge>
-          <Badge variant="outline">{taskActionTypeLabels[task.actionType]}</Badge>
-          <Badge variant={taskStatusVariant(task.status)}>{taskStatusLabels[task.status]}</Badge>
-        </>
-      }
+      badges={<TaskHeaderBadges recordType={task.recordType} actionType={task.actionType} status={task.status} />}
       editHref={`/tasks/${id}/edit`}
       canEdit={canEditRecord(user, task)}
       actions={canCancelTask(user, task) && task.status !== "CANCELLED" ? (
@@ -79,12 +72,12 @@ export default async function TaskPage({ params, searchParams }: TaskPageProps) 
       <EntityDetailsCard
         title="Основное"
         fields={[
-          { label: "Ответственный", value: task.responsible.name },
-          { label: "Создал", value: task.createdBy.name },
-          { label: "Приоритет", value: taskPriorityLabels[task.priority] },
-          { label: "Срок / дата факта", value: formatRussianDateTime(task.dueAt) },
-          { label: "Выполнено", value: formatRussianDateTime(task.completedAt) },
-          { label: "Автоправило", value: task.autoRule ? taskAutoRuleLabels[task.autoRule] : null }
+          detailText("Ответственный", task.responsible.name),
+          detailText("Создал", task.createdBy.name),
+          detailText("Приоритет", taskPriorityLabels[task.priority]),
+          detailText("Срок / дата факта", formatRussianDateTime(task.dueAt)),
+          detailText("Выполнено", formatRussianDateTime(task.completedAt)),
+          detailText("Автоправило", task.autoRule ? taskAutoRuleLabels[task.autoRule] : null)
         ]}
         footer={
           <div className="grid gap-4 md:grid-cols-2">
