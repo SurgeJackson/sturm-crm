@@ -14,8 +14,10 @@ import type {
 import { getCurrentUser } from "@/auth/get-current-user";
 import { writeAuditLog } from "@/lib/audit-log";
 import { prisma } from "@/lib/prisma";
-import { compactString, toAuditValue } from "@/modules/crm/form-utils";
+import { daysAgo, daysFromNow } from "@/modules/crm/date-ranges";
+import { compactString, optionalDateTime, toAuditValue } from "@/modules/crm/form-utils";
 import { expireViolationsForEntity, syncClientDiscipline, syncDesignerDiscipline, syncTaskDiscipline } from "@/modules/crm-discipline/service";
+import { resolveTaskLinks } from "@/modules/tasks/link-resolver";
 import {
   canCancelTask,
   canChangeTaskResponsible,
@@ -103,12 +105,6 @@ const taskSchema = z
     }
   });
 
-function parseDateTime(value?: string) {
-  if (!value) return null;
-  const date = new Date(value);
-  return Number.isNaN(date.getTime()) ? null : date;
-}
-
 function parseTaskForm(formData: FormData) {
   return taskSchema.safeParse({
     recordType: formData.get("recordType"),
@@ -131,74 +127,6 @@ function parseTaskForm(formData: FormData) {
   });
 }
 
-async function resolveLinks(input: {
-  clientId?: string;
-  designerId?: string;
-  objectId?: string;
-  dealId?: string;
-  proposalId?: string;
-  objectParticipantId?: string;
-}) {
-  const links = { ...input };
-
-  if (links.proposalId) {
-    const proposal = await prisma.commercialProposal.findUnique({
-      where: { id: links.proposalId },
-      select: { clientId: true, designerId: true, objectId: true, dealId: true }
-    });
-    if (proposal) {
-      links.clientId ||= proposal.clientId;
-      links.designerId ||= proposal.designerId ?? undefined;
-      links.objectId ||= proposal.objectId;
-      links.dealId ||= proposal.dealId;
-    }
-  }
-
-  if (links.dealId) {
-    const deal = await prisma.deal.findUnique({
-      where: { id: links.dealId },
-      select: { clientId: true, designerId: true, objectId: true }
-    });
-    if (deal) {
-      links.clientId ||= deal.clientId;
-      links.designerId ||= deal.designerId ?? undefined;
-      links.objectId ||= deal.objectId;
-    }
-  }
-
-  if (links.objectParticipantId) {
-    const participant = await prisma.projectObjectParticipant.findUnique({
-      where: { id: links.objectParticipantId },
-      include: { object: { select: { id: true, clientId: true, designerId: true } } }
-    });
-    if (participant) {
-      links.objectId ||= participant.object.id;
-      links.clientId ||= participant.object.clientId;
-      links.designerId ||= participant.object.designerId ?? undefined;
-    }
-  }
-
-  if (links.objectId) {
-    const object = await prisma.projectObject.findUnique({
-      where: { id: links.objectId },
-      select: { clientId: true, designerId: true }
-    });
-    if (object) {
-      links.clientId ||= object.clientId;
-      links.designerId ||= object.designerId ?? undefined;
-    }
-  }
-
-  return {
-    clientId: links.clientId || null,
-    designerId: links.designerId || null,
-    objectId: links.objectId || null,
-    dealId: links.dealId || null,
-    proposalId: links.proposalId || null,
-    objectParticipantId: links.objectParticipantId || null
-  };
-}
-
 function normalizeStatus(recordType: TaskRecordType, status: TaskStatus, result?: string | null): TaskStatus {
   if (recordType === "TOUCH") {
     if (status === "NEEDS_NEXT_STEP" || status === "CLOSED") return status;
@@ -207,10 +135,10 @@ function normalizeStatus(recordType: TaskRecordType, status: TaskStatus, result?
   return status;
 }
 
-function toTaskDocument(data: z.infer<typeof taskSchema>, links: Awaited<ReturnType<typeof resolveLinks>>, forceResponsibleId?: string) {
+function toTaskDocument(data: z.infer<typeof taskSchema>, links: Awaited<ReturnType<typeof resolveTaskLinks>>, forceResponsibleId?: string) {
   const recordType = data.recordType as TaskRecordType;
   const status = normalizeStatus(recordType, data.status as TaskStatus, data.result);
-  const dueAt = parseDateTime(data.dueAt);
+  const dueAt = optionalDateTime(data.dueAt);
   const completedAt =
     recordType === "TOUCH"
       ? dueAt ?? new Date()
@@ -231,7 +159,7 @@ function toTaskDocument(data: z.infer<typeof taskSchema>, links: Awaited<ReturnT
     completedAt,
     result: data.result || null,
     nextStepText: data.nextStepText || null,
-    nextStepAt: parseDateTime(data.nextStepAt),
+    nextStepAt: optionalDateTime(data.nextStepAt),
     notes: data.description || null
   };
 }
@@ -321,7 +249,7 @@ export async function createTaskAction(_prevState: TaskActionState, formData: Fo
   const parsed = parseTaskForm(formData);
   if (!parsed.success) return { errors: parsed.error.flatten().fieldErrors };
 
-  const links = await resolveLinks(parsed.data);
+  const links = await resolveTaskLinks(parsed.data);
   const document = toTaskDocument(parsed.data, links);
   const task = await prisma.taskActivity.create({
     data: {
@@ -356,7 +284,7 @@ export async function updateTaskAction(id: string, _prevState: TaskActionState, 
   const parsed = parseTaskForm(formData);
   if (!parsed.success) return { errors: parsed.error.flatten().fieldErrors };
 
-  const links = await resolveLinks(parsed.data);
+  const links = await resolveTaskLinks(parsed.data);
   const responsibleId = canChangeTaskResponsible(user) ? parsed.data.responsibleId : before.responsibleId;
   const document = toTaskDocument(parsed.data, links, responsibleId);
 
@@ -474,12 +402,9 @@ export async function ensureAutomaticTasks() {
   if (!user || !canCreateTask(user)) return;
 
   const now = new Date();
-  const tomorrow = new Date(now);
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  const inThirtyDays = new Date(now);
-  inThirtyDays.setDate(inThirtyDays.getDate() + 30);
-  const sixtyDaysAgo = new Date(now);
-  sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
+  const tomorrow = daysFromNow(1, now);
+  const inThirtyDays = daysFromNow(30, now);
+  const sixtyDaysAgo = daysAgo(60, now);
 
   const [designers, frozenObjects, deals, clients] = await Promise.all([
     prisma.designer.findMany({

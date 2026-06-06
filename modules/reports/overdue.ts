@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { daysAgo } from "@/modules/crm/date-ranges";
 import { canViewAllData, type PermissionUser } from "@/permissions";
 import { ownerWhere, taskOwnerWhere, type Metric, type ReportSearchParams } from "./common";
 
@@ -6,9 +7,8 @@ export async function getOverdueReport(params: ReportSearchParams, user: Permiss
   const responsibleId = canViewAllData(user) ? params.responsibleId : undefined;
   const owner = ownerWhere(user, responsibleId);
   const taskOwner = taskOwnerWhere(user, responsibleId);
-  const sixtyDaysAgo = new Date();
-  sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
   const now = new Date();
+  const sixtyDaysAgo = daysAgo(60, now);
   const [tasks, proposalFollowUps, deals, designers, objects, clients] = await Promise.all([
     prisma.taskActivity.findMany({ where: { AND: [taskOwner, { recordType: "TASK", archivedAt: null, status: { notIn: ["DONE", "CANCELLED", "CLOSED"] }, dueAt: { lt: now } }] }, include: { responsible: { select: { name: true } } }, take: 50 }),
     prisma.commercialProposal.findMany({ where: { AND: [owner, { archivedAt: null, nextTouchAt: { lt: now }, status: { notIn: ["ACCEPTED", "DECLINED", "ARCHIVED"] } }] }, include: { responsible: { select: { name: true } } }, take: 50 }),

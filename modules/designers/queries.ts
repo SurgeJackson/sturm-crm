@@ -1,9 +1,11 @@
 import type { Prisma } from "@/generated/prisma/client";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { designerAccessWhere } from "@/modules/crm/access-where";
+import { userSummarySelect } from "@/modules/crm/selects";
 import { taskInclude } from "@/modules/tasks/queries";
 import { computeBonusEligibilityStatus, getActiveViolationsForEntity, getActiveViolationsMap } from "@/modules/crm-discipline/service";
-import { canViewAllData, canViewRecord, type PermissionUser } from "@/permissions";
+import { canViewRecord, type PermissionUser } from "@/permissions";
 
 export type DesignerListSearchParams = {
   q?: string;
@@ -20,17 +22,9 @@ export type DesignerListSearchParams = {
 
 const PAGE_SIZE = 20;
 
-function accessWhere(user: PermissionUser): Prisma.DesignerWhereInput {
-  if (canViewAllData(user)) return {};
-
-  return {
-    OR: [{ responsibleId: user.id }, { createdById: user.id }]
-  };
-}
-
 export async function getDesigners(params: DesignerListSearchParams, user: PermissionUser) {
   const page = Math.max(Number(params.page ?? "1") || 1, 1);
-  const filters: Prisma.DesignerWhereInput[] = [accessWhere(user)];
+  const filters: Prisma.DesignerWhereInput[] = [designerAccessWhere(user)];
 
   if (params.q) {
     filters.push({
@@ -73,8 +67,8 @@ export async function getDesigners(params: DesignerListSearchParams, user: Permi
       skip: (page - 1) * PAGE_SIZE,
       take: PAGE_SIZE,
       include: {
-        responsible: { select: { id: true, name: true, email: true } },
-        createdBy: { select: { id: true, name: true, email: true } }
+        responsible: { select: userSummarySelect },
+        createdBy: { select: userSummarySelect }
       }
     }),
     prisma.designer.count({ where })
@@ -102,8 +96,8 @@ export async function getDesignerForUser(id: string, user: PermissionUser) {
   const designer = await prisma.designer.findUnique({
     where: { id },
     include: {
-      responsible: { select: { id: true, name: true, email: true } },
-      createdBy: { select: { id: true, name: true, email: true } },
+      responsible: { select: userSummarySelect },
+      createdBy: { select: userSummarySelect },
       projectObjects: {
         where: { archivedAt: null },
         orderBy: { createdAt: "desc" },
@@ -153,12 +147,12 @@ export async function getDesignerForUser(id: string, user: PermissionUser) {
 export async function getDesignerPipeline(user: PermissionUser) {
   const designers = await prisma.designer.findMany({
     where: {
-      ...accessWhere(user),
+      ...designerAccessWhere(user),
       archivedAt: null
     },
     orderBy: [{ nextStepAt: "asc" }, { createdAt: "desc" }],
     include: {
-      responsible: { select: { id: true, name: true, email: true } }
+      responsible: { select: userSummarySelect }
     }
   });
 

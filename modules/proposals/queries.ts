@@ -1,9 +1,12 @@
 import type { Prisma } from "@/generated/prisma/client";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { proposalAccessWhere } from "@/modules/crm/access-where";
+import { daysAgo } from "@/modules/crm/date-ranges";
+import { clientNameSelect, dealTitleSelect, designerNameSelect, objectTitleSelect, userSummarySelect } from "@/modules/crm/selects";
 import { taskInclude } from "@/modules/tasks/queries";
 import { computeBonusEligibilityStatus, getActiveViolationsForEntity, getActiveViolationsMap } from "@/modules/crm-discipline/service";
-import { canViewAllData, canViewRecord, type PermissionUser } from "@/permissions";
+import { canViewRecord, type PermissionUser } from "@/permissions";
 
 export type ProposalListSearchParams = {
   q?: string;
@@ -26,30 +29,22 @@ export type ProposalListSearchParams = {
 };
 
 const PAGE_SIZE = 20;
-
-export function proposalAccessWhere(user: PermissionUser): Prisma.CommercialProposalWhereInput {
-  if (canViewAllData(user)) return {};
-
-  return {
-    OR: [{ responsibleId: user.id }, { createdById: user.id }]
-  };
-}
+export { proposalAccessWhere };
 
 export function proposalListInclude() {
   return {
-    deal: { select: { id: true, title: true } },
-    client: { select: { id: true, name: true } },
-    projectObject: { select: { id: true, title: true } },
-    designer: { select: { id: true, name: true, studio: true } },
-    responsible: { select: { id: true, name: true, email: true } }
+    deal: { select: dealTitleSelect },
+    client: { select: clientNameSelect },
+    projectObject: { select: objectTitleSelect },
+    designer: { select: designerNameSelect },
+    responsible: { select: userSummarySelect }
   } satisfies Prisma.CommercialProposalInclude;
 }
 
 export async function getProposals(params: ProposalListSearchParams, user: PermissionUser) {
   const page = Math.max(Number(params.page ?? "1") || 1, 1);
   const now = new Date();
-  const thinkingThreshold = new Date();
-  thinkingThreshold.setDate(thinkingThreshold.getDate() - 7);
+  const thinkingThreshold = daysAgo(7, now);
   const filters: Prisma.CommercialProposalWhereInput[] = [proposalAccessWhere(user)];
 
   if (params.q) {
@@ -126,10 +121,10 @@ export async function getProposalForUser(id: string, user: PermissionUser) {
       deal: { select: { id: true, title: true, stage: true } },
       client: { select: { id: true, name: true, phone: true, email: true } },
       projectObject: { select: { id: true, title: true, city: true, address: true } },
-      designer: { select: { id: true, name: true, studio: true } },
-      responsible: { select: { id: true, name: true, email: true } },
-      createdBy: { select: { id: true, name: true, email: true } },
-      uploadedBy: { select: { id: true, name: true, email: true } },
+      designer: { select: designerNameSelect },
+      responsible: { select: userSummarySelect },
+      createdBy: { select: userSummarySelect },
+      uploadedBy: { select: userSummarySelect },
       parent: {
         include: proposalListInclude()
       },

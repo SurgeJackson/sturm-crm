@@ -1,49 +1,16 @@
 import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient, UserRole } from "../generated/prisma/client";
+import { PrismaClient } from "../generated/prisma/client";
 import bcrypt from "bcryptjs";
 import { mkdir, writeFile } from "fs/promises";
 import path from "path";
 import { runCrmDisciplineCheck } from "../modules/crm-discipline/service";
+import { DEMO_PASSWORD, seedUsers } from "./seed-fixtures";
 
 const adapter = new PrismaPg({
   connectionString: process.env.DATABASE_URL
 });
 const prisma = new PrismaClient({ adapter });
-const DEMO_PASSWORD = "Sturm12345";
-
-const users = [
-  {
-    id: "seed_owner",
-    name: "Алексей Руководитель",
-    email: "owner@sturm.local",
-    role: UserRole.OWNER
-  },
-  {
-    id: "seed_sales_lead",
-    name: "Мария Старший менеджер",
-    email: "sales-lead@sturm.local",
-    role: UserRole.SALES_LEAD
-  },
-  {
-    id: "seed_store_manager",
-    name: "Ирина Менеджер магазина",
-    email: "store-manager@sturm.local",
-    role: UserRole.STORE_MANAGER
-  },
-  {
-    id: "seed_project_manager",
-    name: "Денис Проектный менеджер",
-    email: "project-manager@sturm.local",
-    role: UserRole.PROJECT_MANAGER
-  },
-  {
-    id: "seed_administrator",
-    name: "Ольга Администратор",
-    email: "administrator@sturm.local",
-    role: UserRole.ADMINISTRATOR
-  }
-];
 
 async function main() {
   const now = new Date();
@@ -53,7 +20,7 @@ async function main() {
   await mkdir(uploadsDir, { recursive: true });
   await writeFile(path.join(uploadsDir, "seed-kp.pdf"), Buffer.from("Seed commercial proposal file"));
 
-  for (const user of users) {
+  for (const user of seedUsers) {
     await prisma.user.upsert({
       where: { email: user.email },
       update: {

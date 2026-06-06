@@ -160,4 +160,21 @@ describe("crm discipline rules", () => {
       )
     ).toEqual(["TOUCH_NO_RESULT"]);
   });
+
+  it("uses an injected clock for overdue rules and detected time", () => {
+    const now = new Date("2026-06-06T12:00:00.000Z");
+    const violations = validateTaskForDiscipline(
+      {
+        id: "task-clock",
+        recordType: "TASK",
+        responsibleId: "user-1",
+        status: "OPEN",
+        dueAt: new Date("2026-06-06T11:59:59.000Z")
+      },
+      { now }
+    );
+
+    expect(codes(violations)).toEqual(["TASK_OVERDUE"]);
+    expect(violations[0].createdAt).toBe(now);
+  });
 });

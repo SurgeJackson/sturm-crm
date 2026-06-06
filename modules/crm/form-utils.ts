@@ -9,6 +9,12 @@ export function optionalDate(value?: string) {
   return Number.isNaN(date.getTime()) ? null : date;
 }
 
+export function optionalDateTime(value?: string) {
+  if (!value) return null;
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
 export function toAuditValue(value: unknown) {
   return JSON.parse(
     JSON.stringify(value, (_key, currentValue) => {

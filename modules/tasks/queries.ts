@@ -1,8 +1,26 @@
 import type { Prisma } from "@/generated/prisma/client";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import {
+  clientAccessWhere,
+  dealAccessWhere,
+  designerAccessWhere,
+  objectAccessWhere,
+  objectParticipantAccessWhere,
+  proposalAccessWhere,
+  taskAccessWhere
+} from "@/modules/crm/access-where";
+import { dateOnlyRange, weekRange } from "@/modules/crm/date-ranges";
+import {
+  clientNameSelect,
+  dealTitleSelect,
+  designerNameSelect,
+  objectTitleSelect,
+  proposalNumberSelect,
+  userSummarySelect
+} from "@/modules/crm/selects";
 import { computeBonusEligibilityStatus, getActiveViolationsForEntity, getActiveViolationsMap } from "@/modules/crm-discipline/service";
-import { canViewAllData, canViewRecord, type PermissionUser } from "@/permissions";
+import { canViewRecord, type PermissionUser } from "@/permissions";
 
 export type TaskListSearchParams = {
   q?: string;
@@ -35,21 +53,7 @@ export type ActivityReportSearchParams = {
 
 const PAGE_SIZE = 30;
 
-export function taskAccessWhere(user: PermissionUser): Prisma.TaskActivityWhereInput {
-  if (canViewAllData(user)) return {};
-
-  return {
-    OR: [
-      { responsibleId: user.id },
-      { createdById: user.id },
-      { client: { OR: [{ responsibleId: user.id }, { createdById: user.id }] } },
-      { designer: { OR: [{ responsibleId: user.id }, { createdById: user.id }] } },
-      { projectObject: { OR: [{ responsibleId: user.id }, { createdById: user.id }] } },
-      { deal: { OR: [{ responsibleId: user.id }, { createdById: user.id }] } },
-      { proposal: { OR: [{ responsibleId: user.id }, { createdById: user.id }] } }
-    ]
-  };
-}
+export { taskAccessWhere };
 
 export function activeTaskWhere(now = new Date()): Prisma.TaskActivityWhereInput {
   return {
@@ -62,38 +66,15 @@ export function activeTaskWhere(now = new Date()): Prisma.TaskActivityWhereInput
 
 export function taskInclude() {
   return {
-    responsible: { select: { id: true, name: true, email: true } },
-    createdBy: { select: { id: true, name: true, email: true } },
-    client: { select: { id: true, name: true } },
-    designer: { select: { id: true, name: true, studio: true } },
-    projectObject: { select: { id: true, title: true } },
-    deal: { select: { id: true, title: true } },
-    proposal: { select: { id: true, proposalNumber: true } },
+    responsible: { select: userSummarySelect },
+    createdBy: { select: userSummarySelect },
+    client: { select: clientNameSelect },
+    designer: { select: designerNameSelect },
+    projectObject: { select: objectTitleSelect },
+    deal: { select: dealTitleSelect },
+    proposal: { select: proposalNumberSelect },
     objectParticipant: { select: { id: true, fullName: true, objectId: true } }
   } satisfies Prisma.TaskActivityInclude;
-}
-
-function dateRange(value?: string) {
-  const base = value ? new Date(`${value}T00:00:00.000`) : new Date();
-  if (Number.isNaN(base.getTime())) return null;
-  const start = new Date(base);
-  start.setHours(0, 0, 0, 0);
-  const end = new Date(base);
-  end.setHours(23, 59, 59, 999);
-  return { start, end };
-}
-
-function weekRange(value?: string) {
-  const range = dateRange(value);
-  const start = range?.start ?? new Date();
-  const monday = new Date(start);
-  const day = monday.getDay() || 7;
-  monday.setDate(monday.getDate() - day + 1);
-  monday.setHours(0, 0, 0, 0);
-  const sunday = new Date(monday);
-  sunday.setDate(sunday.getDate() + 6);
-  sunday.setHours(23, 59, 59, 999);
-  return { start: monday, end: sunday };
 }
 
 function linkedEntityWhere(entityType?: string, entityId?: string): Prisma.TaskActivityWhereInput | null {
@@ -127,12 +108,12 @@ export async function getTasks(params: TaskListSearchParams, user: PermissionUse
   if (params.priority) filters.push({ priority: params.priority as never });
   if (params.noResult === "1") filters.push({ result: null });
   if (params.today === "1") {
-    const range = dateRange();
+    const range = dateOnlyRange();
     if (range) filters.push({ dueAt: { gte: range.start, lte: range.end } });
   }
   if (params.overdue === "1") filters.push(activeTaskWhere(now));
   if (params.due) {
-    const range = dateRange(params.due);
+    const range = dateOnlyRange(params.due);
     if (range) filters.push({ dueAt: { gte: range.start, lte: range.end } });
   }
   const entityFilter = linkedEntityWhere(params.entityType, params.entityId);
@@ -187,25 +168,15 @@ export async function getTaskForUser(id: string, user: PermissionUser) {
 }
 
 export async function getTaskFormContext(user: PermissionUser) {
-  const access = taskAccessWhere(user);
   const [users, clients, designers, objects, deals, proposals, participants] = await Promise.all([
-    prisma.user.findMany({ where: { isActive: true }, orderBy: { name: "asc" }, select: { id: true, name: true, email: true } }),
-    prisma.client.findMany({ where: canViewAllData(user) ? {} : { OR: [{ responsibleId: user.id }, { createdById: user.id }] }, orderBy: { name: "asc" }, select: { id: true, name: true, responsibleId: true } }),
-    prisma.designer.findMany({ where: canViewAllData(user) ? {} : { OR: [{ responsibleId: user.id }, { createdById: user.id }] }, orderBy: { name: "asc" }, select: { id: true, name: true, studio: true, responsibleId: true } }),
-    prisma.projectObject.findMany({ where: canViewAllData(user) ? {} : { OR: [{ responsibleId: user.id }, { createdById: user.id }] }, orderBy: { title: "asc" }, select: { id: true, title: true, clientId: true, designerId: true, responsibleId: true } }),
-    prisma.deal.findMany({ where: canViewAllData(user) ? {} : { OR: [{ responsibleId: user.id }, { createdById: user.id }] }, orderBy: { title: "asc" }, select: { id: true, title: true, clientId: true, objectId: true, designerId: true, responsibleId: true } }),
-    prisma.commercialProposal.findMany({ where: canViewAllData(user) ? {} : { OR: [{ responsibleId: user.id }, { createdById: user.id }] }, orderBy: { createdAt: "desc" }, select: { id: true, proposalNumber: true, dealId: true, clientId: true, objectId: true, designerId: true, responsibleId: true } }),
+    prisma.user.findMany({ where: { isActive: true }, orderBy: { name: "asc" }, select: userSummarySelect }),
+    prisma.client.findMany({ where: clientAccessWhere(user), orderBy: { name: "asc" }, select: { id: true, name: true, responsibleId: true } }),
+    prisma.designer.findMany({ where: designerAccessWhere(user), orderBy: { name: "asc" }, select: { id: true, name: true, studio: true, responsibleId: true } }),
+    prisma.projectObject.findMany({ where: objectAccessWhere(user), orderBy: { title: "asc" }, select: { id: true, title: true, clientId: true, designerId: true, responsibleId: true } }),
+    prisma.deal.findMany({ where: dealAccessWhere(user), orderBy: { title: "asc" }, select: { id: true, title: true, clientId: true, objectId: true, designerId: true, responsibleId: true } }),
+    prisma.commercialProposal.findMany({ where: proposalAccessWhere(user), orderBy: { createdAt: "desc" }, select: { id: true, proposalNumber: true, dealId: true, clientId: true, objectId: true, designerId: true, responsibleId: true } }),
     prisma.projectObjectParticipant.findMany({
-      where: canViewAllData(user)
-        ? { archivedAt: null }
-        : {
-            archivedAt: null,
-            OR: [
-              { responsibleId: user.id },
-              { createdById: user.id },
-              { object: { OR: [{ responsibleId: user.id }, { createdById: user.id }] } }
-            ]
-          },
+      where: { AND: [objectParticipantAccessWhere(user), { archivedAt: null }] },
       orderBy: { fullName: "asc" },
       select: { id: true, fullName: true, objectId: true, responsibleId: true }
     })
@@ -244,6 +215,7 @@ export async function getTaskCalendar(params: TaskCalendarSearchParams, user: Pe
 }
 
 export async function getActivityReport(params: ActivityReportSearchParams, user: PermissionUser) {
+  const now = new Date();
   const fallback = weekRange();
   const from = params.from ? new Date(`${params.from}T00:00:00.000`) : fallback.start;
   const to = params.to ? new Date(`${params.to}T23:59:59.999`) : fallback.end;
@@ -270,7 +242,7 @@ export async function getActivityReport(params: ActivityReportSearchParams, user
     acc[item.responsibleId] ??= { name: item.responsible.name, created: 0, done: 0, overdue: 0, touches: 0 };
     acc[item.responsibleId].created += item.recordType === "TASK" ? 1 : 0;
     acc[item.responsibleId].done += item.status === "DONE" || item.status === "CLOSED" ? 1 : 0;
-    acc[item.responsibleId].overdue += item.recordType === "TASK" && item.dueAt && item.dueAt < new Date() && !["DONE", "CANCELLED", "CLOSED"].includes(item.status) ? 1 : 0;
+    acc[item.responsibleId].overdue += item.recordType === "TASK" && item.dueAt && item.dueAt < now && !["DONE", "CANCELLED", "CLOSED"].includes(item.status) ? 1 : 0;
     acc[item.responsibleId].touches += item.recordType === "TOUCH" ? 1 : 0;
     return acc;
   }, {});
@@ -283,7 +255,7 @@ export async function getActivityReport(params: ActivityReportSearchParams, user
     totals: {
       createdTasks: items.filter((item) => item.recordType === "TASK").length,
       doneTasks: items.filter((item) => item.status === "DONE").length,
-      overdueTasks: items.filter((item) => item.recordType === "TASK" && item.dueAt && item.dueAt < new Date() && !["DONE", "CANCELLED", "CLOSED"].includes(item.status)).length,
+      overdueTasks: items.filter((item) => item.recordType === "TASK" && item.dueAt && item.dueAt < now && !["DONE", "CANCELLED", "CLOSED"].includes(item.status)).length,
       touches: items.filter((item) => item.recordType === "TOUCH").length,
       calls: items.filter((item) => item.actionType === "CALL" || item.actionType === "INCOMING_CALL").length,
       meetings: items.filter((item) => item.actionType === "SHOWROOM_MEETING" || item.actionType === "OUTSIDE_MEETING").length,

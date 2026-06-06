@@ -1,5 +1,7 @@
 import type { Prisma } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
+import { ownerRecordWhere } from "@/modules/crm/access-where";
+import { reportPeriodFromParams } from "@/modules/crm/date-ranges";
 import type { BonusEligibilityStatus } from "@/modules/crm-discipline/service";
 import { canViewAllData, type PermissionUser } from "@/permissions";
 
@@ -44,32 +46,16 @@ export type ProblemRow = {
   detectedAt?: Date;
 };
 
-function dateValue(value: string | undefined, fallback: Date) {
-  if (!value) return fallback;
-  const date = new Date(`${value}T00:00:00.000`);
-  return Number.isNaN(date.getTime()) ? fallback : date;
-}
-
 export function reportPeriod(params: ReportSearchParams) {
-  const to = params.to ? new Date(`${params.to}T23:59:59.999`) : new Date();
-  const fromFallback = new Date(to);
-  fromFallback.setDate(fromFallback.getDate() - 7);
-  const from = dateValue(params.from, fromFallback);
-  return { from, to };
+  return reportPeriodFromParams(params);
 }
 
 export function ownerWhere(user: PermissionUser, responsibleId?: string) {
-  if (canViewAllData(user)) {
-    return responsibleId ? { responsibleId } : {};
-  }
-  return { OR: [{ responsibleId: user.id }, { createdById: user.id }] };
+  return ownerRecordWhere(user, responsibleId);
 }
 
 export function taskOwnerWhere(user: PermissionUser, responsibleId?: string) {
-  if (canViewAllData(user)) {
-    return responsibleId ? { responsibleId } : {};
-  }
-  return { OR: [{ responsibleId: user.id }, { createdById: user.id }] };
+  return ownerRecordWhere<Prisma.TaskActivityWhereInput>(user, responsibleId);
 }
 
 export function periodWhere(from: Date, to: Date): Prisma.DateTimeFilter {
@@ -82,6 +68,10 @@ export function groupBy<T extends string | null | undefined>(items: T[]) {
     acc[key] = (acc[key] ?? 0) + 1;
     return acc;
   }, {});
+}
+
+export function countBy<T>(items: T[], keySelector: (item: T) => string | null | undefined) {
+  return groupBy(items.map(keySelector));
 }
 
 export function entityLabel(entityType: string) {

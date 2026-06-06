@@ -1,10 +1,12 @@
 import type { Prisma } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
+import { daysAgo } from "@/modules/crm/date-ranges";
 import { canViewAllData, type PermissionUser } from "@/permissions";
 import { groupBy, ownerWhere, periodWhere, reportPeriod, sum, type Metric, type ReportSearchParams } from "./common";
 
 export async function getDealsReport(params: ReportSearchParams, user: PermissionUser) {
   const { from, to } = reportPeriod(params);
+  const now = new Date();
   const filters: Prisma.DealWhereInput[] = [ownerWhere(user, canViewAllData(user) ? params.responsibleId : undefined)];
   if (params.stage) filters.push({ stage: params.stage as never });
   if (params.source) filters.push({ source: params.source as never });
@@ -25,7 +27,7 @@ export async function getDealsReport(params: ReportSearchParams, user: Permissio
       { title: "Активные сделки", value: active.length },
       { title: "Сумма активных сделок", value: `${sum(active.map((deal) => deal.potentialAmount)).toLocaleString("ru-RU")} ₽` },
       { title: "Без следующего шага", value: active.filter((deal) => !deal.nextActionAt || !deal.nextActionText).length, tone: "warning" as const },
-      { title: "Просроченное действие", value: active.filter((deal) => deal.nextActionAt && deal.nextActionAt < new Date()).length, tone: "warning" as const },
+      { title: "Просроченное действие", value: active.filter((deal) => deal.nextActionAt && deal.nextActionAt < now).length, tone: "warning" as const },
       { title: "Ожидают решения", value: active.filter((deal) => deal.stage === "WAITING_DECISION").length },
       { title: "Завершены", value: deals.filter((deal) => deal.stage === "COMPLETED").length, tone: "secondary" as const },
       { title: "Проиграны", value: deals.filter((deal) => deal.stage === "LOST").length, tone: "warning" as const }
@@ -37,6 +39,7 @@ export async function getDealsReport(params: ReportSearchParams, user: Permissio
 
 export async function getProposalsReport(params: ReportSearchParams, user: PermissionUser) {
   const { from, to } = reportPeriod(params);
+  const now = new Date();
   const filters: Prisma.CommercialProposalWhereInput[] = [ownerWhere(user, canViewAllData(user) ? params.responsibleId : undefined), { createdAt: periodWhere(from, to) }];
   if (params.status) filters.push({ status: params.status as never });
   if (params.designerId) filters.push({ designerId: params.designerId });
@@ -54,8 +57,7 @@ export async function getProposalsReport(params: ReportSearchParams, user: Permi
     acc[proposal.responsibleId].count += 1;
     return acc;
   }, {});
-  const thinking7 = new Date();
-  thinking7.setDate(thinking7.getDate() - 7);
+  const thinking7 = daysAgo(7, now);
   return {
     period: { from, to },
     proposals,

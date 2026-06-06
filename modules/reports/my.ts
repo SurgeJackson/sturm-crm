@@ -1,25 +1,25 @@
 import { prisma } from "@/lib/prisma";
+import { ownerRecordWhere } from "@/modules/crm/access-where";
+import { daysAgo, dayRange } from "@/modules/crm/date-ranges";
 import type { PermissionUser } from "@/permissions";
 import { periodWhere, type Metric } from "./common";
 import { getCrmDisciplineReport } from "./crm-discipline";
 
 export async function getMyReport(user: PermissionUser) {
-  const todayStart = new Date();
-  todayStart.setHours(0, 0, 0, 0);
-  const todayEnd = new Date();
-  todayEnd.setHours(23, 59, 59, 999);
-  const sixtyDaysAgo = new Date();
-  sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
+  const now = new Date();
+  const today = dayRange(now);
+  const sixtyDaysAgo = daysAgo(60, now);
+  const own = ownerRecordWhere(user);
   const [discipline, tasksToday, overdueTasks, doneTasks, clients, designers, objects, deals, proposals, proposalsNoFollowUp, designersNoTouch, clientsNoContact] = await Promise.all([
     getCrmDisciplineReport({}, user),
-    prisma.taskActivity.count({ where: { responsibleId: user.id, recordType: "TASK", archivedAt: null, dueAt: periodWhere(todayStart, todayEnd) } }),
-    prisma.taskActivity.count({ where: { responsibleId: user.id, recordType: "TASK", archivedAt: null, dueAt: { lt: new Date() }, status: { notIn: ["DONE", "CANCELLED", "CLOSED"] } } }),
+    prisma.taskActivity.count({ where: { responsibleId: user.id, recordType: "TASK", archivedAt: null, dueAt: periodWhere(today.start, today.end) } }),
+    prisma.taskActivity.count({ where: { responsibleId: user.id, recordType: "TASK", archivedAt: null, dueAt: { lt: now }, status: { notIn: ["DONE", "CANCELLED", "CLOSED"] } } }),
     prisma.taskActivity.count({ where: { responsibleId: user.id, recordType: "TASK", status: "DONE" } }),
-    prisma.client.count({ where: { OR: [{ responsibleId: user.id }, { createdById: user.id }] } }),
-    prisma.designer.count({ where: { OR: [{ responsibleId: user.id }, { createdById: user.id }] } }),
-    prisma.projectObject.count({ where: { OR: [{ responsibleId: user.id }, { createdById: user.id }] } }),
-    prisma.deal.count({ where: { OR: [{ responsibleId: user.id }, { createdById: user.id }] } }),
-    prisma.commercialProposal.count({ where: { OR: [{ responsibleId: user.id }, { createdById: user.id }] } }),
+    prisma.client.count({ where: own }),
+    prisma.designer.count({ where: own }),
+    prisma.projectObject.count({ where: own }),
+    prisma.deal.count({ where: own }),
+    prisma.commercialProposal.count({ where: own }),
     prisma.commercialProposal.count({ where: { responsibleId: user.id, nextTouchAt: null, status: { notIn: ["ACCEPTED", "DECLINED", "ARCHIVED"] } } }),
     prisma.designer.count({ where: { responsibleId: user.id, OR: [{ lastTouchAt: null }, { lastTouchAt: { lt: sixtyDaysAgo } }] } }),
     prisma.client.count({ where: { responsibleId: user.id, status: "ACTIVE", nextContactAt: null } })

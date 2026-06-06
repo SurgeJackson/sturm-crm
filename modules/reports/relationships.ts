@@ -1,5 +1,6 @@
 import type { Prisma } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
+import { daysAgo } from "@/modules/crm/date-ranges";
 import { canViewAllData, type PermissionUser } from "@/permissions";
 import { groupBy, ownerWhere, periodWhere, reportPeriod, sum, type Metric, type ReportSearchParams } from "./common";
 
@@ -17,8 +18,7 @@ export async function getDesignersReport(params: ReportSearchParams, user: Permi
     include: { responsible: { select: { name: true } }, projectObjects: { where: { archivedAt: null } }, proposals: { where: { archivedAt: null } } },
     orderBy: { createdAt: "desc" }
   });
-  const sixtyDaysAgo = new Date();
-  sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
+  const sixtyDaysAgo = daysAgo(60);
   return {
     period: { from, to },
     designers,

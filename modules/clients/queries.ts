@@ -1,9 +1,11 @@
 import type { Prisma } from "@/generated/prisma/client";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { clientAccessWhere } from "@/modules/crm/access-where";
+import { userSummarySelect } from "@/modules/crm/selects";
 import { taskInclude } from "@/modules/tasks/queries";
 import { computeBonusEligibilityStatus, getActiveViolationsForEntity, getActiveViolationsMap } from "@/modules/crm-discipline/service";
-import { canViewAllData, canViewRecord, type PermissionUser } from "@/permissions";
+import { canViewRecord, type PermissionUser } from "@/permissions";
 
 export type ClientListSearchParams = {
   q?: string;
@@ -18,17 +20,9 @@ export type ClientListSearchParams = {
 
 const PAGE_SIZE = 20;
 
-function accessWhere(user: PermissionUser): Prisma.ClientWhereInput {
-  if (canViewAllData(user)) return {};
-
-  return {
-    OR: [{ responsibleId: user.id }, { createdById: user.id }]
-  };
-}
-
 export async function getClients(params: ClientListSearchParams, user: PermissionUser) {
   const page = Math.max(Number(params.page ?? "1") || 1, 1);
-  const filters: Prisma.ClientWhereInput[] = [accessWhere(user)];
+  const filters: Prisma.ClientWhereInput[] = [clientAccessWhere(user)];
 
   if (params.q) {
     filters.push({
@@ -62,8 +56,8 @@ export async function getClients(params: ClientListSearchParams, user: Permissio
       skip: (page - 1) * PAGE_SIZE,
       take: PAGE_SIZE,
       include: {
-        responsible: { select: { id: true, name: true, email: true } },
-        createdBy: { select: { id: true, name: true, email: true } }
+        responsible: { select: userSummarySelect },
+        createdBy: { select: userSummarySelect }
       }
     }),
     prisma.client.count({ where })
@@ -91,8 +85,8 @@ export async function getClientForUser(id: string, user: PermissionUser) {
   const client = await prisma.client.findUnique({
     where: { id },
     include: {
-      responsible: { select: { id: true, name: true, email: true } },
-      createdBy: { select: { id: true, name: true, email: true } },
+      responsible: { select: userSummarySelect },
+      createdBy: { select: userSummarySelect },
       projectObjects: {
         where: { archivedAt: null },
         orderBy: { createdAt: "desc" },

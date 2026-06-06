@@ -1,47 +1,22 @@
 import type { Prisma } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
-import { canViewAllData, type PermissionUser } from "@/permissions";
-
-function accessWhere(user: PermissionUser): {
-  client: Prisma.ClientWhereInput;
-  designer: Prisma.DesignerWhereInput;
-  object: Prisma.ProjectObjectWhereInput;
-  deal: Prisma.DealWhereInput;
-  proposal: Prisma.CommercialProposalWhereInput;
-  task: Prisma.TaskActivityWhereInput;
-} {
-  if (canViewAllData(user)) {
-    return { client: {}, designer: {}, object: {}, deal: {}, proposal: {}, task: {} };
-  }
-
-  return {
-    client: { OR: [{ responsibleId: user.id }, { createdById: user.id }] },
-    designer: { OR: [{ responsibleId: user.id }, { createdById: user.id }] },
-    object: { OR: [{ responsibleId: user.id }, { createdById: user.id }] },
-    deal: { OR: [{ responsibleId: user.id }, { createdById: user.id }] },
-    proposal: { OR: [{ responsibleId: user.id }, { createdById: user.id }] },
-    task: { OR: [{ responsibleId: user.id }, { createdById: user.id }] }
-  };
-}
+import { accessWhereBundle, ownerRecordWhere } from "@/modules/crm/access-where";
+import { daysAgo, daysFromNow, dayRange } from "@/modules/crm/date-ranges";
+import { countBy } from "@/modules/reports/common";
+import type { PermissionUser } from "@/permissions";
 
 export async function getDashboardMetrics(user: PermissionUser) {
-  const sevenDaysAgo = new Date();
-  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-  const sixtyDaysAgo = new Date();
-  sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
-  const todayStart = new Date();
-  todayStart.setHours(0, 0, 0, 0);
-  const todayEnd = new Date();
-  todayEnd.setHours(23, 59, 59, 999);
-  const weekEnd = new Date();
-  weekEnd.setDate(weekEnd.getDate() + 7);
+  const now = new Date();
+  const sevenDaysAgo = daysAgo(7, now);
+  const sixtyDaysAgo = daysAgo(60, now);
+  const today = dayRange(now);
+  const weekEnd = daysFromNow(7, now);
   weekEnd.setHours(23, 59, 59, 999);
-  const access = accessWhere(user);
+  const access = accessWhereBundle(user);
   const activeDealFilter: Prisma.DealWhereInput = { archivedAt: null, stage: { notIn: ["LOST", "COMPLETED"] } };
   const activeProposalFilter: Prisma.CommercialProposalWhereInput = { archivedAt: null, status: { notIn: ["ACCEPTED", "DECLINED", "ARCHIVED"] } };
-  const myAccess = { OR: [{ responsibleId: user.id }, { createdById: user.id }] };
-  const thinkingThreshold = new Date();
-  thinkingThreshold.setDate(thinkingThreshold.getDate() - 7);
+  const myAccess = ownerRecordWhere(user);
+  const thinkingThreshold = daysAgo(7, now);
 
   const [
     newClients,
@@ -120,7 +95,7 @@ export async function getDashboardMetrics(user: PermissionUser) {
       where: {
         AND: [
           access.task,
-          { recordType: "TASK", archivedAt: null, status: { notIn: ["DONE", "CANCELLED", "CLOSED"] }, dueAt: { lt: new Date() } }
+          { recordType: "TASK", archivedAt: null, status: { notIn: ["DONE", "CANCELLED", "CLOSED"] }, dueAt: { lt: now } }
         ]
       }
     }),
@@ -128,7 +103,7 @@ export async function getDashboardMetrics(user: PermissionUser) {
       where: {
         AND: [
           access.task,
-          { recordType: "TASK", archivedAt: null, status: { notIn: ["DONE", "CANCELLED", "CLOSED"] }, dueAt: { gte: todayStart, lte: todayEnd } }
+          { recordType: "TASK", archivedAt: null, status: { notIn: ["DONE", "CANCELLED", "CLOSED"] }, dueAt: { gte: today.start, lte: today.end } }
         ]
       }
     }),
@@ -136,14 +111,14 @@ export async function getDashboardMetrics(user: PermissionUser) {
     prisma.taskActivity.count({ where: { AND: [access.task, { recordType: "TASK", status: "DONE", completedAt: { gte: sevenDaysAgo } }] } }),
     prisma.taskActivity.count({ where: { AND: [access.task, { recordType: "TOUCH", completedAt: { gte: sevenDaysAgo } }] } }),
     prisma.taskActivity.findMany({
-      where: { AND: [access.task, { recordType: "TASK", archivedAt: null, status: { notIn: ["DONE", "CANCELLED", "CLOSED"] }, dueAt: { lt: new Date() } }] },
+      where: { AND: [access.task, { recordType: "TASK", archivedAt: null, status: { notIn: ["DONE", "CANCELLED", "CLOSED"] }, dueAt: { lt: now } }] },
       select: { responsible: { select: { id: true, name: true } } }
     }),
     prisma.taskActivity.count({
       where: {
         AND: [
           { responsibleId: user.id },
-          { recordType: "TASK", archivedAt: null, status: { notIn: ["DONE", "CANCELLED", "CLOSED"] }, dueAt: { gte: todayStart, lte: todayEnd } }
+          { recordType: "TASK", archivedAt: null, status: { notIn: ["DONE", "CANCELLED", "CLOSED"] }, dueAt: { gte: today.start, lte: today.end } }
         ]
       }
     }),
@@ -151,7 +126,7 @@ export async function getDashboardMetrics(user: PermissionUser) {
       where: {
         AND: [
           { responsibleId: user.id },
-          { recordType: "TASK", archivedAt: null, status: { notIn: ["DONE", "CANCELLED", "CLOSED"] }, dueAt: { lt: new Date() } }
+          { recordType: "TASK", archivedAt: null, status: { notIn: ["DONE", "CANCELLED", "CLOSED"] }, dueAt: { lt: now } }
         ]
       }
     }),
@@ -159,7 +134,7 @@ export async function getDashboardMetrics(user: PermissionUser) {
       where: {
         AND: [
           { responsibleId: user.id },
-          { recordType: "TASK", archivedAt: null, dueAt: { gte: todayStart, lte: weekEnd } }
+          { recordType: "TASK", archivedAt: null, dueAt: { gte: today.start, lte: weekEnd } }
         ]
       }
     }),
@@ -193,19 +168,19 @@ export async function getDashboardMetrics(user: PermissionUser) {
     prisma.commercialProposal.count({ where: { AND: [myAccess, { archivedAt: null }] } }),
     prisma.commercialProposal.count({ where: { AND: [myAccess, activeProposalFilter, { nextTouchAt: null }] } }),
     prisma.commercialProposal.count({ where: { AND: [myAccess, { status: "CLIENT_THINKING", sentAt: { lt: thinkingThreshold } }] } }),
-    prisma.commercialProposal.count({ where: { AND: [myAccess, activeProposalFilter, { nextTouchAt: { lt: new Date() } }] } }),
+    prisma.commercialProposal.count({ where: { AND: [myAccess, activeProposalFilter, { nextTouchAt: { lt: now } }] } }),
     prisma.commercialProposal.count({ where: { AND: [myAccess, { status: "ACCEPTED" }] } }),
     prisma.commercialProposal.count({ where: { AND: [myAccess, { status: "DECLINED" }] } }),
     prisma.deal.count({ where: { AND: [access.deal, activeDealFilter] } }),
     prisma.deal.count({ where: { AND: [access.deal, { createdAt: { gte: sevenDaysAgo } }] } }),
     prisma.deal.aggregate({ where: { AND: [access.deal, activeDealFilter] }, _sum: { potentialAmount: true } }),
     prisma.deal.count({ where: { AND: [access.deal, activeDealFilter, { OR: [{ nextActionAt: null }, { nextActionText: null }] }] } }),
-    prisma.deal.count({ where: { AND: [access.deal, activeDealFilter, { nextActionAt: { lt: new Date() } }] } }),
+    prisma.deal.count({ where: { AND: [access.deal, activeDealFilter, { nextActionAt: { lt: now } }] } }),
     prisma.deal.count({ where: { AND: [access.deal, activeDealFilter, { stage: "WAITING_DECISION" }] } }),
     prisma.deal.count({ where: { AND: [access.deal, { stage: "LOST", closedAt: { gte: sevenDaysAgo } }] } }),
     prisma.deal.count({ where: { AND: [myAccess, activeDealFilter] } }),
     prisma.deal.count({ where: { AND: [myAccess, activeDealFilter, { OR: [{ nextActionAt: null }, { nextActionText: null }] }] } }),
-    prisma.deal.count({ where: { AND: [myAccess, activeDealFilter, { nextActionAt: { lt: new Date() } }] } }),
+    prisma.deal.count({ where: { AND: [myAccess, activeDealFilter, { nextActionAt: { lt: now } }] } }),
     prisma.deal.count({ where: { AND: [myAccess, activeDealFilter, { stage: "WAITING_DECISION" }] } }),
     prisma.deal.count({ where: { AND: [myAccess, activeDealFilter, { stage: "PROPOSAL_IN_PROGRESS" }] } }),
     prisma.deal.count({ where: { AND: [myAccess, { stage: "LOST", closedAt: { gte: sevenDaysAgo } }] } }),
@@ -214,26 +189,24 @@ export async function getDashboardMetrics(user: PermissionUser) {
     prisma.client.count({ where: { AND: [access.client, { nextContactAt: null }] } }),
     prisma.designer.count({ where: { AND: [access.designer, { potential: "A" }] } }),
     prisma.designer.count({ where: { AND: [access.designer, { relationshipStage: "SLEEPING" }] } }),
-    prisma.client.count({ where: { OR: [{ responsibleId: user.id }, { createdById: user.id }] } }),
-    prisma.designer.count({ where: { OR: [{ responsibleId: user.id }, { createdById: user.id }] } }),
+    prisma.client.count({ where: myAccess }),
+    prisma.designer.count({ where: myAccess }),
     prisma.designer.count({
       where: {
-        OR: [{ responsibleId: user.id }, { createdById: user.id }],
-        nextStepAt: { gte: todayStart, lte: todayEnd }
+        AND: [myAccess, { nextStepAt: { gte: today.start, lte: today.end } }]
       }
     }),
     prisma.designer.count({
       where: {
         AND: [
-          { OR: [{ responsibleId: user.id }, { createdById: user.id }] },
+          myAccess,
           { OR: [{ nextStepAt: null }, { nextStepText: null }] }
         ]
       }
     }),
     prisma.client.count({
       where: {
-        OR: [{ responsibleId: user.id }, { createdById: user.id }],
-        nextContactAt: null
+        AND: [myAccess, { nextContactAt: null }]
       }
     }),
     prisma.designer.findMany({
@@ -281,25 +254,10 @@ export async function getDashboardMetrics(user: PermissionUser) {
     })
   ]);
 
-  const activeDesignersByStage = activeDesigners.reduce<Record<string, number>>((acc, designer) => {
-    acc[designer.relationshipStage] = (acc[designer.relationshipStage] ?? 0) + 1;
-    return acc;
-  }, {});
-
-  const objectsByStage = activeObjectsByStage.reduce<Record<string, number>>((acc, object) => {
-    acc[object.stage] = (acc[object.stage] ?? 0) + 1;
-    return acc;
-  }, {});
-
-  const dealsByStage = activeDealsByStage.reduce<Record<string, number>>((acc, deal) => {
-    acc[deal.stage] = (acc[deal.stage] ?? 0) + 1;
-    return acc;
-  }, {});
-
-  const dealLossReasons = lostDealReasons.reduce<Record<string, number>>((acc, deal) => {
-    if (deal.lossReason) acc[deal.lossReason] = (acc[deal.lossReason] ?? 0) + 1;
-    return acc;
-  }, {});
+  const activeDesignersByStage = countBy(activeDesigners, (designer) => designer.relationshipStage);
+  const objectsByStage = countBy(activeObjectsByStage, (object) => object.stage);
+  const dealsByStage = countBy(activeDealsByStage, (deal) => deal.stage);
+  const dealLossReasons = countBy(lostDealReasons, (deal) => deal.lossReason);
 
   const dealResponsibleCounts = dealsByResponsible.reduce<Record<string, { name: string; count: number }>>((acc, deal) => {
     acc[deal.responsible.id] = {
@@ -309,15 +267,8 @@ export async function getDashboardMetrics(user: PermissionUser) {
     return acc;
   }, {});
 
-  const proposalStatusCounts = proposalsByStatus.reduce<Record<string, number>>((acc, proposal) => {
-    acc[proposal.status] = (acc[proposal.status] ?? 0) + 1;
-    return acc;
-  }, {});
-
-  const proposalDeclineReasonCounts = proposalDeclineReasons.reduce<Record<string, number>>((acc, proposal) => {
-    if (proposal.declineReason) acc[proposal.declineReason] = (acc[proposal.declineReason] ?? 0) + 1;
-    return acc;
-  }, {});
+  const proposalStatusCounts = countBy(proposalsByStatus, (proposal) => proposal.status);
+  const proposalDeclineReasonCounts = countBy(proposalDeclineReasons, (proposal) => proposal.declineReason);
 
   const proposalResponsibleAmounts = proposalsByResponsible.reduce<Record<string, { name: string; amount: number }>>((acc, proposal) => {
     acc[proposal.responsible.id] = {

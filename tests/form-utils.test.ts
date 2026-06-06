@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { compactString, optionalDate, toAuditValue } from "../modules/crm/form-utils";
+import { compactString, optionalDate, optionalDateTime, toAuditValue } from "../modules/crm/form-utils";
 
 describe("form-utils", () => {
   it("compacts empty strings to undefined", () => {
@@ -12,6 +12,12 @@ describe("form-utils", () => {
     expect(optionalDate()).toBeNull();
     expect(optionalDate("bad-value")).toBeNull();
     expect(optionalDate("2026-06-05")?.toISOString()).toBe("2026-06-05T00:00:00.000Z");
+  });
+
+  it("parses optional date-time values", () => {
+    expect(optionalDateTime()).toBeNull();
+    expect(optionalDateTime("bad-value")).toBeNull();
+    expect(optionalDateTime("2026-06-05T10:30:00.000Z")?.toISOString()).toBe("2026-06-05T10:30:00.000Z");
   });
 
   it("serializes dates for audit json", () => {

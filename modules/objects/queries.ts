@@ -1,9 +1,11 @@
 import type { Prisma } from "@/generated/prisma/client";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { objectAccessWhere } from "@/modules/crm/access-where";
+import { userSummarySelect } from "@/modules/crm/selects";
 import { taskInclude } from "@/modules/tasks/queries";
 import { computeBonusEligibilityStatus, getActiveViolationsForEntity, getActiveViolationsMap } from "@/modules/crm-discipline/service";
-import { canViewAllData, canViewRecord, type PermissionUser } from "@/permissions";
+import { canViewRecord, type PermissionUser } from "@/permissions";
 
 export type ObjectListSearchParams = {
   q?: string;
@@ -24,14 +26,7 @@ export type ObjectListSearchParams = {
 };
 
 const PAGE_SIZE = 20;
-
-export function objectAccessWhere(user: PermissionUser): Prisma.ProjectObjectWhereInput {
-  if (canViewAllData(user)) return {};
-
-  return {
-    OR: [{ responsibleId: user.id }, { createdById: user.id }]
-  };
-}
+export { objectAccessWhere };
 
 export async function getProjectObjects(params: ObjectListSearchParams, user: PermissionUser) {
   const page = Math.max(Number(params.page ?? "1") || 1, 1);
@@ -77,7 +72,7 @@ export async function getProjectObjects(params: ObjectListSearchParams, user: Pe
       include: {
         client: { select: { id: true, name: true } },
         designer: { select: { id: true, name: true, studio: true, relationshipStage: true } },
-        responsible: { select: { id: true, name: true, email: true } },
+        responsible: { select: userSummarySelect },
         _count: { select: { participants: true, tasks: true, deals: true, proposals: true } }
       }
     }),
@@ -108,14 +103,14 @@ export async function getProjectObjectForUser(id: string, user: PermissionUser) 
     include: {
       client: { select: { id: true, name: true, phone: true, email: true } },
       designer: { select: { id: true, name: true, studio: true, relationshipStage: true } },
-      responsible: { select: { id: true, name: true, email: true } },
-      createdBy: { select: { id: true, name: true, email: true } },
+      responsible: { select: userSummarySelect },
+      createdBy: { select: userSummarySelect },
       participants: {
         where: { archivedAt: null },
         orderBy: { createdAt: "desc" },
         include: {
-          responsible: { select: { id: true, name: true, email: true } },
-          createdBy: { select: { id: true, name: true, email: true } }
+          responsible: { select: userSummarySelect },
+          createdBy: { select: userSummarySelect }
         }
       },
       tasks: {

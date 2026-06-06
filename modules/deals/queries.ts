@@ -1,9 +1,12 @@
 import type { Prisma } from "@/generated/prisma/client";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { dealAccessWhere } from "@/modules/crm/access-where";
+import { daysAgo } from "@/modules/crm/date-ranges";
+import { clientNameSelect, designerNameSelect, objectTitleSelect, userSummarySelect } from "@/modules/crm/selects";
 import { taskInclude } from "@/modules/tasks/queries";
 import { computeBonusEligibilityStatus, getActiveViolationsForEntity, getActiveViolationsMap } from "@/modules/crm-discipline/service";
-import { canViewAllData, canViewRecord, type PermissionUser } from "@/permissions";
+import { canViewRecord, type PermissionUser } from "@/permissions";
 
 export type DealListSearchParams = {
   q?: string;
@@ -25,14 +28,7 @@ export type DealListSearchParams = {
 };
 
 const PAGE_SIZE = 20;
-
-export function dealAccessWhere(user: PermissionUser): Prisma.DealWhereInput {
-  if (canViewAllData(user)) return {};
-
-  return {
-    OR: [{ responsibleId: user.id }, { createdById: user.id }]
-  };
-}
+export { dealAccessWhere };
 
 export function activeDealWhere(): Prisma.DealWhereInput {
   return {
@@ -111,10 +107,10 @@ export async function getDeals(params: DealListSearchParams, user: PermissionUse
 
 export function dealListInclude() {
   return {
-    client: { select: { id: true, name: true } },
+    client: { select: clientNameSelect },
     projectObject: { select: { id: true, title: true, city: true } },
-    designer: { select: { id: true, name: true, studio: true } },
-    responsible: { select: { id: true, name: true, email: true } }
+    designer: { select: designerNameSelect },
+    responsible: { select: userSummarySelect }
   } satisfies Prisma.DealInclude;
 }
 
@@ -124,9 +120,9 @@ export async function getDealForUser(id: string, user: PermissionUser) {
     include: {
       client: { select: { id: true, name: true, phone: true, email: true } },
       projectObject: { select: { id: true, title: true, city: true, address: true } },
-      designer: { select: { id: true, name: true, studio: true } },
-      responsible: { select: { id: true, name: true, email: true } },
-      createdBy: { select: { id: true, name: true, email: true } },
+      designer: { select: designerNameSelect },
+      responsible: { select: userSummarySelect },
+      createdBy: { select: userSummarySelect },
       proposals: {
         where: { archivedAt: null },
         orderBy: { createdAt: "desc" },
