@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { clientSourceLabels, clientStatusLabels, clientTypeLabels } from "@/lib/constants";
 import { prisma } from "@/lib/prisma";
 import { clientAccessWhere } from "@/modules/crm/access-where";
+import { DETAIL_TASK_LIMIT } from "@/modules/crm/detail-limits";
 import { paginatedQuery, sortFromParam } from "@/modules/crm/list-query";
 import { enumParam, flagParam } from "@/modules/crm/param-parsing";
 import { pageFromParam } from "@/modules/crm/pagination";
@@ -107,7 +108,7 @@ export async function getClientForUser(id: string, user: PermissionUser) {
       tasks: {
         where: { archivedAt: null },
         orderBy: [{ dueAt: "asc" }, { createdAt: "desc" }],
-        take: 30,
+        take: DETAIL_TASK_LIMIT,
         include: taskInclude()
       }
     }

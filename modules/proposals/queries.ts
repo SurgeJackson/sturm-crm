@@ -4,6 +4,7 @@ import { commercialProposalStatusLabels } from "@/lib/constants";
 import { prisma } from "@/lib/prisma";
 import { proposalAccessWhere } from "@/modules/crm/access-where";
 import { daysAgo } from "@/modules/crm/date-ranges";
+import { DETAIL_TASK_LIMIT } from "@/modules/crm/detail-limits";
 import { closedProposalStatuses } from "@/modules/crm/domain-constants";
 import { paginatedQuery, sortFromParam } from "@/modules/crm/list-query";
 import { enumParam, flagParam } from "@/modules/crm/param-parsing";
@@ -126,7 +127,7 @@ export async function getProposalForUser(id: string, user: PermissionUser) {
       tasks: {
         where: { archivedAt: null },
         orderBy: [{ dueAt: "asc" }, { createdAt: "desc" }],
-        take: 30,
+        take: DETAIL_TASK_LIMIT,
         include: taskInclude()
       }
     }

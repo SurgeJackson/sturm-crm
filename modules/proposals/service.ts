@@ -1,7 +1,8 @@
 import type { CommercialProposal, DealStage } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
-import { writeEntityAuditLog } from "@/modules/crm/audit-helpers";
-import { syncDealDiscipline, syncProposalDiscipline, syncTaskDiscipline } from "@/modules/crm-discipline/service";
+import { writeEntityAuditLog, writeTrackedFieldAuditLogs, type TrackedAuditField } from "@/modules/crm/audit-helpers";
+import { expireViolationsForEntity, syncDealDiscipline, syncProposalDiscipline, syncTaskDiscipline } from "@/modules/crm-discipline/service";
+import { toProposalDocument, type ProposalFileData, type ProposalFormData } from "@/modules/proposals/form";
 
 export async function generateProposalNumber(now = new Date()) {
   const year = now.getFullYear();
@@ -65,6 +66,174 @@ export async function createProposalFollowUpTask(proposal: CommercialProposal) {
   });
 
   await syncTaskDiscipline(task.id, proposal.createdById);
+}
+
+export function proposalTrackedFields(before: CommercialProposal, after: CommercialProposal): readonly TrackedAuditField[] {
+  return [
+    ["status", "CHANGE_STATUS", before.status, after.status],
+    ["amount", "CHANGE_AMOUNT", before.amount, after.amount],
+    ["discountPercent", "CHANGE_DISCOUNT", before.discountPercent, after.discountPercent],
+    ["discountAmount", "CHANGE_DISCOUNT", before.discountAmount, after.discountAmount],
+    ["nextTouchAt", "CHANGE_NEXT_TOUCH", before.nextTouchAt?.toISOString?.(), after.nextTouchAt?.toISOString?.()],
+    ["declineReason", "DECLINE", before.declineReason, after.declineReason]
+  ] as const;
+}
+
+export function proposalStatusAuditEvents(before: Pick<CommercialProposal, "status">, after: Pick<CommercialProposal, "status">) {
+  return before.status !== "ACCEPTED" && after.status === "ACCEPTED"
+    ? [{
+        action: "ACCEPT",
+        before: { status: before.status },
+        after: { status: after.status }
+      }]
+    : [];
+}
+
+export async function createProposal(input: {
+  data: ProposalFormData;
+  deal: { clientId: string; objectId: string; designerId: string | null; responsibleId: string };
+  responsibleId: string;
+  proposalNumber: string;
+  userId: string;
+  fileData?: ProposalFileData;
+}) {
+  const proposal = await prisma.$transaction(async (tx) => {
+    const created = await tx.commercialProposal.create({
+      data: {
+        ...toProposalDocument(input.data, input.deal, input.responsibleId, null, input.fileData),
+        proposalNumber: input.proposalNumber,
+        version: 1,
+        parentProposalId: null,
+        createdById: input.userId
+      }
+    });
+
+    await writeEntityAuditLog({
+      entityType: "PROPOSAL",
+      entityId: created.id,
+      action: "CREATE",
+      userId: input.userId,
+      after: created,
+      client: tx
+    });
+
+    if (input.fileData) {
+      await writeEntityAuditLog({
+        entityType: "PROPOSAL",
+        entityId: created.id,
+        action: "UPLOAD_FILE",
+        userId: input.userId,
+        after: input.fileData,
+        client: tx
+      });
+    }
+
+    return created;
+  });
+
+  if (proposal.status === "SENT") await createProposalFollowUpTask(proposal);
+  await syncProposalDiscipline(proposal.id, input.userId);
+
+  return proposal;
+}
+
+export async function updateProposal(input: {
+  id: string;
+  before: CommercialProposal;
+  data: ProposalFormData;
+  deal: { clientId: string; objectId: string; designerId: string | null; responsibleId: string };
+  responsibleId: string;
+  userId: string;
+  fileData?: ProposalFileData;
+  lockFinancial: boolean;
+}) {
+  const document = toProposalDocument(
+    input.data,
+    input.deal,
+    input.responsibleId,
+    input.before,
+    input.fileData,
+    input.lockFinancial
+  );
+
+  const after = await prisma.$transaction(async (tx) => {
+    const updated = await tx.commercialProposal.update({
+      where: { id: input.id },
+      data: document
+    });
+
+    await writeEntityAuditLog({
+      entityType: "PROPOSAL",
+      entityId: input.id,
+      action: "UPDATE",
+      userId: input.userId,
+      before: input.before,
+      after: updated,
+      client: tx
+    });
+
+    await writeTrackedFieldAuditLogs({
+      entityType: "PROPOSAL",
+      entityId: input.id,
+      userId: input.userId,
+      fields: proposalTrackedFields(input.before, updated),
+      client: tx
+    });
+
+    if (input.fileData) {
+      await writeEntityAuditLog({
+        entityType: "PROPOSAL",
+        entityId: input.id,
+        action: "UPLOAD_FILE",
+        userId: input.userId,
+        after: input.fileData,
+        client: tx
+      });
+    }
+
+    for (const event of proposalStatusAuditEvents(input.before, updated)) {
+      await writeEntityAuditLog({
+        entityType: "PROPOSAL",
+        entityId: input.id,
+        action: event.action,
+        userId: input.userId,
+        before: event.before,
+        after: event.after,
+        client: tx
+      });
+    }
+
+    return updated;
+  });
+
+  if (input.before.status !== "SENT" && after.status === "SENT") await createProposalFollowUpTask(after);
+  await syncProposalDiscipline(input.id, input.userId);
+
+  return after;
+}
+
+export async function archiveProposal(id: string, before: CommercialProposal, userId: string) {
+  const after = await prisma.$transaction(async (tx) => {
+    const archived = await tx.commercialProposal.update({
+      where: { id },
+      data: { status: "ARCHIVED", archivedAt: new Date() }
+    });
+
+    await writeEntityAuditLog({
+      entityType: "PROPOSAL",
+      entityId: id,
+      action: "ARCHIVE",
+      userId,
+      before,
+      after: archived,
+      client: tx
+    });
+
+    return archived;
+  });
+
+  await expireViolationsForEntity("PROPOSAL", id, userId);
+  return after;
 }
 
 export function proposalVersionDocument(

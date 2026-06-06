@@ -2,10 +2,9 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
 import { ProjectObjectForm } from "@/components/objects/project-object-form";
 import { FormPageShell } from "@/components/layout/form-page-shell";
-import { prisma } from "@/lib/prisma";
+import { getObjectFormContext } from "@/modules/crm/form-contexts";
 import { updateProjectObjectAction } from "@/modules/objects/actions";
 import { getProjectObjectForUser } from "@/modules/objects/queries";
-import { getAssignableUsers } from "@/modules/users/queries";
 import { canChangeObjectResponsible, canEditRecord } from "@/permissions";
 
 type EditObjectPageProps = {
@@ -17,19 +16,9 @@ export default async function EditObjectPage({ params }: EditObjectPageProps) {
   if (!user) redirect("/login");
 
   const { id } = await params;
-  const [projectObject, users, clients, designers] = await Promise.all([
+  const [projectObject, context] = await Promise.all([
     getProjectObjectForUser(id, user),
-    getAssignableUsers(),
-    prisma.client.findMany({
-      where: { archivedAt: null },
-      orderBy: { name: "asc" },
-      select: { id: true, name: true, phone: true, email: true }
-    }),
-    prisma.designer.findMany({
-      where: { archivedAt: null },
-      orderBy: { name: "asc" },
-      select: { id: true, name: true, studio: true }
-    })
+    getObjectFormContext(user)
   ]);
 
   if (!canEditRecord(user, projectObject)) redirect(`/objects/${id}`);
@@ -41,9 +30,9 @@ export default async function EditObjectPage({ params }: EditObjectPageProps) {
       <ProjectObjectForm
         action={action}
         projectObject={projectObject}
-        users={users}
-        clients={clients}
-        designers={designers}
+        users={context.users}
+        clients={context.clients}
+        designers={context.designers}
         currentUserId={user.id}
         canChangeResponsible={canChangeObjectResponsible(user)}
         submitLabel="Сохранить"

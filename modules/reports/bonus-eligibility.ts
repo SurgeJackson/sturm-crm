@@ -1,6 +1,7 @@
 import type { CrmViolation } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
-import { computeBonusEligibilityStatus, crmEntityHref, getActiveViolationsMap, type BonusEligibilityStatus } from "@/modules/crm-discipline/service";
+import { enumParam, upperEnumParam } from "@/modules/crm/param-parsing";
+import { computeBonusEligibilityStatus, crmEntityHref, crmViolationSeverityLabels, getActiveViolationsMap, type BonusEligibilityStatus } from "@/modules/crm-discipline/service";
 import type { PermissionUser } from "@/permissions";
 import { groupBy, periodWhere, reportOwnerWhere, reportPeriod, type Metric, type ReportSearchParams } from "./common";
 
@@ -26,7 +27,14 @@ type BonusEntityRecord = {
 type BonusEntityConfig = {
   entityType: BonusEligibilityRow["entityType"];
   entity: string;
-  load: (owner: ReturnType<typeof reportOwnerWhere>, createdAt: ReturnType<typeof periodWhere>) => Promise<BonusEntityRecord[]>;
+  load: (owner: ReturnType<typeof reportOwnerWhere>, createdAt: ReturnType<typeof periodWhere>, ids?: string[]) => Promise<BonusEntityRecord[]>;
+};
+
+const bonusEntityTypeLabels: Record<BonusEligibilityRow["entityType"], string> = {
+  CLIENT: "Клиент",
+  OBJECT: "Объект",
+  DEAL: "Сделка",
+  PROPOSAL: "КП"
 };
 
 function violationMatchesFilters(violations: RawViolation[], params: ReportSearchParams) {
@@ -65,8 +73,8 @@ const bonusEntityConfigs: BonusEntityConfig[] = [
   {
     entityType: "DEAL",
     entity: "Сделка",
-    load: (owner, createdAt) => prisma.deal.findMany({
-      where: { AND: [owner, { archivedAt: null, createdAt }] },
+    load: (owner, createdAt, ids) => prisma.deal.findMany({
+      where: { AND: [owner, { archivedAt: null, createdAt }, ids ? { id: { in: ids } } : {}] },
       select: { id: true, title: true, responsible: { select: { name: true } } },
       orderBy: { createdAt: "desc" }
     })
@@ -74,9 +82,9 @@ const bonusEntityConfigs: BonusEntityConfig[] = [
   {
     entityType: "PROPOSAL",
     entity: "КП",
-    load: async (owner, createdAt) => {
+    load: async (owner, createdAt, ids) => {
       const proposals = await prisma.commercialProposal.findMany({
-        where: { AND: [owner, { archivedAt: null, createdAt }] },
+        where: { AND: [owner, { archivedAt: null, createdAt }, ids ? { id: { in: ids } } : {}] },
         select: { id: true, proposalNumber: true, responsible: { select: { name: true } } },
         orderBy: { createdAt: "desc" }
       });
@@ -90,8 +98,8 @@ const bonusEntityConfigs: BonusEntityConfig[] = [
   {
     entityType: "CLIENT",
     entity: "Клиент",
-    load: (owner, createdAt) => prisma.client.findMany({
-      where: { AND: [owner, { archivedAt: null, createdAt }] },
+    load: (owner, createdAt, ids) => prisma.client.findMany({
+      where: { AND: [owner, { archivedAt: null, createdAt }, ids ? { id: { in: ids } } : {}] },
       select: { id: true, name: true, responsible: { select: { name: true } } },
       orderBy: { createdAt: "desc" }
     }).then((clients) => clients.map((client) => ({
@@ -103,16 +111,21 @@ const bonusEntityConfigs: BonusEntityConfig[] = [
   {
     entityType: "OBJECT",
     entity: "Объект",
-    load: (owner, createdAt) => prisma.projectObject.findMany({
-      where: { AND: [owner, { archivedAt: null, createdAt }] },
+    load: (owner, createdAt, ids) => prisma.projectObject.findMany({
+      where: { AND: [owner, { archivedAt: null, createdAt }, ids ? { id: { in: ids } } : {}] },
       select: { id: true, title: true, responsible: { select: { name: true } } },
       orderBy: { createdAt: "desc" }
     })
   }
 ];
 
-async function bonusRowsForEntity(config: BonusEntityConfig, owner: ReturnType<typeof reportOwnerWhere>, createdAt: ReturnType<typeof periodWhere>) {
-  const records = await config.load(owner, createdAt);
+async function bonusRowsForEntity(
+  config: BonusEntityConfig,
+  owner: ReturnType<typeof reportOwnerWhere>,
+  createdAt: ReturnType<typeof periodWhere>,
+  ids?: string[]
+) {
+  const records = await config.load(owner, createdAt, ids);
   const violations = await getActiveViolationsMap(config.entityType, records.map((record) => record.id));
   return records.map((record) => bonusRow(
     config.entityType,
@@ -127,12 +140,48 @@ async function bonusRowsForEntity(config: BonusEntityConfig, owner: ReturnType<t
 export async function getBonusEligibilityReport(params: ReportSearchParams, user: PermissionUser) {
   const { from, to } = reportPeriod(params);
   const owner = reportOwnerWhere(user, params);
-  const entityTypes = (params.entity ? [params.entity] : ["DEAL", "PROPOSAL", "CLIENT", "OBJECT"]) as Array<BonusEligibilityRow["entityType"]>;
+  const entityType = enumParam(params.entity, bonusEntityTypeLabels);
+  const severity = upperEnumParam(params.severity, crmViolationSeverityLabels);
+  const entityTypes = entityType ? [entityType] : ["DEAL", "PROPOSAL", "CLIENT", "OBJECT"] satisfies Array<BonusEligibilityRow["entityType"]>;
   const createdAt = periodWhere(from, to);
+  const idsByEntity = new Map<BonusEligibilityRow["entityType"], string[]>();
+  const restrictByViolation = Boolean(params.violationCode || severity);
+
+  if (restrictByViolation) {
+    const violations = await prisma.crmViolation.findMany({
+      where: {
+        status: "ACTIVE",
+        entityType: { in: entityTypes },
+        ...(params.violationCode ? { violationCode: params.violationCode } : {}),
+        ...(severity ? { severity } : {})
+      },
+      select: { entityType: true, entityId: true }
+    });
+    for (const violation of violations) {
+      const type = violation.entityType as BonusEligibilityRow["entityType"];
+      idsByEntity.set(type, [...(idsByEntity.get(type) ?? []), violation.entityId]);
+    }
+    if (violations.length === 0) {
+      return {
+        period: { from, to },
+        rows: [],
+        metrics: [
+          { title: "Всего записей", value: 0 },
+          { title: "Учитываются", value: 0, tone: "secondary" as const },
+          { title: "Требуют исправления", value: 0, tone: "warning" as const },
+          { title: "Не учитываются", value: 0, tone: "warning" as const },
+          { title: "С нарушениями премирования", value: 0, tone: "warning" as const }
+        ] satisfies Metric[],
+        byEntity: {},
+        byStatus: {}
+      };
+    }
+  }
+
   const rows = (await Promise.all(
     bonusEntityConfigs
       .filter((config) => entityTypes.includes(config.entityType))
-      .map((config) => bonusRowsForEntity(config, owner, createdAt))
+      .map((config) => bonusRowsForEntity(config, owner, createdAt, restrictByViolation ? idsByEntity.get(config.entityType) ?? [] : undefined))
   )).flat();
 
   const filtered = rows.filter((row) => {

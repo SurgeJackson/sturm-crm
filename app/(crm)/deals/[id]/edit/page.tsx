@@ -2,10 +2,9 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
 import { DealForm } from "@/components/deals/deal-form";
 import { FormPageShell } from "@/components/layout/form-page-shell";
-import { prisma } from "@/lib/prisma";
+import { getDealFormContext } from "@/modules/crm/form-contexts";
 import { updateDealAction } from "@/modules/deals/actions";
 import { getDealForUser } from "@/modules/deals/queries";
-import { getAssignableUsers } from "@/modules/users/queries";
 import { canChangeDealResponsible, canEditRecord } from "@/permissions";
 
 type EditDealPageProps = {
@@ -17,23 +16,9 @@ export default async function EditDealPage({ params }: EditDealPageProps) {
   if (!user) redirect("/login");
 
   const { id } = await params;
-  const [deal, users, clients, objects, designers] = await Promise.all([
+  const [deal, context] = await Promise.all([
     getDealForUser(id, user),
-    getAssignableUsers(),
-    prisma.client.findMany({ where: { archivedAt: null }, orderBy: { name: "asc" }, select: { id: true, name: true } }),
-    prisma.projectObject.findMany({
-      where: { archivedAt: null },
-      orderBy: { title: "asc" },
-      select: {
-        id: true,
-        title: true,
-        clientId: true,
-        designerId: true,
-        client: { select: { id: true, name: true } },
-        designer: { select: { id: true, name: true, studio: true } }
-      }
-    }),
-    prisma.designer.findMany({ where: { archivedAt: null }, orderBy: { name: "asc" }, select: { id: true, name: true, studio: true } })
+    getDealFormContext(user)
   ]);
 
   if (!canEditRecord(user, deal)) redirect(`/deals/${id}`);
@@ -45,10 +30,10 @@ export default async function EditDealPage({ params }: EditDealPageProps) {
       <DealForm
         action={action}
         deal={deal}
-        users={users}
-        clients={clients}
-        objects={objects}
-        designers={designers}
+        users={context.users}
+        clients={context.clients}
+        objects={context.objects}
+        designers={context.designers}
         currentUserId={user.id}
         canChangeResponsible={canChangeDealResponsible(user)}
         submitLabel="Сохранить"

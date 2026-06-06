@@ -2,10 +2,9 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
 import { FormPageShell } from "@/components/layout/form-page-shell";
 import { ProposalForm } from "@/components/proposals/proposal-form";
-import { prisma } from "@/lib/prisma";
+import { getProposalFormContext } from "@/modules/crm/form-contexts";
 import { updateProposalAction } from "@/modules/proposals/actions";
 import { getProposalForUser } from "@/modules/proposals/queries";
-import { getAssignableUsers } from "@/modules/users/queries";
 import { canChangeProposalResponsible, canEditRecord } from "@/permissions";
 
 type EditProposalPageProps = {
@@ -17,25 +16,9 @@ export default async function EditProposalPage({ params }: EditProposalPageProps
   if (!user) redirect("/login");
 
   const { id } = await params;
-  const [proposal, users, deals] = await Promise.all([
+  const [proposal, context] = await Promise.all([
     getProposalForUser(id, user),
-    getAssignableUsers(),
-    prisma.deal.findMany({
-      where: { archivedAt: null },
-      orderBy: { title: "asc" },
-      select: {
-        id: true,
-        title: true,
-        clientId: true,
-        objectId: true,
-        designerId: true,
-        responsibleId: true,
-        client: { select: { id: true, name: true } },
-        projectObject: { select: { id: true, title: true } },
-        designer: { select: { id: true, name: true, studio: true } },
-        responsible: { select: { id: true, name: true } }
-      }
-    })
+    getProposalFormContext(user)
   ]);
 
   if (!canEditRecord(user, proposal)) redirect(`/proposals/${id}`);
@@ -45,8 +28,8 @@ export default async function EditProposalPage({ params }: EditProposalPageProps
       <ProposalForm
         action={updateProposalAction.bind(null, id)}
         proposal={proposal}
-        deals={deals}
-        users={users}
+        deals={context.deals}
+        users={context.users}
         currentUserId={user.id}
         canChangeResponsible={canChangeProposalResponsible(user)}
         submitLabel="Сохранить"

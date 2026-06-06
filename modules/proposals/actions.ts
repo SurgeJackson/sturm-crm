@@ -11,8 +11,6 @@ import {
   canCreateProposal,
   canEditRecord
 } from "@/permissions";
-import { writeEntityAuditLog, writeTrackedFieldAuditLogs } from "@/modules/crm/audit-helpers";
-import { expireViolationsForEntity, syncProposalDiscipline } from "@/modules/crm-discipline/service";
 import {
   ensureSentRequirements,
   parseProposalForm,
@@ -20,11 +18,13 @@ import {
 } from "@/modules/proposals/form";
 import { getProposalFile, saveProposalFile } from "@/modules/proposals/files";
 import {
-  createProposalFollowUpTask,
+  archiveProposal,
+  createProposal,
   createProposalVersion,
   generateProposalNumber,
   getDealForProposal,
-  moveDealToInvoiceFromProposal
+  moveDealToInvoiceFromProposal,
+  updateProposal
 } from "@/modules/proposals/service";
 
 export type ProposalActionState = {
@@ -56,37 +56,14 @@ export async function createProposalAction(_prevState: ProposalActionState, form
   const sentError = await ensureSentRequirements(document.status, document.fileUrl, parsed.data);
   if (sentError) return { message: sentError };
 
-  const proposal = await prisma.commercialProposal.create({
-    data: {
-      ...document,
-      proposalNumber,
-      version: 1,
-      parentProposalId: null,
-      createdById: user.id
-    }
-  });
-
-  if (proposal.status === "SENT") await createProposalFollowUpTask(proposal);
-
-  await writeEntityAuditLog({
-    entityType: "PROPOSAL",
-    entityId: proposal.id,
-    action: "CREATE",
+  const proposal = await createProposal({
+    data: parsed.data,
+    deal,
+    responsibleId,
+    proposalNumber,
     userId: user.id,
-    after: proposal
+    fileData
   });
-
-  if (fileData) {
-    await writeEntityAuditLog({
-      entityType: "PROPOSAL",
-      entityId: proposal.id,
-      action: "UPLOAD_FILE",
-      userId: user.id,
-      after: fileData
-    });
-  }
-
-  await syncProposalDiscipline(proposal.id, user.id);
 
   redirect(`/proposals/${proposal.id}?saved=1`);
 }
@@ -129,60 +106,16 @@ export async function updateProposalAction(id: string, _prevState: ProposalActio
   const sentError = await ensureSentRequirements(document.status, document.fileUrl, parsed.data);
   if (sentError) return { message: sentError };
 
-  const after = await prisma.commercialProposal.update({
-    where: { id },
-    data: document
-  });
-
-  if (before.status !== "SENT" && after.status === "SENT") await createProposalFollowUpTask(after);
-
-  await writeEntityAuditLog({
-    entityType: "PROPOSAL",
-    entityId: id,
-    action: "UPDATE",
-    userId: user.id,
+  await updateProposal({
+    id,
     before,
-    after
-  });
-
-  const trackedFields = [
-    ["status", "CHANGE_STATUS", before.status, after.status],
-    ["amount", "CHANGE_AMOUNT", before.amount, after.amount],
-    ["discountPercent", "CHANGE_DISCOUNT", before.discountPercent, after.discountPercent],
-    ["discountAmount", "CHANGE_DISCOUNT", before.discountAmount, after.discountAmount],
-    ["nextTouchAt", "CHANGE_NEXT_TOUCH", before.nextTouchAt?.toISOString?.(), after.nextTouchAt?.toISOString?.()],
-    ["declineReason", "DECLINE", before.declineReason, after.declineReason]
-  ] as const;
-
-  await writeTrackedFieldAuditLogs({
-    entityType: "PROPOSAL",
-    entityId: id,
+    data: parsed.data,
+    deal,
+    responsibleId,
     userId: user.id,
-    fields: trackedFields
+    fileData,
+    lockFinancial: !canChangeProposalFinancials(user)
   });
-
-  if (fileData) {
-    await writeEntityAuditLog({
-      entityType: "PROPOSAL",
-      entityId: id,
-      action: "UPLOAD_FILE",
-      userId: user.id,
-      after: fileData
-    });
-  }
-
-  if (before.status !== "ACCEPTED" && after.status === "ACCEPTED") {
-    await writeEntityAuditLog({
-      entityType: "PROPOSAL",
-      entityId: id,
-      action: "ACCEPT",
-      userId: user.id,
-      before: { status: before.status },
-      after: { status: after.status }
-    });
-  }
-
-  await syncProposalDiscipline(id, user.id);
 
   redirect(`/proposals/${id}?saved=1`);
 }
@@ -194,21 +127,7 @@ export async function archiveProposalAction(id: string) {
   const before = await prisma.commercialProposal.findUnique({ where: { id } });
   if (!before || !canArchiveRecord(user, before)) redirect(`/proposals/${id}?error=archive`);
 
-  const after = await prisma.commercialProposal.update({
-    where: { id },
-    data: { status: "ARCHIVED", archivedAt: new Date() }
-  });
-
-  await writeEntityAuditLog({
-    entityType: "PROPOSAL",
-    entityId: id,
-    action: "ARCHIVE",
-    userId: user.id,
-    before,
-    after
-  });
-
-  await expireViolationsForEntity("PROPOSAL", id, user.id);
+  await archiveProposal(id, before, user.id);
 
   redirect(`/proposals/${id}?archived=1`);
 }

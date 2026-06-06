@@ -12,7 +12,7 @@ import { prisma } from "@/lib/prisma";
 import { enumParam } from "@/modules/crm/param-parsing";
 import { daysAgo } from "@/modules/crm/date-ranges";
 import type { PermissionUser } from "@/permissions";
-import { groupBy, periodWhere, reportOwnerWhere, reportPeriod, sum, type Metric, type ReportSearchParams } from "./common";
+import { groupCountRows, periodWhere, reportOwnerWhere, reportPeriod, sum, type Metric, type ReportSearchParams } from "./common";
 
 export async function getDesignersReport(params: ReportSearchParams, user: PermissionUser) {
   const { from, to } = reportPeriod(params);
@@ -27,15 +27,21 @@ export async function getDesignersReport(params: ReportSearchParams, user: Permi
   if (params.city) filters.push({ city: { contains: params.city, mode: "insensitive" } });
   if (source) filters.push({ source });
   filters.push({ createdAt: periodWhere(from, to) });
-  const designers = await prisma.designer.findMany({
-    where: { AND: filters },
-    include: {
-      responsible: { select: { name: true } },
-      projectObjects: { where: { archivedAt: null }, select: { id: true } },
-      proposals: { where: { archivedAt: null }, select: { id: true, amount: true } }
-    },
-    orderBy: { createdAt: "desc" }
-  });
+  const where: Prisma.DesignerWhereInput = { AND: filters };
+  const [designers, stageRows, potentialRows, loyaltyRows] = await Promise.all([
+    prisma.designer.findMany({
+      where,
+      include: {
+        responsible: { select: { name: true } },
+        projectObjects: { where: { archivedAt: null }, select: { id: true } },
+        proposals: { where: { archivedAt: null }, select: { id: true, amount: true } }
+      },
+      orderBy: { createdAt: "desc" }
+    }),
+    prisma.designer.groupBy({ by: ["relationshipStage"], where, _count: { _all: true } }),
+    prisma.designer.groupBy({ by: ["potential"], where, _count: { _all: true } }),
+    prisma.designer.groupBy({ by: ["loyalty"], where, _count: { _all: true } })
+  ]);
   const sixtyDaysAgo = daysAgo(60);
   return {
     period: { from, to },
@@ -47,9 +53,9 @@ export async function getDesignersReport(params: ReportSearchParams, user: Permi
       { title: "Передали объект", value: designers.filter((designer) => designer.projectObjects.length > 0).length },
       { title: "Ключевые партнеры", value: designers.filter((designer) => designer.relationshipStage === "KEY_PARTNER").length, tone: "secondary" as const }
     ] satisfies Metric[],
-    byStage: groupBy(designers.map((designer) => designer.relationshipStage)),
-    byPotential: groupBy(designers.map((designer) => designer.potential)),
-    byLoyalty: groupBy(designers.map((designer) => designer.loyalty)),
+    byStage: groupCountRows(stageRows, "relationshipStage"),
+    byPotential: groupCountRows(potentialRows, "potential"),
+    byLoyalty: groupCountRows(loyaltyRows, "loyalty"),
     topByObjects: [...designers].sort((a, b) => b.projectObjects.length - a.projectObjects.length).slice(0, 10),
     topByProposalAmount: [...designers].sort((a, b) => sum(b.proposals.map((proposal) => proposal.amount)) - sum(a.proposals.map((proposal) => proposal.amount))).slice(0, 10)
   };
@@ -67,17 +73,22 @@ export async function getObjectsReport(params: ReportSearchParams, user: Permiss
   if (status) filters.push({ status });
   if (objectType) filters.push({ objectType });
   if (params.city) filters.push({ city: { contains: params.city, mode: "insensitive" } });
-  const objects = await prisma.projectObject.findMany({
-    where: { AND: filters },
-    include: {
-      responsible: { select: { name: true } },
-      client: { select: { name: true } },
-      designer: { select: { name: true } },
-      tasks: { where: { archivedAt: null }, select: { id: true } },
-      participants: { where: { archivedAt: null }, select: { id: true, participantType: true } }
-    },
-    orderBy: { createdAt: "desc" }
-  });
+  const where: Prisma.ProjectObjectWhereInput = { AND: filters };
+  const [objects, stageRows, typeRows] = await Promise.all([
+    prisma.projectObject.findMany({
+      where,
+      include: {
+        responsible: { select: { name: true } },
+        client: { select: { name: true } },
+        designer: { select: { name: true } },
+        tasks: { where: { archivedAt: null }, select: { id: true } },
+        participants: { where: { archivedAt: null }, select: { id: true, participantType: true } }
+      },
+      orderBy: { createdAt: "desc" }
+    }),
+    prisma.projectObject.groupBy({ by: ["stage"], where, _count: { _all: true } }),
+    prisma.projectObject.groupBy({ by: ["objectType"], where, _count: { _all: true } })
+  ]);
   return {
     period: { from, to },
     objects,
@@ -93,7 +104,7 @@ export async function getObjectsReport(params: ReportSearchParams, user: Permiss
       { title: "Без закупщика", value: objects.filter((object) => object.participants.every((participant) => participant.participantType !== "PURCHASE_INFLUENCER")).length, tone: "warning" as const },
       { title: "Без контакта реализации", value: objects.filter((object) => object.participants.every((participant) => participant.participantType !== "IMPLEMENTATION_CONTACT")).length, tone: "warning" as const }
     ] satisfies Metric[],
-    byStage: groupBy(objects.map((object) => object.stage)),
-    byType: groupBy(objects.map((object) => object.objectType))
+    byStage: groupCountRows(stageRows, "stage"),
+    byType: groupCountRows(typeRows, "objectType")
   };
 }

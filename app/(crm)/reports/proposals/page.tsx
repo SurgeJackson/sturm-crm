@@ -16,7 +16,10 @@ export default async function ProposalsReportPage({ searchParams }: PageProps) {
   const user = await getCurrentUser();
   if (!user) redirect("/login");
   const params = await searchParams;
-  const [report, filters] = await Promise.all([getProposalsReport(params, user), getReportFilterOptions(user)]);
+  const [report, filters] = await Promise.all([
+    getProposalsReport(params, user),
+    getReportFilterOptions(user, { clients: true, designers: true })
+  ]);
   return (
     <div className="space-y-6">
       <ReportPageHeader title="Отчет по КП" description="Потенциальная выручка, статусы, follow-up и причины отказов." report="proposals" params={params} />

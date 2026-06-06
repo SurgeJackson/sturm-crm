@@ -7,9 +7,8 @@ import { DealsTable } from "@/components/deals/deals-table";
 import { PageHeader } from "@/components/layout/page-header";
 import { Button } from "@/components/ui/button";
 import { Pagination } from "@/components/ui/pagination";
+import { getDealFilterContext } from "@/modules/crm/form-contexts";
 import { getDeals, type DealListSearchParams } from "@/modules/deals/queries";
-import { getAssignableUsers } from "@/modules/users/queries";
-import { prisma } from "@/lib/prisma";
 import { canCreateDeal } from "@/permissions";
 
 type DealsPageProps = {
@@ -29,12 +28,9 @@ export default async function DealsPage({ searchParams }: DealsPageProps) {
   if (!user) redirect("/login");
 
   const params = await searchParams;
-  const [deals, users, clients, objects, designers] = await Promise.all([
+  const [deals, context] = await Promise.all([
     getDeals(params, user),
-    getAssignableUsers(),
-    prisma.client.findMany({ where: { archivedAt: null }, orderBy: { name: "asc" }, select: { id: true, name: true } }),
-    prisma.projectObject.findMany({ where: { archivedAt: null }, orderBy: { title: "asc" }, select: { id: true, title: true } }),
-    prisma.designer.findMany({ where: { archivedAt: null }, orderBy: { name: "asc" }, select: { id: true, name: true, studio: true } })
+    getDealFilterContext(user)
   ]);
 
   return (
@@ -57,7 +53,7 @@ export default async function DealsPage({ searchParams }: DealsPageProps) {
         }
       />
 
-      <DealsFilters params={params} users={users} clients={clients} objects={objects} designers={designers} />
+      <DealsFilters params={params} users={context.users} clients={context.clients} objects={context.objects} designers={context.designers} />
       <DealsTable deals={deals.items} />
 
       <Pagination

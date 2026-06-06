@@ -44,11 +44,18 @@ const designerStageOrder = [
   "LOST_OR_IRRELEVANT"
 ] as const;
 
+type DesignerStageOrderValue = (typeof designerStageOrder)[number];
+
+function isDesignerStageOrderValue(stage: string): stage is DesignerStageOrderValue {
+  return designerStageOrder.includes(stage as DesignerStageOrderValue);
+}
+
 function shouldOfferDesignerStageUpdate(stage?: string) {
   if (!stage) return false;
-  const current = designerStageOrder.indexOf(stage as never);
+  if (!isDesignerStageOrderValue(stage)) return false;
+  const current = designerStageOrder.indexOf(stage);
   const target = designerStageOrder.indexOf("FIRST_OBJECT_RECEIVED");
-  return current >= 0 && current < target;
+  return current < target;
 }
 
 export default async function ObjectPage({ params, searchParams }: ObjectPageProps) {

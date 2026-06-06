@@ -143,7 +143,14 @@ export function scoreRows(problems: ProblemRow[]) {
   return Object.values(grouped).sort((a, b) => a.score - b.score);
 }
 
-export async function getReportFilterOptions(user: PermissionUser) {
+export type ReportFilterOptionScope = {
+  clients?: boolean;
+  designers?: boolean;
+  objects?: boolean;
+  deals?: boolean;
+};
+
+export async function getReportFilterOptions(user: PermissionUser, scope: ReportFilterOptionScope = {}) {
   const visible = ownerWhere(user);
   const [users, clients, designers, objects, deals] = await Promise.all([
     prisma.user.findMany({
@@ -151,10 +158,10 @@ export async function getReportFilterOptions(user: PermissionUser) {
       orderBy: { name: "asc" },
       select: { id: true, name: true, email: true, role: true }
     }),
-    prisma.client.findMany({ where: visible, orderBy: { name: "asc" }, select: { id: true, name: true } }),
-    prisma.designer.findMany({ where: visible, orderBy: { name: "asc" }, select: { id: true, name: true, studio: true } }),
-    prisma.projectObject.findMany({ where: visible, orderBy: { title: "asc" }, select: { id: true, title: true } }),
-    prisma.deal.findMany({ where: visible, orderBy: { title: "asc" }, select: { id: true, title: true } })
+    scope.clients ? prisma.client.findMany({ where: visible, orderBy: { name: "asc" }, select: { id: true, name: true } }) : Promise.resolve([]),
+    scope.designers ? prisma.designer.findMany({ where: visible, orderBy: { name: "asc" }, select: { id: true, name: true, studio: true } }) : Promise.resolve([]),
+    scope.objects ? prisma.projectObject.findMany({ where: visible, orderBy: { title: "asc" }, select: { id: true, title: true } }) : Promise.resolve([]),
+    scope.deals ? prisma.deal.findMany({ where: visible, orderBy: { title: "asc" }, select: { id: true, title: true } }) : Promise.resolve([])
   ]);
 
   return { users, clients, designers, objects, deals };

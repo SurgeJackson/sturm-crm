@@ -8,6 +8,7 @@ import {
 } from "@/lib/constants";
 import { prisma } from "@/lib/prisma";
 import { designerAccessWhere } from "@/modules/crm/access-where";
+import { DETAIL_TASK_LIMIT } from "@/modules/crm/detail-limits";
 import { paginatedQuery, sortFromParam } from "@/modules/crm/list-query";
 import { enumParam, flagParam } from "@/modules/crm/param-parsing";
 import { pageFromParam } from "@/modules/crm/pagination";
@@ -133,7 +134,7 @@ export async function getDesignerForUser(id: string, user: PermissionUser) {
       tasks: {
         where: { archivedAt: null },
         orderBy: [{ dueAt: "asc" }, { createdAt: "desc" }],
-        take: 30,
+        take: DETAIL_TASK_LIMIT,
         include: taskInclude()
       }
     }

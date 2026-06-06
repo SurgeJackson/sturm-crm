@@ -1,4 +1,4 @@
-import type { TaskAutoRule } from "@/generated/prisma/client";
+import { Prisma, type TaskAutoRule } from "@/generated/prisma/client";
 import { writeAuditLog } from "@/lib/audit-log";
 import { prisma } from "@/lib/prisma";
 import { daysAgo, daysFromNow } from "@/modules/crm/date-ranges";
@@ -39,25 +39,31 @@ async function createAutomaticTask(input: AutomaticTaskInput) {
   });
   if (exists) return null;
 
-  const task = await prisma.taskActivity.create({
-    data: {
-      recordType: "TASK",
-      actionType: "FOLLOW_UP",
-      title: input.title,
-      responsibleId: input.responsibleId,
-      createdById: input.createdById,
-      dueAt: input.dueAt,
-      status: "NEW",
-      priority: "NORMAL",
-      isAutoCreated: true,
-      autoRule: input.autoRule,
-      clientId: input.clientId ?? null,
-      designerId: input.designerId ?? null,
-      objectId: input.objectId ?? null,
-      dealId: input.dealId ?? null,
-      proposalId: input.proposalId ?? null
-    }
-  });
+  let task;
+  try {
+    task = await prisma.taskActivity.create({
+      data: {
+        recordType: "TASK",
+        actionType: "FOLLOW_UP",
+        title: input.title,
+        responsibleId: input.responsibleId,
+        createdById: input.createdById,
+        dueAt: input.dueAt,
+        status: "NEW",
+        priority: "NORMAL",
+        isAutoCreated: true,
+        autoRule: input.autoRule,
+        clientId: input.clientId ?? null,
+        designerId: input.designerId ?? null,
+        objectId: input.objectId ?? null,
+        dealId: input.dealId ?? null,
+        proposalId: input.proposalId ?? null
+      }
+    });
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") return null;
+    throw error;
+  }
 
   await writeAuditLog({
     entityType: "TASK",

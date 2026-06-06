@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { objectStageLabels, objectStatusLabels, objectTypeLabels } from "@/lib/constants";
 import { prisma } from "@/lib/prisma";
 import { objectAccessWhere } from "@/modules/crm/access-where";
+import { DETAIL_DEAL_LIMIT, DETAIL_PROPOSAL_LIMIT, DETAIL_TASK_LIMIT } from "@/modules/crm/detail-limits";
 import { paginatedQuery, sortFromParam } from "@/modules/crm/list-query";
 import { enumParam, flagParam } from "@/modules/crm/param-parsing";
 import { pageFromParam } from "@/modules/crm/pagination";
@@ -108,13 +109,13 @@ export async function getProjectObjectForUser(id: string, user: PermissionUser) 
       tasks: {
         where: { archivedAt: null },
         orderBy: [{ dueAt: "asc" }, { createdAt: "desc" }],
-        take: 30,
+        take: DETAIL_TASK_LIMIT,
         include: taskInclude()
       },
       deals: {
         where: { archivedAt: null },
         orderBy: { createdAt: "desc" },
-        take: 20,
+        take: DETAIL_DEAL_LIMIT,
         include: {
           responsible: { select: { id: true, name: true } }
         }
@@ -122,7 +123,7 @@ export async function getProjectObjectForUser(id: string, user: PermissionUser) 
       proposals: {
         where: { archivedAt: null },
         orderBy: { createdAt: "desc" },
-        take: 20,
+        take: DETAIL_PROPOSAL_LIMIT,
         include: {
           deal: { select: { id: true, title: true } },
           responsible: { select: { id: true, name: true } }

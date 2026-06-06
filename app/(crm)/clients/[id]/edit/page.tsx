@@ -2,10 +2,9 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
 import { ClientForm } from "@/components/clients/client-form";
 import { FormPageShell } from "@/components/layout/form-page-shell";
+import { getClientFormContext } from "@/modules/crm/form-contexts";
 import { updateClientAction } from "@/modules/clients/actions";
 import { getClientForUser } from "@/modules/clients/queries";
-import { getAssignableUsers } from "@/modules/users/queries";
-import { prisma } from "@/lib/prisma";
 import { canChangeRecordResponsible } from "@/permissions";
 
 type EditClientPageProps = {
@@ -17,14 +16,9 @@ export default async function EditClientPage({ params }: EditClientPageProps) {
   if (!user) redirect("/login");
 
   const { id } = await params;
-  const [client, users, designers] = await Promise.all([
+  const [client, context] = await Promise.all([
     getClientForUser(id, user),
-    getAssignableUsers(),
-    prisma.designer.findMany({
-      where: { archivedAt: null },
-      orderBy: { name: "asc" },
-      select: { id: true, name: true, studio: true }
-    })
+    getClientFormContext(user)
   ]);
   const action = updateClientAction.bind(null, id);
 
@@ -33,8 +27,8 @@ export default async function EditClientPage({ params }: EditClientPageProps) {
       <ClientForm
         action={action}
         client={client}
-        users={users}
-        designers={designers}
+        users={context.users}
+        designers={context.designers}
         currentUserId={user.id}
         canChangeResponsible={canChangeRecordResponsible(user)}
         submitLabel="Сохранить"

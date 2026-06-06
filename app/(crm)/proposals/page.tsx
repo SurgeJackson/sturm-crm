@@ -7,9 +7,8 @@ import { ProposalsFilters } from "@/components/proposals/proposals-filters";
 import { ProposalsTable } from "@/components/proposals/proposals-table";
 import { Button } from "@/components/ui/button";
 import { Pagination } from "@/components/ui/pagination";
+import { getProposalFilterContext } from "@/modules/crm/form-contexts";
 import { getProposals, type ProposalListSearchParams } from "@/modules/proposals/queries";
-import { getAssignableUsers } from "@/modules/users/queries";
-import { prisma } from "@/lib/prisma";
 import { canCreateProposal } from "@/permissions";
 
 type ProposalsPageProps = {
@@ -29,13 +28,9 @@ export default async function ProposalsPage({ searchParams }: ProposalsPageProps
   if (!user) redirect("/login");
 
   const params = await searchParams;
-  const [proposals, users, clients, objects, deals, designers] = await Promise.all([
+  const [proposals, context] = await Promise.all([
     getProposals(params, user),
-    getAssignableUsers(),
-    prisma.client.findMany({ where: { archivedAt: null }, orderBy: { name: "asc" }, select: { id: true, name: true } }),
-    prisma.projectObject.findMany({ where: { archivedAt: null }, orderBy: { title: "asc" }, select: { id: true, title: true } }),
-    prisma.deal.findMany({ where: { archivedAt: null }, orderBy: { title: "asc" }, select: { id: true, title: true } }),
-    prisma.designer.findMany({ where: { archivedAt: null }, orderBy: { name: "asc" }, select: { id: true, name: true, studio: true } })
+    getProposalFilterContext(user)
   ]);
 
   return (
@@ -53,7 +48,7 @@ export default async function ProposalsPage({ searchParams }: ProposalsPageProps
         ) : null}
       />
 
-      <ProposalsFilters params={params} users={users} clients={clients} objects={objects} deals={deals} designers={designers} />
+      <ProposalsFilters params={params} users={context.users} clients={context.clients} objects={context.objects} deals={context.deals} designers={context.designers} />
       <ProposalsTable proposals={proposals.items} />
 
       <Pagination

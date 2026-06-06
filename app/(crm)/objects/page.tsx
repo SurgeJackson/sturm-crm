@@ -7,9 +7,8 @@ import { ObjectsFilters } from "@/components/objects/objects-filters";
 import { ObjectsTable } from "@/components/objects/objects-table";
 import { Button } from "@/components/ui/button";
 import { Pagination } from "@/components/ui/pagination";
+import { getObjectFilterContext } from "@/modules/crm/form-contexts";
 import { getProjectObjects, type ObjectListSearchParams } from "@/modules/objects/queries";
-import { getAssignableUsers } from "@/modules/users/queries";
-import { prisma } from "@/lib/prisma";
 import { canCreateObject } from "@/permissions";
 
 type ObjectsPageProps = {
@@ -29,19 +28,9 @@ export default async function ObjectsPage({ searchParams }: ObjectsPageProps) {
   if (!user) redirect("/login");
 
   const params = await searchParams;
-  const [objects, users, clients, designers] = await Promise.all([
+  const [objects, context] = await Promise.all([
     getProjectObjects(params, user),
-    getAssignableUsers(),
-    prisma.client.findMany({
-      where: { archivedAt: null },
-      orderBy: { name: "asc" },
-      select: { id: true, name: true }
-    }),
-    prisma.designer.findMany({
-      where: { archivedAt: null },
-      orderBy: { name: "asc" },
-      select: { id: true, name: true, studio: true }
-    })
+    getObjectFilterContext(user)
   ]);
 
   return (
@@ -59,7 +48,7 @@ export default async function ObjectsPage({ searchParams }: ObjectsPageProps) {
         ) : null}
       />
 
-      <ObjectsFilters params={params} users={users} clients={clients} designers={designers} />
+      <ObjectsFilters params={params} users={context.users} clients={context.clients} designers={context.designers} />
       <ObjectsTable objects={objects.items} />
 
       <Pagination
