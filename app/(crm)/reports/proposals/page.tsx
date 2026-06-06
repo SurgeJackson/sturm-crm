@@ -2,11 +2,10 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { EmptyTableRow, TableCard } from "@/components/ui/data-table";
 import { NativeSelect } from "@/components/ui/native-select";
 import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { BreakdownCard } from "@/components/reports/cards";
+import { BreakdownCard, ReportValueListCard } from "@/components/reports/cards";
 import { ReportFilterSelect, ReportPeriodFilter } from "@/components/reports/filters";
 import { ReportPageHeader } from "@/components/reports/layout";
 import { MetricsGrid } from "@/components/reports/metrics";
@@ -34,7 +33,13 @@ export default async function ProposalsReportPage({ searchParams }: PageProps) {
       <div className="grid gap-4 xl:grid-cols-3">
         <BreakdownCard title="КП по статусам" data={Object.fromEntries(Object.entries(report.byStatus).map(([key, value]) => [commercialProposalStatusLabels[key as keyof typeof commercialProposalStatusLabels] ?? key, value]))} />
         <BreakdownCard title="Причины отклонения" data={Object.fromEntries(Object.entries(report.declineReasons).map(([key, value]) => [proposalDeclineReasonLabels[key as keyof typeof proposalDeclineReasonLabels] ?? key, value]))} />
-        <Card><CardHeader><CardTitle>Сумма КП по сотрудникам</CardTitle></CardHeader><CardContent className="space-y-2">{report.byResponsible.length === 0 ? <p className="text-sm text-muted-foreground">Данных нет.</p> : report.byResponsible.map((row) => <div key={row.name} className="flex items-center justify-between rounded-md border p-3 text-sm"><span>{row.name}</span><Badge variant="secondary">{row.count} / {row.amount.toLocaleString("ru-RU")} ₽</Badge></div>)}</CardContent></Card>
+        <ReportValueListCard
+          title="Сумма КП по сотрудникам"
+          items={report.byResponsible}
+          getKey={(row) => row.name}
+          renderLabel={(row) => row.name}
+          renderValue={(row) => `${row.count} / ${row.amount.toLocaleString("ru-RU")} ₽`}
+        />
       </div>
       <TableCard title="КП">
         <TableHeader><TableRow><TableHead>КП</TableHead><TableHead>Статус</TableHead><TableHead>Клиент</TableHead><TableHead>Сделка</TableHead><TableHead>Сумма</TableHead><TableHead>Follow-up</TableHead><TableHead>Ответственный</TableHead></TableRow></TableHeader>

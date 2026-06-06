@@ -2,11 +2,20 @@
 
 import { useActionState } from "react";
 import type { Client, Designer, ProjectObject, User } from "@/generated/prisma/client";
-import { dateInputValue, FieldError, FormActions, FormMessage, FormSection } from "@/components/crm/form-fields";
+import {
+  CheckboxGroupField,
+  DateField,
+  FormActions,
+  FormField,
+  FormMessage,
+  FormSection,
+  SelectField,
+  TextareaField,
+  TextField,
+  dateInputValue
+} from "@/components/crm/form-fields";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { NativeSelect } from "@/components/ui/native-select";
-import { Textarea } from "@/components/ui/textarea";
 import type { ProjectObjectActionState } from "@/modules/objects/actions";
 import {
   objectInterestCategoryOptions,
@@ -47,74 +56,45 @@ export function ProjectObjectForm({
       <FormMessage state={state} />
 
       <FormSection>
-        <div className="space-y-2">
-          <Label htmlFor="title">Название объекта *</Label>
-          <Input id="title" name="title" defaultValue={projectObject?.title ?? ""} required />
-          <FieldError name="title" state={state} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="objectType">Тип объекта *</Label>
-          <NativeSelect
-            id="objectType"
-            name="objectType"
-            defaultValue={projectObject?.objectType ?? "APARTMENT"}
-          >
-            {objectTypeOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </NativeSelect>
-          <FieldError name="objectType" state={state} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="city">Город *</Label>
-          <Input id="city" name="city" defaultValue={projectObject?.city ?? ""} required />
-          <FieldError name="city" state={state} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="region">Регион</Label>
-          <Input id="region" name="region" defaultValue={projectObject?.region ?? ""} />
-        </div>
-        <div className="space-y-2 md:col-span-2">
-          <Label htmlFor="address">Адрес</Label>
-          <Input id="address" name="address" defaultValue={projectObject?.address ?? ""} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="clientId">Клиент / заказчик *</Label>
-          <NativeSelect
-            id="clientId"
-            name="clientId"
-            defaultValue={projectObject?.clientId ?? ""}
-            required
-          >
-            <option value="">Выберите клиента</option>
-            {clients.map((client) => (
-              <option key={client.id} value={client.id}>
-                {client.name}
-              </option>
-            ))}
-          </NativeSelect>
-          <FieldError name="clientId" state={state} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="designerId">Дизайнер / архитектор</Label>
-          <NativeSelect
-            id="designerId"
-            name="designerId"
-            defaultValue={projectObject?.designerId ?? ""}
-          >
-            <option value="">Не выбран</option>
-            {designers.map((designer) => (
-              <option key={designer.id} value={designer.id}>
-                {designer.name}
-                {designer.studio ? `, ${designer.studio}` : ""}
-              </option>
-            ))}
-          </NativeSelect>
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="responsibleId">Ответственный STURM *</Label>
+        <TextField name="title" label="Название объекта *" state={state} defaultValue={projectObject?.title ?? ""} required />
+        <SelectField
+          name="objectType"
+          label="Тип объекта *"
+          state={state}
+          options={objectTypeOptions}
+          defaultValue={projectObject?.objectType ?? "APARTMENT"}
+        />
+        <TextField name="city" label="Город *" state={state} defaultValue={projectObject?.city ?? ""} required />
+        <TextField name="region" label="Регион" defaultValue={projectObject?.region ?? ""} />
+        <TextField name="address" label="Адрес" className="md:col-span-2" defaultValue={projectObject?.address ?? ""} />
+        <SelectField
+          name="clientId"
+          label="Клиент / заказчик *"
+          state={state}
+          placeholder="Выберите клиента"
+          defaultValue={projectObject?.clientId ?? ""}
+          required
+        >
+          {clients.map((client) => (
+            <option key={client.id} value={client.id}>
+              {client.name}
+            </option>
+          ))}
+        </SelectField>
+        <SelectField
+          name="designerId"
+          label="Дизайнер / архитектор"
+          placeholder="Не выбран"
+          defaultValue={projectObject?.designerId ?? ""}
+        >
+          {designers.map((designer) => (
+            <option key={designer.id} value={designer.id}>
+              {designer.name}
+              {designer.studio ? `, ${designer.studio}` : ""}
+            </option>
+          ))}
+        </SelectField>
+        <FormField name="responsibleId" label="Ответственный STURM *" state={state}>
           {canChangeResponsible ? (
             <NativeSelect
               id="responsibleId"
@@ -133,97 +113,56 @@ export function ProjectObjectForm({
               <input type="hidden" name="responsibleId" value={responsibleId} />
             </>
           )}
-          <FieldError name="responsibleId" state={state} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="stage">Стадия *</Label>
-          <NativeSelect
-            id="stage"
-            name="stage"
-            defaultValue={projectObject?.stage ?? "NEW_OBJECT"}
-          >
-            {objectStageOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </NativeSelect>
-          <FieldError name="stage" state={state} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="status">Статус *</Label>
-          <NativeSelect
-            id="status"
-            name="status"
-            defaultValue={projectObject?.status ?? "ACTIVE"}
-          >
-            {objectStatusOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </NativeSelect>
-          <FieldError name="status" state={state} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="implementationStartAt">Начало реализации</Label>
-          <Input
-            id="implementationStartAt"
-            name="implementationStartAt"
-            type="date"
-            defaultValue={dateInputValue(projectObject?.implementationStartAt)}
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="implementationEndAt">Завершение реализации</Label>
-          <Input
-            id="implementationEndAt"
-            name="implementationEndAt"
-            type="date"
-            defaultValue={dateInputValue(projectObject?.implementationEndAt)}
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="budget">Бюджет</Label>
-          <Input id="budget" name="budget" inputMode="decimal" defaultValue={projectObject?.budget ?? ""} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="bathroomsCount">Количество санузлов</Label>
-          <Input id="bathroomsCount" name="bathroomsCount" type="number" min="0" defaultValue={projectObject?.bathroomsCount ?? ""} />
-        </div>
+        </FormField>
+        <SelectField
+          name="stage"
+          label="Стадия *"
+          state={state}
+          options={objectStageOptions}
+          defaultValue={projectObject?.stage ?? "NEW_OBJECT"}
+        />
+        <SelectField
+          name="status"
+          label="Статус *"
+          state={state}
+          options={objectStatusOptions}
+          defaultValue={projectObject?.status ?? "ACTIVE"}
+        />
+        <DateField
+          name="implementationStartAt"
+          label="Начало реализации"
+          defaultValue={dateInputValue(projectObject?.implementationStartAt)}
+        />
+        <DateField
+          name="implementationEndAt"
+          label="Завершение реализации"
+          defaultValue={dateInputValue(projectObject?.implementationEndAt)}
+        />
+        <TextField name="budget" label="Бюджет" inputMode="decimal" defaultValue={projectObject?.budget ?? ""} />
+        <TextField
+          name="bathroomsCount"
+          label="Количество санузлов"
+          type="number"
+          min="0"
+          defaultValue={projectObject?.bathroomsCount ?? ""}
+        />
       </FormSection>
 
-      <div className="space-y-2">
-        <Label>Категории интереса</Label>
-        <div className="grid gap-2 rounded-md border p-3 sm:grid-cols-2 lg:grid-cols-3">
-          {objectInterestCategoryOptions.map((option) => (
-            <label key={option.value} className="flex items-center gap-2 text-sm">
-              <input
-                type="checkbox"
-                name="interestCategories"
-                value={option.value}
-                defaultChecked={selectedCategories.has(option.value)}
-              />
-              {option.label}
-            </label>
-          ))}
-        </div>
-      </div>
+      <CheckboxGroupField
+        name="interestCategories"
+        label="Категории интереса"
+        options={objectInterestCategoryOptions}
+        selectedValues={selectedCategories}
+      />
 
       <FormSection>
-        <div className="space-y-2">
-          <Label htmlFor="files">Файлы объекта</Label>
-          <Textarea
-            id="files"
-            name="files"
-            defaultValue={projectObject?.files.join("\n") ?? ""}
-            placeholder="Одна ссылка или имя файла на строку"
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="comment">Комментарий</Label>
-          <Textarea id="comment" name="comment" defaultValue={projectObject?.comment ?? ""} />
-        </div>
+        <TextareaField
+          name="files"
+          label="Файлы объекта"
+          defaultValue={projectObject?.files.join("\n") ?? ""}
+          placeholder="Одна ссылка или имя файла на строку"
+        />
+        <TextareaField name="comment" label="Комментарий" defaultValue={projectObject?.comment ?? ""} />
       </FormSection>
 
       <FormActions isPending={isPending} submitLabel={submitLabel} />

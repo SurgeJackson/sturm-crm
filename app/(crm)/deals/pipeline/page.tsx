@@ -2,9 +2,8 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { AlertTriangle } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { PipelineBoard } from "@/components/crm/pipeline-board";
 import { NativeSelect } from "@/components/ui/native-select";
 import { dealProbabilityLabels, dealStageLabels } from "@/lib/constants";
 import { dealStageOptions } from "@/modules/crm/options";
@@ -46,6 +45,38 @@ export default async function DealPipelinePage({ searchParams }: DealPipelinePag
   const query = await searchParams;
   const deals = await getDealPipeline(user);
   const grouped = Object.fromEntries(stageOrder.map((stage) => [stage, deals.filter((deal) => deal.stage === stage)]));
+  const columns = stageOrder.map((stage) => ({
+    id: stage,
+    title: dealStageLabels[stage],
+    items: grouped[stage],
+    emptyText: "Нет сделок.",
+    renderItem: (deal: (typeof deals)[number]) => (
+      <div key={deal.id} className="rounded-md border p-3 text-sm">
+        <div className="flex items-start justify-between gap-3">
+          <Link href={`/deals/${deal.id}`} className="font-medium hover:underline">{deal.title}</Link>
+          {isOverdue(deal.nextActionAt, deal.stage) ? <AlertTriangle className="h-4 w-4 shrink-0 text-warning" /> : null}
+        </div>
+        <div className="mt-2 space-y-1 text-xs text-muted-foreground">
+          <div>{deal.client.name}</div>
+          <div>{deal.projectObject.title}</div>
+          <div>{deal.responsible.name}</div>
+          <div>{formatMoney(deal.potentialAmount)}</div>
+          <div>{deal.probability ? dealProbabilityLabels[deal.probability] : "Вероятность не выбрана"}</div>
+          <div className={isOverdue(deal.nextActionAt, deal.stage) ? "text-warning" : ""}>
+            {formatRussianDate(deal.nextActionAt)}
+          </div>
+        </div>
+        <form action={changeDealStageAction.bind(null, deal.id)} className="mt-3 flex gap-2">
+          <NativeSelect name="stage" defaultValue={deal.stage} className="h-9 min-w-0 flex-1 px-2 text-xs">
+            {dealStageOptions.map((option) => (
+              <option key={option.value} value={option.value}>{option.label}</option>
+            ))}
+          </NativeSelect>
+          <Button type="submit" size="sm" variant="secondary">ОК</Button>
+        </form>
+      </div>
+    )
+  }));
 
   return (
     <div className="space-y-6">
@@ -64,50 +95,7 @@ export default async function DealPipelinePage({ searchParams }: DealPipelinePag
       {query.error === "permission" ? <div className="rounded-md border border-destructive p-3 text-sm text-destructive">Недостаточно прав для изменения стадии.</div> : null}
       {query.error === "stage" ? <div className="rounded-md border border-destructive p-3 text-sm text-destructive">Некорректная стадия сделки.</div> : null}
 
-      <div className="grid gap-4 xl:grid-cols-4">
-        {stageOrder.map((stage) => (
-          <Card key={stage} className="min-h-52">
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center justify-between text-sm">
-                <span>{dealStageLabels[stage]}</span>
-                <Badge variant="secondary">{grouped[stage].length}</Badge>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {grouped[stage].length === 0 ? (
-                <p className="text-sm text-muted-foreground">Нет сделок.</p>
-              ) : (
-                grouped[stage].map((deal) => (
-                  <div key={deal.id} className="rounded-md border p-3 text-sm">
-                    <div className="flex items-start justify-between gap-3">
-                      <Link href={`/deals/${deal.id}`} className="font-medium hover:underline">{deal.title}</Link>
-                      {isOverdue(deal.nextActionAt, deal.stage) ? <AlertTriangle className="h-4 w-4 shrink-0 text-warning" /> : null}
-                    </div>
-                    <div className="mt-2 space-y-1 text-xs text-muted-foreground">
-                      <div>{deal.client.name}</div>
-                      <div>{deal.projectObject.title}</div>
-                      <div>{deal.responsible.name}</div>
-                      <div>{formatMoney(deal.potentialAmount)}</div>
-                      <div>{deal.probability ? dealProbabilityLabels[deal.probability] : "Вероятность не выбрана"}</div>
-                      <div className={isOverdue(deal.nextActionAt, deal.stage) ? "text-warning" : ""}>
-                        {formatRussianDate(deal.nextActionAt)}
-                      </div>
-                    </div>
-                    <form action={changeDealStageAction.bind(null, deal.id)} className="mt-3 flex gap-2">
-                      <NativeSelect name="stage" defaultValue={deal.stage} className="h-9 min-w-0 flex-1 px-2 text-xs">
-                        {dealStageOptions.map((option) => (
-                          <option key={option.value} value={option.value}>{option.label}</option>
-                        ))}
-                      </NativeSelect>
-                      <Button type="submit" size="sm" variant="secondary">ОК</Button>
-                    </form>
-                  </div>
-                ))
-              )}
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      <PipelineBoard columns={columns} />
     </div>
   );
 }

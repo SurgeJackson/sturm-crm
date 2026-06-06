@@ -2,11 +2,20 @@
 
 import { useActionState } from "react";
 import type { Designer, User } from "@/generated/prisma/client";
-import { dateInputValue, FieldError, FormActions, FormMessage, FormSection } from "@/components/crm/form-fields";
+import {
+  CheckboxGroupField,
+  DateField,
+  FormActions,
+  FormField,
+  FormMessage,
+  FormSection,
+  SelectField,
+  TextareaField,
+  TextField,
+  dateInputValue
+} from "@/components/crm/form-fields";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { NativeSelect } from "@/components/ui/native-select";
-import { Textarea } from "@/components/ui/textarea";
 import type { DesignerActionState } from "@/modules/designers/actions";
 import {
   designerLoyaltyOptions,
@@ -46,101 +55,46 @@ export function DesignerForm({
       <FormMessage state={state} />
 
       <FormSection>
-        <div className="space-y-2">
-          <Label htmlFor="name">Имя *</Label>
-          <Input id="name" name="name" defaultValue={designer?.name ?? ""} required />
-          <FieldError name="name" state={state} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="studio">Студия / бюро</Label>
-          <Input id="studio" name="studio" defaultValue={designer?.studio ?? ""} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="role">Роль *</Label>
-          <NativeSelect id="role" name="role" defaultValue={designer?.role ?? "DESIGNER"}>
-            {designerRoleOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </NativeSelect>
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="city">Город *</Label>
-          <Input id="city" name="city" defaultValue={designer?.city ?? ""} required />
-          <FieldError name="city" state={state} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="phone">Телефон</Label>
-          <Input id="phone" name="phone" defaultValue={designer?.phone ?? ""} />
-          <FieldError name="phone" state={state} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="messenger">Мессенджер</Label>
-          <Input id="messenger" name="messenger" defaultValue={designer?.messenger ?? ""} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="email">Email</Label>
-          <Input id="email" name="email" type="email" defaultValue={designer?.email ?? ""} />
-          <FieldError name="email" state={state} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="website">Сайт</Label>
-          <Input id="website" name="website" defaultValue={designer?.website ?? ""} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="source">Источник *</Label>
-          <NativeSelect id="source" name="source" defaultValue={designer?.source ?? "DATABASE"}>
-            {designerSourceOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </NativeSelect>
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="projectSegment">Сегмент проектов</Label>
-          <NativeSelect id="projectSegment" name="projectSegment" defaultValue={designer?.projectSegment ?? ""}>
-            <option value="">Не выбран</option>
-            {designerProjectSegmentOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </NativeSelect>
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="relationshipStage">Этап отношений *</Label>
-          <NativeSelect id="relationshipStage" name="relationshipStage" defaultValue={designer?.relationshipStage ?? "NEW_CONTACT"}>
-            {designerRelationshipStageOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </NativeSelect>
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="potential">Потенциал *</Label>
-          <NativeSelect id="potential" name="potential" defaultValue={designer?.potential ?? "B"}>
-            {designerPotentialOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </NativeSelect>
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="loyalty">Лояльность *</Label>
-          <NativeSelect id="loyalty" name="loyalty" defaultValue={designer?.loyalty ?? "NEUTRAL"}>
-            {designerLoyaltyOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </NativeSelect>
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="responsibleId">Ответственный *</Label>
+        <TextField name="name" label="Имя *" state={state} defaultValue={designer?.name ?? ""} required />
+        <TextField name="studio" label="Студия / бюро" defaultValue={designer?.studio ?? ""} />
+        <SelectField name="role" label="Роль *" options={designerRoleOptions} defaultValue={designer?.role ?? "DESIGNER"} />
+        <TextField name="city" label="Город *" state={state} defaultValue={designer?.city ?? ""} required />
+        <TextField name="phone" label="Телефон" state={state} defaultValue={designer?.phone ?? ""} />
+        <TextField name="messenger" label="Мессенджер" defaultValue={designer?.messenger ?? ""} />
+        <TextField name="email" label="Email" state={state} type="email" defaultValue={designer?.email ?? ""} />
+        <TextField name="website" label="Сайт" defaultValue={designer?.website ?? ""} />
+        <SelectField
+          name="source"
+          label="Источник *"
+          options={designerSourceOptions}
+          defaultValue={designer?.source ?? "DATABASE"}
+        />
+        <SelectField
+          name="projectSegment"
+          label="Сегмент проектов"
+          options={designerProjectSegmentOptions}
+          placeholder="Не выбран"
+          defaultValue={designer?.projectSegment ?? ""}
+        />
+        <SelectField
+          name="relationshipStage"
+          label="Этап отношений *"
+          options={designerRelationshipStageOptions}
+          defaultValue={designer?.relationshipStage ?? "NEW_CONTACT"}
+        />
+        <SelectField
+          name="potential"
+          label="Потенциал *"
+          options={designerPotentialOptions}
+          defaultValue={designer?.potential ?? "B"}
+        />
+        <SelectField
+          name="loyalty"
+          label="Лояльность *"
+          options={designerLoyaltyOptions}
+          defaultValue={designer?.loyalty ?? "NEUTRAL"}
+        />
+        <FormField name="responsibleId" label="Ответственный *" state={state}>
           {canChangeResponsible ? (
             <NativeSelect id="responsibleId" name="responsibleId" defaultValue={responsibleId}>
               {users.map((user) => (
@@ -155,54 +109,29 @@ export function DesignerForm({
               <input type="hidden" name="responsibleId" value={responsibleId} />
             </>
           )}
-          <FieldError name="responsibleId" state={state} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="firstContactAt">Первый контакт</Label>
-          <Input id="firstContactAt" name="firstContactAt" type="date" defaultValue={dateInputValue(designer?.firstContactAt)} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="lastTouchAt">Последнее касание</Label>
-          <Input id="lastTouchAt" name="lastTouchAt" type="date" defaultValue={dateInputValue(designer?.lastTouchAt)} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="nextStepAt">Дата следующего шага *</Label>
-          <Input id="nextStepAt" name="nextStepAt" type="date" defaultValue={dateInputValue(designer?.nextStepAt)} required />
-          <FieldError name="nextStepAt" state={state} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="nextStepText">Следующий шаг *</Label>
-          <Input id="nextStepText" name="nextStepText" defaultValue={designer?.nextStepText ?? ""} required />
-          <FieldError name="nextStepText" state={state} />
-        </div>
+        </FormField>
+        <DateField name="firstContactAt" label="Первый контакт" defaultValue={dateInputValue(designer?.firstContactAt)} />
+        <DateField name="lastTouchAt" label="Последнее касание" defaultValue={dateInputValue(designer?.lastTouchAt)} />
+        <DateField
+          name="nextStepAt"
+          label="Дата следующего шага *"
+          state={state}
+          defaultValue={dateInputValue(designer?.nextStepAt)}
+          required
+        />
+        <TextField name="nextStepText" label="Следующий шаг *" state={state} defaultValue={designer?.nextStepText ?? ""} required />
       </FormSection>
 
-      <div className="space-y-2">
-        <Label>Специализация</Label>
-        <div className="grid gap-2 rounded-md border p-3 sm:grid-cols-2 lg:grid-cols-4">
-          {designerSpecializationOptions.map((option) => (
-            <label key={option.value} className="flex items-center gap-2 text-sm">
-              <input
-                type="checkbox"
-                name="specialization"
-                value={option.value}
-                defaultChecked={selectedSpecializations.has(option.value)}
-              />
-              {option.label}
-            </label>
-          ))}
-        </div>
-      </div>
+      <CheckboxGroupField
+        name="specialization"
+        label="Специализация"
+        options={designerSpecializationOptions}
+        selectedValues={selectedSpecializations}
+      />
 
       <FormSection>
-        <div className="space-y-2">
-          <Label htmlFor="cooperationTerms">Условия сотрудничества</Label>
-          <Textarea id="cooperationTerms" name="cooperationTerms" defaultValue={designer?.cooperationTerms ?? ""} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="comment">Комментарий</Label>
-          <Textarea id="comment" name="comment" defaultValue={designer?.comment ?? ""} />
-        </div>
+        <TextareaField name="cooperationTerms" label="Условия сотрудничества" defaultValue={designer?.cooperationTerms ?? ""} />
+        <TextareaField name="comment" label="Комментарий" defaultValue={designer?.comment ?? ""} />
       </FormSection>
 
       <FormActions isPending={isPending} submitLabel={submitLabel} />

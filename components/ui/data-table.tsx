@@ -6,16 +6,19 @@ import { cn } from "@/lib/utils";
 
 export function TableCard({
   title,
+  actions,
   children
 }: {
   title?: string;
+  actions?: ReactNode;
   children: ReactNode;
 }) {
   return (
     <Card>
-      {title ? (
-        <CardHeader>
-          <CardTitle>{title}</CardTitle>
+      {title || actions ? (
+        <CardHeader className={actions ? "flex flex-row items-center justify-between" : undefined}>
+          {title ? <CardTitle>{title}</CardTitle> : <div />}
+          {actions}
         </CardHeader>
       ) : null}
       <CardContent className="p-0">

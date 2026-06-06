@@ -2,7 +2,7 @@ import { AlertTriangle, BriefcaseBusiness, Building2, CheckSquare, FileText, Use
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
 import { getDashboardMetrics } from "@/modules/dashboard/dashboard-metrics";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { DashboardBreakdownCard, DashboardListCard, DashboardMetricGrid } from "@/components/dashboard/dashboard-cards";
 import { Badge } from "@/components/ui/badge";
 import {
   commercialProposalStatusLabels,
@@ -88,224 +88,125 @@ export default async function DashboardPage() {
         </p>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {cards.map((card) => {
-          const Icon = card.icon;
-          return (
-            <Card key={card.title}>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-                <CardTitle className="text-sm font-medium">{card.title}</CardTitle>
-                <Icon className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-3xl font-semibold">{card.value}</div>
-                <Badge className="mt-3" variant={card.variant}>
-                  CRM
-                </Badge>
-              </CardContent>
-            </Card>
-          );
-        })}
-      </div>
+      <DashboardMetricGrid cards={cards} />
 
       <div className="grid gap-4 xl:grid-cols-3">
-        <Card>
-          <CardHeader>
-            <CardTitle>Просроченные задачи по сотрудникам</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            {metrics.overdueTaskResponsibleCounts.length === 0 ? (
-              <p className="text-sm text-muted-foreground">Просроченных задач нет.</p>
-            ) : (
-              metrics.overdueTaskResponsibleCounts.map((item) => (
-                <div key={item.name} className="flex items-center justify-between rounded-md border p-3 text-sm">
-                  <span>{item.name}</span>
-                  <Badge variant="warning">{item.count}</Badge>
-                </div>
-              ))
-            )}
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Активность менеджеров за 7 дней</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            {metrics.managerActivityCounts.length === 0 ? (
-              <p className="text-sm text-muted-foreground">Активности пока нет.</p>
-            ) : (
-              metrics.managerActivityCounts.map((item) => (
-                <div key={item.name} className="rounded-md border p-3 text-sm">
-                  <div className="font-medium">{item.name}</div>
-                  <div className="mt-2 flex flex-wrap gap-2">
-                    <Badge variant="outline">Задачи: {item.tasks}</Badge>
-                    <Badge variant="secondary">Выполнено: {item.done}</Badge>
-                    <Badge variant="outline">Касания: {item.touches}</Badge>
-                  </div>
-                </div>
-              ))
-            )}
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Сделки по стадиям</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            {Object.entries(metrics.dealsByStage).length === 0 ? (
-              <p className="text-sm text-muted-foreground">Пока нет сделок.</p>
-            ) : (
-              Object.entries(metrics.dealsByStage).map(([stage, count]) => (
-                <div key={stage} className="flex items-center justify-between rounded-md border p-3 text-sm">
-                  <span>{dealStageLabels[stage as keyof typeof dealStageLabels]}</span>
-                  <Badge variant="secondary">{count}</Badge>
-                </div>
-              ))
-            )}
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Причины проигрышей</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            {Object.entries(metrics.dealLossReasons).length === 0 ? (
-              <p className="text-sm text-muted-foreground">Пока нет проигранных сделок.</p>
-            ) : (
-              Object.entries(metrics.dealLossReasons).map(([reason, count]) => (
-                <div key={reason} className="flex items-center justify-between rounded-md border p-3 text-sm">
-                  <span>{dealLossReasonLabels[reason as keyof typeof dealLossReasonLabels]}</span>
-                  <Badge variant="warning">{count}</Badge>
-                </div>
-              ))
-            )}
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Сделки по ответственным</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            {metrics.dealResponsibleCounts.length === 0 ? (
-              <p className="text-sm text-muted-foreground">Пока нет сделок.</p>
-            ) : (
-              metrics.dealResponsibleCounts.map((item) => (
-                <div key={item.name} className="flex items-center justify-between rounded-md border p-3 text-sm">
-                  <span>{item.name}</span>
-                  <Badge variant="secondary">{item.count}</Badge>
-                </div>
-              ))
-            )}
-          </CardContent>
-        </Card>
-      </div>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Активные дизайнеры по этапам</CardTitle>
-        </CardHeader>
-        <CardContent className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
-          {Object.entries(metrics.activeDesignersByStage).length === 0 ? (
-            <p className="text-sm text-muted-foreground">Пока нет активных дизайнеров.</p>
-          ) : (
-            Object.entries(metrics.activeDesignersByStage).map(([stage, count]) => (
-              <div key={stage} className="flex items-center justify-between rounded-md border p-3 text-sm">
-                <span>{designerRelationshipStageLabels[stage as keyof typeof designerRelationshipStageLabels]}</span>
-                <Badge variant="secondary">{count}</Badge>
-              </div>
-            ))
+        <DashboardListCard
+          title="Просроченные задачи по сотрудникам"
+          items={metrics.overdueTaskResponsibleCounts}
+          emptyText="Просроченных задач нет."
+          getKey={(item) => item.name}
+          renderItem={(item) => (
+            <div className="flex items-center justify-between rounded-md border p-3 text-sm">
+              <span>{item.name}</span>
+              <Badge variant="warning">{item.count}</Badge>
+            </div>
           )}
-        </CardContent>
-      </Card>
+        />
+
+        <DashboardListCard
+          title="Активность менеджеров за 7 дней"
+          items={metrics.managerActivityCounts}
+          emptyText="Активности пока нет."
+          getKey={(item) => item.name}
+          renderItem={(item) => (
+            <div className="rounded-md border p-3 text-sm">
+              <div className="font-medium">{item.name}</div>
+              <div className="mt-2 flex flex-wrap gap-2">
+                <Badge variant="outline">Задачи: {item.tasks}</Badge>
+                <Badge variant="secondary">Выполнено: {item.done}</Badge>
+                <Badge variant="outline">Касания: {item.touches}</Badge>
+              </div>
+            </div>
+          )}
+        />
+
+        <DashboardBreakdownCard
+          title="Сделки по стадиям"
+          data={metrics.dealsByStage}
+          emptyText="Пока нет сделок."
+          labelFor={(stage) => dealStageLabels[stage as keyof typeof dealStageLabels]}
+        />
+
+        <DashboardBreakdownCard
+          title="Причины проигрышей"
+          data={metrics.dealLossReasons}
+          emptyText="Пока нет проигранных сделок."
+          labelFor={(reason) => dealLossReasonLabels[reason as keyof typeof dealLossReasonLabels]}
+          variant="warning"
+        />
+
+        <DashboardListCard
+          title="Сделки по ответственным"
+          items={metrics.dealResponsibleCounts}
+          emptyText="Пока нет сделок."
+          getKey={(item) => item.name}
+          renderItem={(item) => (
+            <div className="flex items-center justify-between rounded-md border p-3 text-sm">
+              <span>{item.name}</span>
+              <Badge variant="secondary">{item.count}</Badge>
+            </div>
+          )}
+        />
+      </div>
+
+      <DashboardBreakdownCard
+        title="Активные дизайнеры по этапам"
+        data={metrics.activeDesignersByStage}
+        emptyText="Пока нет активных дизайнеров."
+        labelFor={(stage) => designerRelationshipStageLabels[stage as keyof typeof designerRelationshipStageLabels]}
+        contentClassName="grid gap-2 sm:grid-cols-2 xl:grid-cols-4"
+      />
 
       <div className="grid gap-4 xl:grid-cols-3">
-        <Card>
-          <CardHeader><CardTitle>КП по статусам</CardTitle></CardHeader>
-          <CardContent className="space-y-2">
-            {Object.entries(metrics.proposalStatusCounts).length === 0 ? (
-              <p className="text-sm text-muted-foreground">Пока нет КП.</p>
-            ) : (
-              Object.entries(metrics.proposalStatusCounts).map(([status, count]) => (
-                <div key={status} className="flex items-center justify-between rounded-md border p-3 text-sm">
-                  <span>{commercialProposalStatusLabels[status as keyof typeof commercialProposalStatusLabels]}</span>
-                  <Badge variant="secondary">{count}</Badge>
-                </div>
-              ))
-            )}
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader><CardTitle>Причины отклонения КП</CardTitle></CardHeader>
-          <CardContent className="space-y-2">
-            {Object.entries(metrics.proposalDeclineReasonCounts).length === 0 ? (
-              <p className="text-sm text-muted-foreground">Пока нет отклоненных КП.</p>
-            ) : (
-              Object.entries(metrics.proposalDeclineReasonCounts).map(([reason, count]) => (
-                <div key={reason} className="flex items-center justify-between rounded-md border p-3 text-sm">
-                  <span>{proposalDeclineReasonLabels[reason as keyof typeof proposalDeclineReasonLabels]}</span>
-                  <Badge variant="warning">{count}</Badge>
-                </div>
-              ))
-            )}
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader><CardTitle>Сумма КП по ответственным</CardTitle></CardHeader>
-          <CardContent className="space-y-2">
-            {metrics.proposalResponsibleAmounts.length === 0 ? (
-              <p className="text-sm text-muted-foreground">Пока нет КП.</p>
-            ) : (
-              metrics.proposalResponsibleAmounts.map((item) => (
-                <div key={item.name} className="flex items-center justify-between rounded-md border p-3 text-sm">
-                  <span>{item.name}</span>
-                  <Badge variant="secondary">{item.amount.toLocaleString("ru-RU")} ₽</Badge>
-                </div>
-              ))
-            )}
-          </CardContent>
-        </Card>
+        <DashboardBreakdownCard
+          title="КП по статусам"
+          data={metrics.proposalStatusCounts}
+          emptyText="Пока нет КП."
+          labelFor={(status) => commercialProposalStatusLabels[status as keyof typeof commercialProposalStatusLabels]}
+        />
+        <DashboardBreakdownCard
+          title="Причины отклонения КП"
+          data={metrics.proposalDeclineReasonCounts}
+          emptyText="Пока нет отклоненных КП."
+          labelFor={(reason) => proposalDeclineReasonLabels[reason as keyof typeof proposalDeclineReasonLabels]}
+          variant="warning"
+        />
+        <DashboardListCard
+          title="Сумма КП по ответственным"
+          items={metrics.proposalResponsibleAmounts}
+          emptyText="Пока нет КП."
+          getKey={(item) => item.name}
+          renderItem={(item) => (
+            <div className="flex items-center justify-between rounded-md border p-3 text-sm">
+              <span>{item.name}</span>
+              <Badge variant="secondary">{item.amount.toLocaleString("ru-RU")} ₽</Badge>
+            </div>
+          )}
+        />
       </div>
 
       <div className="grid gap-4 xl:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle>Объекты по стадиям</CardTitle>
-          </CardHeader>
-          <CardContent className="grid gap-2 sm:grid-cols-2">
-            {Object.entries(metrics.objectsByStage).length === 0 ? (
-              <p className="text-sm text-muted-foreground">Пока нет объектов.</p>
-            ) : (
-              Object.entries(metrics.objectsByStage).map(([stage, count]) => (
-                <div key={stage} className="flex items-center justify-between rounded-md border p-3 text-sm">
-                  <span>{objectStageLabels[stage as keyof typeof objectStageLabels]}</span>
-                  <Badge variant="secondary">{count}</Badge>
-                </div>
-              ))
-            )}
-          </CardContent>
-        </Card>
+        <DashboardBreakdownCard
+          title="Объекты по стадиям"
+          data={metrics.objectsByStage}
+          emptyText="Пока нет объектов."
+          labelFor={(stage) => objectStageLabels[stage as keyof typeof objectStageLabels]}
+          contentClassName="grid gap-2 sm:grid-cols-2"
+        />
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Топ дизайнеров по объектам</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            {metrics.topDesignersByObjects.length === 0 ? (
-              <p className="text-sm text-muted-foreground">Пока нет переданных объектов.</p>
-            ) : (
-              metrics.topDesignersByObjects.map((designer) => (
-                <div key={designer.id} className="flex items-center justify-between rounded-md border p-3 text-sm">
-                  <span>{designer.name}{designer.studio ? `, ${designer.studio}` : ""}</span>
-                  <Badge variant="secondary">{designer.transferredObjectsCount}</Badge>
-                </div>
-              ))
-            )}
-          </CardContent>
-        </Card>
+        <DashboardListCard
+          title="Топ дизайнеров по объектам"
+          items={metrics.topDesignersByObjects}
+          emptyText="Пока нет переданных объектов."
+          getKey={(designer) => designer.id}
+          renderItem={(designer) => (
+            <div className="flex items-center justify-between rounded-md border p-3 text-sm">
+              <span>{designer.name}{designer.studio ? `, ${designer.studio}` : ""}</span>
+              <Badge variant="secondary">{designer.transferredObjectsCount}</Badge>
+            </div>
+          )}
+        />
       </div>
     </div>
   );

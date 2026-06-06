@@ -2,11 +2,16 @@
 
 import { useActionState, useState } from "react";
 import type { ProjectObjectParticipant, User } from "@/generated/prisma/client";
-import { FieldError, FormActions, FormMessage, FormSection } from "@/components/crm/form-fields";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import {
+  FormActions,
+  FormField,
+  FormMessage,
+  FormSection,
+  SelectField,
+  TextareaField,
+  TextField
+} from "@/components/crm/form-fields";
 import { NativeSelect } from "@/components/ui/native-select";
-import { Textarea } from "@/components/ui/textarea";
 import type { ProjectObjectParticipantActionState } from "@/modules/objects/actions";
 import {
   attitudeToSturmOptions,
@@ -48,8 +53,7 @@ export function ProjectObjectParticipantForm({
       <FormMessage state={state} />
 
       <FormSection>
-        <div className="space-y-2">
-          <Label htmlFor="participantType">Тип участника *</Label>
+        <FormField name="participantType" label="Тип участника *" state={state}>
           <NativeSelect
             id="participantType"
             name="participantType"
@@ -62,139 +66,74 @@ export function ProjectObjectParticipantForm({
               </option>
             ))}
           </NativeSelect>
-          <FieldError name="participantType" state={state} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="fullName">ФИО *</Label>
-          <Input id="fullName" name="fullName" defaultValue={participant?.fullName ?? ""} required />
-          <FieldError name="fullName" state={state} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="company">Компания</Label>
-          <Input id="company" name="company" defaultValue={participant?.company ?? ""} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="role">Роль *</Label>
-          <Input id="role" name="role" defaultValue={participant?.role ?? ""} required />
-          <FieldError name="role" state={state} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="phone">Телефон</Label>
-          <Input id="phone" name="phone" defaultValue={participant?.phone ?? ""} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="email">Email</Label>
-          <Input id="email" name="email" type="email" defaultValue={participant?.email ?? ""} />
-          <FieldError name="email" state={state} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="messenger">Мессенджер</Label>
-          <Input id="messenger" name="messenger" defaultValue={participant?.messenger ?? ""} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="responsibleId">Ответственный</Label>
-          <NativeSelect
-            id="responsibleId"
-            name="responsibleId"
-            defaultValue={responsibleId}
-          >
-            <option value="">Не выбран</option>
-            {users.map((user) => (
-              <option key={user.id} value={user.id}>
-                {user.name}
-              </option>
-            ))}
-          </NativeSelect>
-        </div>
+        </FormField>
+        <TextField name="fullName" label="ФИО *" state={state} defaultValue={participant?.fullName ?? ""} required />
+        <TextField name="company" label="Компания" defaultValue={participant?.company ?? ""} />
+        <TextField name="role" label="Роль *" state={state} defaultValue={participant?.role ?? ""} required />
+        <TextField name="phone" label="Телефон" defaultValue={participant?.phone ?? ""} />
+        <TextField name="email" label="Email" state={state} type="email" defaultValue={participant?.email ?? ""} />
+        <TextField name="messenger" label="Мессенджер" defaultValue={participant?.messenger ?? ""} />
+        <SelectField name="responsibleId" label="Ответственный" placeholder="Не выбран" defaultValue={responsibleId}>
+          {users.map((user) => (
+            <option key={user.id} value={user.id}>
+              {user.name}
+            </option>
+          ))}
+        </SelectField>
 
         {isInfluencer ? (
           <>
-            <div className="space-y-2">
-              <Label htmlFor="influenceLevel">Уровень влияния *</Label>
-              <NativeSelect
-                id="influenceLevel"
-                name="influenceLevel"
-                defaultValue={participant?.influenceLevel ?? ""}
-              >
-                <option value="">Выберите уровень</option>
-                {influenceLevelOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </NativeSelect>
-              <FieldError name="influenceLevel" state={state} />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="influenceType">Тип влияния *</Label>
-              <NativeSelect
-                id="influenceType"
-                name="influenceType"
-                defaultValue={participant?.influenceType ?? ""}
-              >
-                <option value="">Выберите тип</option>
-                {influenceTypeOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </NativeSelect>
-              <FieldError name="influenceType" state={state} />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="attitudeToSturm">Отношение к STURM</Label>
-              <NativeSelect
-                id="attitudeToSturm"
-                name="attitudeToSturm"
-                defaultValue={participant?.attitudeToSturm ?? "UNKNOWN"}
-              >
-                {attitudeToSturmOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </NativeSelect>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="decisionFactors">Что важно</Label>
-              <Input id="decisionFactors" name="decisionFactors" defaultValue={participant?.decisionFactors ?? ""} />
-            </div>
+            <SelectField
+              name="influenceLevel"
+              label="Уровень влияния *"
+              state={state}
+              options={influenceLevelOptions}
+              placeholder="Выберите уровень"
+              defaultValue={participant?.influenceLevel ?? ""}
+            />
+            <SelectField
+              name="influenceType"
+              label="Тип влияния *"
+              state={state}
+              options={influenceTypeOptions}
+              placeholder="Выберите тип"
+              defaultValue={participant?.influenceType ?? ""}
+            />
+            <SelectField
+              name="attitudeToSturm"
+              label="Отношение к STURM"
+              options={attitudeToSturmOptions}
+              defaultValue={participant?.attitudeToSturm ?? "UNKNOWN"}
+            />
+            <TextField name="decisionFactors" label="Что важно" defaultValue={participant?.decisionFactors ?? ""} />
           </>
         ) : (
           <>
-            <div className="space-y-2">
-              <Label htmlFor="responsibilityZone">Зона ответственности *</Label>
-              <Input id="responsibilityZone" name="responsibilityZone" defaultValue={participant?.responsibilityZone ?? ""} />
-              <FieldError name="responsibilityZone" state={state} />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="canApproveChanges">Может согласовывать изменения *</Label>
-              <NativeSelect
-                id="canApproveChanges"
-                name="canApproveChanges"
-                defaultValue={participant?.canApproveChanges ?? ""}
-              >
-                <option value="">Выберите вариант</option>
-                {changeApprovalOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </NativeSelect>
-              <FieldError name="canApproveChanges" state={state} />
-            </div>
-            <div className="space-y-2 md:col-span-2">
-              <Label htmlFor="whenToInvolve">Когда подключать</Label>
-              <Input id="whenToInvolve" name="whenToInvolve" defaultValue={participant?.whenToInvolve ?? ""} />
-            </div>
+            <TextField
+              name="responsibilityZone"
+              label="Зона ответственности *"
+              state={state}
+              defaultValue={participant?.responsibilityZone ?? ""}
+            />
+            <SelectField
+              name="canApproveChanges"
+              label="Может согласовывать изменения *"
+              state={state}
+              options={changeApprovalOptions}
+              placeholder="Выберите вариант"
+              defaultValue={participant?.canApproveChanges ?? ""}
+            />
+            <TextField
+              name="whenToInvolve"
+              label="Когда подключать"
+              className="md:col-span-2"
+              defaultValue={participant?.whenToInvolve ?? ""}
+            />
           </>
         )}
       </FormSection>
 
-      <div className="space-y-2">
-        <Label htmlFor="comment">Комментарий</Label>
-        <Textarea id="comment" name="comment" defaultValue={participant?.comment ?? ""} />
-      </div>
+      <TextareaField name="comment" label="Комментарий" defaultValue={participant?.comment ?? ""} />
 
       <FormActions isPending={isPending} submitLabel={submitLabel} />
     </form>

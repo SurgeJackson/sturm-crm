@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Ban, Edit } from "lucide-react";
+import { Ban } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
+import { AuditLogCard, EntityPageHeader, NoticeStack, TextBlock } from "@/components/crm/detail-page";
 import { Detail, DetailGrid } from "@/components/crm/detail";
 import { CrmDisciplinePanel } from "@/components/crm/discipline/panel";
 import { Badge } from "@/components/ui/badge";
@@ -46,36 +47,28 @@ export default async function TaskPage({ params, searchParams }: TaskPageProps) 
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold">{task.title}</h1>
-          <div className="mt-2 flex flex-wrap gap-2">
+      <EntityPageHeader
+        title={task.title}
+        badges={
+          <>
             <Badge variant="outline">{taskRecordTypeLabels[task.recordType]}</Badge>
             <Badge variant="outline">{taskActionTypeLabels[task.actionType]}</Badge>
             <Badge variant={task.status === "DONE" || task.status === "RECORDED" ? "secondary" : "outline"}>{taskStatusLabels[task.status]}</Badge>
-          </div>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          {canEditRecord(user, task) ? (
-            <Button asChild variant="outline">
-              <Link href={`/tasks/${id}/edit`}>
-                <Edit className="h-4 w-4" />
-                Редактировать
-              </Link>
-            </Button>
-          ) : null}
-          {canCancelTask(user, task) && task.status !== "CANCELLED" ? (
+          </>
+        }
+        editHref={`/tasks/${id}/edit`}
+        canEdit={canEditRecord(user, task)}
+        extraActions={canCancelTask(user, task) && task.status !== "CANCELLED" ? (
             <form action={cancelAction}>
               <Button type="submit" variant="destructive">
                 <Ban className="h-4 w-4" />
                 Отменить
               </Button>
             </form>
-          ) : null}
-        </div>
-      </div>
+        ) : null}
+      />
 
-      {query.saved ? <div className="rounded-md border border-primary p-3 text-sm text-primary">Запись сохранена.</div> : null}
+      <NoticeStack notices={[{ show: Boolean(query.saved), message: "Запись сохранена." }]} />
 
       <CrmDisciplinePanel
         entityType="TASK"
@@ -99,43 +92,17 @@ export default async function TaskPage({ params, searchParams }: TaskPageProps) 
             <Detail label="Автоправило" value={task.autoRule ? taskAutoRuleLabels[task.autoRule] : null} />
           </DetailGrid>
           <div className="mt-6 grid gap-4 md:grid-cols-2">
-            <div>
-              <div className="text-xs text-muted-foreground">Связанные сущности</div>
+            <TextBlock label="Связанные сущности">
               <div className="mt-2 flex flex-col gap-1 text-sm">{entityLinks(task)}</div>
-            </div>
-            <div>
-              <div className="text-xs text-muted-foreground">Описание</div>
-              <div className="mt-1 whitespace-pre-wrap text-sm">{task.description || "Нет описания."}</div>
-            </div>
-            <div>
-              <div className="text-xs text-muted-foreground">Результат</div>
-              <div className="mt-1 whitespace-pre-wrap text-sm">{task.result || "Результат не указан."}</div>
-            </div>
-            <div>
-              <div className="text-xs text-muted-foreground">Следующий шаг</div>
-              <div className="mt-1 text-sm">{task.nextStepText ? `${task.nextStepText} — ${formatRussianDateTime(task.nextStepAt)}` : "Не задан"}</div>
-            </div>
+            </TextBlock>
+            <TextBlock label="Описание">{task.description || "Нет описания."}</TextBlock>
+            <TextBlock label="Результат">{task.result || "Результат не указан."}</TextBlock>
+            <TextBlock label="Следующий шаг">{task.nextStepText ? `${task.nextStepText} — ${formatRussianDateTime(task.nextStepAt)}` : "Не задан"}</TextBlock>
           </div>
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader><CardTitle>История изменений</CardTitle></CardHeader>
-        <CardContent className="space-y-3">
-          {auditLogs.length === 0 ? (
-            <p className="text-sm text-muted-foreground">История пока пустая.</p>
-          ) : (
-            auditLogs.map((log) => (
-              <div key={log.id} className="rounded-md border p-3 text-sm">
-                <div className="flex justify-between gap-3">
-                  <span className="font-medium">{log.action}</span>
-                  <span className="text-muted-foreground">{formatRussianDateTime(log.createdAt)}</span>
-                </div>
-              </div>
-            ))
-          )}
-        </CardContent>
-      </Card>
+      <AuditLogCard logs={auditLogs} formatDate={formatRussianDateTime} />
     </div>
   );
 }

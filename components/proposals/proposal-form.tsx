@@ -2,11 +2,19 @@
 
 import { useActionState, useMemo, useState } from "react";
 import type { CommercialProposal, Deal, User } from "@/generated/prisma/client";
-import { dateInputValue, FieldError, FormActions, FormMessage, FormSection } from "@/components/crm/form-fields";
+import {
+  DateField,
+  FormActions,
+  FormField,
+  FormMessage,
+  FormSection,
+  SelectField,
+  TextareaField,
+  TextField,
+  dateInputValue
+} from "@/components/crm/form-fields";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { NativeSelect } from "@/components/ui/native-select";
-import { Textarea } from "@/components/ui/textarea";
 import type { ProposalActionState } from "@/modules/proposals/actions";
 import {
   commercialProposalStatusOptions,
@@ -76,8 +84,7 @@ export function ProposalForm({
       <FormMessage state={state} />
 
       <FormSection>
-        <div className="space-y-2">
-          <Label htmlFor="dealId">Сделка *</Label>
+        <FormField name="dealId" label="Сделка *" state={state}>
           <NativeSelect
             id="dealId"
             name="dealId"
@@ -90,10 +97,8 @@ export function ProposalForm({
               <option key={deal.id} value={deal.id}>{deal.title}</option>
             ))}
           </NativeSelect>
-          <FieldError name="dealId" state={state} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="responsibleId">Ответственный *</Label>
+        </FormField>
+        <FormField name="responsibleId" label="Ответственный *" state={state}>
           {canChangeResponsible ? (
             <NativeSelect
               id="responsibleId"
@@ -111,8 +116,7 @@ export function ProposalForm({
               <input type="hidden" name="responsibleId" value={responsibleId} />
             </>
           )}
-          <FieldError name="responsibleId" state={state} />
-        </div>
+        </FormField>
         <div className="rounded-md border p-3 text-sm">
           <div className="text-xs text-muted-foreground">Клиент</div>
           <div className="mt-1">{selectedDeal?.client.name ?? "Не выбран"}</div>
@@ -125,8 +129,7 @@ export function ProposalForm({
           <div className="text-xs text-muted-foreground">Дизайнер</div>
           <div className="mt-1">{selectedDeal?.designer?.name ?? "Не выбран"}</div>
         </div>
-        <div className="space-y-2">
-          <Label htmlFor="status">Статус *</Label>
+        <FormField name="status" label="Статус *">
           <NativeSelect
             id="status"
             name="status"
@@ -137,81 +140,29 @@ export function ProposalForm({
               <option key={option.value} value={option.value}>{option.label}</option>
             ))}
           </NativeSelect>
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="amount">Сумма КП *</Label>
-          <Input id="amount" name="amount" inputMode="decimal" defaultValue={proposal?.amount ?? ""} required />
-          <FieldError name="amount" state={state} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="discountPercent">Скидка, %</Label>
-          <Input id="discountPercent" name="discountPercent" inputMode="decimal" defaultValue={proposal?.discountPercent ?? ""} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="discountAmount">Скидка, сумма</Label>
-          <Input id="discountAmount" name="discountAmount" inputMode="decimal" defaultValue={proposal?.discountAmount ?? ""} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="recipientType">Тип получателя {isSent ? "*" : ""}</Label>
-          <NativeSelect id="recipientType" name="recipientType" defaultValue={proposal?.recipientType ?? ""}>
-            <option value="">Не выбран</option>
-            {recipientTypeOptions.map((option) => (
-              <option key={option.value} value={option.value}>{option.label}</option>
-            ))}
-          </NativeSelect>
-          <FieldError name="recipientType" state={state} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="recipientName">Получатель {isSent ? "*" : ""}</Label>
-          <Input id="recipientName" name="recipientName" defaultValue={proposal?.recipientName ?? selectedDeal?.client.name ?? ""} />
-          <FieldError name="recipientName" state={state} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="recipientContact">Контакт получателя</Label>
-          <Input id="recipientContact" name="recipientContact" defaultValue={proposal?.recipientContact ?? ""} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="approvalRequiredFrom">Кто согласует КП</Label>
-          <Input id="approvalRequiredFrom" name="approvalRequiredFrom" defaultValue={proposal?.approvalRequiredFrom ?? ""} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="sentAt">Дата отправки {isSent ? "*" : ""}</Label>
-          <Input id="sentAt" name="sentAt" type="date" defaultValue={dateInputValue(proposal?.sentAt) || (isSent ? new Date().toISOString().slice(0, 10) : "")} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="nextTouchAt">Следующее касание {isSent ? "*" : ""}</Label>
-          <Input id="nextTouchAt" name="nextTouchAt" type="date" defaultValue={dateInputValue(proposal?.nextTouchAt) || (isSent ? defaultNextTouchDate() : "")} />
-          <FieldError name="nextTouchAt" state={state} />
-        </div>
-        <div className="space-y-2 md:col-span-2">
-          <Label htmlFor="file">Файл КП {isSent && !proposal?.fileUrl ? "*" : ""}</Label>
+        </FormField>
+        <TextField name="amount" label="Сумма КП *" inputMode="decimal" defaultValue={proposal?.amount ?? ""} state={state} required />
+        <TextField name="discountPercent" label="Скидка, %" inputMode="decimal" defaultValue={proposal?.discountPercent ?? ""} />
+        <TextField name="discountAmount" label="Скидка, сумма" inputMode="decimal" defaultValue={proposal?.discountAmount ?? ""} />
+        <SelectField name="recipientType" label={`Тип получателя ${isSent ? "*" : ""}`} defaultValue={proposal?.recipientType ?? ""} placeholder="Не выбран" options={recipientTypeOptions} state={state} />
+        <TextField name="recipientName" label={`Получатель ${isSent ? "*" : ""}`} defaultValue={proposal?.recipientName ?? selectedDeal?.client.name ?? ""} state={state} />
+        <TextField name="recipientContact" label="Контакт получателя" defaultValue={proposal?.recipientContact ?? ""} />
+        <TextField name="approvalRequiredFrom" label="Кто согласует КП" defaultValue={proposal?.approvalRequiredFrom ?? ""} />
+        <DateField name="sentAt" label={`Дата отправки ${isSent ? "*" : ""}`} defaultValue={dateInputValue(proposal?.sentAt) || (isSent ? new Date().toISOString().slice(0, 10) : "")} />
+        <DateField name="nextTouchAt" label={`Следующее касание ${isSent ? "*" : ""}`} defaultValue={dateInputValue(proposal?.nextTouchAt) || (isSent ? defaultNextTouchDate() : "")} state={state} />
+        <FormField name="file" label={`Файл КП ${isSent && !proposal?.fileUrl ? "*" : ""}`} className="md:col-span-2">
           <Input id="file" name="file" type="file" accept=".pdf,.xls,.xlsx,.doc,.docx" />
           {proposal?.fileName ? <p className="text-xs text-muted-foreground">Текущий файл: {proposal.fileName}</p> : null}
-        </div>
+        </FormField>
         {isDeclined ? (
           <>
-            <div className="space-y-2">
-              <Label htmlFor="declineReason">Причина отклонения *</Label>
-              <NativeSelect id="declineReason" name="declineReason" defaultValue={proposal?.declineReason ?? ""}>
-                <option value="">Выберите причину</option>
-                {proposalDeclineReasonOptions.map((option) => (
-                  <option key={option.value} value={option.value}>{option.label}</option>
-                ))}
-              </NativeSelect>
-              <FieldError name="declineReason" state={state} />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="declineComment">Комментарий к отклонению</Label>
-              <Input id="declineComment" name="declineComment" defaultValue={proposal?.declineComment ?? ""} />
-            </div>
+            <SelectField name="declineReason" label="Причина отклонения *" defaultValue={proposal?.declineReason ?? ""} placeholder="Выберите причину" options={proposalDeclineReasonOptions} state={state} />
+            <TextField name="declineComment" label="Комментарий к отклонению" defaultValue={proposal?.declineComment ?? ""} />
           </>
         ) : null}
       </FormSection>
 
-      <div className="space-y-2">
-        <Label htmlFor="comment">Комментарий</Label>
-        <Textarea id="comment" name="comment" defaultValue={proposal?.comment ?? ""} />
-      </div>
+      <TextareaField name="comment" label="Комментарий" defaultValue={proposal?.comment ?? ""} />
 
       <FormActions isPending={isPending} submitLabel={submitLabel} />
     </form>

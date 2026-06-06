@@ -2,11 +2,19 @@
 
 import { useActionState, useMemo, useState } from "react";
 import type { Client, Deal, Designer, ProjectObject, User } from "@/generated/prisma/client";
-import { dateInputValue, FieldError, FormActions, FormMessage, FormSection } from "@/components/crm/form-fields";
+import {
+  DateField,
+  FormActions,
+  FormField,
+  FormMessage,
+  FormSection,
+  SelectField,
+  TextareaField,
+  TextField,
+  dateInputValue
+} from "@/components/crm/form-fields";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { NativeSelect } from "@/components/ui/native-select";
-import { Textarea } from "@/components/ui/textarea";
 import type { DealActionState } from "@/modules/deals/actions";
 import {
   dealLossReasonOptions,
@@ -77,13 +85,10 @@ export function DealForm({
       <FormMessage state={state} />
 
       <FormSection>
-        <div className="space-y-2">
-          <Label htmlFor="title">Название сделки *</Label>
+        <FormField name="title" label="Название сделки *" state={state}>
           <Input id="title" name="title" value={title} onChange={(event) => setTitle(event.target.value)} required />
-          <FieldError name="title" state={state} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="objectId">Объект *</Label>
+        </FormField>
+        <FormField name="objectId" label="Объект *" state={state}>
           <NativeSelect
             id="objectId"
             name="objectId"
@@ -98,10 +103,8 @@ export function DealForm({
               </option>
             ))}
           </NativeSelect>
-          <FieldError name="objectId" state={state} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="clientId">Клиент *</Label>
+        </FormField>
+        <FormField name="clientId" label="Клиент *" state={state}>
           <NativeSelect
             id="clientId"
             name="clientId"
@@ -116,10 +119,8 @@ export function DealForm({
               </option>
             ))}
           </NativeSelect>
-          <FieldError name="clientId" state={state} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="designerId">Дизайнер / архитектор</Label>
+        </FormField>
+        <FormField name="designerId" label="Дизайнер / архитектор">
           <NativeSelect
             id="designerId"
             name="designerId"
@@ -134,9 +135,8 @@ export function DealForm({
               </option>
             ))}
           </NativeSelect>
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="responsibleId">Ответственный *</Label>
+        </FormField>
+        <FormField name="responsibleId" label="Ответственный *" state={state}>
           {canChangeResponsible ? (
             <NativeSelect id="responsibleId" name="responsibleId" defaultValue={responsibleId}>
               {users.map((user) => (
@@ -149,10 +149,8 @@ export function DealForm({
               <input type="hidden" name="responsibleId" value={responsibleId} />
             </>
           )}
-          <FieldError name="responsibleId" state={state} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="stage">Стадия *</Label>
+        </FormField>
+        <FormField name="stage" label="Стадия *" state={state}>
           <NativeSelect
             id="stage"
             name="stage"
@@ -163,64 +161,21 @@ export function DealForm({
               <option key={option.value} value={option.value}>{option.label}</option>
             ))}
           </NativeSelect>
-          <FieldError name="stage" state={state} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="potentialAmount">Потенциальная сумма</Label>
-          <Input id="potentialAmount" name="potentialAmount" inputMode="decimal" defaultValue={deal?.potentialAmount ?? ""} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="probability">Вероятность</Label>
-          <NativeSelect id="probability" name="probability" defaultValue={deal?.probability ?? ""}>
-            <option value="">Не выбрана</option>
-            {dealProbabilityOptions.map((option) => (
-              <option key={option.value} value={option.value}>{option.label}</option>
-            ))}
-          </NativeSelect>
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="source">Источник *</Label>
-          <NativeSelect id="source" name="source" defaultValue={defaultSource}>
-            {dealSourceOptions.map((option) => (
-              <option key={option.value} value={option.value}>{option.label}</option>
-            ))}
-          </NativeSelect>
-          <FieldError name="source" state={state} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="nextActionAt">Дата следующего действия {!isClosedStage ? "*" : ""}</Label>
-          <Input id="nextActionAt" name="nextActionAt" type="date" defaultValue={dateInputValue(deal?.nextActionAt)} disabled={isClosedStage} />
-          <FieldError name="nextActionAt" state={state} />
-        </div>
-        <div className="space-y-2 md:col-span-2">
-          <Label htmlFor="nextActionText">Следующий шаг {!isClosedStage ? "*" : ""}</Label>
-          <Input id="nextActionText" name="nextActionText" defaultValue={deal?.nextActionText ?? ""} disabled={isClosedStage} />
-          <FieldError name="nextActionText" state={state} />
-        </div>
+        </FormField>
+        <TextField name="potentialAmount" label="Потенциальная сумма" inputMode="decimal" defaultValue={deal?.potentialAmount ?? ""} />
+        <SelectField name="probability" label="Вероятность" defaultValue={deal?.probability ?? ""} placeholder="Не выбрана" options={dealProbabilityOptions} />
+        <SelectField name="source" label="Источник *" defaultValue={defaultSource} options={dealSourceOptions} state={state} />
+        <DateField name="nextActionAt" label={`Дата следующего действия ${!isClosedStage ? "*" : ""}`} defaultValue={dateInputValue(deal?.nextActionAt)} disabled={isClosedStage} state={state} />
+        <TextField name="nextActionText" label={`Следующий шаг ${!isClosedStage ? "*" : ""}`} defaultValue={deal?.nextActionText ?? ""} disabled={isClosedStage} state={state} className="md:col-span-2" />
         {stage === "LOST" ? (
           <>
-            <div className="space-y-2">
-              <Label htmlFor="lossReason">Причина проигрыша *</Label>
-              <NativeSelect id="lossReason" name="lossReason" defaultValue={deal?.lossReason ?? ""}>
-                <option value="">Выберите причину</option>
-                {dealLossReasonOptions.map((option) => (
-                  <option key={option.value} value={option.value}>{option.label}</option>
-                ))}
-              </NativeSelect>
-              <FieldError name="lossReason" state={state} />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="lossComment">Комментарий к проигрышу</Label>
-              <Input id="lossComment" name="lossComment" defaultValue={deal?.lossComment ?? ""} />
-            </div>
+            <SelectField name="lossReason" label="Причина проигрыша *" defaultValue={deal?.lossReason ?? ""} placeholder="Выберите причину" options={dealLossReasonOptions} state={state} />
+            <TextField name="lossComment" label="Комментарий к проигрышу" defaultValue={deal?.lossComment ?? ""} />
           </>
         ) : null}
       </FormSection>
 
-      <div className="space-y-2">
-        <Label htmlFor="comment">Комментарий</Label>
-        <Textarea id="comment" name="comment" defaultValue={deal?.comment ?? ""} />
-      </div>
+      <TextareaField name="comment" label="Комментарий" defaultValue={deal?.comment ?? ""} />
 
       <FormActions isPending={isPending} submitLabel={submitLabel} />
     </form>

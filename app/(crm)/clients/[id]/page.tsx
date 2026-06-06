@@ -1,14 +1,14 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Archive, Edit, MessageSquarePlus, Plus } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
+import { AuditLogCard, EntityPageHeader, NoticeStack, TaskQuickActions } from "@/components/crm/detail-page";
 import { Detail, DetailSection } from "@/components/crm/detail";
 import { CrmDisciplinePanel } from "@/components/crm/discipline/panel";
 import { TaskActivityTable } from "@/components/tasks/task-activity-table";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { EmptyTableRow, TableCard } from "@/components/ui/data-table";
+import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { archiveClientAction } from "@/modules/clients/actions";
 import { getClientForUser } from "@/modules/clients/queries";
@@ -44,37 +44,25 @@ export default async function ClientPage({ params, searchParams }: ClientPagePro
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold">{client.name}</h1>
-          <div className="mt-2 flex flex-wrap gap-2">
+      <EntityPageHeader
+        title={client.name}
+        badges={
+          <>
             <Badge variant={client.status === "ARCHIVED" ? "outline" : "secondary"}>{clientStatusLabels[client.status]}</Badge>
             <Badge variant="outline">{clientTypeLabels[client.clientType]}</Badge>
-          </div>
-        </div>
-        <div className="flex gap-2">
-          {canEditRecord(user, client) ? (
-            <Button asChild variant="outline">
-              <Link href={`/clients/${id}/edit`}>
-                <Edit className="h-4 w-4" />
-                Редактировать
-              </Link>
-            </Button>
-          ) : null}
-          {canArchiveRecord(user, client) && !client.archivedAt ? (
-            <form action={archiveAction}>
-              <Button type="submit" variant="destructive">
-                <Archive className="h-4 w-4" />
-                Архивировать
-              </Button>
-            </form>
-          ) : null}
-        </div>
-      </div>
+          </>
+        }
+        editHref={`/clients/${id}/edit`}
+        canEdit={canEditRecord(user, client)}
+        archiveAction={archiveAction}
+        canArchive={canArchiveRecord(user, client) && !client.archivedAt}
+      />
 
-      {query.saved ? <div className="rounded-md border border-primary p-3 text-sm text-primary">Клиент сохранен.</div> : null}
-      {query.archived ? <div className="rounded-md border border-primary p-3 text-sm text-primary">Клиент архивирован.</div> : null}
-      {query.error ? <div className="rounded-md border border-destructive p-3 text-sm text-destructive">Действие недоступно для вашей роли.</div> : null}
+      <NoticeStack notices={[
+        { show: Boolean(query.saved), message: "Клиент сохранен." },
+        { show: Boolean(query.archived), message: "Клиент архивирован." },
+        { show: Boolean(query.error), tone: "destructive", message: "Действие недоступно для вашей роли." }
+      ]} />
 
       <CrmDisciplinePanel
         entityType="CLIENT"
@@ -114,10 +102,7 @@ export default async function ClientPage({ params, searchParams }: ClientPagePro
         </TabsContent>
         <TabsContent value="links">
           <div className="grid gap-4">
-            <Card>
-              <CardHeader><CardTitle>Связанные объекты</CardTitle></CardHeader>
-              <CardContent className="p-0">
-                <Table>
+            <TableCard title="Связанные объекты">
                   <TableHeader>
                     <TableRow>
                       <TableHead>Объект</TableHead>
@@ -129,11 +114,7 @@ export default async function ClientPage({ params, searchParams }: ClientPagePro
                   </TableHeader>
                   <TableBody>
                     {client.projectObjects.length === 0 ? (
-                      <TableRow>
-                        <TableCell colSpan={5} className="h-24 text-center text-sm text-muted-foreground">
-                          У клиента пока нет связанных объектов.
-                        </TableCell>
-                      </TableRow>
+                      <EmptyTableRow colSpan={5}>У клиента пока нет связанных объектов.</EmptyTableRow>
                     ) : (
                       client.projectObjects.map((object) => (
                         <TableRow key={object.id}>
@@ -146,13 +127,8 @@ export default async function ClientPage({ params, searchParams }: ClientPagePro
                       ))
                     )}
                   </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader><CardTitle>Связанные сделки</CardTitle></CardHeader>
-              <CardContent className="p-0">
-                <Table>
+            </TableCard>
+            <TableCard title="Связанные сделки">
                   <TableHeader>
                     <TableRow>
                       <TableHead>Сделка</TableHead>
@@ -165,7 +141,7 @@ export default async function ClientPage({ params, searchParams }: ClientPagePro
                   </TableHeader>
                   <TableBody>
                     {client.deals.length === 0 ? (
-                      <TableRow><TableCell colSpan={6} className="h-24 text-center text-sm text-muted-foreground">У клиента пока нет связанных сделок.</TableCell></TableRow>
+                      <EmptyTableRow colSpan={6}>У клиента пока нет связанных сделок.</EmptyTableRow>
                     ) : (
                       client.deals.map((deal) => (
                         <TableRow key={deal.id}>
@@ -179,13 +155,8 @@ export default async function ClientPage({ params, searchParams }: ClientPagePro
                       ))
                     )}
                   </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader><CardTitle>Связанные КП</CardTitle></CardHeader>
-              <CardContent className="p-0">
-                <Table>
+            </TableCard>
+            <TableCard title="Связанные КП">
                   <TableHeader>
                     <TableRow>
                       <TableHead>КП</TableHead>
@@ -198,7 +169,7 @@ export default async function ClientPage({ params, searchParams }: ClientPagePro
                   </TableHeader>
                   <TableBody>
                     {client.proposals.length === 0 ? (
-                      <TableRow><TableCell colSpan={6} className="h-24 text-center text-sm text-muted-foreground">По клиенту пока нет КП</TableCell></TableRow>
+                      <EmptyTableRow colSpan={6}>По клиенту пока нет КП</EmptyTableRow>
                     ) : (
                       client.proposals.map((proposal) => (
                         <TableRow key={proposal.id}>
@@ -212,9 +183,7 @@ export default async function ClientPage({ params, searchParams }: ClientPagePro
                       ))
                     )}
                   </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
+            </TableCard>
           </div>
         </TabsContent>
         <TabsContent value="tasks">
@@ -222,20 +191,10 @@ export default async function ClientPage({ params, searchParams }: ClientPagePro
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle>Задачи / касания</CardTitle>
               {canCreateTask(user) ? (
-                <div className="flex flex-wrap gap-2">
-                  <Button asChild variant="outline" size="sm">
-                    <Link href={`/tasks/new?clientId=${client.id}&responsibleId=${client.responsibleId}`}>
-                      <Plus className="h-4 w-4" />
-                      Создать задачу
-                    </Link>
-                  </Button>
-                  <Button asChild variant="outline" size="sm">
-                    <Link href={`/tasks/new?recordType=TOUCH&clientId=${client.id}&responsibleId=${client.responsibleId}`}>
-                      <MessageSquarePlus className="h-4 w-4" />
-                      Зафиксировать касание
-                    </Link>
-                  </Button>
-                </div>
+                <TaskQuickActions
+                  taskHref={`/tasks/new?clientId=${client.id}&responsibleId=${client.responsibleId}`}
+                  touchHref={`/tasks/new?recordType=TOUCH&clientId=${client.id}&responsibleId=${client.responsibleId}`}
+                />
               ) : null}
             </CardHeader>
             <CardContent className="p-0">
@@ -244,23 +203,7 @@ export default async function ClientPage({ params, searchParams }: ClientPagePro
           </Card>
         </TabsContent>
         <TabsContent value="audit">
-          <Card>
-            <CardHeader><CardTitle>История изменений</CardTitle></CardHeader>
-            <CardContent className="space-y-3">
-              {auditLogs.length === 0 ? (
-                <p className="text-sm text-muted-foreground">История пока пустая.</p>
-              ) : (
-                auditLogs.map((log) => (
-                  <div key={log.id} className="rounded-md border p-3 text-sm">
-                    <div className="flex justify-between gap-3">
-                      <span className="font-medium">{log.action}</span>
-                      <span className="text-muted-foreground">{formatRussianDate(log.createdAt)}</span>
-                    </div>
-                  </div>
-                ))
-              )}
-            </CardContent>
-          </Card>
+          <AuditLogCard logs={auditLogs} formatDate={formatRussianDate} />
         </TabsContent>
       </Tabs>
     </div>

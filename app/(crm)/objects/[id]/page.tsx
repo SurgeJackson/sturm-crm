@@ -1,14 +1,16 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Archive, Edit, MessageSquarePlus, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
+import { AuditLogCard, EntityPageHeader, NoticeStack, TaskQuickActions, TextBlock } from "@/components/crm/detail-page";
 import { Detail, DetailGrid } from "@/components/crm/detail";
 import { CrmDisciplinePanel } from "@/components/crm/discipline/panel";
 import { TaskActivityTable } from "@/components/tasks/task-activity-table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { EmptyTableRow, TableCard } from "@/components/ui/data-table";
+import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getAuditLogs } from "@/lib/audit-log";
 import {
@@ -92,41 +94,29 @@ export default async function ObjectPage({ params, searchParams }: ObjectPagePro
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold">{projectObject.title}</h1>
-          <div className="mt-2 flex flex-wrap gap-2">
+      <EntityPageHeader
+        title={projectObject.title}
+        badges={
+          <>
             <Badge variant="outline">{objectTypeLabels[projectObject.objectType]}</Badge>
             <Badge variant="outline">{objectStageLabels[projectObject.stage]}</Badge>
             <Badge variant={statusVariant(projectObject.status)}>{objectStatusLabels[projectObject.status]}</Badge>
-          </div>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          {canEditRecord(user, projectObject) ? (
-            <Button asChild variant="outline">
-              <Link href={`/objects/${id}/edit`}>
-                <Edit className="h-4 w-4" />
-                Редактировать
-              </Link>
-            </Button>
-          ) : null}
-          {canArchiveRecord(user, projectObject) && !projectObject.archivedAt ? (
-            <form action={archiveAction}>
-              <Button type="submit" variant="destructive">
-                <Archive className="h-4 w-4" />
-                Архивировать
-              </Button>
-            </form>
-          ) : null}
-        </div>
-      </div>
+          </>
+        }
+        editHref={`/objects/${id}/edit`}
+        canEdit={canEditRecord(user, projectObject)}
+        archiveAction={archiveAction}
+        canArchive={canArchiveRecord(user, projectObject) && !projectObject.archivedAt}
+      />
 
-      {query.saved ? <div className="rounded-md border border-primary p-3 text-sm text-primary">Объект сохранен.</div> : null}
-      {query.archived ? <div className="rounded-md border border-primary p-3 text-sm text-primary">Объект архивирован.</div> : null}
-      {query.participantSaved ? <div className="rounded-md border border-primary p-3 text-sm text-primary">Участник сохранен.</div> : null}
-      {query.participantArchived ? <div className="rounded-md border border-primary p-3 text-sm text-primary">Участник архивирован.</div> : null}
-      {query.designerStage ? <div className="rounded-md border border-primary p-3 text-sm text-primary">Этап дизайнера обновлен.</div> : null}
-      {query.error ? <div className="rounded-md border border-destructive p-3 text-sm text-destructive">Действие недоступно или данные не найдены.</div> : null}
+      <NoticeStack notices={[
+        { show: Boolean(query.saved), message: "Объект сохранен." },
+        { show: Boolean(query.archived), message: "Объект архивирован." },
+        { show: Boolean(query.participantSaved), message: "Участник сохранен." },
+        { show: Boolean(query.participantArchived), message: "Участник архивирован." },
+        { show: Boolean(query.designerStage), message: "Этап дизайнера обновлен." },
+        { show: Boolean(query.error), tone: "destructive", message: "Действие недоступно или данные не найдены." }
+      ]} />
 
       <CrmDisciplinePanel
         entityType="OBJECT"
@@ -192,10 +182,7 @@ export default async function ObjectPage({ params, searchParams }: ObjectPagePro
                     )}
                   </div>
                 </div>
-                <div>
-                  <div className="text-xs text-muted-foreground">Комментарий</div>
-                  <div className="mt-1 whitespace-pre-wrap text-sm">{projectObject.comment || "Комментариев пока нет."}</div>
-                </div>
+                <TextBlock label="Комментарий">{projectObject.comment || "Комментариев пока нет."}</TextBlock>
               </div>
             </CardContent>
           </Card>
@@ -203,20 +190,17 @@ export default async function ObjectPage({ params, searchParams }: ObjectPagePro
 
         <TabsContent value="participants">
           <div className="space-y-4">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle>Влияющие на закупку</CardTitle>
-                {canManageParticipants ? (
-                  <Button asChild size="sm">
-                    <Link href={`/objects/${id}/participants/new?type=PURCHASE_INFLUENCER`}>
-                      <Plus className="h-4 w-4" />
-                      Добавить
-                    </Link>
-                  </Button>
-                ) : null}
-              </CardHeader>
-              <CardContent className="p-0">
-                <Table>
+            <TableCard
+              title="Влияющие на закупку"
+              actions={canManageParticipants ? (
+                <Button asChild size="sm">
+                  <Link href={`/objects/${id}/participants/new?type=PURCHASE_INFLUENCER`}>
+                    <Plus className="h-4 w-4" />
+                    Добавить
+                  </Link>
+                </Button>
+              ) : null}
+            >
                   <TableHeader>
                     <TableRow>
                       <TableHead>ФИО</TableHead>
@@ -232,7 +216,7 @@ export default async function ObjectPage({ params, searchParams }: ObjectPagePro
                   </TableHeader>
                   <TableBody>
                     {purchaseInfluencers.length === 0 ? (
-                      <TableRow><TableCell colSpan={9} className="h-24 text-center text-sm text-muted-foreground">По объекту пока нет участников</TableCell></TableRow>
+                      <EmptyTableRow colSpan={9}>По объекту пока нет участников</EmptyTableRow>
                     ) : (
                       purchaseInfluencers.map((participant) => (
                         <TableRow key={participant.id}>
@@ -258,24 +242,19 @@ export default async function ObjectPage({ params, searchParams }: ObjectPagePro
                       ))
                     )}
                   </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
+            </TableCard>
 
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle>Контактные лица реализации</CardTitle>
-                {canManageParticipants ? (
-                  <Button asChild size="sm">
-                    <Link href={`/objects/${id}/participants/new?type=IMPLEMENTATION_CONTACT`}>
-                      <Plus className="h-4 w-4" />
-                      Добавить
-                    </Link>
-                  </Button>
-                ) : null}
-              </CardHeader>
-              <CardContent className="p-0">
-                <Table>
+            <TableCard
+              title="Контактные лица реализации"
+              actions={canManageParticipants ? (
+                <Button asChild size="sm">
+                  <Link href={`/objects/${id}/participants/new?type=IMPLEMENTATION_CONTACT`}>
+                    <Plus className="h-4 w-4" />
+                    Добавить
+                  </Link>
+                </Button>
+              ) : null}
+            >
                   <TableHeader>
                     <TableRow>
                       <TableHead>ФИО</TableHead>
@@ -290,7 +269,7 @@ export default async function ObjectPage({ params, searchParams }: ObjectPagePro
                   </TableHeader>
                   <TableBody>
                     {implementationContacts.length === 0 ? (
-                      <TableRow><TableCell colSpan={8} className="h-24 text-center text-sm text-muted-foreground">По объекту пока нет участников</TableCell></TableRow>
+                      <EmptyTableRow colSpan={8}>По объекту пока нет участников</EmptyTableRow>
                     ) : (
                       implementationContacts.map((participant) => (
                         <TableRow key={participant.id}>
@@ -315,22 +294,19 @@ export default async function ObjectPage({ params, searchParams }: ObjectPagePro
                       ))
                     )}
                   </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
+            </TableCard>
           </div>
         </TabsContent>
 
         <TabsContent value="deals">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle>Сделки</CardTitle>
+          <TableCard
+            title="Сделки"
+            actions={
               <Button asChild size="sm">
                 <Link href={`/deals/new?objectId=${id}`}>Создать сделку по объекту</Link>
               </Button>
-            </CardHeader>
-            <CardContent className="p-0">
-              <Table>
+            }
+          >
                 <TableHeader>
                   <TableRow>
                     <TableHead>Сделка</TableHead>
@@ -343,7 +319,7 @@ export default async function ObjectPage({ params, searchParams }: ObjectPagePro
                 </TableHeader>
                 <TableBody>
                   {projectObject.deals.length === 0 ? (
-                    <TableRow><TableCell colSpan={6} className="h-24 text-center text-sm text-muted-foreground">По объекту пока нет сделок</TableCell></TableRow>
+                    <EmptyTableRow colSpan={6}>По объекту пока нет сделок</EmptyTableRow>
                   ) : (
                     projectObject.deals.map((deal) => (
                       <TableRow key={deal.id}>
@@ -357,15 +333,10 @@ export default async function ObjectPage({ params, searchParams }: ObjectPagePro
                     ))
                   )}
                 </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
+          </TableCard>
         </TabsContent>
         <TabsContent value="proposals">
-          <Card>
-            <CardHeader><CardTitle>КП</CardTitle></CardHeader>
-            <CardContent className="p-0">
-              <Table>
+          <TableCard title="КП">
                 <TableHeader>
                   <TableRow>
                     <TableHead>КП</TableHead>
@@ -379,7 +350,7 @@ export default async function ObjectPage({ params, searchParams }: ObjectPagePro
                 </TableHeader>
                 <TableBody>
                   {projectObject.proposals.length === 0 ? (
-                    <TableRow><TableCell colSpan={7} className="h-24 text-center text-sm text-muted-foreground">По объекту пока нет КП</TableCell></TableRow>
+                    <EmptyTableRow colSpan={7}>По объекту пока нет КП</EmptyTableRow>
                   ) : (
                     projectObject.proposals.map((proposal) => (
                       <TableRow key={proposal.id}>
@@ -394,29 +365,17 @@ export default async function ObjectPage({ params, searchParams }: ObjectPagePro
                     ))
                   )}
                 </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
+          </TableCard>
         </TabsContent>
         <TabsContent value="tasks">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle>Задачи / касания</CardTitle>
               {canCreateTask(user) ? (
-                <div className="flex flex-wrap gap-2">
-                  <Button asChild variant="outline" size="sm">
-                    <Link href={`/tasks/new?objectId=${projectObject.id}&clientId=${projectObject.clientId}&responsibleId=${projectObject.responsibleId}${projectObject.designerId ? `&designerId=${projectObject.designerId}` : ""}`}>
-                      <Plus className="h-4 w-4" />
-                      Создать задачу
-                    </Link>
-                  </Button>
-                  <Button asChild variant="outline" size="sm">
-                    <Link href={`/tasks/new?recordType=TOUCH&objectId=${projectObject.id}&clientId=${projectObject.clientId}&responsibleId=${projectObject.responsibleId}${projectObject.designerId ? `&designerId=${projectObject.designerId}` : ""}`}>
-                      <MessageSquarePlus className="h-4 w-4" />
-                      Зафиксировать касание
-                    </Link>
-                  </Button>
-                </div>
+                <TaskQuickActions
+                  taskHref={`/tasks/new?objectId=${projectObject.id}&clientId=${projectObject.clientId}&responsibleId=${projectObject.responsibleId}${projectObject.designerId ? `&designerId=${projectObject.designerId}` : ""}`}
+                  touchHref={`/tasks/new?recordType=TOUCH&objectId=${projectObject.id}&clientId=${projectObject.clientId}&responsibleId=${projectObject.responsibleId}${projectObject.designerId ? `&designerId=${projectObject.designerId}` : ""}`}
+                />
               ) : null}
             </CardHeader>
             <CardContent className="p-0">
@@ -439,23 +398,7 @@ export default async function ObjectPage({ params, searchParams }: ObjectPagePro
           </Card>
         </TabsContent>
         <TabsContent value="audit">
-          <Card>
-            <CardHeader><CardTitle>История изменений</CardTitle></CardHeader>
-            <CardContent className="space-y-3">
-              {auditLogs.length === 0 ? (
-                <p className="text-sm text-muted-foreground">История пока пустая.</p>
-              ) : (
-                auditLogs.map((log) => (
-                  <div key={log.id} className="rounded-md border p-3 text-sm">
-                    <div className="flex justify-between gap-3">
-                      <span className="font-medium">{log.action}</span>
-                      <span className="text-muted-foreground">{formatRussianDate(log.createdAt)}</span>
-                    </div>
-                  </div>
-                ))
-              )}
-            </CardContent>
-          </Card>
+          <AuditLogCard logs={auditLogs} formatDate={formatRussianDate} />
         </TabsContent>
       </Tabs>
     </div>

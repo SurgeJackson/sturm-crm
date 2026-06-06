@@ -1,14 +1,14 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Archive, Edit, MessageSquarePlus, Plus } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
+import { AuditLogCard, EntityPageHeader, NoticeStack, TaskQuickActions } from "@/components/crm/detail-page";
 import { Detail, DetailGrid } from "@/components/crm/detail";
 import { CrmDisciplinePanel } from "@/components/crm/discipline/panel";
 import { TaskActivityTable } from "@/components/tasks/task-activity-table";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { EmptyTableRow, TableCard } from "@/components/ui/data-table";
+import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { archiveDesignerAction } from "@/modules/designers/actions";
 import { getDesignerForUser } from "@/modules/designers/queries";
@@ -45,38 +45,26 @@ export default async function DesignerPage({ params, searchParams }: DesignerPag
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold">{designer.name}</h1>
-          <div className="mt-2 flex flex-wrap gap-2">
+      <EntityPageHeader
+        title={designer.name}
+        badges={
+          <>
             <Badge variant="secondary">{designerRelationshipStageLabels[designer.relationshipStage]}</Badge>
             <Badge variant={designer.potential === "A" ? "warning" : "outline"}>{designerPotentialLabels[designer.potential]}</Badge>
             <Badge variant="outline">{designerLoyaltyLabels[designer.loyalty]}</Badge>
-          </div>
-        </div>
-        <div className="flex gap-2">
-          {canEditRecord(user, designer) ? (
-            <Button asChild variant="outline">
-              <Link href={`/designers/${id}/edit`}>
-                <Edit className="h-4 w-4" />
-                Редактировать
-              </Link>
-            </Button>
-          ) : null}
-          {canArchiveRecord(user, designer) && !designer.archivedAt ? (
-            <form action={archiveAction}>
-              <Button type="submit" variant="destructive">
-                <Archive className="h-4 w-4" />
-                Архивировать
-              </Button>
-            </form>
-          ) : null}
-        </div>
-      </div>
+          </>
+        }
+        editHref={`/designers/${id}/edit`}
+        canEdit={canEditRecord(user, designer)}
+        archiveAction={archiveAction}
+        canArchive={canArchiveRecord(user, designer) && !designer.archivedAt}
+      />
 
-      {query.saved ? <div className="rounded-md border border-primary p-3 text-sm text-primary">Дизайнер сохранен.</div> : null}
-      {query.archived ? <div className="rounded-md border border-primary p-3 text-sm text-primary">Дизайнер архивирован.</div> : null}
-      {query.error ? <div className="rounded-md border border-destructive p-3 text-sm text-destructive">Действие недоступно для вашей роли.</div> : null}
+      <NoticeStack notices={[
+        { show: Boolean(query.saved), message: "Дизайнер сохранен." },
+        { show: Boolean(query.archived), message: "Дизайнер архивирован." },
+        { show: Boolean(query.error), tone: "destructive", message: "Действие недоступно для вашей роли." }
+      ]} />
 
       <CrmDisciplinePanel
         entityType="DESIGNER"
@@ -137,20 +125,10 @@ export default async function DesignerPage({ params, searchParams }: DesignerPag
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle>Касания и задачи</CardTitle>
               {canCreateTask(user) ? (
-                <div className="flex flex-wrap gap-2">
-                  <Button asChild variant="outline" size="sm">
-                    <Link href={`/tasks/new?designerId=${designer.id}&responsibleId=${designer.responsibleId}`}>
-                      <Plus className="h-4 w-4" />
-                      Создать задачу
-                    </Link>
-                  </Button>
-                  <Button asChild variant="outline" size="sm">
-                    <Link href={`/tasks/new?recordType=TOUCH&designerId=${designer.id}&responsibleId=${designer.responsibleId}`}>
-                      <MessageSquarePlus className="h-4 w-4" />
-                      Зафиксировать касание
-                    </Link>
-                  </Button>
-                </div>
+                <TaskQuickActions
+                  taskHref={`/tasks/new?designerId=${designer.id}&responsibleId=${designer.responsibleId}`}
+                  touchHref={`/tasks/new?recordType=TOUCH&designerId=${designer.id}&responsibleId=${designer.responsibleId}`}
+                />
               ) : null}
             </CardHeader>
             <CardContent className="p-0">
@@ -159,10 +137,7 @@ export default async function DesignerPage({ params, searchParams }: DesignerPag
           </Card>
         </TabsContent>
         <TabsContent value="objects">
-          <Card>
-            <CardHeader><CardTitle>Переданные объекты</CardTitle></CardHeader>
-            <CardContent className="p-0">
-              <Table>
+          <TableCard title="Переданные объекты">
                 <TableHeader>
                   <TableRow>
                     <TableHead>Объект</TableHead>
@@ -174,11 +149,7 @@ export default async function DesignerPage({ params, searchParams }: DesignerPag
                 </TableHeader>
                 <TableBody>
                   {designer.projectObjects.length === 0 ? (
-                    <TableRow>
-                      <TableCell colSpan={5} className="h-24 text-center text-sm text-muted-foreground">
-                        Дизайнер пока не передал объекты.
-                      </TableCell>
-                    </TableRow>
+                    <EmptyTableRow colSpan={5}>Дизайнер пока не передал объекты.</EmptyTableRow>
                   ) : (
                     designer.projectObjects.map((object) => (
                       <TableRow key={object.id}>
@@ -191,15 +162,10 @@ export default async function DesignerPage({ params, searchParams }: DesignerPag
                     ))
                   )}
                 </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
+          </TableCard>
         </TabsContent>
         <TabsContent value="deals">
-          <Card>
-            <CardHeader><CardTitle>Связанные сделки</CardTitle></CardHeader>
-            <CardContent className="p-0">
-              <Table>
+          <TableCard title="Связанные сделки">
                 <TableHeader>
                   <TableRow>
                     <TableHead>Сделка</TableHead>
@@ -211,11 +177,7 @@ export default async function DesignerPage({ params, searchParams }: DesignerPag
                 </TableHeader>
                 <TableBody>
                   {designer.deals.length === 0 ? (
-                    <TableRow>
-                      <TableCell colSpan={5} className="h-24 text-center text-sm text-muted-foreground">
-                        У дизайнера пока нет связанных сделок.
-                      </TableCell>
-                    </TableRow>
+                    <EmptyTableRow colSpan={5}>У дизайнера пока нет связанных сделок.</EmptyTableRow>
                   ) : (
                     designer.deals.map((deal) => (
                       <TableRow key={deal.id}>
@@ -228,15 +190,10 @@ export default async function DesignerPage({ params, searchParams }: DesignerPag
                     ))
                   )}
                 </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
+          </TableCard>
         </TabsContent>
         <TabsContent value="proposals">
-          <Card>
-            <CardHeader><CardTitle>КП по объектам дизайнера</CardTitle></CardHeader>
-            <CardContent className="p-0">
-              <Table>
+          <TableCard title="КП по объектам дизайнера">
                 <TableHeader>
                   <TableRow>
                     <TableHead>КП</TableHead>
@@ -249,7 +206,7 @@ export default async function DesignerPage({ params, searchParams }: DesignerPag
                 </TableHeader>
                 <TableBody>
                   {designer.proposals.length === 0 ? (
-                    <TableRow><TableCell colSpan={6} className="h-24 text-center text-sm text-muted-foreground">По дизайнеру пока нет КП</TableCell></TableRow>
+                    <EmptyTableRow colSpan={6}>По дизайнеру пока нет КП</EmptyTableRow>
                   ) : (
                     designer.proposals.map((proposal) => (
                       <TableRow key={proposal.id}>
@@ -263,9 +220,7 @@ export default async function DesignerPage({ params, searchParams }: DesignerPag
                     ))
                   )}
                 </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
+          </TableCard>
         </TabsContent>
         <TabsContent value="analytics">
           <div className="grid gap-4 md:grid-cols-4">
@@ -276,23 +231,7 @@ export default async function DesignerPage({ params, searchParams }: DesignerPag
           </div>
         </TabsContent>
         <TabsContent value="audit">
-          <Card>
-            <CardHeader><CardTitle>История изменений</CardTitle></CardHeader>
-            <CardContent className="space-y-3">
-              {auditLogs.length === 0 ? (
-                <p className="text-sm text-muted-foreground">История пока пустая.</p>
-              ) : (
-                auditLogs.map((log) => (
-                  <div key={log.id} className="rounded-md border p-3 text-sm">
-                    <div className="flex justify-between gap-3">
-                      <span className="font-medium">{log.action}</span>
-                      <span className="text-muted-foreground">{formatRussianDate(log.createdAt)}</span>
-                    </div>
-                  </div>
-                ))
-              )}
-            </CardContent>
-          </Card>
+          <AuditLogCard logs={auditLogs} formatDate={formatRussianDate} />
         </TabsContent>
       </Tabs>
     </div>
