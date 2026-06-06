@@ -24,7 +24,7 @@ export async function getEmployeeActivityReport(params: ReportSearchParams, user
     visibleUsers.map(async (employee) => {
       const own = ownerRecordWhere({ ...employee, isActive: true });
       const actionFilter = params.actionType ? { actionType: params.actionType as never } : {};
-      const [clients, designers, objects, deals, proposals, proposalAmount, tasks, doneTasks, taskRows, touches, calls, meetings, email, messengers, followUps, presentations, outsideMeetings] = await Promise.all([
+      const [clients, designers, objects, deals, proposals, proposalAmount, tasks, doneTasks, overdueTasks, touches, calls, meetings, email, messengers, followUps, presentations, outsideMeetings] = await Promise.all([
         prisma.client.count({ where: { AND: [own, { createdAt: periodWhere(from, to) }] } }),
         prisma.designer.count({ where: { AND: [own, { createdAt: periodWhere(from, to) }] } }),
         prisma.projectObject.count({ where: { AND: [own, { createdAt: periodWhere(from, to) }] } }),
@@ -33,7 +33,7 @@ export async function getEmployeeActivityReport(params: ReportSearchParams, user
         prisma.commercialProposal.aggregate({ where: { AND: [own, { createdAt: periodWhere(from, to) }] }, _sum: { amount: true } }),
         prisma.taskActivity.count({ where: { responsibleId: employee.id, recordType: "TASK", createdAt: periodWhere(from, to), ...actionFilter } }),
         prisma.taskActivity.count({ where: { responsibleId: employee.id, recordType: "TASK", status: "DONE", completedAt: periodWhere(from, to), ...actionFilter } }),
-        prisma.taskActivity.findMany({ where: { responsibleId: employee.id, recordType: "TASK", dueAt: { lt: now }, status: { notIn: ["DONE", "CANCELLED", "CLOSED"] }, ...actionFilter }, select: { id: true } }),
+        prisma.taskActivity.count({ where: { responsibleId: employee.id, recordType: "TASK", dueAt: { lt: now }, status: { notIn: ["DONE", "CANCELLED", "CLOSED"] }, ...actionFilter } }),
         prisma.taskActivity.count({ where: { responsibleId: employee.id, recordType: "TOUCH", completedAt: periodWhere(from, to), ...actionFilter } }),
         prisma.taskActivity.count({ where: { responsibleId: employee.id, actionType: { in: ["CALL", "INCOMING_CALL"] }, createdAt: periodWhere(from, to) } }),
         prisma.taskActivity.count({ where: { responsibleId: employee.id, actionType: { in: ["SHOWROOM_MEETING", "OUTSIDE_MEETING"] }, createdAt: periodWhere(from, to) } }),
@@ -54,7 +54,7 @@ export async function getEmployeeActivityReport(params: ReportSearchParams, user
         proposalAmount: proposalAmount._sum.amount ?? 0,
         tasks,
         doneTasks,
-        overdueTasks: taskRows.length,
+        overdueTasks,
         touches,
         calls,
         meetings,

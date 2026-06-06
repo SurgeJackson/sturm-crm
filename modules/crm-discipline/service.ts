@@ -25,6 +25,7 @@ export type CrmDisciplineSyncOptions = DisciplineRuleOptions & {
 };
 
 type DisciplineSyncResult = { created: number; resolved: number; active: number };
+type DisciplineCheckTotals = DisciplineSyncResult & { checked: number };
 
 export const crmViolationSeverityLabels: Record<CrmViolationSeverity, string> = {
   CRITICAL: "Критическое",
@@ -303,39 +304,68 @@ export function violationAccessWhere(user: PermissionUser): Prisma.CrmViolationW
 export async function runCrmDisciplineCheck(actorId?: string | null, options?: CrmDisciplineSyncOptions) {
   const ruleOptions = { now: options?.now ?? new Date() };
   const batchSize = Math.max(options?.batchSize ?? DEFAULT_DISCIPLINE_BATCH_SIZE, 1);
-  const [clients, designers, objects, deals, proposals, tasks] = await Promise.all([
-    prisma.client.findMany({ where: { archivedAt: null } }),
-    prisma.designer.findMany({ where: { archivedAt: null } }),
-    prisma.projectObject.findMany({ where: { archivedAt: null }, include: { tasks: { select: { archivedAt: true, status: true, autoRule: true } } } }),
-    prisma.deal.findMany({ where: { archivedAt: null } }),
-    prisma.commercialProposal.findMany({ where: { archivedAt: null } }),
-    prisma.taskActivity.findMany({ where: { archivedAt: null } })
+
+  const results = await Promise.all([
+    processCursorBatches(
+      (cursorId) => prisma.client.findMany({
+        where: { archivedAt: null },
+        orderBy: { id: "asc" },
+        take: batchSize,
+        ...(cursorId ? { cursor: { id: cursorId }, skip: 1 } : {})
+      }),
+      (client) => syncViolationsForEntity("CLIENT", client.id, validateClientForDiscipline(client, ruleOptions), actorId)
+    ),
+    processCursorBatches(
+      (cursorId) => prisma.designer.findMany({
+        where: { archivedAt: null },
+        orderBy: { id: "asc" },
+        take: batchSize,
+        ...(cursorId ? { cursor: { id: cursorId }, skip: 1 } : {})
+      }),
+      (designer) => syncViolationsForEntity("DESIGNER", designer.id, validateDesignerForDiscipline(designer, ruleOptions), actorId)
+    ),
+    processCursorBatches(
+      (cursorId) => prisma.projectObject.findMany({
+        where: { archivedAt: null },
+        include: { tasks: { select: { archivedAt: true, status: true, autoRule: true } } },
+        orderBy: { id: "asc" },
+        take: batchSize,
+        ...(cursorId ? { cursor: { id: cursorId }, skip: 1 } : {})
+      }),
+      (object) => syncViolationsForEntity("OBJECT", object.id, validateObjectForDiscipline(object, ruleOptions), actorId)
+    ),
+    processCursorBatches(
+      (cursorId) => prisma.deal.findMany({
+        where: { archivedAt: null },
+        orderBy: { id: "asc" },
+        take: batchSize,
+        ...(cursorId ? { cursor: { id: cursorId }, skip: 1 } : {})
+      }),
+      (deal) => syncViolationsForEntity("DEAL", deal.id, validateDealForDiscipline(deal, ruleOptions), actorId)
+    ),
+    processCursorBatches(
+      (cursorId) => prisma.commercialProposal.findMany({
+        where: { archivedAt: null },
+        orderBy: { id: "asc" },
+        take: batchSize,
+        ...(cursorId ? { cursor: { id: cursorId }, skip: 1 } : {})
+      }),
+      (proposal) => syncViolationsForEntity("PROPOSAL", proposal.id, validateProposalForDiscipline(proposal, ruleOptions), actorId)
+    ),
+    processCursorBatches(
+      (cursorId) => prisma.taskActivity.findMany({
+        where: { archivedAt: null },
+        orderBy: { id: "asc" },
+        take: batchSize,
+        ...(cursorId ? { cursor: { id: cursorId }, skip: 1 } : {})
+      }),
+      (task) => syncViolationsForEntity("TASK", task.id, validateTaskForDiscipline(task, ruleOptions), actorId)
+    )
   ]);
 
-  const results = [
-    ...await processInChunks(clients, batchSize, (client) =>
-      syncViolationsForEntity("CLIENT", client.id, validateClientForDiscipline(client, ruleOptions), actorId)
-    ),
-    ...await processInChunks(designers, batchSize, (designer) =>
-      syncViolationsForEntity("DESIGNER", designer.id, validateDesignerForDiscipline(designer, ruleOptions), actorId)
-    ),
-    ...await processInChunks(objects, batchSize, (object) =>
-      syncViolationsForEntity("OBJECT", object.id, validateObjectForDiscipline(object, ruleOptions), actorId)
-    ),
-    ...await processInChunks(deals, batchSize, (deal) =>
-      syncViolationsForEntity("DEAL", deal.id, validateDealForDiscipline(deal, ruleOptions), actorId)
-    ),
-    ...await processInChunks(proposals, batchSize, (proposal) =>
-      syncViolationsForEntity("PROPOSAL", proposal.id, validateProposalForDiscipline(proposal, ruleOptions), actorId)
-    ),
-    ...await processInChunks(tasks, batchSize, (task) =>
-      syncViolationsForEntity("TASK", task.id, validateTaskForDiscipline(task, ruleOptions), actorId)
-    )
-  ];
-
   return results.reduce(
-    (acc: { checked: number; created: number; resolved: number; active: number }, item) => ({
-      checked: acc.checked + 1,
+    (acc, item) => ({
+      checked: acc.checked + item.checked,
       created: acc.created + item.created,
       resolved: acc.resolved + item.resolved,
       active: acc.active + item.active
@@ -344,14 +374,26 @@ export async function runCrmDisciplineCheck(actorId?: string | null, options?: C
   );
 }
 
-async function processInChunks<T>(
-  items: T[],
-  batchSize: number,
+async function processCursorBatches<T extends { id: string }>(
+  fetchBatch: (cursorId?: string) => Promise<T[]>,
   mapper: (item: T) => Promise<DisciplineSyncResult>
-) {
-  const results: DisciplineSyncResult[] = [];
-  for (let index = 0; index < items.length; index += batchSize) {
-    results.push(...await Promise.all(items.slice(index, index + batchSize).map(mapper)));
+): Promise<DisciplineCheckTotals> {
+  const totals: DisciplineCheckTotals = { checked: 0, created: 0, resolved: 0, active: 0 };
+  let cursorId: string | undefined;
+
+  for (;;) {
+    const batch = await fetchBatch(cursorId);
+    if (batch.length === 0) return totals;
+
+    const results = await Promise.all(batch.map(mapper));
+    for (const result of results) {
+      totals.checked += 1;
+      totals.created += result.created;
+      totals.resolved += result.resolved;
+      totals.active += result.active;
+    }
+
+    cursorId = batch.at(-1)?.id;
+    if (!cursorId) return totals;
   }
-  return results;
 }

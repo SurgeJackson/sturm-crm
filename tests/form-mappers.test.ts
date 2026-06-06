@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
+import { parseDealForm, toDealDocument } from "../modules/deals/form";
 import { parseObjectForm, toObjectDocument } from "../modules/objects/form";
+import { safeProposalFileName } from "../modules/proposals/files";
 import { ensureSentRequirements, parseProposalForm, toProposalDocument } from "../modules/proposals/form";
+import { parseTaskForm, toTaskDocument } from "../modules/tasks/form";
 
 describe("crm form mappers", () => {
   it("maps object forms to prisma documents", () => {
@@ -66,5 +69,80 @@ describe("crm form mappers", () => {
     expect(document.responsibleId).toBe("user-2");
     expect(ensureSentRequirements(document.status, document.fileUrl, parsed.data)).toBeNull();
     expect(ensureSentRequirements(document.status, null, parsed.data)).toBe("Прикрепите файл КП перед отправкой");
+  });
+
+  it("maps deal forms to prisma documents", () => {
+    const form = new FormData();
+    form.set("title", "Deal");
+    form.set("clientId", "client-ignored");
+    form.set("objectId", "object-1");
+    form.set("responsibleId", "user-1");
+    form.set("stage", "QUALIFICATION");
+    form.set("potentialAmount", "2500,75");
+    form.set("probability", "HIGH");
+    form.set("nextActionAt", "2026-06-07");
+    form.set("nextActionText", "Call client");
+    form.set("source", "SHOWROOM");
+
+    const parsed = parseDealForm(form);
+    expect(parsed.success).toBe(true);
+    if (!parsed.success) return;
+
+    const document = toDealDocument(
+      parsed.data,
+      { clientId: "client-1", designerId: "designer-1" },
+      "user-2"
+    );
+
+    expect(document).toMatchObject({
+      title: "Deal",
+      clientId: "client-1",
+      designerId: "designer-1",
+      responsibleId: "user-2",
+      potentialAmount: 2500.75,
+      probability: "HIGH",
+      nextActionText: "Call client",
+      closedAt: null
+    });
+  });
+
+  it("maps task forms and normalizes touch status", () => {
+    const form = new FormData();
+    form.set("recordType", "TOUCH");
+    form.set("actionType", "CALL");
+    form.set("title", "Touch");
+    form.set("responsibleId", "user-1");
+    form.set("clientId", "client-1");
+    form.set("status", "NEW");
+    form.set("priority", "NORMAL");
+    form.set("dueAt", "2026-06-06T10:00");
+    form.set("result", "Reached client");
+
+    const parsed = parseTaskForm(form);
+    expect(parsed.success).toBe(true);
+    if (!parsed.success) return;
+
+    const document = toTaskDocument(parsed.data, {
+      clientId: "client-1",
+      designerId: null,
+      objectId: null,
+      dealId: null,
+      proposalId: null,
+      objectParticipantId: null
+    });
+
+    expect(document).toMatchObject({
+      recordType: "TOUCH",
+      actionType: "CALL",
+      responsibleId: "user-1",
+      clientId: "client-1",
+      status: "RECORDED",
+      result: "Reached client"
+    });
+    expect(document.completedAt).toEqual(document.dueAt);
+  });
+
+  it("sanitizes proposal upload file names", () => {
+    expect(safeProposalFileName("My КП !!.PDF")).toMatch(/^[0-9a-f-]{36}-My-КП-\.pdf$/);
   });
 });

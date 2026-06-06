@@ -43,7 +43,7 @@ export async function getManagerDashboardReport(params: ReportSearchParams, user
     touches,
     proposalNoFollowUp,
     clientsWithoutNextContact,
-    overdueByResponsible,
+    overdueByResponsibleRows,
     proposalThinkingRows
   ] = await Promise.all([
     prisma.deal.count({ where: { AND: [owner, activeDeal] } }),
@@ -74,9 +74,10 @@ export async function getManagerDashboardReport(params: ReportSearchParams, user
     prisma.taskActivity.count({ where: { AND: [taskOwner, { recordType: "TOUCH", completedAt: periodWhere(from, to) }] } }),
     prisma.commercialProposal.count({ where: { AND: [owner, { archivedAt: null, nextTouchAt: null, status: { notIn: ["ACCEPTED", "DECLINED", "ARCHIVED"] } }] } }),
     prisma.client.count({ where: { AND: [owner, { status: "ACTIVE", nextContactAt: null }] } }),
-    prisma.taskActivity.findMany({
+    prisma.taskActivity.groupBy({
+      by: ["responsibleId"],
       where: { AND: [taskOwner, { recordType: "TASK", archivedAt: null, status: { notIn: ["DONE", "CANCELLED", "CLOSED"] }, dueAt: { lt: now } }] },
-      select: { responsible: { select: { id: true, name: true } } }
+      _count: { _all: true }
     }),
     prisma.commercialProposal.findMany({
       where: { AND: [owner, { status: "CLIENT_THINKING", sentAt: { lt: thinking7 } }] },
@@ -85,13 +86,15 @@ export async function getManagerDashboardReport(params: ReportSearchParams, user
     })
   ]);
 
-  const overdueByUser = overdueByResponsible.reduce<Record<string, { name: string; count: number }>>((acc, task) => {
-    acc[task.responsible.id] = {
-      name: task.responsible.name,
-      count: (acc[task.responsible.id]?.count ?? 0) + 1
-    };
-    return acc;
-  }, {});
+  const overdueResponsibles = await prisma.user.findMany({
+    where: { id: { in: overdueByResponsibleRows.map((row) => row.responsibleId) } },
+    select: { id: true, name: true }
+  });
+  const overdueResponsibleNames = new Map(overdueResponsibles.map((responsible) => [responsible.id, responsible.name]));
+  const overdueByUser = overdueByResponsibleRows.map((row) => ({
+    name: overdueResponsibleNames.get(row.responsibleId) ?? "Не указан",
+    count: row._count._all
+  }));
 
   return {
     period: { from, to },
@@ -125,7 +128,7 @@ export async function getManagerDashboardReport(params: ReportSearchParams, user
       { title: "КП без follow-up", value: proposalNoFollowUp, tone: "warning" as const },
       { title: "Клиенты без контакта", value: clientsWithoutNextContact, tone: "warning" as const }
     ] satisfies Metric[],
-    overdueByUser: Object.values(overdueByUser).sort((a, b) => b.count - a.count),
+    overdueByUser: overdueByUser.sort((a, b) => b.count - a.count),
     proposalThinkingRows
   };
 }
