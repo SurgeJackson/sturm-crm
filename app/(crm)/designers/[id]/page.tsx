@@ -31,7 +31,7 @@ export default async function DesignerPage({ params, searchParams }: DesignerPag
     await writeSecurityLog({
       action: "VIEW_DESIGNER_BONUS_DETAIL",
       userId: user.id,
-      entityType: "DESIGNER_BONUS_AGREEMENT",
+      entityType: "DESIGNER",
       entityId: id,
       metadata: { designerId: id, showAmounts: canViewBonusAmounts }
     });
