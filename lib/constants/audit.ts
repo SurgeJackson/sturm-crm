@@ -8,5 +8,10 @@ export const auditEntityTypeLabels: Record<AuditEntityType, string> = {
   PROPOSAL: "КП",
   TASK: "Задача",
   USER: "Пользователь",
-  CRM_VIOLATION: "Нарушение CRM"
+  CRM_VIOLATION: "Нарушение CRM",
+  PAYMENT: "Оплата",
+  DESIGNER_BONUS_AGREEMENT: "Условия бонусов дизайнера",
+  DESIGNER_BONUS_ACCRUAL: "Начисление бонуса дизайнеру",
+  DESIGNER_BONUS_PAYOUT: "Выплата бонуса дизайнеру",
+  DESIGNER_BONUS_ADJUSTMENT: "Корректировка бонуса дизайнера"
 };

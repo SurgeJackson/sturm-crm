@@ -181,6 +181,11 @@ enum AuditEntityType {
   TASK
   USER
   CRM_VIOLATION
+  PAYMENT
+  DESIGNER_BONUS_AGREEMENT
+  DESIGNER_BONUS_ACCRUAL
+  DESIGNER_BONUS_PAYOUT
+  DESIGNER_BONUS_ADJUSTMENT
 }
 
 enum CrmViolationSeverity {
@@ -362,6 +367,97 @@ enum ProposalDeclineReason {
   OTHER
 }
 
+enum DesignerBonusAgreementType {
+  STANDARD_PERCENT
+  INDIVIDUAL_PERCENT
+  FIXED_AMOUNT
+  MANUAL_ONLY
+  NO_BONUS
+}
+
+enum DesignerBonusCalculationBase {
+  PAYMENT_AMOUNT
+  DEAL_AMOUNT
+  PROPOSAL_AMOUNT
+  MARGIN
+  MANUAL
+}
+
+enum DesignerBonusAppliesTo {
+  ALL_DEALS
+  SPECIFIC_OBJECTS
+  SPECIFIC_DEALS
+  MANUAL_SELECTION
+}
+
+enum DesignerBonusAgreementStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  ENDED
+  ARCHIVED
+}
+
+enum PaymentType {
+  PREPAYMENT
+  PARTIAL_PAYMENT
+  FINAL_PAYMENT
+  REFUND
+  CORRECTION
+}
+
+enum PaymentStatus {
+  DRAFT
+  CONFIRMED
+  CANCELLED
+}
+
+enum PaymentSource {
+  MANUAL
+  IMPORT
+  ACCOUNTING
+  BANK_IMPORT
+}
+
+enum DesignerBonusAccrualType {
+  AUTO_FROM_PAYMENT
+  MANUAL
+  CORRECTION
+  REFUND_REVERSAL
+}
+
+enum DesignerBonusAccrualStatus {
+  DRAFT
+  ACCRUED
+  APPROVED
+  CANCELLED
+  PAID
+  REVERSED
+}
+
+enum DesignerBonusPayoutMethod {
+  CASH
+  BANK_TRANSFER
+  CARD_TRANSFER
+  OFFSET
+  OTHER
+}
+
+enum DesignerBonusPayoutStatus {
+  DRAFT
+  APPROVED
+  PAID
+  CANCELLED
+}
+
+enum DesignerBonusAdjustmentType {
+  ADDITIONAL_ACCRUAL
+  WRITE_OFF
+  CORRECTION_PLUS
+  CORRECTION_MINUS
+  OTHER
+}
+
 model User {
   id             String    @id @default(cuid())
   name           String
@@ -392,6 +488,18 @@ model User {
   auditLogs                     AuditLog[]                 @relation("AuditLogUser")
   crmViolationsResponsible      CrmViolation[]             @relation("CrmViolationResponsible")
   crmViolationsResolved         CrmViolation[]             @relation("CrmViolationResolvedBy")
+  bonusAgreementsCreated        DesignerBonusAgreement[]   @relation("DesignerBonusAgreementCreatedBy")
+  bonusAgreementsApproved       DesignerBonusAgreement[]   @relation("DesignerBonusAgreementApprovedBy")
+  paymentsCreated               Payment[]                  @relation("PaymentCreatedBy")
+  paymentsConfirmed             Payment[]                  @relation("PaymentConfirmedBy")
+  bonusAccrualsCreated          DesignerBonusAccrual[]     @relation("DesignerBonusAccrualCreatedBy")
+  bonusAccrualsApproved         DesignerBonusAccrual[]     @relation("DesignerBonusAccrualApprovedBy")
+  bonusPayoutsCreated           DesignerBonusPayout[]      @relation("DesignerBonusPayoutCreatedBy")
+  bonusPayoutsApproved          DesignerBonusPayout[]      @relation("DesignerBonusPayoutApprovedBy")
+  bonusPayoutsPaid              DesignerBonusPayout[]      @relation("DesignerBonusPayoutPaidBy")
+  bonusAdjustmentsCreated       DesignerBonusAdjustment[]  @relation("DesignerBonusAdjustmentCreatedBy")
+  bonusAdjustmentsApproved      DesignerBonusAdjustment[]  @relation("DesignerBonusAdjustmentApprovedBy")
+  securityLogs                  SecurityLog[]              @relation("SecurityLogUser")
 }
 
 model Client {
@@ -415,13 +523,15 @@ model Client {
   nextContactAt    DateTime?
   notes            String?
 
-  responsible    User                 @relation("ClientResponsible", fields: [responsibleId], references: [id])
-  createdBy      User                 @relation("ClientCreatedBy", fields: [createdById], references: [id])
-  linkedDesigner Designer?            @relation("ClientLinkedDesigner", fields: [linkedDesignerId], references: [id])
-  projectObjects ProjectObject[]      @relation("ObjectClient")
-  deals          Deal[]               @relation("DealClient")
-  proposals      CommercialProposal[] @relation("ProposalClient")
-  tasks          TaskActivity[]       @relation("TaskClient")
+  responsible    User                   @relation("ClientResponsible", fields: [responsibleId], references: [id])
+  createdBy      User                   @relation("ClientCreatedBy", fields: [createdById], references: [id])
+  linkedDesigner Designer?              @relation("ClientLinkedDesigner", fields: [linkedDesignerId], references: [id])
+  projectObjects ProjectObject[]        @relation("ObjectClient")
+  deals          Deal[]                 @relation("DealClient")
+  proposals      CommercialProposal[]   @relation("ProposalClient")
+  tasks          TaskActivity[]         @relation("TaskClient")
+  payments       Payment[]              @relation("PaymentClient")
+  bonusAccruals  DesignerBonusAccrual[] @relation("DesignerBonusAccrualClient")
 
   @@index([responsibleId])
   @@index([createdById])
@@ -467,13 +577,18 @@ model Designer {
   archivedAt              DateTime?
   notes                   String?
 
-  responsible    User                 @relation("DesignerResponsible", fields: [responsibleId], references: [id])
-  createdBy      User                 @relation("DesignerCreatedBy", fields: [createdById], references: [id])
-  linkedClients  Client[]             @relation("ClientLinkedDesigner")
-  projectObjects ProjectObject[]      @relation("ObjectDesigner")
-  deals          Deal[]               @relation("DealDesigner")
-  proposals      CommercialProposal[] @relation("ProposalDesigner")
-  tasks          TaskActivity[]       @relation("TaskDesigner")
+  responsible      User                      @relation("DesignerResponsible", fields: [responsibleId], references: [id])
+  createdBy        User                      @relation("DesignerCreatedBy", fields: [createdById], references: [id])
+  linkedClients    Client[]                  @relation("ClientLinkedDesigner")
+  projectObjects   ProjectObject[]           @relation("ObjectDesigner")
+  deals            Deal[]                    @relation("DealDesigner")
+  proposals        CommercialProposal[]      @relation("ProposalDesigner")
+  tasks            TaskActivity[]            @relation("TaskDesigner")
+  bonusAgreements  DesignerBonusAgreement[]  @relation("DesignerBonusAgreementDesigner")
+  payments         Payment[]                 @relation("PaymentDesigner")
+  bonusAccruals    DesignerBonusAccrual[]    @relation("DesignerBonusAccrualDesigner")
+  bonusPayouts     DesignerBonusPayout[]     @relation("DesignerBonusPayoutDesigner")
+  bonusAdjustments DesignerBonusAdjustment[] @relation("DesignerBonusAdjustmentDesigner")
 
   @@index([responsibleId])
   @@index([createdById])
@@ -514,14 +629,16 @@ model ProjectObject {
   archivedAt            DateTime?
   notes                 String?
 
-  client       Client                     @relation("ObjectClient", fields: [clientId], references: [id])
-  designer     Designer?                  @relation("ObjectDesigner", fields: [designerId], references: [id])
-  responsible  User                       @relation("ObjectResponsible", fields: [responsibleId], references: [id])
-  createdBy    User                       @relation("ObjectCreatedBy", fields: [createdById], references: [id])
-  participants ProjectObjectParticipant[] @relation("ObjectParticipants")
-  deals        Deal[]                     @relation("DealObject")
-  proposals    CommercialProposal[]       @relation("ProposalObject")
-  tasks        TaskActivity[]             @relation("TaskObject")
+  client        Client                     @relation("ObjectClient", fields: [clientId], references: [id])
+  designer      Designer?                  @relation("ObjectDesigner", fields: [designerId], references: [id])
+  responsible   User                       @relation("ObjectResponsible", fields: [responsibleId], references: [id])
+  createdBy     User                       @relation("ObjectCreatedBy", fields: [createdById], references: [id])
+  participants  ProjectObjectParticipant[] @relation("ObjectParticipants")
+  deals         Deal[]                     @relation("DealObject")
+  proposals     CommercialProposal[]       @relation("ProposalObject")
+  tasks         TaskActivity[]             @relation("TaskObject")
+  payments      Payment[]                  @relation("PaymentObject")
+  bonusAccruals DesignerBonusAccrual[]     @relation("DesignerBonusAccrualObject")
 
   @@index([responsibleId])
   @@index([createdById])
@@ -588,13 +705,15 @@ model Deal {
   closedAt        DateTime?
   notes           String?
 
-  client        Client               @relation("DealClient", fields: [clientId], references: [id])
-  projectObject ProjectObject        @relation("DealObject", fields: [objectId], references: [id])
-  designer      Designer?            @relation("DealDesigner", fields: [designerId], references: [id])
-  responsible   User                 @relation("DealResponsible", fields: [responsibleId], references: [id])
-  createdBy     User                 @relation("DealCreatedBy", fields: [createdById], references: [id])
-  proposals     CommercialProposal[] @relation("ProposalDeal")
-  tasks         TaskActivity[]       @relation("TaskDeal")
+  client        Client                 @relation("DealClient", fields: [clientId], references: [id])
+  projectObject ProjectObject          @relation("DealObject", fields: [objectId], references: [id])
+  designer      Designer?              @relation("DealDesigner", fields: [designerId], references: [id])
+  responsible   User                   @relation("DealResponsible", fields: [responsibleId], references: [id])
+  createdBy     User                   @relation("DealCreatedBy", fields: [createdById], references: [id])
+  proposals     CommercialProposal[]   @relation("ProposalDeal")
+  tasks         TaskActivity[]         @relation("TaskDeal")
+  payments      Payment[]              @relation("PaymentDeal")
+  bonusAccruals DesignerBonusAccrual[] @relation("DesignerBonusAccrualDeal")
 
   @@index([responsibleId])
   @@index([createdById])
@@ -750,21 +869,21 @@ model AuditLog {
 }
 
 model CrmViolation {
-  id              String               @id @default(cuid())
-  entityType      AuditEntityType
-  entityId        String
-  violationCode   String
-  severity        CrmViolationSeverity
-  message         String
-  responsibleId   String?
-  detectedAt      DateTime             @default(now())
-  resolvedAt      DateTime?
-  resolvedById    String?
-  status          CrmViolationStatus   @default(ACTIVE)
-  canAffectBonus  Boolean              @default(false)
-  comment         String?
-  createdAt       DateTime             @default(now())
-  updatedAt       DateTime             @updatedAt
+  id             String               @id @default(cuid())
+  entityType     AuditEntityType
+  entityId       String
+  violationCode  String
+  severity       CrmViolationSeverity
+  message        String
+  responsibleId  String?
+  detectedAt     DateTime             @default(now())
+  resolvedAt     DateTime?
+  resolvedById   String?
+  status         CrmViolationStatus   @default(ACTIVE)
+  canAffectBonus Boolean              @default(false)
+  comment        String?
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
 
   responsible User? @relation("CrmViolationResponsible", fields: [responsibleId], references: [id])
   resolvedBy  User? @relation("CrmViolationResolvedBy", fields: [resolvedById], references: [id])
@@ -780,4 +899,203 @@ model CrmViolation {
   @@index([status, responsibleId, detectedAt])
   @@index([status, entityType, detectedAt])
   @@index([status, canAffectBonus])
+}
+
+model DesignerBonusAgreement {
+  id               String                       @id @default(cuid())
+  designerId       String
+  agreementType    DesignerBonusAgreementType   @default(STANDARD_PERCENT)
+  bonusPercent     Float?
+  calculationBase  DesignerBonusCalculationBase @default(PAYMENT_AMOUNT)
+  appliesTo        DesignerBonusAppliesTo       @default(ALL_DEALS)
+  specificDealIds  String[]                     @default([])
+  validFrom        DateTime
+  validTo          DateTime?
+  status           DesignerBonusAgreementStatus @default(DRAFT)
+  requiresApproval Boolean                      @default(false)
+  comment          String?
+  createdById      String
+  approvedById     String?
+  approvedAt       DateTime?
+  createdAt        DateTime                     @default(now())
+  updatedAt        DateTime                     @updatedAt
+  archivedAt       DateTime?
+
+  designer   Designer               @relation("DesignerBonusAgreementDesigner", fields: [designerId], references: [id])
+  createdBy  User                   @relation("DesignerBonusAgreementCreatedBy", fields: [createdById], references: [id])
+  approvedBy User?                  @relation("DesignerBonusAgreementApprovedBy", fields: [approvedById], references: [id])
+  accruals   DesignerBonusAccrual[] @relation("DesignerBonusAccrualAgreement")
+
+  @@index([designerId])
+  @@index([status])
+  @@index([validFrom])
+  @@index([validTo])
+  @@index([archivedAt])
+  @@index([designerId, status, validFrom])
+}
+
+model Payment {
+  id            String        @id @default(cuid())
+  dealId        String
+  clientId      String
+  objectId      String
+  designerId    String?
+  amount        Float
+  paymentDate   DateTime
+  paymentType   PaymentType   @default(PARTIAL_PAYMENT)
+  status        PaymentStatus @default(DRAFT)
+  source        PaymentSource @default(MANUAL)
+  comment       String?
+  createdById   String
+  confirmedById String?
+  confirmedAt   DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  archivedAt    DateTime?
+
+  deal        Deal                   @relation("PaymentDeal", fields: [dealId], references: [id])
+  client      Client                 @relation("PaymentClient", fields: [clientId], references: [id])
+  object      ProjectObject          @relation("PaymentObject", fields: [objectId], references: [id])
+  designer    Designer?              @relation("PaymentDesigner", fields: [designerId], references: [id])
+  createdBy   User                   @relation("PaymentCreatedBy", fields: [createdById], references: [id])
+  confirmedBy User?                  @relation("PaymentConfirmedBy", fields: [confirmedById], references: [id])
+  accruals    DesignerBonusAccrual[] @relation("DesignerBonusAccrualPayment")
+
+  @@index([dealId])
+  @@index([clientId])
+  @@index([objectId])
+  @@index([designerId])
+  @@index([status])
+  @@index([paymentType])
+  @@index([paymentDate])
+  @@index([createdById])
+  @@index([confirmedById])
+  @@index([archivedAt])
+  @@index([designerId, status, paymentDate])
+  @@index([dealId, status, paymentDate])
+}
+
+model DesignerBonusAccrual {
+  id           String                     @id @default(cuid())
+  designerId   String
+  agreementId  String?
+  paymentId    String?
+  dealId       String
+  objectId     String
+  clientId     String
+  baseAmount   Float
+  bonusPercent Float
+  bonusAmount  Float
+  accrualDate  DateTime
+  status       DesignerBonusAccrualStatus @default(ACCRUED)
+  accrualType  DesignerBonusAccrualType   @default(AUTO_FROM_PAYMENT)
+  comment      String?
+  createdById  String
+  approvedById String?
+  approvedAt   DateTime?
+  createdAt    DateTime                   @default(now())
+  updatedAt    DateTime                   @updatedAt
+  archivedAt   DateTime?
+
+  designer   Designer                @relation("DesignerBonusAccrualDesigner", fields: [designerId], references: [id])
+  agreement  DesignerBonusAgreement? @relation("DesignerBonusAccrualAgreement", fields: [agreementId], references: [id])
+  payment    Payment?                @relation("DesignerBonusAccrualPayment", fields: [paymentId], references: [id])
+  deal       Deal                    @relation("DesignerBonusAccrualDeal", fields: [dealId], references: [id])
+  object     ProjectObject           @relation("DesignerBonusAccrualObject", fields: [objectId], references: [id])
+  client     Client                  @relation("DesignerBonusAccrualClient", fields: [clientId], references: [id])
+  createdBy  User                    @relation("DesignerBonusAccrualCreatedBy", fields: [createdById], references: [id])
+  approvedBy User?                   @relation("DesignerBonusAccrualApprovedBy", fields: [approvedById], references: [id])
+
+  @@unique([designerId, paymentId, accrualType])
+  @@index([designerId])
+  @@index([agreementId])
+  @@index([paymentId])
+  @@index([dealId])
+  @@index([objectId])
+  @@index([clientId])
+  @@index([status])
+  @@index([accrualType])
+  @@index([accrualDate])
+  @@index([createdById])
+  @@index([approvedById])
+  @@index([archivedAt])
+  @@index([designerId, status, accrualDate])
+}
+
+model DesignerBonusPayout {
+  id               String                    @id @default(cuid())
+  designerId       String
+  amount           Float
+  payoutDate       DateTime
+  payoutMethod     DesignerBonusPayoutMethod
+  status           DesignerBonusPayoutStatus @default(DRAFT)
+  linkedAccrualIds String[]                  @default([])
+  comment          String?
+  documentFileUrl  String?
+  createdById      String
+  approvedById     String?
+  approvedAt       DateTime?
+  paidById         String?
+  paidAt           DateTime?
+  createdAt        DateTime                  @default(now())
+  updatedAt        DateTime                  @updatedAt
+  archivedAt       DateTime?
+
+  designer   Designer @relation("DesignerBonusPayoutDesigner", fields: [designerId], references: [id])
+  createdBy  User     @relation("DesignerBonusPayoutCreatedBy", fields: [createdById], references: [id])
+  approvedBy User?    @relation("DesignerBonusPayoutApprovedBy", fields: [approvedById], references: [id])
+  paidBy     User?    @relation("DesignerBonusPayoutPaidBy", fields: [paidById], references: [id])
+
+  @@index([designerId])
+  @@index([status])
+  @@index([payoutDate])
+  @@index([createdById])
+  @@index([approvedById])
+  @@index([paidById])
+  @@index([archivedAt])
+  @@index([designerId, status, payoutDate])
+}
+
+model DesignerBonusAdjustment {
+  id             String                      @id @default(cuid())
+  designerId     String
+  amount         Float
+  adjustmentType DesignerBonusAdjustmentType
+  reason         String
+  comment        String?
+  createdById    String
+  approvedById   String?
+  approvedAt     DateTime?
+  createdAt      DateTime                    @default(now())
+  updatedAt      DateTime                    @updatedAt
+  archivedAt     DateTime?
+
+  designer   Designer @relation("DesignerBonusAdjustmentDesigner", fields: [designerId], references: [id])
+  createdBy  User     @relation("DesignerBonusAdjustmentCreatedBy", fields: [createdById], references: [id])
+  approvedBy User?    @relation("DesignerBonusAdjustmentApprovedBy", fields: [approvedById], references: [id])
+
+  @@index([designerId])
+  @@index([adjustmentType])
+  @@index([createdById])
+  @@index([approvedById])
+  @@index([approvedAt])
+  @@index([archivedAt])
+  @@index([designerId, approvedAt, createdAt])
+}
+
+model SecurityLog {
+  id         String           @id @default(cuid())
+  action     String
+  userId     String?
+  entityType AuditEntityType?
+  entityId   String?
+  metadata   Json?
+  createdAt  DateTime         @default(now())
+
+  user User? @relation("SecurityLogUser", fields: [userId], references: [id])
+
+  @@index([action])
+  @@index([userId])
+  @@index([entityType, entityId])
+  @@index([createdAt])
 }

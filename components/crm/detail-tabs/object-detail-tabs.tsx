@@ -2,9 +2,12 @@ import { detailDate, detailMoney, detailText, EntityDetailsCard } from "@/compon
 import { AuditLogCard, EntityDetailTabs, EntityTasksCard, TextBlock } from "@/components/crm/detail-page";
 import { ObjectFilesCard, ObjectInterestCategories } from "@/components/crm/object-detail-panels";
 import { ObjectDealsTable, ObjectParticipantsTables, ObjectProposalsTable } from "@/components/crm/related";
+import { CompactMetricCard } from "@/components/crm/summary-card";
 import type { getAuditLogs } from "@/lib/audit-log";
 import type { getProjectObjectForUser } from "@/modules/objects/queries";
 import { formatRussianDate } from "@/utils/date";
+import { formatMoney } from "@/utils/money";
+import { paymentSignedAmount } from "@/utils/payments";
 import { buildTaskHref } from "@/utils/task-href";
 
 type ObjectDetail = Awaited<ReturnType<typeof getProjectObjectForUser>>;
@@ -17,7 +20,8 @@ export function ObjectDetailTabs({
   auditLogs,
   canCreateTasks,
   canManageParticipants,
-  archiveParticipantAction
+  archiveParticipantAction,
+  canViewBonusAmounts
 }: {
   objectId: string;
   projectObject: ObjectDetail;
@@ -25,9 +29,12 @@ export function ObjectDetailTabs({
   canCreateTasks: boolean;
   canManageParticipants: boolean;
   archiveParticipantAction: ArchiveParticipantAction;
+  canViewBonusAmounts: boolean;
 }) {
   const purchaseInfluencers = projectObject.participants.filter((participant) => participant.participantType === "PURCHASE_INFLUENCER");
   const implementationContacts = projectObject.participants.filter((participant) => participant.participantType === "IMPLEMENTATION_CONTACT");
+  const objectPaid = projectObject.deals.flatMap((deal) => deal.payments).filter((payment) => payment.status === "CONFIRMED").reduce((sum, payment) => sum + paymentSignedAmount(payment), 0);
+  const objectAccrued = projectObject.deals.flatMap((deal) => deal.bonusAccruals).filter((accrual) => accrual.status !== "CANCELLED" && accrual.status !== "REVERSED").reduce((sum, accrual) => sum + accrual.bonusAmount, 0);
 
   return (
     <EntityDetailTabs
@@ -78,6 +85,18 @@ export function ObjectDetailTabs({
           value: "deals",
           label: "Сделки",
           content: <ObjectDealsTable objectId={objectId} deals={projectObject.deals} />
+        },
+        {
+          value: "bonuses",
+          label: "Бонусы",
+          content: (
+            <div className="grid gap-4 md:grid-cols-4">
+              <CompactMetricCard title="Дизайнер" value={projectObject.designer?.name ?? "Нет"} />
+              <CompactMetricCard title="Сделок" value={projectObject.deals.length} />
+              <CompactMetricCard title="Оплачено" value={canViewBonusAmounts ? formatMoney(objectPaid, "0 ₽") : "Скрыто"} />
+              <CompactMetricCard title="Начислено" value={canViewBonusAmounts ? formatMoney(objectAccrued, "0 ₽") : "Скрыто"} />
+            </div>
+          )
         },
         {
           value: "proposals",

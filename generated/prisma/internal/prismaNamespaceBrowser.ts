@@ -61,7 +61,13 @@ export const ModelName = {
   ProposalCounter: 'ProposalCounter',
   TaskActivity: 'TaskActivity',
   AuditLog: 'AuditLog',
-  CrmViolation: 'CrmViolation'
+  CrmViolation: 'CrmViolation',
+  DesignerBonusAgreement: 'DesignerBonusAgreement',
+  Payment: 'Payment',
+  DesignerBonusAccrual: 'DesignerBonusAccrual',
+  DesignerBonusPayout: 'DesignerBonusPayout',
+  DesignerBonusAdjustment: 'DesignerBonusAdjustment',
+  SecurityLog: 'SecurityLog'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -358,6 +364,133 @@ export const CrmViolationScalarFieldEnum = {
 } as const
 
 export type CrmViolationScalarFieldEnum = (typeof CrmViolationScalarFieldEnum)[keyof typeof CrmViolationScalarFieldEnum]
+
+
+export const DesignerBonusAgreementScalarFieldEnum = {
+  id: 'id',
+  designerId: 'designerId',
+  agreementType: 'agreementType',
+  bonusPercent: 'bonusPercent',
+  calculationBase: 'calculationBase',
+  appliesTo: 'appliesTo',
+  specificDealIds: 'specificDealIds',
+  validFrom: 'validFrom',
+  validTo: 'validTo',
+  status: 'status',
+  requiresApproval: 'requiresApproval',
+  comment: 'comment',
+  createdById: 'createdById',
+  approvedById: 'approvedById',
+  approvedAt: 'approvedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  archivedAt: 'archivedAt'
+} as const
+
+export type DesignerBonusAgreementScalarFieldEnum = (typeof DesignerBonusAgreementScalarFieldEnum)[keyof typeof DesignerBonusAgreementScalarFieldEnum]
+
+
+export const PaymentScalarFieldEnum = {
+  id: 'id',
+  dealId: 'dealId',
+  clientId: 'clientId',
+  objectId: 'objectId',
+  designerId: 'designerId',
+  amount: 'amount',
+  paymentDate: 'paymentDate',
+  paymentType: 'paymentType',
+  status: 'status',
+  source: 'source',
+  comment: 'comment',
+  createdById: 'createdById',
+  confirmedById: 'confirmedById',
+  confirmedAt: 'confirmedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  archivedAt: 'archivedAt'
+} as const
+
+export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
+
+
+export const DesignerBonusAccrualScalarFieldEnum = {
+  id: 'id',
+  designerId: 'designerId',
+  agreementId: 'agreementId',
+  paymentId: 'paymentId',
+  dealId: 'dealId',
+  objectId: 'objectId',
+  clientId: 'clientId',
+  baseAmount: 'baseAmount',
+  bonusPercent: 'bonusPercent',
+  bonusAmount: 'bonusAmount',
+  accrualDate: 'accrualDate',
+  status: 'status',
+  accrualType: 'accrualType',
+  comment: 'comment',
+  createdById: 'createdById',
+  approvedById: 'approvedById',
+  approvedAt: 'approvedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  archivedAt: 'archivedAt'
+} as const
+
+export type DesignerBonusAccrualScalarFieldEnum = (typeof DesignerBonusAccrualScalarFieldEnum)[keyof typeof DesignerBonusAccrualScalarFieldEnum]
+
+
+export const DesignerBonusPayoutScalarFieldEnum = {
+  id: 'id',
+  designerId: 'designerId',
+  amount: 'amount',
+  payoutDate: 'payoutDate',
+  payoutMethod: 'payoutMethod',
+  status: 'status',
+  linkedAccrualIds: 'linkedAccrualIds',
+  comment: 'comment',
+  documentFileUrl: 'documentFileUrl',
+  createdById: 'createdById',
+  approvedById: 'approvedById',
+  approvedAt: 'approvedAt',
+  paidById: 'paidById',
+  paidAt: 'paidAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  archivedAt: 'archivedAt'
+} as const
+
+export type DesignerBonusPayoutScalarFieldEnum = (typeof DesignerBonusPayoutScalarFieldEnum)[keyof typeof DesignerBonusPayoutScalarFieldEnum]
+
+
+export const DesignerBonusAdjustmentScalarFieldEnum = {
+  id: 'id',
+  designerId: 'designerId',
+  amount: 'amount',
+  adjustmentType: 'adjustmentType',
+  reason: 'reason',
+  comment: 'comment',
+  createdById: 'createdById',
+  approvedById: 'approvedById',
+  approvedAt: 'approvedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  archivedAt: 'archivedAt'
+} as const
+
+export type DesignerBonusAdjustmentScalarFieldEnum = (typeof DesignerBonusAdjustmentScalarFieldEnum)[keyof typeof DesignerBonusAdjustmentScalarFieldEnum]
+
+
+export const SecurityLogScalarFieldEnum = {
+  id: 'id',
+  action: 'action',
+  userId: 'userId',
+  entityType: 'entityType',
+  entityId: 'entityId',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
+} as const
+
+export type SecurityLogScalarFieldEnum = (typeof SecurityLogScalarFieldEnum)[keyof typeof SecurityLogScalarFieldEnum]
 
 
 export const SortOrder = {

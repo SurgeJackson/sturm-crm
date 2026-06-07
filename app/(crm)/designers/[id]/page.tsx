@@ -5,8 +5,10 @@ import { DesignerDetailTabs } from "@/components/crm/detail-tabs/designer-detail
 import { EntityDetailShell } from "@/components/crm/detail-page";
 import { archiveDesignerAction } from "@/modules/designers/actions";
 import { getDesignerForUser } from "@/modules/designers/queries";
+import { getDesignerBonusSnapshot } from "@/modules/designer-bonuses/queries";
 import { getAuditLogs } from "@/lib/audit-log";
-import { canArchiveRecord, canCreateTask, canEditRecord } from "@/permissions";
+import { writeSecurityLog } from "@/lib/security-log";
+import { canArchiveRecord, canCreateTask, canEditRecord, canManageDesignerBonusAgreement, canViewDesignerBonus, canViewDesignerBonusAmounts } from "@/permissions";
 
 type DesignerPageProps = {
   params: Promise<{ id: string }>;
@@ -23,6 +25,17 @@ export default async function DesignerPage({ params, searchParams }: DesignerPag
     getDesignerForUser(id, user),
     getAuditLogs("DESIGNER", id)
   ]);
+  const bonusSnapshot = canViewDesignerBonus(user, designer) ? await getDesignerBonusSnapshot(id) : null;
+  const canViewBonusAmounts = canViewDesignerBonusAmounts(user, designer);
+  if (bonusSnapshot) {
+    await writeSecurityLog({
+      action: "VIEW_DESIGNER_BONUS_DETAIL",
+      userId: user.id,
+      entityType: "DESIGNER_BONUS_AGREEMENT",
+      entityId: id,
+      metadata: { designerId: id, showAmounts: canViewBonusAmounts }
+    });
+  }
   const archiveAction = archiveDesignerAction.bind(null, id);
 
   return (
@@ -50,7 +63,14 @@ export default async function DesignerPage({ params, searchParams }: DesignerPag
       }}
     >
 
-      <DesignerDetailTabs designer={designer} auditLogs={auditLogs} canCreateTasks={canCreateTask(user)} />
+      <DesignerDetailTabs
+        designer={designer}
+        auditLogs={auditLogs}
+        canCreateTasks={canCreateTask(user)}
+        bonusSnapshot={bonusSnapshot}
+        canManageBonus={canManageDesignerBonusAgreement(user, designer)}
+        canViewBonusAmounts={canViewBonusAmounts}
+      />
     </EntityDetailShell>
   );
 }

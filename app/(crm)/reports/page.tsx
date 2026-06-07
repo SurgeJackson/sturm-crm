@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BarChart3, BriefcaseBusiness, ClipboardCheck, FileText, ShieldCheck, Target, Timer, UserRound, UsersRound, Building2 } from "lucide-react";
+import { BarChart3, BriefcaseBusiness, ClipboardCheck, FileText, HandCoins, ShieldCheck, Target, Timer, UserRound, UsersRound, Building2 } from "lucide-react";
 import { PageHeader } from "@/components/layout/page-header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -8,6 +8,7 @@ const reports = [
   { href: "/reports/activity", title: "Активность сотрудников", description: "Задачи, касания, звонки, встречи, КП и follow-up.", icon: UsersRound },
   { href: "/reports/crm-discipline", title: "CRM-дисциплина", description: "Качество заполнения CRM и Discipline Score.", icon: ClipboardCheck },
   { href: "/reports/bonus-eligibility", title: "Премиальный статус CRM", description: "Учет записей в премировании и нарушения правил CRM.", icon: ShieldCheck },
+  { href: "/reports/designer-bonuses", title: "Бонусы дизайнеров", description: "Балансы, начисления, выплаты и задолженность.", icon: HandCoins },
   { href: "/reports/deals", title: "Сделки", description: "Воронка, суммы, просрочки и причины проигрыша.", icon: BriefcaseBusiness },
   { href: "/reports/proposals", title: "КП", description: "Статусы, суммы, follow-up, файлы и причины отказа.", icon: FileText },
   { href: "/reports/designers", title: "Дизайнеры / архитекторы", description: "Этапы отношений, потенциал, касания и объекты.", icon: UserRound },

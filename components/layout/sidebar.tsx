@@ -9,6 +9,7 @@ import {
   Building2,
   CheckSquare,
   FileText,
+  HandCoins,
   LayoutDashboard,
   PanelLeftClose,
   PanelLeftOpen,
@@ -19,7 +20,7 @@ import {
 import type { UserRole } from "@/generated/prisma/client";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { canAccessSettings, canViewReports } from "@/permissions";
+import { canAccessSettings, canViewDesignerBonusReports, canViewPayments, canViewReports } from "@/permissions";
 
 const navigation = [
   { href: "/", label: "Рабочий стол", icon: LayoutDashboard },
@@ -28,6 +29,8 @@ const navigation = [
   { href: "/objects", label: "Объекты", icon: Building2 },
   { href: "/deals", label: "Сделки", icon: BriefcaseBusiness },
   { href: "/proposals", label: "КП", icon: FileText },
+  { href: "/payments", label: "Оплаты", icon: HandCoins },
+  { href: "/designer-bonuses/accruals", label: "Бонусы дизайнеров", icon: HandCoins },
   { href: "/tasks", label: "Задачи / касания", icon: CheckSquare },
   { href: "/reports", label: "Отчеты", icon: BarChart3 },
   { href: "/settings", label: "Настройки", icon: Settings }
@@ -75,6 +78,14 @@ export function Sidebar({ user }: SidebarProps) {
       <nav className="space-y-1 p-3">
         {navigation.map((item) => {
           if (item.href === "/reports" && !canViewReports(user)) {
+            return null;
+          }
+
+          if (item.href === "/payments" && !canViewPayments(user)) {
+            return null;
+          }
+
+          if (item.href === "/designer-bonuses/accruals" && !canViewDesignerBonusReports(user)) {
             return null;
           }
 

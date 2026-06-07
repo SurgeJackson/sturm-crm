@@ -9,16 +9,26 @@ import {
   canChangeRecordResponsible,
   canChangeTaskResponsible,
   canCloseDealAsLost,
+  canConfirmPayment,
+  canCreateDesignerBonusAdjustment,
+  canCreateDesignerBonusPayout,
   canCreateTask,
   canCreateTouch,
   canCancelTask,
   canCreateDeal,
   canCreateObject,
+  canCreatePayment,
   canCreateProposal,
   canEditRecord,
+  canExportDesignerBonusReports,
   canIgnoreCrmViolation,
+  canManageDesignerBonusAgreement,
   canManageUsers,
   canManageObjectParticipants,
+  canViewDesignerBonus,
+  canViewDesignerBonusAmounts,
+  canViewDesignerBonusReports,
+  canViewPayments,
   canViewAllData,
   canViewRecord
 } from "../permissions";
@@ -123,5 +133,43 @@ describe("permissions", () => {
     expect(canCancelTask(salesLead, foreignRecord)).toBe(true);
     expect(canCancelTask(projectManager, ownRecord)).toBe(true);
     expect(canCancelTask(projectManager, foreignRecord)).toBe(false);
+  });
+
+  it("keeps payment confirmation on commercial leadership roles", () => {
+    expect(canViewPayments(owner)).toBe(true);
+    expect(canCreatePayment(projectManager)).toBe(false);
+    expect(canConfirmPayment(owner)).toBe(true);
+    expect(canConfirmPayment(salesLead)).toBe(true);
+    expect(canConfirmPayment(projectManager)).toBe(false);
+    expect(canConfirmPayment(administrator)).toBe(false);
+  });
+
+  it("protects designer bonus amounts and reports from non-commercial roles", () => {
+    expect(canViewDesignerBonusReports(owner)).toBe(true);
+    expect(canViewDesignerBonusReports(salesLead)).toBe(true);
+    expect(canViewDesignerBonusReports(projectManager)).toBe(false);
+    expect(canViewDesignerBonusReports(administrator)).toBe(false);
+    expect(canExportDesignerBonusReports(owner)).toBe(true);
+    expect(canExportDesignerBonusReports(salesLead)).toBe(false);
+    expect(canViewDesignerBonusAmounts(owner)).toBe(true);
+    expect(canViewDesignerBonusAmounts(salesLead)).toBe(true);
+    expect(canViewDesignerBonusAmounts(administrator)).toBe(false);
+  });
+
+  it("allows designer bonus access only by role and record relation", () => {
+    expect(canViewDesignerBonus(owner, foreignRecord)).toBe(true);
+    expect(canViewDesignerBonus(projectManager, ownRecord)).toBe(true);
+    expect(canViewDesignerBonus(projectManager, foreignRecord)).toBe(false);
+    expect(canManageDesignerBonusAgreement(owner, foreignRecord)).toBe(true);
+    expect(canManageDesignerBonusAgreement(salesLead, foreignRecord)).toBe(false);
+    expect(canManageDesignerBonusAgreement(projectManager, ownRecord)).toBe(false);
+  });
+
+  it("keeps bonus payout and adjustment mutation rights on owner", () => {
+    expect(canCreateDesignerBonusPayout(owner)).toBe(true);
+    expect(canCreateDesignerBonusPayout(salesLead)).toBe(false);
+    expect(canCreateDesignerBonusAdjustment(owner)).toBe(true);
+    expect(canCreateDesignerBonusAdjustment(salesLead)).toBe(false);
+    expect(canCreateDesignerBonusAdjustment(administrator)).toBe(false);
   });
 });

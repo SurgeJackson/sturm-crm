@@ -394,7 +394,13 @@ export const ModelName = {
   ProposalCounter: 'ProposalCounter',
   TaskActivity: 'TaskActivity',
   AuditLog: 'AuditLog',
-  CrmViolation: 'CrmViolation'
+  CrmViolation: 'CrmViolation',
+  DesignerBonusAgreement: 'DesignerBonusAgreement',
+  Payment: 'Payment',
+  DesignerBonusAccrual: 'DesignerBonusAccrual',
+  DesignerBonusPayout: 'DesignerBonusPayout',
+  DesignerBonusAdjustment: 'DesignerBonusAdjustment',
+  SecurityLog: 'SecurityLog'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -410,7 +416,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "client" | "designer" | "projectObject" | "projectObjectParticipant" | "deal" | "commercialProposal" | "proposalCounter" | "taskActivity" | "auditLog" | "crmViolation"
+    modelProps: "user" | "client" | "designer" | "projectObject" | "projectObjectParticipant" | "deal" | "commercialProposal" | "proposalCounter" | "taskActivity" | "auditLog" | "crmViolation" | "designerBonusAgreement" | "payment" | "designerBonusAccrual" | "designerBonusPayout" | "designerBonusAdjustment" | "securityLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1228,6 +1234,450 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    DesignerBonusAgreement: {
+      payload: Prisma.$DesignerBonusAgreementPayload<ExtArgs>
+      fields: Prisma.DesignerBonusAgreementFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DesignerBonusAgreementFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusAgreementPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DesignerBonusAgreementFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusAgreementPayload>
+        }
+        findFirst: {
+          args: Prisma.DesignerBonusAgreementFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusAgreementPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DesignerBonusAgreementFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusAgreementPayload>
+        }
+        findMany: {
+          args: Prisma.DesignerBonusAgreementFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusAgreementPayload>[]
+        }
+        create: {
+          args: Prisma.DesignerBonusAgreementCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusAgreementPayload>
+        }
+        createMany: {
+          args: Prisma.DesignerBonusAgreementCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DesignerBonusAgreementCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusAgreementPayload>[]
+        }
+        delete: {
+          args: Prisma.DesignerBonusAgreementDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusAgreementPayload>
+        }
+        update: {
+          args: Prisma.DesignerBonusAgreementUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusAgreementPayload>
+        }
+        deleteMany: {
+          args: Prisma.DesignerBonusAgreementDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DesignerBonusAgreementUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DesignerBonusAgreementUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusAgreementPayload>[]
+        }
+        upsert: {
+          args: Prisma.DesignerBonusAgreementUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusAgreementPayload>
+        }
+        aggregate: {
+          args: Prisma.DesignerBonusAgreementAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDesignerBonusAgreement>
+        }
+        groupBy: {
+          args: Prisma.DesignerBonusAgreementGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DesignerBonusAgreementGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DesignerBonusAgreementCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DesignerBonusAgreementCountAggregateOutputType> | number
+        }
+      }
+    }
+    Payment: {
+      payload: Prisma.$PaymentPayload<ExtArgs>
+      fields: Prisma.PaymentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PaymentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PaymentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload>
+        }
+        findFirst: {
+          args: Prisma.PaymentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PaymentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload>
+        }
+        findMany: {
+          args: Prisma.PaymentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload>[]
+        }
+        create: {
+          args: Prisma.PaymentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload>
+        }
+        createMany: {
+          args: Prisma.PaymentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PaymentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload>[]
+        }
+        delete: {
+          args: Prisma.PaymentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload>
+        }
+        update: {
+          args: Prisma.PaymentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload>
+        }
+        deleteMany: {
+          args: Prisma.PaymentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PaymentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PaymentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload>[]
+        }
+        upsert: {
+          args: Prisma.PaymentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload>
+        }
+        aggregate: {
+          args: Prisma.PaymentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePayment>
+        }
+        groupBy: {
+          args: Prisma.PaymentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PaymentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PaymentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PaymentCountAggregateOutputType> | number
+        }
+      }
+    }
+    DesignerBonusAccrual: {
+      payload: Prisma.$DesignerBonusAccrualPayload<ExtArgs>
+      fields: Prisma.DesignerBonusAccrualFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DesignerBonusAccrualFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusAccrualPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DesignerBonusAccrualFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusAccrualPayload>
+        }
+        findFirst: {
+          args: Prisma.DesignerBonusAccrualFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusAccrualPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DesignerBonusAccrualFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusAccrualPayload>
+        }
+        findMany: {
+          args: Prisma.DesignerBonusAccrualFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusAccrualPayload>[]
+        }
+        create: {
+          args: Prisma.DesignerBonusAccrualCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusAccrualPayload>
+        }
+        createMany: {
+          args: Prisma.DesignerBonusAccrualCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DesignerBonusAccrualCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusAccrualPayload>[]
+        }
+        delete: {
+          args: Prisma.DesignerBonusAccrualDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusAccrualPayload>
+        }
+        update: {
+          args: Prisma.DesignerBonusAccrualUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusAccrualPayload>
+        }
+        deleteMany: {
+          args: Prisma.DesignerBonusAccrualDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DesignerBonusAccrualUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DesignerBonusAccrualUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusAccrualPayload>[]
+        }
+        upsert: {
+          args: Prisma.DesignerBonusAccrualUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusAccrualPayload>
+        }
+        aggregate: {
+          args: Prisma.DesignerBonusAccrualAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDesignerBonusAccrual>
+        }
+        groupBy: {
+          args: Prisma.DesignerBonusAccrualGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DesignerBonusAccrualGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DesignerBonusAccrualCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DesignerBonusAccrualCountAggregateOutputType> | number
+        }
+      }
+    }
+    DesignerBonusPayout: {
+      payload: Prisma.$DesignerBonusPayoutPayload<ExtArgs>
+      fields: Prisma.DesignerBonusPayoutFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DesignerBonusPayoutFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusPayoutPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DesignerBonusPayoutFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusPayoutPayload>
+        }
+        findFirst: {
+          args: Prisma.DesignerBonusPayoutFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusPayoutPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DesignerBonusPayoutFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusPayoutPayload>
+        }
+        findMany: {
+          args: Prisma.DesignerBonusPayoutFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusPayoutPayload>[]
+        }
+        create: {
+          args: Prisma.DesignerBonusPayoutCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusPayoutPayload>
+        }
+        createMany: {
+          args: Prisma.DesignerBonusPayoutCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DesignerBonusPayoutCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusPayoutPayload>[]
+        }
+        delete: {
+          args: Prisma.DesignerBonusPayoutDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusPayoutPayload>
+        }
+        update: {
+          args: Prisma.DesignerBonusPayoutUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusPayoutPayload>
+        }
+        deleteMany: {
+          args: Prisma.DesignerBonusPayoutDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DesignerBonusPayoutUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DesignerBonusPayoutUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusPayoutPayload>[]
+        }
+        upsert: {
+          args: Prisma.DesignerBonusPayoutUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusPayoutPayload>
+        }
+        aggregate: {
+          args: Prisma.DesignerBonusPayoutAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDesignerBonusPayout>
+        }
+        groupBy: {
+          args: Prisma.DesignerBonusPayoutGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DesignerBonusPayoutGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DesignerBonusPayoutCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DesignerBonusPayoutCountAggregateOutputType> | number
+        }
+      }
+    }
+    DesignerBonusAdjustment: {
+      payload: Prisma.$DesignerBonusAdjustmentPayload<ExtArgs>
+      fields: Prisma.DesignerBonusAdjustmentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DesignerBonusAdjustmentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusAdjustmentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DesignerBonusAdjustmentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusAdjustmentPayload>
+        }
+        findFirst: {
+          args: Prisma.DesignerBonusAdjustmentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusAdjustmentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DesignerBonusAdjustmentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusAdjustmentPayload>
+        }
+        findMany: {
+          args: Prisma.DesignerBonusAdjustmentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusAdjustmentPayload>[]
+        }
+        create: {
+          args: Prisma.DesignerBonusAdjustmentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusAdjustmentPayload>
+        }
+        createMany: {
+          args: Prisma.DesignerBonusAdjustmentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DesignerBonusAdjustmentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusAdjustmentPayload>[]
+        }
+        delete: {
+          args: Prisma.DesignerBonusAdjustmentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusAdjustmentPayload>
+        }
+        update: {
+          args: Prisma.DesignerBonusAdjustmentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusAdjustmentPayload>
+        }
+        deleteMany: {
+          args: Prisma.DesignerBonusAdjustmentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DesignerBonusAdjustmentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DesignerBonusAdjustmentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusAdjustmentPayload>[]
+        }
+        upsert: {
+          args: Prisma.DesignerBonusAdjustmentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DesignerBonusAdjustmentPayload>
+        }
+        aggregate: {
+          args: Prisma.DesignerBonusAdjustmentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDesignerBonusAdjustment>
+        }
+        groupBy: {
+          args: Prisma.DesignerBonusAdjustmentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DesignerBonusAdjustmentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DesignerBonusAdjustmentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DesignerBonusAdjustmentCountAggregateOutputType> | number
+        }
+      }
+    }
+    SecurityLog: {
+      payload: Prisma.$SecurityLogPayload<ExtArgs>
+      fields: Prisma.SecurityLogFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SecurityLogFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SecurityLogPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SecurityLogFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SecurityLogPayload>
+        }
+        findFirst: {
+          args: Prisma.SecurityLogFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SecurityLogPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SecurityLogFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SecurityLogPayload>
+        }
+        findMany: {
+          args: Prisma.SecurityLogFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SecurityLogPayload>[]
+        }
+        create: {
+          args: Prisma.SecurityLogCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SecurityLogPayload>
+        }
+        createMany: {
+          args: Prisma.SecurityLogCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SecurityLogCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SecurityLogPayload>[]
+        }
+        delete: {
+          args: Prisma.SecurityLogDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SecurityLogPayload>
+        }
+        update: {
+          args: Prisma.SecurityLogUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SecurityLogPayload>
+        }
+        deleteMany: {
+          args: Prisma.SecurityLogDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SecurityLogUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SecurityLogUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SecurityLogPayload>[]
+        }
+        upsert: {
+          args: Prisma.SecurityLogUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SecurityLogPayload>
+        }
+        aggregate: {
+          args: Prisma.SecurityLogAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSecurityLog>
+        }
+        groupBy: {
+          args: Prisma.SecurityLogGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SecurityLogGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SecurityLogCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SecurityLogCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1545,6 +1995,133 @@ export const CrmViolationScalarFieldEnum = {
 } as const
 
 export type CrmViolationScalarFieldEnum = (typeof CrmViolationScalarFieldEnum)[keyof typeof CrmViolationScalarFieldEnum]
+
+
+export const DesignerBonusAgreementScalarFieldEnum = {
+  id: 'id',
+  designerId: 'designerId',
+  agreementType: 'agreementType',
+  bonusPercent: 'bonusPercent',
+  calculationBase: 'calculationBase',
+  appliesTo: 'appliesTo',
+  specificDealIds: 'specificDealIds',
+  validFrom: 'validFrom',
+  validTo: 'validTo',
+  status: 'status',
+  requiresApproval: 'requiresApproval',
+  comment: 'comment',
+  createdById: 'createdById',
+  approvedById: 'approvedById',
+  approvedAt: 'approvedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  archivedAt: 'archivedAt'
+} as const
+
+export type DesignerBonusAgreementScalarFieldEnum = (typeof DesignerBonusAgreementScalarFieldEnum)[keyof typeof DesignerBonusAgreementScalarFieldEnum]
+
+
+export const PaymentScalarFieldEnum = {
+  id: 'id',
+  dealId: 'dealId',
+  clientId: 'clientId',
+  objectId: 'objectId',
+  designerId: 'designerId',
+  amount: 'amount',
+  paymentDate: 'paymentDate',
+  paymentType: 'paymentType',
+  status: 'status',
+  source: 'source',
+  comment: 'comment',
+  createdById: 'createdById',
+  confirmedById: 'confirmedById',
+  confirmedAt: 'confirmedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  archivedAt: 'archivedAt'
+} as const
+
+export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
+
+
+export const DesignerBonusAccrualScalarFieldEnum = {
+  id: 'id',
+  designerId: 'designerId',
+  agreementId: 'agreementId',
+  paymentId: 'paymentId',
+  dealId: 'dealId',
+  objectId: 'objectId',
+  clientId: 'clientId',
+  baseAmount: 'baseAmount',
+  bonusPercent: 'bonusPercent',
+  bonusAmount: 'bonusAmount',
+  accrualDate: 'accrualDate',
+  status: 'status',
+  accrualType: 'accrualType',
+  comment: 'comment',
+  createdById: 'createdById',
+  approvedById: 'approvedById',
+  approvedAt: 'approvedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  archivedAt: 'archivedAt'
+} as const
+
+export type DesignerBonusAccrualScalarFieldEnum = (typeof DesignerBonusAccrualScalarFieldEnum)[keyof typeof DesignerBonusAccrualScalarFieldEnum]
+
+
+export const DesignerBonusPayoutScalarFieldEnum = {
+  id: 'id',
+  designerId: 'designerId',
+  amount: 'amount',
+  payoutDate: 'payoutDate',
+  payoutMethod: 'payoutMethod',
+  status: 'status',
+  linkedAccrualIds: 'linkedAccrualIds',
+  comment: 'comment',
+  documentFileUrl: 'documentFileUrl',
+  createdById: 'createdById',
+  approvedById: 'approvedById',
+  approvedAt: 'approvedAt',
+  paidById: 'paidById',
+  paidAt: 'paidAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  archivedAt: 'archivedAt'
+} as const
+
+export type DesignerBonusPayoutScalarFieldEnum = (typeof DesignerBonusPayoutScalarFieldEnum)[keyof typeof DesignerBonusPayoutScalarFieldEnum]
+
+
+export const DesignerBonusAdjustmentScalarFieldEnum = {
+  id: 'id',
+  designerId: 'designerId',
+  amount: 'amount',
+  adjustmentType: 'adjustmentType',
+  reason: 'reason',
+  comment: 'comment',
+  createdById: 'createdById',
+  approvedById: 'approvedById',
+  approvedAt: 'approvedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  archivedAt: 'archivedAt'
+} as const
+
+export type DesignerBonusAdjustmentScalarFieldEnum = (typeof DesignerBonusAdjustmentScalarFieldEnum)[keyof typeof DesignerBonusAdjustmentScalarFieldEnum]
+
+
+export const SecurityLogScalarFieldEnum = {
+  id: 'id',
+  action: 'action',
+  userId: 'userId',
+  entityType: 'entityType',
+  entityId: 'entityId',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
+} as const
+
+export type SecurityLogScalarFieldEnum = (typeof SecurityLogScalarFieldEnum)[keyof typeof SecurityLogScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -2174,6 +2751,174 @@ export type EnumCrmViolationStatusFieldRefInput<$PrismaModel> = FieldRefInputTyp
 export type ListEnumCrmViolationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CrmViolationStatus[]'>
 
 
+
+/**
+ * Reference to a field of type 'DesignerBonusAgreementType'
+ */
+export type EnumDesignerBonusAgreementTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DesignerBonusAgreementType'>
+
+
+
+/**
+ * Reference to a field of type 'DesignerBonusAgreementType[]'
+ */
+export type ListEnumDesignerBonusAgreementTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DesignerBonusAgreementType[]'>
+
+
+
+/**
+ * Reference to a field of type 'DesignerBonusCalculationBase'
+ */
+export type EnumDesignerBonusCalculationBaseFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DesignerBonusCalculationBase'>
+
+
+
+/**
+ * Reference to a field of type 'DesignerBonusCalculationBase[]'
+ */
+export type ListEnumDesignerBonusCalculationBaseFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DesignerBonusCalculationBase[]'>
+
+
+
+/**
+ * Reference to a field of type 'DesignerBonusAppliesTo'
+ */
+export type EnumDesignerBonusAppliesToFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DesignerBonusAppliesTo'>
+
+
+
+/**
+ * Reference to a field of type 'DesignerBonusAppliesTo[]'
+ */
+export type ListEnumDesignerBonusAppliesToFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DesignerBonusAppliesTo[]'>
+
+
+
+/**
+ * Reference to a field of type 'DesignerBonusAgreementStatus'
+ */
+export type EnumDesignerBonusAgreementStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DesignerBonusAgreementStatus'>
+
+
+
+/**
+ * Reference to a field of type 'DesignerBonusAgreementStatus[]'
+ */
+export type ListEnumDesignerBonusAgreementStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DesignerBonusAgreementStatus[]'>
+
+
+
+/**
+ * Reference to a field of type 'PaymentType'
+ */
+export type EnumPaymentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentType'>
+
+
+
+/**
+ * Reference to a field of type 'PaymentType[]'
+ */
+export type ListEnumPaymentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentType[]'>
+
+
+
+/**
+ * Reference to a field of type 'PaymentStatus'
+ */
+export type EnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentStatus'>
+
+
+
+/**
+ * Reference to a field of type 'PaymentStatus[]'
+ */
+export type ListEnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentStatus[]'>
+
+
+
+/**
+ * Reference to a field of type 'PaymentSource'
+ */
+export type EnumPaymentSourceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentSource'>
+
+
+
+/**
+ * Reference to a field of type 'PaymentSource[]'
+ */
+export type ListEnumPaymentSourceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentSource[]'>
+
+
+
+/**
+ * Reference to a field of type 'DesignerBonusAccrualStatus'
+ */
+export type EnumDesignerBonusAccrualStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DesignerBonusAccrualStatus'>
+
+
+
+/**
+ * Reference to a field of type 'DesignerBonusAccrualStatus[]'
+ */
+export type ListEnumDesignerBonusAccrualStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DesignerBonusAccrualStatus[]'>
+
+
+
+/**
+ * Reference to a field of type 'DesignerBonusAccrualType'
+ */
+export type EnumDesignerBonusAccrualTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DesignerBonusAccrualType'>
+
+
+
+/**
+ * Reference to a field of type 'DesignerBonusAccrualType[]'
+ */
+export type ListEnumDesignerBonusAccrualTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DesignerBonusAccrualType[]'>
+
+
+
+/**
+ * Reference to a field of type 'DesignerBonusPayoutMethod'
+ */
+export type EnumDesignerBonusPayoutMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DesignerBonusPayoutMethod'>
+
+
+
+/**
+ * Reference to a field of type 'DesignerBonusPayoutMethod[]'
+ */
+export type ListEnumDesignerBonusPayoutMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DesignerBonusPayoutMethod[]'>
+
+
+
+/**
+ * Reference to a field of type 'DesignerBonusPayoutStatus'
+ */
+export type EnumDesignerBonusPayoutStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DesignerBonusPayoutStatus'>
+
+
+
+/**
+ * Reference to a field of type 'DesignerBonusPayoutStatus[]'
+ */
+export type ListEnumDesignerBonusPayoutStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DesignerBonusPayoutStatus[]'>
+
+
+
+/**
+ * Reference to a field of type 'DesignerBonusAdjustmentType'
+ */
+export type EnumDesignerBonusAdjustmentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DesignerBonusAdjustmentType'>
+
+
+
+/**
+ * Reference to a field of type 'DesignerBonusAdjustmentType[]'
+ */
+export type ListEnumDesignerBonusAdjustmentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DesignerBonusAdjustmentType[]'>
+
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -2295,6 +3040,12 @@ export type GlobalOmitConfig = {
   taskActivity?: Prisma.TaskActivityOmit
   auditLog?: Prisma.AuditLogOmit
   crmViolation?: Prisma.CrmViolationOmit
+  designerBonusAgreement?: Prisma.DesignerBonusAgreementOmit
+  payment?: Prisma.PaymentOmit
+  designerBonusAccrual?: Prisma.DesignerBonusAccrualOmit
+  designerBonusPayout?: Prisma.DesignerBonusPayoutOmit
+  designerBonusAdjustment?: Prisma.DesignerBonusAdjustmentOmit
+  securityLog?: Prisma.SecurityLogOmit
 }
 
 /* Types for Logging */

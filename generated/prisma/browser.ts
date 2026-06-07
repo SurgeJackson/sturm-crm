@@ -72,3 +72,33 @@ export type AuditLog = Prisma.AuditLogModel
  *
  */
 export type CrmViolation = Prisma.CrmViolationModel
+/**
+ * Model DesignerBonusAgreement
+ *
+ */
+export type DesignerBonusAgreement = Prisma.DesignerBonusAgreementModel
+/**
+ * Model Payment
+ *
+ */
+export type Payment = Prisma.PaymentModel
+/**
+ * Model DesignerBonusAccrual
+ *
+ */
+export type DesignerBonusAccrual = Prisma.DesignerBonusAccrualModel
+/**
+ * Model DesignerBonusPayout
+ *
+ */
+export type DesignerBonusPayout = Prisma.DesignerBonusPayoutModel
+/**
+ * Model DesignerBonusAdjustment
+ *
+ */
+export type DesignerBonusAdjustment = Prisma.DesignerBonusAdjustmentModel
+/**
+ * Model SecurityLog
+ *
+ */
+export type SecurityLog = Prisma.SecurityLogModel

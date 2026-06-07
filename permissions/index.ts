@@ -162,3 +162,68 @@ export function canArchiveRecord(user: PermissionUser | null | undefined, record
 export function canChangeRecordResponsible(user?: PermissionUser | null) {
   return canChangeResponsible(user);
 }
+
+export function canViewPayments(user?: PermissionUser | null) {
+  if (!isActive(user)) return false;
+  return user.role === "OWNER" || user.role === "SALES_LEAD";
+}
+
+export function canCreatePayment(user?: PermissionUser | null) {
+  return canViewPayments(user);
+}
+
+export function canConfirmPayment(user?: PermissionUser | null) {
+  return canViewPayments(user);
+}
+
+function ownsBonusContext(user: PermissionUser, record?: OwnedRecord | null) {
+  return Boolean(user.id && record && (record.createdById === user.id || record.responsibleId === user.id));
+}
+
+export function canViewDesignerBonus(user: PermissionUser | null | undefined, designer?: OwnedRecord | null) {
+  if (!isActive(user) || user.role === "ADMINISTRATOR") return false;
+  if (user.role === "OWNER" || user.role === "SALES_LEAD") return true;
+  return ownsBonusContext(user, designer);
+}
+
+export function canManageDesignerBonusAgreement(user: PermissionUser | null | undefined, designer?: OwnedRecord | null) {
+  if (!isActive(user)) return false;
+  if (user.role === "OWNER") return true;
+  return false;
+}
+
+export function canViewDesignerBonusAmounts(user: PermissionUser | null | undefined, designer?: OwnedRecord | null) {
+  if (!isActive(user) || user.role === "ADMINISTRATOR") return false;
+  if (user.role === "OWNER" || user.role === "SALES_LEAD") return true;
+  return user.role === "PROJECT_MANAGER" && ownsBonusContext(user, designer);
+}
+
+export function canCreateDesignerBonusAccrual(user?: PermissionUser | null) {
+  if (!isActive(user)) return false;
+  return user.role === "OWNER";
+}
+
+export function canCreateDesignerBonusPayout(user?: PermissionUser | null) {
+  if (!isActive(user)) return false;
+  return user.role === "OWNER";
+}
+
+export function canApproveDesignerBonusPayout(user?: PermissionUser | null) {
+  if (!isActive(user)) return false;
+  return user.role === "OWNER";
+}
+
+export function canCreateDesignerBonusAdjustment(user?: PermissionUser | null) {
+  if (!isActive(user)) return false;
+  return user.role === "OWNER";
+}
+
+export function canViewDesignerBonusReports(user?: PermissionUser | null) {
+  if (!isActive(user)) return false;
+  return user.role === "OWNER" || user.role === "SALES_LEAD";
+}
+
+export function canExportDesignerBonusReports(user?: PermissionUser | null) {
+  if (!isActive(user)) return false;
+  return user.role === "OWNER";
+}

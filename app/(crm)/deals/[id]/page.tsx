@@ -7,7 +7,7 @@ import { DealLossDialog } from "@/components/deals/deal-loss-dialog";
 import { getAuditLogs } from "@/lib/audit-log";
 import { archiveDealAction, closeDealAsLostAction } from "@/modules/deals/actions";
 import { getDealForUser } from "@/modules/deals/queries";
-import { canArchiveRecord, canCloseDealAsLost, canCreateTask, canEditRecord } from "@/permissions";
+import { canArchiveRecord, canCloseDealAsLost, canCreateTask, canEditRecord, canViewDesignerBonusAmounts } from "@/permissions";
 
 type DealPageProps = {
   params: Promise<{ id: string }>;
@@ -56,7 +56,7 @@ export default async function DealPage({ params, searchParams }: DealPageProps) 
       }}
     >
 
-      <DealDetailTabs deal={deal} auditLogs={auditLogs} canCreateTasks={canCreateTask(user)} />
+      <DealDetailTabs deal={deal} auditLogs={auditLogs} canCreateTasks={canCreateTask(user)} canViewBonusAmounts={canViewDesignerBonusAmounts(user, deal.designer)} />
     </EntityDetailShell>
   );
 }

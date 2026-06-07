@@ -1,4 +1,5 @@
 import type { PrismaClient } from "../generated/prisma/client";
+import { seedDesignerBonuses } from "./seed-bonuses";
 import { seedDeals } from "./seed-deals";
 import { seedObjects } from "./seed-objects";
 import { seedProposals } from "./seed-proposals";
@@ -10,5 +11,6 @@ export async function seedCrmData(prisma: PrismaClient, now: Date, year: number)
   await seedObjects(prisma, now);
   await seedDeals(prisma, now);
   await seedProposals(prisma, now, year);
+  await seedDesignerBonuses(prisma, now);
   await seedTasks(prisma, now, year);
 }

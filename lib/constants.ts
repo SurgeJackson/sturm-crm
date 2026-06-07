@@ -2,6 +2,7 @@ export * from "@/lib/constants/audit";
 export * from "@/lib/constants/clients";
 export * from "@/lib/constants/common";
 export * from "@/lib/constants/deals";
+export * from "@/lib/constants/designer-bonuses";
 export * from "@/lib/constants/designers";
 export * from "@/lib/constants/objects";
 export * from "@/lib/constants/proposals";

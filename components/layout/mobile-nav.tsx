@@ -5,7 +5,7 @@ import { Menu } from "lucide-react";
 import type { UserRole } from "@/generated/prisma/client";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { canAccessSettings, canViewReports } from "@/permissions";
+import { canAccessSettings, canViewDesignerBonusReports, canViewPayments, canViewReports } from "@/permissions";
 
 const mobileLinks = [
   { href: "/", label: "Рабочий стол" },
@@ -14,6 +14,8 @@ const mobileLinks = [
   { href: "/objects", label: "Объекты" },
   { href: "/deals", label: "Сделки" },
   { href: "/proposals", label: "КП" },
+  { href: "/payments", label: "Оплаты" },
+  { href: "/designer-bonuses/accruals", label: "Бонусы дизайнеров" },
   { href: "/tasks", label: "Задачи / касания" },
   { href: "/reports", label: "Отчеты" },
   { href: "/settings", label: "Настройки" }
@@ -38,6 +40,14 @@ export function MobileNav({ user }: MobileNavProps) {
         <nav className="mt-6 grid gap-1">
           {mobileLinks.map((link) => {
             if (link.href === "/reports" && !canViewReports(user)) {
+              return null;
+            }
+
+            if (link.href === "/payments" && !canViewPayments(user)) {
+              return null;
+            }
+
+            if (link.href === "/designer-bonuses/accruals" && !canViewDesignerBonusReports(user)) {
               return null;
             }
 

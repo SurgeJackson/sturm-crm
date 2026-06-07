@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/auth/options";
 import { writeAuditLog } from "@/lib/audit-log";
+import { writeSecurityLog } from "@/lib/security-log";
 import { fallbackReportCsv, reportExporters } from "@/modules/reports/exporters";
 import type { ReportSearchParams } from "@/modules/reports/queries";
 
@@ -28,6 +29,14 @@ export async function GET(request: Request) {
     userId: user.id,
     after: { report, params }
   });
+  if (report === "designer-bonuses") {
+    await writeSecurityLog({
+      action: "EXPORT_DESIGNER_BONUS_REPORT",
+      userId: user.id,
+      entityType: "DESIGNER_BONUS_ACCRUAL",
+      metadata: { params }
+    });
+  }
 
   return new NextResponse(`\uFEFF${csv}`, {
     headers: {

@@ -109,10 +109,10 @@ export async function getProposalForUser(id: string, user: PermissionUser) {
   const proposal = await prisma.commercialProposal.findUnique({
     where: { id },
     include: {
-      deal: { select: { id: true, title: true, stage: true } },
+      deal: { select: { id: true, title: true, stage: true, designerId: true } },
       client: { select: { id: true, name: true, phone: true, email: true } },
       projectObject: { select: { id: true, title: true, city: true, address: true } },
-      designer: { select: designerNameSelect },
+      designer: { select: { ...designerNameSelect, responsibleId: true, createdById: true } },
       responsible: { select: userSummarySelect },
       createdBy: { select: userSummarySelect },
       uploadedBy: { select: userSummarySelect },

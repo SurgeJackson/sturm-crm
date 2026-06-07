@@ -93,7 +93,7 @@ export async function getProjectObjectForUser(id: string, user: PermissionUser) 
     where: { id },
     include: {
       client: { select: { id: true, name: true, phone: true, email: true } },
-      designer: { select: { id: true, name: true, studio: true, relationshipStage: true } },
+      designer: { select: { id: true, name: true, studio: true, relationshipStage: true, responsibleId: true, createdById: true } },
       responsible: { select: userSummarySelect },
       createdBy: { select: userSummarySelect },
       participants: {
@@ -115,7 +115,9 @@ export async function getProjectObjectForUser(id: string, user: PermissionUser) 
         orderBy: { createdAt: "desc" },
         take: DETAIL_DEAL_LIMIT,
         include: {
-          responsible: { select: { id: true, name: true } }
+          responsible: { select: { id: true, name: true } },
+          payments: { where: { archivedAt: null } },
+          bonusAccruals: { where: { archivedAt: null } }
         }
       },
       proposals: {

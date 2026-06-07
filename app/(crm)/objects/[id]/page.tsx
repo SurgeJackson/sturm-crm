@@ -14,7 +14,7 @@ import {
   moveDesignerToFirstObjectReceivedAction
 } from "@/modules/objects/actions";
 import { getProjectObjectForUser } from "@/modules/objects/queries";
-import { canArchiveRecord, canCreateTask, canEditRecord, canManageObjectParticipants } from "@/permissions";
+import { canArchiveRecord, canCreateTask, canEditRecord, canManageObjectParticipants, canViewDesignerBonusAmounts } from "@/permissions";
 
 type ObjectPageProps = {
   params: Promise<{ id: string }>;
@@ -122,6 +122,7 @@ export default async function ObjectPage({ params, searchParams }: ObjectPagePro
         canCreateTasks={canCreateTask(user)}
         canManageParticipants={canManageParticipants}
         archiveParticipantAction={archiveParticipantAction}
+        canViewBonusAmounts={canViewDesignerBonusAmounts(user, projectObject.designer)}
       />
     </EntityDetailShell>
   );

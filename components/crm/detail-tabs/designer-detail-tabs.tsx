@@ -1,6 +1,7 @@
 import { detailDate, detailText, EntityDetailsCard } from "@/components/crm/detail";
 import { AuditLogCard, EntityDetailTabs, EntityTasksCard } from "@/components/crm/detail-page";
 import { DesignerDealsTable, DesignerObjectsTable, DesignerProposalsTable } from "@/components/crm/related";
+import { DesignerBonusPanel } from "@/components/designer-bonuses/designer-bonus-panel";
 import { CompactMetricCard } from "@/components/crm/summary-card";
 import {
   designerLoyaltyLabels,
@@ -9,6 +10,7 @@ import {
   designerRoleLabels
 } from "@/lib/constants";
 import type { getAuditLogs } from "@/lib/audit-log";
+import type { getDesignerBonusSnapshot } from "@/modules/designer-bonuses/queries";
 import type { getDesignerForUser } from "@/modules/designers/queries";
 import { formatRussianDate } from "@/utils/date";
 import { formatMoney } from "@/utils/money";
@@ -16,16 +18,37 @@ import { buildTaskHref } from "@/utils/task-href";
 
 type DesignerDetail = Awaited<ReturnType<typeof getDesignerForUser>>;
 type AuditLogs = Awaited<ReturnType<typeof getAuditLogs>>;
+type BonusSnapshot = Awaited<ReturnType<typeof getDesignerBonusSnapshot>>;
 
 export function DesignerDetailTabs({
   designer,
   auditLogs,
-  canCreateTasks
+  canCreateTasks,
+  bonusSnapshot,
+  canManageBonus,
+  canViewBonusAmounts
 }: {
   designer: DesignerDetail;
   auditLogs: AuditLogs;
   canCreateTasks: boolean;
+  bonusSnapshot: BonusSnapshot | null;
+  canManageBonus: boolean;
+  canViewBonusAmounts: boolean;
 }) {
+  const bonusTab = bonusSnapshot ? [{
+    value: "bonuses",
+    label: "Бонусы и взаиморасчеты",
+    content: (
+      <DesignerBonusPanel
+        designerId={designer.id}
+        snapshot={bonusSnapshot}
+        canManage={canManageBonus}
+        showAmounts={canViewBonusAmounts}
+        deals={designer.deals}
+      />
+    )
+  }] : [];
+
   return (
     <EntityDetailTabs
       tabs={[
@@ -94,6 +117,7 @@ export function DesignerDetailTabs({
           label: "КП",
           content: <DesignerProposalsTable proposals={designer.proposals} />
         },
+        ...bonusTab,
         {
           value: "analytics",
           label: "Аналитика",

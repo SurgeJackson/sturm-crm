@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { parseDealForm, toDealDocument } from "../modules/deals/form";
 import { parseObjectForm, toObjectDocument } from "../modules/objects/form";
+import { parsePaymentForm } from "../modules/payments/form";
 import { safeProposalFileName } from "../modules/proposals/files";
 import { ensureSentRequirements, parseProposalForm, toProposalDocument } from "../modules/proposals/form";
 import { parseTaskForm, toTaskDocument } from "../modules/tasks/form";
@@ -140,6 +141,20 @@ describe("crm form mappers", () => {
       result: "Reached client"
     });
     expect(document.completedAt).toEqual(document.dueAt);
+  });
+
+  it("accepts only draft or confirmed payment creation statuses", () => {
+    const form = new FormData();
+    form.set("dealId", "deal-1");
+    form.set("amount", "1000");
+    form.set("paymentDate", "2026-06-07");
+    form.set("paymentType", "PARTIAL_PAYMENT");
+    form.set("status", "CANCELLED");
+
+    const parsed = parsePaymentForm(form);
+
+    expect(parsed.success).toBe(false);
+    if (!parsed.success) expect(parsed.error.flatten().fieldErrors.status).toBeDefined();
   });
 
   it("sanitizes proposal upload file names", () => {

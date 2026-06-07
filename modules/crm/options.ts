@@ -9,6 +9,15 @@ import {
   dealProbabilityLabels,
   dealSourceLabels,
   dealStageLabels,
+  designerBonusAccrualStatusLabels,
+  designerBonusAccrualTypeLabels,
+  designerBonusAdjustmentTypeLabels,
+  designerBonusAgreementStatusLabels,
+  designerBonusAgreementTypeLabels,
+  designerBonusAppliesToLabels,
+  designerBonusCalculationBaseLabels,
+  designerBonusPayoutMethodLabels,
+  designerBonusPayoutStatusLabels,
   designerLoyaltyLabels,
   designerPotentialLabels,
   designerProjectSegmentLabels,
@@ -22,6 +31,9 @@ import {
   objectStageLabels,
   objectStatusLabels,
   objectTypeLabels,
+  paymentSourceLabels,
+  paymentStatusLabels,
+  paymentTypeLabels,
   projectObjectParticipantTypeLabels,
   proposalDeclineReasonLabels,
   recipientTypeLabels,
@@ -65,6 +77,18 @@ export const dealLossReasonOptions = toOptions(dealLossReasonLabels);
 export const commercialProposalStatusOptions = toOptions(commercialProposalStatusLabels);
 export const recipientTypeOptions = toOptions(recipientTypeLabels);
 export const proposalDeclineReasonOptions = toOptions(proposalDeclineReasonLabels);
+export const designerBonusAgreementTypeOptions = toOptions(designerBonusAgreementTypeLabels);
+export const designerBonusCalculationBaseOptions = toOptions(designerBonusCalculationBaseLabels);
+export const designerBonusAppliesToOptions = toOptions(designerBonusAppliesToLabels);
+export const designerBonusAgreementStatusOptions = toOptions(designerBonusAgreementStatusLabels);
+export const paymentTypeOptions = toOptions(paymentTypeLabels);
+export const paymentStatusOptions = toOptions(paymentStatusLabels);
+export const paymentSourceOptions = toOptions(paymentSourceLabels);
+export const designerBonusAccrualTypeOptions = toOptions(designerBonusAccrualTypeLabels);
+export const designerBonusAccrualStatusOptions = toOptions(designerBonusAccrualStatusLabels);
+export const designerBonusPayoutMethodOptions = toOptions(designerBonusPayoutMethodLabels);
+export const designerBonusPayoutStatusOptions = toOptions(designerBonusPayoutStatusLabels);
+export const designerBonusAdjustmentTypeOptions = toOptions(designerBonusAdjustmentTypeLabels);
 export const taskRecordTypeOptions = toOptions(taskRecordTypeLabels);
 export const taskActionTypeOptions = toOptions(taskActionTypeLabels);
 export const taskStatusOptions = toOptions(taskStatusLabels);

@@ -12,6 +12,8 @@ import {
   rowsToCsv,
   type ReportSearchParams
 } from "@/modules/reports/queries";
+import { getDesignerBonusReports } from "@/modules/designer-bonuses/queries";
+import { canExportDesignerBonusReports, canViewDesignerBonusAmounts } from "@/permissions";
 
 type ReportExportUser = Parameters<typeof getManagerDashboardReport>[1];
 export type ReportExporter = (params: ReportSearchParams, user: ReportExportUser) => Promise<string>;
@@ -35,6 +37,21 @@ export const reportExporters: Record<string, ReportExporter> = {
   "bonus-eligibility": async (params, user) => {
     const data = await getBonusEligibilityReport(params, user);
     return rowsToCsv(["Сущность", "Название", "Ответственный", "Статус учета", "Нарушения", "Влияет на премию", "Дата обнаружения"], data.rows.map((row) => [row.entity, row.title, row.responsibleName, row.status, row.violations.join("; "), row.affectsBonus ? "Да" : "Нет", row.detectedAt?.toISOString()]));
+  },
+  "designer-bonuses": async (params, user) => {
+    if (!canExportDesignerBonusReports(user)) return fallbackReportCsv("designer-bonuses");
+    const data = await getDesignerBonusReports(params, user);
+    const showAmounts = canViewDesignerBonusAmounts(user);
+    return rowsToCsv(
+      ["Дизайнер", "Начислено", "Выплачено", "Корректировки", "Баланс"],
+      data.balances.map((row) => [
+        row.designer.name,
+        showAmounts ? row.balance.accruedTotal : "Скрыто",
+        showAmounts ? row.balance.paidTotal : "Скрыто",
+        showAmounts ? row.balance.adjustmentTotal : "Скрыто",
+        showAmounts ? row.balance.balance : "Скрыто"
+      ])
+    );
   },
   deals: async (params, user) => {
     const data = await getDealsReport(params, user);

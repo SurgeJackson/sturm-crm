@@ -9,13 +9,14 @@ import {
 } from "@/components/crm/detail-page";
 import { Button } from "@/components/ui/button";
 import { getAuditLogs } from "@/lib/audit-log";
+import { getActiveBonusAgreement } from "@/modules/designer-bonuses/service";
 import {
   archiveProposalAction,
   createProposalVersionAction,
   moveDealToInvoiceFromProposalAction
 } from "@/modules/proposals/actions";
 import { getProposalForUser, getProposalVersionGroup } from "@/modules/proposals/queries";
-import { canArchiveRecord, canCreateTask, canEditRecord } from "@/permissions";
+import { canArchiveRecord, canCreateTask, canEditRecord, canViewDesignerBonusAmounts } from "@/permissions";
 
 type ProposalPageProps = {
   params: Promise<{ id: string }>;
@@ -34,6 +35,7 @@ export default async function ProposalPage({ params, searchParams }: ProposalPag
     getAuditLogs("PROPOSAL", id)
   ]);
   const archiveAction = archiveProposalAction.bind(null, id);
+  const activeAgreement = proposal.designerId ? await getActiveBonusAgreement(proposal.designerId, new Date(), proposal.dealId) : null;
   const createVersionAction = createProposalVersionAction.bind(null, id);
   const moveDealAction = moveDealToInvoiceFromProposalAction.bind(null, id);
 
@@ -88,6 +90,8 @@ export default async function ProposalPage({ params, searchParams }: ProposalPag
         canCreateTasks={canCreateTask(user)}
         canCreateVersion={canEditRecord(user, proposal)}
         createVersionAction={createVersionAction}
+        canViewBonusAmounts={canViewDesignerBonusAmounts(user, proposal.designer)}
+        bonusPercent={activeAgreement?.bonusPercent ?? null}
       />
     </EntityDetailShell>
   );

@@ -2,10 +2,12 @@ import Link from "next/link";
 import { detailDate, detailMoney, detailText, EntityDetailsCard } from "@/components/crm/detail";
 import { AuditLogCard, EntityDetailTabs, EntityTasksCard, TextBlock } from "@/components/crm/detail-page";
 import { ProposalVersionsTable } from "@/components/crm/related";
+import { CompactMetricCard } from "@/components/crm/summary-card";
 import { proposalDeclineReasonLabels, recipientTypeLabels } from "@/lib/constants";
 import type { getAuditLogs } from "@/lib/audit-log";
 import type { getProposalForUser, getProposalVersionGroup } from "@/modules/proposals/queries";
 import { formatRussianDate } from "@/utils/date";
+import { formatMoney } from "@/utils/money";
 import { buildTaskHref } from "@/utils/task-href";
 
 type ProposalDetail = Awaited<ReturnType<typeof getProposalForUser>>;
@@ -18,7 +20,9 @@ export function ProposalDetailTabs({
   auditLogs,
   canCreateTasks,
   canCreateVersion,
-  createVersionAction
+  createVersionAction,
+  canViewBonusAmounts,
+  bonusPercent
 }: {
   proposal: ProposalDetail;
   versions: ProposalVersions;
@@ -26,7 +30,11 @@ export function ProposalDetailTabs({
   canCreateTasks: boolean;
   canCreateVersion: boolean;
   createVersionAction: () => Promise<void>;
+  canViewBonusAmounts: boolean;
+  bonusPercent?: number | null;
 }) {
+  const potentialBonus = bonusPercent ? proposal.amount * bonusPercent / 100 : null;
+
   return (
     <EntityDetailTabs
       tabs={[
@@ -88,6 +96,17 @@ export function ProposalDetailTabs({
               taskHref={buildTaskHref({ proposalId: proposal.id, dealId: proposal.dealId, clientId: proposal.clientId, objectId: proposal.objectId, responsibleId: proposal.responsibleId, designerId: proposal.designerId })}
               touchHref={buildTaskHref({ recordType: "TOUCH", proposalId: proposal.id, dealId: proposal.dealId, clientId: proposal.clientId, objectId: proposal.objectId, responsibleId: proposal.responsibleId, designerId: proposal.designerId })}
             />
+          )
+        },
+        {
+          value: "bonus",
+          label: "Потенциальный бонус",
+          content: (
+            <div className="grid gap-4 md:grid-cols-3">
+              <CompactMetricCard title="Дизайнер" value={proposal.designer?.name ?? "Нет"} />
+              <CompactMetricCard title="Активная ставка" value={canViewBonusAmounts && bonusPercent ? `${bonusPercent}%` : "Скрыто"} />
+              <CompactMetricCard title="Потенциальный бонус" value={canViewBonusAmounts && potentialBonus ? formatMoney(potentialBonus, "0 ₽") : "Скрыто"} />
+            </div>
           )
         },
         {

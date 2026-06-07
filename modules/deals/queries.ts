@@ -112,7 +112,7 @@ export async function getDealForUser(id: string, user: PermissionUser) {
     include: {
       client: { select: { id: true, name: true, phone: true, email: true } },
       projectObject: { select: { id: true, title: true, city: true, address: true } },
-      designer: { select: designerNameSelect },
+      designer: { select: { ...designerNameSelect, responsibleId: true, createdById: true } },
       responsible: { select: userSummarySelect },
       createdBy: { select: userSummarySelect },
       proposals: {
@@ -122,6 +122,14 @@ export async function getDealForUser(id: string, user: PermissionUser) {
         include: {
           responsible: { select: { id: true, name: true } }
         }
+      },
+      payments: {
+        where: { archivedAt: null },
+        orderBy: { paymentDate: "desc" }
+      },
+      bonusAccruals: {
+        where: { archivedAt: null },
+        orderBy: { accrualDate: "desc" }
       },
       tasks: {
         where: { archivedAt: null },
