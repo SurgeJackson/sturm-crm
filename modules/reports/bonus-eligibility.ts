@@ -1,7 +1,8 @@
 import type { CrmViolation } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { enumParam, upperEnumParam } from "@/modules/crm/param-parsing";
-import { computeBonusEligibilityStatus, crmEntityHref, crmViolationSeverityLabels, getActiveViolationsMap, type BonusEligibilityStatus } from "@/modules/crm-discipline/service";
+import { computeBonusEligibilityStatus, crmEntityHref, crmViolationSeverityLabels, type BonusEligibilityStatus } from "@/modules/crm-discipline/bonus";
+import { getActiveViolationsMap } from "@/modules/crm-discipline/queries";
 import type { PermissionUser } from "@/permissions";
 import { groupBy, periodWhere, reportOwnerWhere, reportPeriod, type Metric, type ReportSearchParams } from "./common";
 

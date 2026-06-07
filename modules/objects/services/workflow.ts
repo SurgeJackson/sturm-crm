@@ -1,7 +1,7 @@
 import type { ProjectObject } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { writeEntityAuditLog, writeTrackedFieldAuditLogs } from "@/modules/crm/audit-helpers";
-import { expireViolationsForEntity, syncObjectDiscipline } from "@/modules/crm-discipline/service";
+import { syncObjectDiscipline } from "@/modules/crm-discipline/entity-sync";
 import { toObjectDocument, type ObjectFormData } from "@/modules/objects/form";
 import { createFrozenObjectReturnTask } from "@/modules/objects/services/automatic-tasks";
 import {
@@ -84,34 +84,5 @@ export async function updateProjectObject(
   }
 
   await syncObjectDiscipline(id, userId);
-  return after;
-}
-
-export async function archiveProjectObject(id: string, before: ProjectObject, userId: string) {
-  const after = await prisma.$transaction(async (tx) => {
-    const archived = await tx.projectObject.update({
-      where: { id },
-      data: {
-        status: "ARCHIVED",
-        archivedAt: new Date()
-      }
-    });
-
-    await refreshDesignerObjectCounters(archived.designerId, tx);
-
-    await writeEntityAuditLog({
-      entityType: "OBJECT",
-      entityId: id,
-      action: "ARCHIVE",
-      userId,
-      before,
-      after: archived,
-      client: tx
-    });
-
-    return archived;
-  });
-
-  await expireViolationsForEntity("OBJECT", id, userId);
   return after;
 }

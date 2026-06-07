@@ -14,16 +14,19 @@ import {
 import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { commercialProposalStatusLabels } from "@/lib/constants";
 import type { getDealForUser } from "@/modules/deals/queries";
+import { canViewSensitiveFields, type PermissionUser } from "@/permissions";
 import { formatRussianDate } from "@/utils/date";
 
 type DealDetail = Awaited<ReturnType<typeof getDealForUser>>;
 
 export function DealProposalsTable({
   dealId,
-  proposals
+  proposals,
+  user
 }: {
   dealId: string;
   proposals: DealDetail["proposals"];
+  user: PermissionUser;
 }) {
   return (
     <TableCard
@@ -56,10 +59,10 @@ export function DealProposalsTable({
             <BadgeCell cellLabel="Статус" variant={proposalStatusVariant(proposal.status)}>
               {commercialProposalStatusLabels[proposal.status]}
             </BadgeCell>
-            <MoneyCell cellLabel="Сумма" value={proposal.amount} />
+            <MoneyCell cellLabel="Сумма" value={canViewSensitiveFields(user, proposal) ? proposal.amount : null} emptyText="Скрыто" />
             <DateCell cellLabel="Отправлено">{formatRussianDate(proposal.sentAt)}</DateCell>
             <DateCell cellLabel="Follow-up">{formatRussianDate(proposal.nextTouchAt)}</DateCell>
-            <FileLinkCell cellLabel="Файл" href={proposal.fileUrl} />
+            <FileLinkCell cellLabel="Файл" href={proposal.fileUrl ? `/api/proposals/${proposal.id}/download` : null} />
             <TableCell label="Ответственный">{proposal.responsible.name}</TableCell>
           </TableRow>
         ))}

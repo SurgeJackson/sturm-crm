@@ -1,5 +1,5 @@
 import type { CommercialProposal } from "@/generated/prisma/client";
-import { createAutomaticTask } from "@/modules/tasks/service";
+import { createAutomaticTask } from "@/modules/tasks/automatic-tasks";
 
 export async function createProposalFollowUpTask(proposal: CommercialProposal) {
   if (proposal.status !== "SENT" || !proposal.nextTouchAt) return;

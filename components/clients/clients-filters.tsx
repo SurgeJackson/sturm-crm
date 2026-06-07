@@ -31,7 +31,8 @@ export function ClientsFilters({ params, users }: { params: ClientListSearchPara
     params.status ? { key: "status", label: "Статус", value: optionLabel(clientStatusOptions, params.status), href: filterShortcutHref("/clients", params, { status: undefined, page: undefined }) } : null,
     params.responsibleId ? { key: "responsibleId", label: "Ответственный", value: users.find((user) => user.id === params.responsibleId)?.name ?? params.responsibleId, href: filterShortcutHref("/clients", params, { responsibleId: undefined, page: undefined }) } : null,
     params.sort ? { key: "sort", label: "Сортировка", value: sortLabels[params.sort] ?? params.sort, href: filterShortcutHref("/clients", params, { sort: undefined, page: undefined }) } : null,
-    params.noNextContact === "1" ? { key: "noNextContact", label: "Контакт", value: "Без следующего контакта", href: filterShortcutHref("/clients", params, { noNextContact: undefined, page: undefined }) } : null
+    params.noNextContact === "1" ? { key: "noNextContact", label: "Контакт", value: "Без следующего контакта", href: filterShortcutHref("/clients", params, { noNextContact: undefined, page: undefined }) } : null,
+    params.archived === "1" ? { key: "archived", label: "Архив", value: "Архивные", href: filterShortcutHref("/clients", params, { archived: undefined, page: undefined }) } : null
   ].filter(Boolean) as ActiveFilter[];
 
   return (
@@ -50,6 +51,7 @@ export function ClientsFilters({ params, users }: { params: ClientListSearchPara
       <FilterCheckbox name="noNextContact" defaultChecked={params.noNextContact === "1"}>
         Без следующего контакта
       </FilterCheckbox>
+      <FilterCheckbox name="archived" defaultChecked={params.archived === "1"}>Архивные</FilterCheckbox>
       <FilterActions className="md:col-span-2 xl:col-span-5">
         <Button type="submit">Применить</Button>
         <Button asChild variant="outline"><Link href="/clients">Сбросить</Link></Button>

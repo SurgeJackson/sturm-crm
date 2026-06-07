@@ -1,5 +1,6 @@
 import type { AuditEntityType } from "@/generated/prisma/client";
-import { computeBonusEligibilityStatus, getActiveViolationsMap } from "@/modules/crm-discipline/service";
+import { computeBonusEligibilityStatus } from "@/modules/crm-discipline/bonus";
+import { getActiveViolationsMap } from "@/modules/crm-discipline/queries";
 
 export async function withCrmViolations<T extends { id: string }>(
   entityType: AuditEntityType,

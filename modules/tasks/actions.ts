@@ -3,15 +3,15 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
+import { ensureAutomaticTasksForUser } from "@/modules/tasks/automatic-tasks";
 import { parseTaskForm } from "@/modules/tasks/form";
 import { resolveTaskLinks } from "@/modules/tasks/link-resolver";
 import {
   cancelTaskActivity,
   createTaskActivity,
-  ensureAutomaticTasksForUser,
   getTaskForMutation,
   updateTaskActivity
-} from "@/modules/tasks/service";
+} from "@/modules/tasks/workflow-service";
 import {
   canCancelTask,
   canChangeTaskResponsible,

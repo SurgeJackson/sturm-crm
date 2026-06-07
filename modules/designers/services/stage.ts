@@ -1,7 +1,7 @@
 import type { Designer, DesignerRelationshipStage } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { writeEntityAuditLog } from "@/modules/crm/audit-helpers";
-import { syncDesignerDiscipline } from "@/modules/crm-discipline/service";
+import { syncDesignerDiscipline } from "@/modules/crm-discipline/entity-sync";
 
 export async function changeDesignerStage(
   id: string,

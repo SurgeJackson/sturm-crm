@@ -3,16 +3,17 @@ import { getCurrentUser } from "@/auth/get-current-user";
 import { DesignerHeaderBadges } from "@/components/crm/detail-header-badges";
 import { DesignerDetailTabs } from "@/components/crm/detail-tabs/designer-detail-tabs";
 import { EntityDetailShell } from "@/components/crm/detail-page";
-import { archiveDesignerAction } from "@/modules/designers/actions";
+import { archiveEntityAction, restoreEntityAction } from "@/modules/security/entity-actions";
 import { getDesignerForUser } from "@/modules/designers/queries";
 import { getDesignerBonusSnapshot } from "@/modules/designer-bonuses/queries";
 import { getAuditLogs } from "@/lib/audit-log";
 import { writeSecurityLog } from "@/lib/security-log";
-import { canArchiveRecord, canCreateTask, canEditRecord, canManageDesignerBonusAgreement, canViewDesignerBonus, canViewDesignerBonusAmounts } from "@/permissions";
+import { recordEntityView } from "@/modules/security/activity";
+import { canArchiveEntity, canCreateTask, canEditRecord, canManageDesignerBonusAgreement, canRestoreEntity, canViewDesignerBonus, canViewDesignerBonusAmounts } from "@/permissions";
 
 type DesignerPageProps = {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ saved?: string; archived?: string; error?: string }>;
+  searchParams: Promise<{ saved?: string; archived?: string; restored?: string; error?: string }>;
 };
 
 export default async function DesignerPage({ params, searchParams }: DesignerPageProps) {
@@ -36,7 +37,9 @@ export default async function DesignerPage({ params, searchParams }: DesignerPag
       metadata: { designerId: id, showAmounts: canViewBonusAmounts }
     });
   }
-  const archiveAction = archiveDesignerAction.bind(null, id);
+  const archiveAction = archiveEntityAction.bind(null, "DESIGNER", id);
+  const restoreAction = restoreEntityAction.bind(null, "DESIGNER", id);
+  await recordEntityView(user.id, "DESIGNER", id);
 
   return (
     <EntityDetailShell
@@ -46,10 +49,13 @@ export default async function DesignerPage({ params, searchParams }: DesignerPag
       editHref={`/designers/${id}/edit`}
       canEdit={canEditRecord(user, designer)}
       archiveAction={archiveAction}
-      canArchive={canArchiveRecord(user, designer) && !designer.archivedAt}
+      canArchive={canArchiveEntity(user, designer) && !designer.archivedAt}
+      restoreAction={restoreAction}
+      canRestore={canRestoreEntity(user, designer)}
       notices={[
         { show: Boolean(query.saved), message: "Дизайнер сохранен." },
         { show: Boolean(query.archived), message: "Дизайнер архивирован." },
+        { show: Boolean(query.restored), message: "Дизайнер восстановлен." },
         { show: Boolean(query.error), tone: "destructive", message: "Действие недоступно для вашей роли." }
       ]}
       discipline={{
@@ -70,6 +76,7 @@ export default async function DesignerPage({ params, searchParams }: DesignerPag
         bonusSnapshot={bonusSnapshot}
         canManageBonus={canManageDesignerBonusAgreement(user, designer)}
         canViewBonusAmounts={canViewBonusAmounts}
+        user={user}
       />
     </EntityDetailShell>
   );

@@ -1,7 +1,7 @@
 import type { Client } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { writeEntityAuditLog, writeTrackedFieldAuditLogs } from "@/modules/crm/audit-helpers";
-import { expireViolationsForEntity, syncClientDiscipline } from "@/modules/crm-discipline/service";
+import { syncClientDiscipline } from "@/modules/crm-discipline/entity-sync";
 import { toClientDocument, type ClientFormData } from "@/modules/clients/form";
 import { clientTrackedFields } from "@/modules/clients/services/audit";
 
@@ -60,33 +60,5 @@ export async function updateClient(id: string, before: Client, data: ClientFormD
   });
 
   await syncClientDiscipline(id, userId);
-  return after;
-}
-
-export async function archiveClient(id: string, before: Client, userId: string) {
-  const after = await prisma.$transaction(async (tx) => {
-    const archived = await tx.client.update({
-      where: { id },
-      data: {
-        status: "ARCHIVED",
-        archivedAt: new Date(),
-        updatedAt: new Date()
-      }
-    });
-
-    await writeEntityAuditLog({
-      entityType: "CLIENT",
-      entityId: id,
-      action: "ARCHIVE",
-      userId,
-      before,
-      after: archived,
-      client: tx
-    });
-
-    return archived;
-  });
-
-  await expireViolationsForEntity("CLIENT", id, userId);
   return after;
 }

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
-import { Archive, Edit, Table2 } from "lucide-react";
+import { Archive, Edit, RotateCcw, Table2 } from "lucide-react";
 import { CrmDisciplinePanel } from "@/components/crm/discipline/panel";
 import { PageNoticeStack, type PageNotice } from "@/components/layout/page-notice";
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,8 @@ export function EntityPageHeader({
   canEdit,
   archiveAction,
   canArchive,
+  restoreAction,
+  canRestore,
   actions
 }: {
   title: ReactNode;
@@ -24,6 +26,8 @@ export function EntityPageHeader({
   canEdit?: boolean;
   archiveAction?: () => Promise<void>;
   canArchive?: boolean;
+  restoreAction?: () => Promise<void>;
+  canRestore?: boolean;
   actions?: ReactNode;
 }) {
   return (
@@ -58,6 +62,14 @@ export function EntityPageHeader({
             </Button>
           </form>
         ) : null}
+        {canRestore && restoreAction ? (
+          <form action={restoreAction}>
+            <Button type="submit" variant="secondary">
+              <RotateCcw className="h-4 w-4" />
+              Восстановить
+            </Button>
+          </form>
+        ) : null}
       </div>
     </div>
   );
@@ -72,6 +84,8 @@ export function EntityDetailShell({
   canEdit,
   archiveAction,
   canArchive,
+  restoreAction,
+  canRestore,
   actions,
   notices,
   discipline,
@@ -85,6 +99,8 @@ export function EntityDetailShell({
   canEdit?: boolean;
   archiveAction?: () => Promise<void>;
   canArchive?: boolean;
+  restoreAction?: () => Promise<void>;
+  canRestore?: boolean;
   actions?: ReactNode;
   notices?: PageNotice[];
   discipline?: ComponentProps<typeof CrmDisciplinePanel>;
@@ -101,6 +117,8 @@ export function EntityDetailShell({
         canEdit={canEdit}
         archiveAction={archiveAction}
         canArchive={canArchive}
+        restoreAction={restoreAction}
+        canRestore={canRestore}
         actions={actions}
       />
       {notices ? <PageNoticeStack notices={notices} /> : null}

@@ -9,8 +9,9 @@ import { enumParam, flagParam } from "@/modules/crm/param-parsing";
 import { pageFromParam } from "@/modules/crm/pagination";
 import { userSummarySelect } from "@/modules/crm/selects";
 import { withCrmViolations } from "@/modules/crm/violation-enrichment";
-import { taskInclude } from "@/modules/tasks/queries";
-import { computeBonusEligibilityStatus, getActiveViolationsForEntity } from "@/modules/crm-discipline/service";
+import { taskInclude } from "@/modules/tasks/query-shared";
+import { computeBonusEligibilityStatus } from "@/modules/crm-discipline/bonus";
+import { getActiveViolationsForEntity } from "@/modules/crm-discipline/queries";
 import { canViewRecord, type PermissionUser } from "@/permissions";
 
 export type ClientListSearchParams = {
@@ -20,6 +21,7 @@ export type ClientListSearchParams = {
   status?: string;
   responsibleId?: string;
   noNextContact?: string;
+  archived?: string;
   sort?: string;
   page?: string;
 };
@@ -48,6 +50,7 @@ export async function getClients(params: ClientListSearchParams, user: Permissio
   if (status) filters.push({ status });
   if (params.responsibleId) filters.push({ responsibleId: params.responsibleId });
   if (flagParam(params.noNextContact)) filters.push({ nextContactAt: null });
+  filters.push(flagParam(params.archived) ? { archivedAt: { not: null } } : { archivedAt: null });
 
   const where: Prisma.ClientWhereInput = { AND: filters };
 

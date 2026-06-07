@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { BorderedListItem } from "@/components/ui/bordered-list-item";
 import { Button } from "@/components/ui/button";
 import { ignoreCrmViolationAction } from "@/modules/crm-discipline/actions";
-import { crmViolationSeverityLabels } from "@/modules/crm-discipline/service";
+import { crmViolationSeverityLabels } from "@/modules/crm-discipline/bonus";
 import { canIgnoreCrmViolation, type PermissionUser } from "@/permissions";
 import { formatRussianDate } from "@/utils/date";
 import type { CrmViolationView } from "./types";

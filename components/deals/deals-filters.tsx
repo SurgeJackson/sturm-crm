@@ -27,7 +27,8 @@ const shortcutLabels: Record<string, string> = {
   noAmount: "Без суммы",
   highProbability: "Высокая вероятность",
   lost: "Проигранные",
-  active: "Активные"
+  active: "Активные",
+  archived: "Архивные"
 };
 
 function optionLabel(options: Array<{ value: string; label: string }>, value?: string) {
@@ -103,7 +104,8 @@ export function DealsFilters({
             { label: "Без суммы", patch: { noAmount: "1", page: undefined } },
             { label: "Высокая вероятность", patch: { highProbability: "1", page: undefined } },
             { label: "Проигранные", patch: { lost: "1", page: undefined } },
-            { label: "Активные", patch: { active: "1", page: undefined } }
+            { label: "Активные", patch: { active: "1", page: undefined } },
+            { label: "Архивные", patch: { archived: "1", page: undefined } }
           ]}
         />
       </FilterActions>

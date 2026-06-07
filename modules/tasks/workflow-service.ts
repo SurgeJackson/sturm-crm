@@ -1,7 +1,7 @@
 import type { TaskActivity } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { writeEntityAuditLog } from "@/modules/crm/audit-helpers";
-import { expireViolationsForEntity } from "@/modules/crm-discipline/service";
+import { expireViolationsForEntity } from "@/modules/crm-discipline/violation-sync";
 import { toTaskDocument, type TaskFormData } from "@/modules/tasks/form";
 import type { resolveTaskLinks } from "@/modules/tasks/link-resolver";
 import { createNextStepTask } from "@/modules/tasks/next-step-service";

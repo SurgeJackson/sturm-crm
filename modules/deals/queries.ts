@@ -10,8 +10,9 @@ import { enumParam, flagParam } from "@/modules/crm/param-parsing";
 import { pageFromParam } from "@/modules/crm/pagination";
 import { clientNameSelect, designerNameSelect, objectTitleSelect, userSummarySelect } from "@/modules/crm/selects";
 import { withCrmViolations } from "@/modules/crm/violation-enrichment";
-import { taskInclude } from "@/modules/tasks/queries";
-import { computeBonusEligibilityStatus, getActiveViolationsForEntity } from "@/modules/crm-discipline/service";
+import { taskInclude } from "@/modules/tasks/query-shared";
+import { computeBonusEligibilityStatus } from "@/modules/crm-discipline/bonus";
+import { getActiveViolationsForEntity } from "@/modules/crm-discipline/queries";
 import { canViewRecord, type PermissionUser } from "@/permissions";
 
 export type DealListSearchParams = {
@@ -29,6 +30,7 @@ export type DealListSearchParams = {
   active?: string;
   noAmount?: string;
   highProbability?: string;
+  archived?: string;
   sort?: string;
   page?: string;
 };
@@ -74,6 +76,7 @@ export async function getDeals(params: DealListSearchParams, user: PermissionUse
   if (flagParam(params.active)) filters.push(activeDealWhere());
   if (flagParam(params.noAmount)) filters.push({ potentialAmount: null });
   if (flagParam(params.highProbability)) filters.push({ probability: { in: ["HIGH", "VERY_HIGH"] } });
+  filters.push(flagParam(params.archived) ? { archivedAt: { not: null } } : { archivedAt: null });
 
   const where: Prisma.DealWhereInput = { AND: filters };
   const orderBy = sortFromParam<Prisma.DealOrderByWithRelationInput>(params.sort, {

@@ -12,11 +12,12 @@ import {
 import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { commercialProposalStatusLabels } from "@/lib/constants";
 import type { getProjectObjectForUser } from "@/modules/objects/queries";
+import { canViewSensitiveFields, type PermissionUser } from "@/permissions";
 import { formatRussianDate } from "@/utils/date";
 
 type ObjectDetail = Awaited<ReturnType<typeof getProjectObjectForUser>>;
 
-export function ObjectProposalsTable({ proposals }: { proposals: ObjectDetail["proposals"] }) {
+export function ObjectProposalsTable({ proposals, user }: { proposals: ObjectDetail["proposals"]; user: PermissionUser }) {
   return (
     <TableCard title="КП">
       <TableHeader>
@@ -40,7 +41,7 @@ export function ObjectProposalsTable({ proposals }: { proposals: ObjectDetail["p
             <BadgeCell cellLabel="Статус" variant={proposalStatusVariant(proposal.status)}>
               {commercialProposalStatusLabels[proposal.status]}
             </BadgeCell>
-            <MoneyCell cellLabel="Сумма" value={proposal.amount} />
+            <MoneyCell cellLabel="Сумма" value={canViewSensitiveFields(user, proposal) ? proposal.amount : null} emptyText="Скрыто" />
             <VersionCell cellLabel="Версия" value={proposal.version} />
             <DateCell cellLabel="Follow-up">{formatRussianDate(proposal.nextTouchAt)}</DateCell>
             <TableCell label="Ответственный">{proposal.responsible.name}</TableCell>

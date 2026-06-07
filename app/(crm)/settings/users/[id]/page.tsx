@@ -10,7 +10,7 @@ import { canAccessSettings } from "@/permissions";
 
 type UserPageProps = {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ activated?: string; deactivated?: string; roleChanged?: string; passwordReset?: string; error?: string }>;
+  searchParams: Promise<{ activated?: string; deactivated?: string; roleChanged?: string; passwordReset?: string; handover?: string; error?: string }>;
 };
 
 export default async function SettingsUserPage({ params, searchParams }: UserPageProps) {
@@ -26,7 +26,12 @@ export default async function SettingsUserPage({ params, searchParams }: UserPag
       <PageHeader
         title={detail.user.name}
         description={detail.user.email}
-        actions={<Button asChild variant="outline"><Link href="/settings/users">К списку</Link></Button>}
+        actions={
+          <>
+            <Button asChild variant="outline"><Link href="/settings/users">К списку</Link></Button>
+            <Button asChild variant="secondary"><Link href={`/settings/users/${detail.user.id}/handover`}>Передать дела</Link></Button>
+          </>
+        }
       />
       <PageNoticeStack
         notices={[
@@ -34,6 +39,7 @@ export default async function SettingsUserPage({ params, searchParams }: UserPag
           { show: Boolean(query.deactivated), message: "Пользователь деактивирован." },
           { show: Boolean(query.roleChanged), message: "Роль изменена." },
           { show: Boolean(query.passwordReset), message: "Письмо восстановления пароля отправлено." },
+          { show: Boolean(query.handover), message: "Ответственные записи переданы." },
           { show: Boolean(query.error), tone: "destructive", message: query.error === "selfDeactivate" ? "Нельзя деактивировать свою учетную запись." : "Действие недоступно." }
         ]}
       />

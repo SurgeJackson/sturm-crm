@@ -25,7 +25,8 @@ const shortcutLabels: Record<string, string> = {
   noParticipants: "Без участников",
   noTasks: "Без задач",
   frozen: "Замороженные",
-  lost: "Потерянные"
+  lost: "Потерянные",
+  archived: "Архивные"
 };
 
 function optionLabel(options: Array<{ value: string; label: string }>, value?: string) {
@@ -94,6 +95,7 @@ export function ObjectsFilters({
             { label: "В согласовании", patch: { stage: "APPROVAL", page: undefined } },
             { label: "Замороженные", patch: { frozen: "1", page: undefined } },
             { label: "Потерянные", patch: { lost: "1", page: undefined } }
+            ,{ label: "Архивные", patch: { archived: "1", page: undefined } }
           ]}
         />
       </FilterActions>

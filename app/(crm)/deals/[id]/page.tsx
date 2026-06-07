@@ -5,13 +5,15 @@ import { DealDetailTabs } from "@/components/crm/detail-tabs/deal-detail-tabs";
 import { EntityDetailShell } from "@/components/crm/detail-page";
 import { DealLossDialog } from "@/components/deals/deal-loss-dialog";
 import { getAuditLogs } from "@/lib/audit-log";
-import { archiveDealAction, closeDealAsLostAction } from "@/modules/deals/actions";
+import { closeDealAsLostAction } from "@/modules/deals/actions";
 import { getDealForUser } from "@/modules/deals/queries";
-import { canArchiveRecord, canCloseDealAsLost, canCreateTask, canEditRecord, canViewDesignerBonusAmounts } from "@/permissions";
+import { archiveEntityAction, restoreEntityAction } from "@/modules/security/entity-actions";
+import { recordEntityView } from "@/modules/security/activity";
+import { canArchiveEntity, canCloseDealAsLost, canCreateTask, canEditRecord, canRestoreEntity, canViewDesignerBonusAmounts } from "@/permissions";
 
 type DealPageProps = {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ saved?: string; archived?: string; lost?: string; error?: string }>;
+  searchParams: Promise<{ saved?: string; archived?: string; restored?: string; lost?: string; error?: string }>;
 };
 
 export default async function DealPage({ params, searchParams }: DealPageProps) {
@@ -24,7 +26,9 @@ export default async function DealPage({ params, searchParams }: DealPageProps) 
     getDealForUser(id, user),
     getAuditLogs("DEAL", id)
   ]);
-  const archiveAction = archiveDealAction.bind(null, id);
+  const archiveAction = archiveEntityAction.bind(null, "DEAL", id);
+  const restoreAction = restoreEntityAction.bind(null, "DEAL", id);
+  await recordEntityView(user.id, "DEAL", id);
   const lossAction = closeDealAsLostAction.bind(null, id);
 
   return (
@@ -38,10 +42,13 @@ export default async function DealPage({ params, searchParams }: DealPageProps) 
         <DealLossDialog action={lossAction} />
       ) : null}
       archiveAction={archiveAction}
-      canArchive={canArchiveRecord(user, deal) && !deal.archivedAt}
+      canArchive={canArchiveEntity(user, deal) && !deal.archivedAt}
+      restoreAction={restoreAction}
+      canRestore={canRestoreEntity(user, deal)}
       notices={[
         { show: Boolean(query.saved), message: "Сделка сохранена." },
         { show: Boolean(query.archived), message: "Сделка архивирована." },
+        { show: Boolean(query.restored), message: "Сделка восстановлена." },
         { show: Boolean(query.lost), message: "Сделка закрыта как проигранная." },
         { show: query.error === "lossReason", tone: "destructive", message: "Укажите причину проигрыша сделки." },
         { show: Boolean(query.error && query.error !== "lossReason"), tone: "destructive", message: "Действие недоступно для вашей роли." }
@@ -56,7 +63,7 @@ export default async function DealPage({ params, searchParams }: DealPageProps) 
       }}
     >
 
-      <DealDetailTabs deal={deal} auditLogs={auditLogs} canCreateTasks={canCreateTask(user)} canViewBonusAmounts={canViewDesignerBonusAmounts(user, deal.designer)} />
+      <DealDetailTabs deal={deal} auditLogs={auditLogs} canCreateTasks={canCreateTask(user)} canViewBonusAmounts={canViewDesignerBonusAmounts(user, deal.designer)} user={user} />
     </EntityDetailShell>
   );
 }

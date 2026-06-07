@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { daysAgo, daysFromNow } from "@/modules/crm/date-ranges";
 import { closedDealStages, closedTaskStatuses } from "@/modules/crm/domain-constants";
 import { toAuditValue } from "@/modules/crm/form-utils";
-import { syncTaskDiscipline } from "@/modules/crm-discipline/service";
+import { syncTaskDiscipline } from "@/modules/crm-discipline/entity-sync";
 
 export type AutomaticTaskInput = {
   title: string;

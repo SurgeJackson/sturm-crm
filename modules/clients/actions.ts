@@ -3,13 +3,13 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
 import {
-  canArchiveRecord,
   canChangeRecordResponsible,
   canCreateClient,
   canEditRecord
 } from "@/permissions";
 import { parseClientForm } from "@/modules/clients/form";
-import { archiveClient, createClient, getClientForMutation, updateClient } from "@/modules/clients/service";
+import { getClientForMutation } from "@/modules/clients/services/queries";
+import { createClient, updateClient } from "@/modules/clients/services/workflow";
 
 export type ClientActionState = {
   errors?: Record<string, string[]>;
@@ -63,25 +63,4 @@ export async function updateClientAction(id: string, _prevState: ClientActionSta
   await updateClient(id, before, parsed.data, responsibleId, user.id);
 
   redirect(`/clients/${id}?saved=1`);
-}
-
-export async function archiveClientAction(id: string) {
-  const user = await getCurrentUser();
-
-  if (!user) {
-    redirect("/login");
-  }
-
-  const before = await getClientForMutation(id);
-
-  if (!before || !canArchiveRecord(user, {
-    createdById: before.createdById,
-    responsibleId: before.responsibleId
-  })) {
-    redirect(`/clients/${id}?error=archive`);
-  }
-
-  await archiveClient(id, before, user.id);
-
-  redirect(`/clients/${id}?archived=1`);
 }

@@ -5,7 +5,7 @@ import { Menu } from "lucide-react";
 import type { UserRole } from "@/generated/prisma/client";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { canAccessSettings, canViewDesignerBonusReports, canViewPayments, canViewReports } from "@/permissions";
+import { canAccessSettings, canViewDesignerBonusReports, canViewPayments, canViewReports, canViewSecurityLog } from "@/permissions";
 
 const mobileLinks = [
   { href: "/", label: "Рабочий стол" },
@@ -18,6 +18,7 @@ const mobileLinks = [
   { href: "/designer-bonuses/accruals", label: "Бонусы дизайнеров" },
   { href: "/tasks", label: "Задачи / касания" },
   { href: "/reports", label: "Отчеты" },
+  { href: "/security", label: "Безопасность" },
   { href: "/settings", label: "Настройки" }
 ];
 
@@ -52,6 +53,10 @@ export function MobileNav({ user }: MobileNavProps) {
             }
 
             if (link.href === "/settings" && !canAccessSettings(user)) {
+              return null;
+            }
+
+            if (link.href === "/security" && !canViewSecurityLog(user)) {
               return null;
             }
 

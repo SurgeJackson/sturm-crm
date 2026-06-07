@@ -35,9 +35,39 @@ export function canViewAllData(user?: PermissionUser | null) {
   return leadershipRoles.has(user.role);
 }
 
+export function canViewAllClients(user?: PermissionUser | null) {
+  return canViewAllData(user);
+}
+
+export function canViewAllDesigners(user?: PermissionUser | null) {
+  return canViewAllData(user);
+}
+
+export function canViewAllObjects(user?: PermissionUser | null) {
+  return canViewAllData(user);
+}
+
+export function canViewAllDeals(user?: PermissionUser | null) {
+  return canViewAllData(user);
+}
+
+export function canViewAllProposals(user?: PermissionUser | null) {
+  return canViewAllData(user);
+}
+
 export function canManageUsers(user?: PermissionUser | null) {
   if (!isActive(user)) return false;
   return elevatedRoles.has(user.role);
+}
+
+export function canManageRoles(user?: PermissionUser | null) {
+  if (!isActive(user)) return false;
+  return user.role === "OWNER";
+}
+
+export function canDeactivateUser(user?: PermissionUser | null) {
+  if (!isActive(user)) return false;
+  return user.role === "OWNER";
 }
 
 export function canAccessSettings(user?: PermissionUser | null) {
@@ -58,6 +88,31 @@ export function canDeleteOrArchive(user?: PermissionUser | null) {
 export function canViewReports(user?: PermissionUser | null) {
   if (!isActive(user)) return false;
   return leadershipRoles.has(user.role);
+}
+
+export function canExportAllData(user?: PermissionUser | null) {
+  if (!isActive(user)) return false;
+  return user.role === "OWNER";
+}
+
+export function canExportReports(user?: PermissionUser | null) {
+  if (!isActive(user)) return false;
+  return user.role === "OWNER" || user.role === "SALES_LEAD";
+}
+
+export function canViewAuditLog(user?: PermissionUser | null) {
+  if (!isActive(user)) return false;
+  return user.role === "OWNER" || user.role === "SALES_LEAD";
+}
+
+export function canViewSecurityLog(user?: PermissionUser | null) {
+  if (!isActive(user)) return false;
+  return user.role === "OWNER";
+}
+
+export function canRunSecurityCheck(user?: PermissionUser | null) {
+  if (!isActive(user)) return false;
+  return user.role === "OWNER";
 }
 
 export function canIgnoreCrmViolation(user?: PermissionUser | null) {
@@ -159,6 +214,20 @@ export function canArchiveRecord(user: PermissionUser | null | undefined, record
   return false;
 }
 
+export function canArchiveEntity(user: PermissionUser | null | undefined, entity: OwnedRecord) {
+  return canArchiveRecord(user, entity);
+}
+
+export function canRestoreEntity(user: PermissionUser | null | undefined, entity: OwnedRecord) {
+  if (!isActive(user)) return false;
+  return Boolean(entity.archivedAt && leadershipRoles.has(user.role));
+}
+
+export function canHardDelete(user?: PermissionUser | null) {
+  if (!isActive(user)) return false;
+  return user.role === "OWNER" && process.env.ALLOW_OWNER_HARD_DELETE === "1";
+}
+
 export function canChangeRecordResponsible(user?: PermissionUser | null) {
   return canChangeResponsible(user);
 }
@@ -166,6 +235,20 @@ export function canChangeRecordResponsible(user?: PermissionUser | null) {
 export function canViewPayments(user?: PermissionUser | null) {
   if (!isActive(user)) return false;
   return user.role === "OWNER" || user.role === "SALES_LEAD";
+}
+
+export function canViewSensitiveFields(user: PermissionUser | null | undefined, entity?: OwnedRecord | null) {
+  if (!isActive(user) || user.role === "ADMINISTRATOR") return false;
+  if (user.role === "OWNER" || user.role === "SALES_LEAD") return true;
+  return Boolean(user.id && entity && (entity.createdById === user.id || entity.responsibleId === user.id));
+}
+
+export function canViewCommercialTerms(user: PermissionUser | null | undefined, entity?: OwnedRecord | null) {
+  return canViewSensitiveFields(user, entity);
+}
+
+export function canDownloadProposalFile(user: PermissionUser | null | undefined, proposal: OwnedRecord) {
+  return canViewRecord(user, proposal);
 }
 
 export function canCreatePayment(user?: PermissionUser | null) {

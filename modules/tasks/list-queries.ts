@@ -19,7 +19,7 @@ import {
 export async function getTasks(params: TaskListSearchParams, user: PermissionUser) {
   const page = pageFromParam(params.page);
   const now = new Date();
-  const filters: Prisma.TaskActivityWhereInput[] = [taskAccessWhere(user), { archivedAt: null }];
+  const filters: Prisma.TaskActivityWhereInput[] = [taskAccessWhere(user), flagParam(params.archived) ? { archivedAt: { not: null } } : { archivedAt: null }];
 
   if (params.q) {
     filters.push({

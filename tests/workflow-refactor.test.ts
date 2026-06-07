@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest";
 import type { Client, CommercialProposal, Deal, Designer } from "../generated/prisma/client";
-import { clientTrackedFields } from "../modules/clients/service";
-import { designerTrackedFields } from "../modules/designers/service";
+import { clientTrackedFields } from "../modules/clients/services/audit";
+import { designerTrackedFields } from "../modules/designers/services/audit";
 import { fallbackReportCsv } from "../modules/reports/exporters";
-import { dealStatusAuditEvents, dealTrackedFields } from "../modules/deals/service";
-import { proposalStatusAuditEvents, proposalTrackedFields } from "../modules/proposals/service";
-import { taskAuditAction } from "../modules/tasks/service";
+import { dealStatusAuditEvents, dealTrackedFields } from "../modules/deals/services/audit";
+import { proposalStatusAuditEvents, proposalTrackedFields } from "../modules/proposals/services/audit";
+import { taskAuditAction } from "../modules/tasks/workflow-service";
 
 describe("deal workflow helpers", () => {
   it("detects completed and lost status audit events", () => {

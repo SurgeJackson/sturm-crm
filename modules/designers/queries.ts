@@ -13,8 +13,9 @@ import { paginatedQuery, sortFromParam } from "@/modules/crm/list-query";
 import { enumParam, flagParam } from "@/modules/crm/param-parsing";
 import { pageFromParam } from "@/modules/crm/pagination";
 import { userSummarySelect } from "@/modules/crm/selects";
-import { taskInclude } from "@/modules/tasks/queries";
-import { computeBonusEligibilityStatus, getActiveViolationsForEntity, getActiveViolationsMap } from "@/modules/crm-discipline/service";
+import { taskInclude } from "@/modules/tasks/query-shared";
+import { computeBonusEligibilityStatus } from "@/modules/crm-discipline/bonus";
+import { getActiveViolationsForEntity, getActiveViolationsMap } from "@/modules/crm-discipline/queries";
 import { canViewRecord, type PermissionUser } from "@/permissions";
 
 export type DesignerListSearchParams = {
@@ -26,6 +27,7 @@ export type DesignerListSearchParams = {
   responsibleId?: string;
   noNextStep?: string;
   noTouch60?: string;
+  archived?: string;
   sort?: string;
   page?: string;
 };
@@ -64,6 +66,7 @@ export async function getDesigners(params: DesignerListSearchParams, user: Permi
     threshold.setDate(threshold.getDate() - 60);
     filters.push({ OR: [{ lastTouchAt: null }, { lastTouchAt: { lt: threshold } }] });
   }
+  filters.push(flagParam(params.archived) ? { archivedAt: { not: null } } : { archivedAt: null });
 
   const where: Prisma.DesignerWhereInput = { AND: filters };
 

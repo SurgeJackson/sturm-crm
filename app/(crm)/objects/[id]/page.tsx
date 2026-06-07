@@ -9,18 +9,20 @@ import { ObjectDetailTabs } from "@/components/crm/detail-tabs/object-detail-tab
 import { Button } from "@/components/ui/button";
 import { getAuditLogs } from "@/lib/audit-log";
 import {
-  archiveProjectObjectAction,
   archiveProjectObjectParticipantAction,
   moveDesignerToFirstObjectReceivedAction
 } from "@/modules/objects/actions";
 import { getProjectObjectForUser } from "@/modules/objects/queries";
-import { canArchiveRecord, canCreateTask, canEditRecord, canManageObjectParticipants, canViewDesignerBonusAmounts } from "@/permissions";
+import { archiveEntityAction, restoreEntityAction } from "@/modules/security/entity-actions";
+import { recordEntityView } from "@/modules/security/activity";
+import { canArchiveEntity, canCreateTask, canEditRecord, canManageObjectParticipants, canRestoreEntity, canViewDesignerBonusAmounts } from "@/permissions";
 
 type ObjectPageProps = {
   params: Promise<{ id: string }>;
   searchParams: Promise<{
     saved?: string;
     archived?: string;
+    restored?: string;
     participantSaved?: string;
     participantArchived?: string;
     designerStage?: string;
@@ -68,7 +70,9 @@ export default async function ObjectPage({ params, searchParams }: ObjectPagePro
     getProjectObjectForUser(id, user),
     getAuditLogs("OBJECT", id)
   ]);
-  const archiveAction = archiveProjectObjectAction.bind(null, id);
+  const archiveAction = archiveEntityAction.bind(null, "OBJECT", id);
+  const restoreAction = restoreEntityAction.bind(null, "OBJECT", id);
+  await recordEntityView(user.id, "OBJECT", id);
   const moveDesignerStageAction = moveDesignerToFirstObjectReceivedAction.bind(null, id);
   const archiveParticipantAction = (participantId: string) => archiveProjectObjectParticipantAction.bind(null, id, participantId);
   const canManageParticipants = canManageObjectParticipants(user, projectObject);
@@ -81,10 +85,13 @@ export default async function ObjectPage({ params, searchParams }: ObjectPagePro
       editHref={`/objects/${id}/edit`}
       canEdit={canEditRecord(user, projectObject)}
       archiveAction={archiveAction}
-      canArchive={canArchiveRecord(user, projectObject) && !projectObject.archivedAt}
+      canArchive={canArchiveEntity(user, projectObject) && !projectObject.archivedAt}
+      restoreAction={restoreAction}
+      canRestore={canRestoreEntity(user, projectObject)}
       notices={[
         { show: Boolean(query.saved), message: "Объект сохранен." },
         { show: Boolean(query.archived), message: "Объект архивирован." },
+        { show: Boolean(query.restored), message: "Объект восстановлен." },
         { show: Boolean(query.participantSaved), message: "Участник сохранен." },
         { show: Boolean(query.participantArchived), message: "Участник архивирован." },
         { show: Boolean(query.designerStage), message: "Этап дизайнера обновлен." },
@@ -123,6 +130,7 @@ export default async function ObjectPage({ params, searchParams }: ObjectPagePro
         canManageParticipants={canManageParticipants}
         archiveParticipantAction={archiveParticipantAction}
         canViewBonusAmounts={canViewDesignerBonusAmounts(user, projectObject.designer)}
+        user={user}
       />
     </EntityDetailShell>
   );

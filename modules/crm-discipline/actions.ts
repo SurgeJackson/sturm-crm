@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { ignoreCrmViolation } from "@/modules/crm-discipline/service";
+import { ignoreCrmViolation } from "@/modules/crm-discipline/mutations";
 import { canIgnoreCrmViolation } from "@/permissions";
 
 export async function ignoreCrmViolationAction(id: string, returnTo: string) {

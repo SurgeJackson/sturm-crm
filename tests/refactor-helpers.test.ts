@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { roleLabels } from "../lib/constants";
 import { enumParam, flagParam, upperEnumParam } from "../modules/crm/param-parsing";
 import { namedAmountRows, namedCountRows, uniqueIds } from "../modules/dashboard/utils";
-import { isFrozenObjectTransition } from "../modules/objects/service";
+import { isFrozenObjectTransition } from "../modules/objects/services/transitions";
 import type { TaskActivity } from "../generated/prisma/client";
 import { automaticTaskCreateData, automaticTaskDedupeWhere } from "../modules/tasks/automatic-tasks";
 import { nextStepTaskCreateData } from "../modules/tasks/next-step-service";

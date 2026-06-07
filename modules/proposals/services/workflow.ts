@@ -1,7 +1,7 @@
 import type { CommercialProposal } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { writeEntityAuditLog, writeTrackedFieldAuditLogs } from "@/modules/crm/audit-helpers";
-import { expireViolationsForEntity, syncProposalDiscipline } from "@/modules/crm-discipline/service";
+import { syncProposalDiscipline } from "@/modules/crm-discipline/entity-sync";
 import { toProposalDocument, type ProposalFileData, type ProposalFormData } from "@/modules/proposals/form";
 import { proposalStatusAuditEvents, proposalTrackedFields } from "@/modules/proposals/services/audit";
 import { createProposalFollowUpTask } from "@/modules/proposals/services/follow-up";
@@ -127,29 +127,5 @@ export async function updateProposal(input: {
   if (input.before.status !== "SENT" && after.status === "SENT") await createProposalFollowUpTask(after);
   await syncProposalDiscipline(input.id, input.userId);
 
-  return after;
-}
-
-export async function archiveProposal(id: string, before: CommercialProposal, userId: string) {
-  const after = await prisma.$transaction(async (tx) => {
-    const archived = await tx.commercialProposal.update({
-      where: { id },
-      data: { status: "ARCHIVED", archivedAt: new Date() }
-    });
-
-    await writeEntityAuditLog({
-      entityType: "PROPOSAL",
-      entityId: id,
-      action: "ARCHIVE",
-      userId,
-      before,
-      after: archived,
-      client: tx
-    });
-
-    return archived;
-  });
-
-  await expireViolationsForEntity("PROPOSAL", id, userId);
   return after;
 }

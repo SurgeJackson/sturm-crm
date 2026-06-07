@@ -1,7 +1,7 @@
 import type { CommercialProposal, DealStage } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { writeEntityAuditLog } from "@/modules/crm/audit-helpers";
-import { syncDealDiscipline } from "@/modules/crm-discipline/service";
+import { syncDealDiscipline } from "@/modules/crm-discipline/entity-sync";
 
 export async function moveDealToInvoiceFromProposal(
   proposal: CommercialProposal & { deal: { stage: DealStage } },

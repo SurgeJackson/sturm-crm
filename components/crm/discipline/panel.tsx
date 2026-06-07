@@ -8,7 +8,7 @@ import {
   computeBonusEligibilityStatus,
   crmDisciplineStatus,
   crmEntityHref
-} from "@/modules/crm-discipline/service";
+} from "@/modules/crm-discipline/bonus";
 import type { PermissionUser } from "@/permissions";
 import type { CrmViolationView } from "./types";
 import { CrmViolationItem } from "./violation-item";

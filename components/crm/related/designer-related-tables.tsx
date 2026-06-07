@@ -15,6 +15,7 @@ import {
   objectStatusLabels
 } from "@/lib/constants";
 import type { getDesignerForUser } from "@/modules/designers/queries";
+import { canViewSensitiveFields, type PermissionUser } from "@/permissions";
 
 type DesignerDetail = Awaited<ReturnType<typeof getDesignerForUser>>;
 
@@ -76,7 +77,7 @@ export function DesignerDealsTable({ deals }: { deals: DesignerDetail["deals"] }
   );
 }
 
-export function DesignerProposalsTable({ proposals }: { proposals: DesignerDetail["proposals"] }) {
+export function DesignerProposalsTable({ proposals, user }: { proposals: DesignerDetail["proposals"]; user: PermissionUser }) {
   return (
     <TableCard title="КП по объектам дизайнера">
       <TableHeader>
@@ -100,7 +101,7 @@ export function DesignerProposalsTable({ proposals }: { proposals: DesignerDetai
             <BadgeCell cellLabel="Статус" variant={proposalStatusVariant(proposal.status)}>
               {commercialProposalStatusLabels[proposal.status]}
             </BadgeCell>
-            <MoneyCell cellLabel="Сумма" value={proposal.amount} />
+            <MoneyCell cellLabel="Сумма" value={canViewSensitiveFields(user, proposal) ? proposal.amount : null} emptyText="Скрыто" />
             <TableCell label="Ответственный">{proposal.responsible.name}</TableCell>
           </TableRow>
         ))}

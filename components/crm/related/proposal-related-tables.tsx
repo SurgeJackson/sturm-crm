@@ -13,6 +13,7 @@ import {
 import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { commercialProposalStatusLabels } from "@/lib/constants";
 import type { getProposalVersionGroup } from "@/modules/proposals/queries";
+import { canViewSensitiveFields, type PermissionUser } from "@/permissions";
 import { formatRussianDate } from "@/utils/date";
 
 type ProposalVersion = Awaited<ReturnType<typeof getProposalVersionGroup>>[number];
@@ -20,11 +21,13 @@ type ProposalVersion = Awaited<ReturnType<typeof getProposalVersionGroup>>[numbe
 export function ProposalVersionsTable({
   versions,
   canCreateVersion,
-  createVersionAction
+  createVersionAction,
+  user
 }: {
   versions: ProposalVersion[];
   canCreateVersion: boolean;
   createVersionAction: () => Promise<void>;
+  user: PermissionUser;
 }) {
   return (
     <TableCard
@@ -54,11 +57,11 @@ export function ProposalVersionsTable({
             <EntityLinkCell cellLabel="Номер" href={`/proposals/${item.id}`} title={item.proposalNumber} />
             <VersionCell cellLabel="Версия" value={item.version} />
             <DateCell cellLabel="Дата">{formatRussianDate(item.createdAt)}</DateCell>
-            <MoneyCell cellLabel="Сумма" value={item.amount} />
+            <MoneyCell cellLabel="Сумма" value={canViewSensitiveFields(user, item) ? item.amount : null} emptyText="Скрыто" />
             <BadgeCell cellLabel="Статус" variant={proposalStatusVariant(item.status)}>
               {commercialProposalStatusLabels[item.status]}
             </BadgeCell>
-            <FileLinkCell cellLabel="Файл" href={item.fileUrl} />
+            <FileLinkCell cellLabel="Файл" href={item.fileUrl ? `/api/proposals/${item.id}/download` : null} />
             <TableCell label="Ответственный">{item.responsible.name}</TableCell>
           </TableRow>
         ))}

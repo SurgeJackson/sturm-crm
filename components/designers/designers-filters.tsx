@@ -38,7 +38,8 @@ export function DesignersFilters({ params, users }: { params: DesignerListSearch
     params.responsibleId ? { key: "responsibleId", label: "Ответственный", value: users.find((user) => user.id === params.responsibleId)?.name ?? params.responsibleId, href: filterShortcutHref("/designers", params, { responsibleId: undefined, page: undefined }) } : null,
     params.sort ? { key: "sort", label: "Сортировка", value: sortLabels[params.sort] ?? params.sort, href: filterShortcutHref("/designers", params, { sort: undefined, page: undefined }) } : null,
     params.noNextStep === "1" ? { key: "noNextStep", label: "Шаг", value: "Без следующего шага", href: filterShortcutHref("/designers", params, { noNextStep: undefined, page: undefined }) } : null,
-    params.noTouch60 === "1" ? { key: "noTouch60", label: "Касания", value: "Нет 60+ дней", href: filterShortcutHref("/designers", params, { noTouch60: undefined, page: undefined }) } : null
+    params.noTouch60 === "1" ? { key: "noTouch60", label: "Касания", value: "Нет 60+ дней", href: filterShortcutHref("/designers", params, { noTouch60: undefined, page: undefined }) } : null,
+    params.archived === "1" ? { key: "archived", label: "Архив", value: "Архивные", href: filterShortcutHref("/designers", params, { archived: undefined, page: undefined }) } : null
   ].filter(Boolean) as ActiveFilter[];
 
   return (
@@ -57,6 +58,7 @@ export function DesignersFilters({ params, users }: { params: DesignerListSearch
       <FilterCheckbox name="noTouch60" defaultChecked={params.noTouch60 === "1"}>
         Без касаний 60+ дней
       </FilterCheckbox>
+      <FilterCheckbox name="archived" defaultChecked={params.archived === "1"}>Архивные</FilterCheckbox>
       <FilterSelect name="sort" defaultValue={params.sort} placeholder="Сначала новые">
         <option value="name">По имени</option>
         <option value="nextStepAt">По следующему шагу</option>

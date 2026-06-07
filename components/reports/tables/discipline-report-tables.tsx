@@ -1,7 +1,7 @@
 import { bonusVariant } from "@/components/crm/discipline/variants";
 import { BadgeCell, BooleanCell, DateCell, EntityLinkCell, EmptyTableRow, TableCard } from "@/components/ui/data-table";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { bonusEligibilityLabels } from "@/modules/crm-discipline/service";
+import { bonusEligibilityLabels } from "@/modules/crm-discipline/bonus";
 import type { getBonusEligibilityReport, getMyReport } from "@/modules/reports/queries";
 import { formatRussianDate } from "@/utils/date";
 

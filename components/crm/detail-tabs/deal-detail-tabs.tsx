@@ -11,6 +11,7 @@ import {
 } from "@/lib/constants";
 import type { getAuditLogs } from "@/lib/audit-log";
 import type { getDealForUser } from "@/modules/deals/queries";
+import type { PermissionUser } from "@/permissions";
 import { formatRussianDate } from "@/utils/date";
 import { formatMoney } from "@/utils/money";
 import { paymentSignedAmount } from "@/utils/payments";
@@ -28,12 +29,14 @@ export function DealDetailTabs({
   deal,
   auditLogs,
   canCreateTasks,
-  canViewBonusAmounts
+  canViewBonusAmounts,
+  user
 }: {
   deal: DealDetail;
   auditLogs: AuditLogs;
   canCreateTasks: boolean;
   canViewBonusAmounts: boolean;
+  user: PermissionUser;
 }) {
   const paid = deal.payments.filter((payment) => payment.status === "CONFIRMED").reduce((sum, payment) => sum + paymentSignedAmount(payment), 0);
   const accrued = deal.bonusAccruals.filter((accrual) => accrual.status !== "CANCELLED" && accrual.status !== "REVERSED").reduce((sum, accrual) => sum + accrual.bonusAmount, 0);
@@ -73,7 +76,7 @@ export function DealDetailTabs({
         {
           value: "proposals",
           label: "КП",
-          content: <DealProposalsTable dealId={deal.id} proposals={deal.proposals} />
+          content: <DealProposalsTable dealId={deal.id} proposals={deal.proposals} user={user} />
         },
         {
           value: "tasks",

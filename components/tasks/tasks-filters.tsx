@@ -32,7 +32,8 @@ export function TasksFilters({ params, users }: { params: TaskListSearchParams; 
     params.due ? { key: "due", label: "Дата", value: params.due, href: currentUrl(params, { due: undefined, page: undefined }) } : null,
     params.today === "1" ? { key: "today", label: "Период", value: "На сегодня", href: currentUrl(params, { today: undefined, page: undefined }) } : null,
     params.overdue === "1" ? { key: "overdue", label: "Срок", value: "Просроченные", href: currentUrl(params, { overdue: undefined, page: undefined }) } : null,
-    params.noResult === "1" ? { key: "noResult", label: "Результат", value: "Без результата", href: currentUrl(params, { noResult: undefined, page: undefined }) } : null
+    params.noResult === "1" ? { key: "noResult", label: "Результат", value: "Без результата", href: currentUrl(params, { noResult: undefined, page: undefined }) } : null,
+    params.archived === "1" ? { key: "archived", label: "Архив", value: "Архивные", href: currentUrl(params, { archived: undefined, page: undefined }) } : null
   ].filter(Boolean) as ActiveFilter[];
 
   return (
@@ -53,6 +54,7 @@ export function TasksFilters({ params, users }: { params: TaskListSearchParams; 
         <Button asChild variant="outline"><Link href={currentUrl(params, { noResult: "1", page: undefined })}>Без результата</Link></Button>
         <Button asChild variant="outline"><Link href={currentUrl(params, { recordType: "TASK", page: undefined })}>Только задачи</Link></Button>
         <Button asChild variant="outline"><Link href={currentUrl(params, { recordType: "TOUCH", page: undefined })}>Только касания</Link></Button>
+        <Button asChild variant="outline"><Link href={currentUrl(params, { archived: "1", page: undefined })}>Архивные</Link></Button>
       </FilterActions>
     </FilterBar>
   );

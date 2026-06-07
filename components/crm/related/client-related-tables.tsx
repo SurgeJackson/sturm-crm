@@ -16,16 +16,17 @@ import {
   objectStatusLabels
 } from "@/lib/constants";
 import type { getClientForUser } from "@/modules/clients/queries";
+import { canViewSensitiveFields, type PermissionUser } from "@/permissions";
 import { formatRussianDate } from "@/utils/date";
 
 type ClientDetail = Awaited<ReturnType<typeof getClientForUser>>;
 
-export function ClientRelatedTables({ client }: { client: ClientDetail }) {
+export function ClientRelatedTables({ client, user }: { client: ClientDetail; user: PermissionUser }) {
   return (
     <div className="grid gap-4">
       <ClientRelatedObjectsTable objects={client.projectObjects} />
       <ClientRelatedDealsTable deals={client.deals} />
-      <ClientRelatedProposalsTable proposals={client.proposals} />
+      <ClientRelatedProposalsTable proposals={client.proposals} user={user} />
     </div>
   );
 }
@@ -90,7 +91,7 @@ function ClientRelatedDealsTable({ deals }: { deals: ClientDetail["deals"] }) {
   );
 }
 
-function ClientRelatedProposalsTable({ proposals }: { proposals: ClientDetail["proposals"] }) {
+function ClientRelatedProposalsTable({ proposals, user }: { proposals: ClientDetail["proposals"]; user: PermissionUser }) {
   return (
     <TableCard title="Связанные КП">
       <TableHeader>
@@ -114,7 +115,7 @@ function ClientRelatedProposalsTable({ proposals }: { proposals: ClientDetail["p
             <BadgeCell cellLabel="Статус" variant={proposalStatusVariant(proposal.status)}>
               {commercialProposalStatusLabels[proposal.status]}
             </BadgeCell>
-            <MoneyCell cellLabel="Сумма" value={proposal.amount} />
+            <MoneyCell cellLabel="Сумма" value={canViewSensitiveFields(user, proposal) ? proposal.amount : null} emptyText="Скрыто" />
             <DateCell cellLabel="Follow-up">{formatRussianDate(proposal.nextTouchAt)}</DateCell>
           </TableRow>
         ))}

@@ -14,13 +14,14 @@ import {
   PanelLeftClose,
   PanelLeftOpen,
   Settings,
+  ShieldCheck,
   UserRound,
   UsersRound
 } from "lucide-react";
 import type { UserRole } from "@/generated/prisma/client";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { canAccessSettings, canViewDesignerBonusReports, canViewPayments, canViewReports } from "@/permissions";
+import { canAccessSettings, canViewDesignerBonusReports, canViewPayments, canViewReports, canViewSecurityLog } from "@/permissions";
 
 const navigation = [
   { href: "/", label: "Рабочий стол", icon: LayoutDashboard },
@@ -33,6 +34,7 @@ const navigation = [
   { href: "/designer-bonuses/accruals", label: "Бонусы дизайнеров", icon: HandCoins },
   { href: "/tasks", label: "Задачи / касания", icon: CheckSquare },
   { href: "/reports", label: "Отчеты", icon: BarChart3 },
+  { href: "/security", label: "Безопасность", icon: ShieldCheck },
   { href: "/settings", label: "Настройки", icon: Settings }
 ];
 
@@ -90,6 +92,10 @@ export function Sidebar({ user }: SidebarProps) {
           }
 
           if (item.href === "/settings" && !canAccessSettings(user)) {
+            return null;
+          }
+
+          if (item.href === "/security" && !canViewSecurityLog(user)) {
             return null;
           }
 

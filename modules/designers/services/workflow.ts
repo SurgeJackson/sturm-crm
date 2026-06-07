@@ -1,7 +1,7 @@
 import type { Designer } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { writeEntityAuditLog, writeTrackedFieldAuditLogs } from "@/modules/crm/audit-helpers";
-import { expireViolationsForEntity, syncDesignerDiscipline } from "@/modules/crm-discipline/service";
+import { syncDesignerDiscipline } from "@/modules/crm-discipline/entity-sync";
 import { toDesignerDocument, type DesignerFormData } from "@/modules/designers/form";
 import { designerTrackedFields } from "@/modules/designers/services/audit";
 
@@ -70,33 +70,5 @@ export async function updateDesigner(
   });
 
   await syncDesignerDiscipline(id, userId);
-  return after;
-}
-
-export async function archiveDesigner(id: string, before: Designer, userId: string) {
-  const after = await prisma.$transaction(async (tx) => {
-    const archived = await tx.designer.update({
-      where: { id },
-      data: {
-        status: "ARCHIVED",
-        archivedAt: new Date(),
-        updatedAt: new Date()
-      }
-    });
-
-    await writeEntityAuditLog({
-      entityType: "DESIGNER",
-      entityId: id,
-      action: "ARCHIVE",
-      userId,
-      before,
-      after: archived,
-      client: tx
-    });
-
-    return archived;
-  });
-
-  await expireViolationsForEntity("DESIGNER", id, userId);
   return after;
 }

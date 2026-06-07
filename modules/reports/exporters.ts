@@ -1,18 +1,13 @@
-import {
-  getBonusEligibilityReport,
-  getCrmDisciplineReport,
-  getDealsReport,
-  getDesignersReport,
-  getEmployeeActivityReport,
-  getLossReasonsReport,
-  getManagerDashboardReport,
-  getObjectsReport,
-  getOverdueReport,
-  getProposalsReport,
-  rowsToCsv,
-  type ReportSearchParams
-} from "@/modules/reports/queries";
 import { getDesignerBonusReports } from "@/modules/designer-bonuses/queries";
+import { getEmployeeActivityReport } from "@/modules/reports/activity";
+import { getBonusEligibilityReport } from "@/modules/reports/bonus-eligibility";
+import type { ReportSearchParams } from "@/modules/reports/common";
+import { getCrmDisciplineReport } from "@/modules/reports/crm-discipline";
+import { rowsToCsv } from "@/modules/reports/csv";
+import { getManagerDashboardReport } from "@/modules/reports/manager-dashboard";
+import { getOverdueReport } from "@/modules/reports/overdue";
+import { getDesignersReport, getObjectsReport } from "@/modules/reports/relationships";
+import { getDealsReport, getLossReasonsReport, getProposalsReport } from "@/modules/reports/sales-pipeline";
 import { canExportDesignerBonusReports, canViewDesignerBonusAmounts } from "@/permissions";
 
 type ReportExportUser = Parameters<typeof getManagerDashboardReport>[1];

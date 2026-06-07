@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { CommercialProposal } from "../generated/prisma/client";
-import { formatProposalNumber, proposalVersionDocument } from "../modules/proposals/service";
+import { formatProposalNumber } from "../modules/proposals/services/numbering";
+import { proposalVersionDocument } from "../modules/proposals/services/versioning";
 
 function proposal(overrides: Partial<CommercialProposal> = {}): CommercialProposal {
   const now = new Date("2026-01-10T12:00:00.000Z");

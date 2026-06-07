@@ -10,12 +10,14 @@ import { getAuditLogs } from "@/lib/audit-log";
 import { taskAutoRuleLabels, taskPriorityLabels } from "@/lib/constants";
 import { cancelTaskAction } from "@/modules/tasks/actions";
 import { getTaskForUser } from "@/modules/tasks/queries";
-import { canCancelTask, canEditRecord } from "@/permissions";
+import { archiveEntityAction, restoreEntityAction } from "@/modules/security/entity-actions";
+import { recordEntityView } from "@/modules/security/activity";
+import { canArchiveEntity, canCancelTask, canEditRecord, canRestoreEntity } from "@/permissions";
 import { formatRussianDateTime } from "@/utils/date";
 
 type TaskPageProps = {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ saved?: string }>;
+  searchParams: Promise<{ saved?: string; archived?: string; restored?: string; error?: string }>;
 };
 
 function entityLinks(task: Awaited<ReturnType<typeof getTaskForUser>>) {
@@ -42,6 +44,9 @@ export default async function TaskPage({ params, searchParams }: TaskPageProps) 
     getAuditLogs("TASK", id)
   ]);
   const cancelAction = cancelTaskAction.bind(null, id);
+  const archiveAction = archiveEntityAction.bind(null, "TASK", id);
+  const restoreAction = restoreEntityAction.bind(null, "TASK", id);
+  await recordEntityView(user.id, "TASK", id);
 
   return (
     <EntityDetailShell
@@ -50,6 +55,10 @@ export default async function TaskPage({ params, searchParams }: TaskPageProps) 
       listHref="/tasks"
       editHref={`/tasks/${id}/edit`}
       canEdit={canEditRecord(user, task)}
+      archiveAction={archiveAction}
+      canArchive={canArchiveEntity(user, task) && !task.archivedAt}
+      restoreAction={restoreAction}
+      canRestore={canRestoreEntity(user, task)}
       actions={canCancelTask(user, task) && task.status !== "CANCELLED" ? (
         <form action={cancelAction}>
           <Button type="submit" variant="destructive">
@@ -58,7 +67,12 @@ export default async function TaskPage({ params, searchParams }: TaskPageProps) 
           </Button>
         </form>
       ) : null}
-      notices={[{ show: Boolean(query.saved), message: "Запись сохранена." }]}
+      notices={[
+        { show: Boolean(query.saved), message: "Запись сохранена." },
+        { show: Boolean(query.archived), message: "Запись архивирована." },
+        { show: Boolean(query.restored), message: "Запись восстановлена." },
+        { show: Boolean(query.error), tone: "destructive", message: "Действие недоступно для вашей роли." }
+      ]}
       discipline={{
         entityType: "TASK",
         entityId: task.id,

@@ -1,7 +1,7 @@
 import type { Deal, DealLossReason, DealStage } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { writeEntityAuditLog } from "@/modules/crm/audit-helpers";
-import { syncDealDiscipline } from "@/modules/crm-discipline/service";
+import { syncDealDiscipline } from "@/modules/crm-discipline/entity-sync";
 import { closedAtForStage } from "@/modules/deals/form";
 
 export async function changeDealStage(

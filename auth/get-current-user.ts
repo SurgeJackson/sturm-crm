@@ -16,7 +16,8 @@ export async function getCurrentUser() {
       isActive: true,
       emailVerifiedAt: true,
       lockedUntil: true,
-      deactivatedAt: true
+      deactivatedAt: true,
+      confidentialityAcceptedAt: true
     }
   });
 
@@ -30,6 +31,7 @@ export async function getCurrentUser() {
     isActive: user.isActive && !user.deactivatedAt && (!user.lockedUntil || user.lockedUntil <= new Date()),
     emailVerifiedAt: user.emailVerifiedAt?.toISOString() ?? null,
     lockedUntil: user.lockedUntil?.toISOString() ?? null,
-    deactivatedAt: user.deactivatedAt?.toISOString() ?? null
+    deactivatedAt: user.deactivatedAt?.toISOString() ?? null,
+    confidentialityAcceptedAt: user.confidentialityAcceptedAt?.toISOString() ?? null
   };
 }

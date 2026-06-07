@@ -9,8 +9,9 @@ import { enumParam, flagParam } from "@/modules/crm/param-parsing";
 import { pageFromParam } from "@/modules/crm/pagination";
 import { userSummarySelect } from "@/modules/crm/selects";
 import { withCrmViolations } from "@/modules/crm/violation-enrichment";
-import { taskInclude } from "@/modules/tasks/queries";
-import { computeBonusEligibilityStatus, getActiveViolationsForEntity } from "@/modules/crm-discipline/service";
+import { taskInclude } from "@/modules/tasks/query-shared";
+import { computeBonusEligibilityStatus } from "@/modules/crm-discipline/bonus";
+import { getActiveViolationsForEntity } from "@/modules/crm-discipline/queries";
 import { canViewRecord, type PermissionUser } from "@/permissions";
 
 export type ObjectListSearchParams = {
@@ -26,6 +27,7 @@ export type ObjectListSearchParams = {
   noTasks?: string;
   frozen?: string;
   lost?: string;
+  archived?: string;
   sort?: string;
   page?: string;
 };
@@ -61,6 +63,7 @@ export async function getProjectObjects(params: ObjectListSearchParams, user: Pe
   if (flagParam(params.noTasks)) filters.push({ tasks: { none: { archivedAt: null } } });
   if (flagParam(params.frozen)) filters.push({ OR: [{ status: "FROZEN" }, { stage: "FROZEN" }] });
   if (flagParam(params.lost)) filters.push({ OR: [{ status: "LOST" }, { stage: "LOST" }] });
+  filters.push(flagParam(params.archived) ? { archivedAt: { not: null } } : { archivedAt: null });
 
   const where: Prisma.ProjectObjectWhereInput = { AND: filters };
   const orderBy = sortFromParam<Prisma.ProjectObjectOrderByWithRelationInput>(params.sort, {

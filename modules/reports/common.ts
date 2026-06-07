@@ -2,7 +2,7 @@ import type { Prisma } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { ownerRecordWhere } from "@/modules/crm/access-where";
 import { reportPeriodFromParams } from "@/modules/crm/date-ranges";
-import type { BonusEligibilityStatus } from "@/modules/crm-discipline/service";
+import type { BonusEligibilityStatus } from "@/modules/crm-discipline/bonus";
 import { canViewAllData, type PermissionUser } from "@/permissions";
 
 export type ReportSearchParams = {

@@ -1,7 +1,7 @@
 import type { CommercialProposal } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { writeEntityAuditLog } from "@/modules/crm/audit-helpers";
-import { syncProposalDiscipline } from "@/modules/crm-discipline/service";
+import { syncProposalDiscipline } from "@/modules/crm-discipline/entity-sync";
 import { reserveProposalNumber } from "@/modules/proposals/services/numbering";
 
 export function proposalVersionDocument(

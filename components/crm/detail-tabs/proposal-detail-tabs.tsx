@@ -6,6 +6,7 @@ import { CompactMetricCard } from "@/components/crm/summary-card";
 import { proposalDeclineReasonLabels, recipientTypeLabels } from "@/lib/constants";
 import type { getAuditLogs } from "@/lib/audit-log";
 import type { getProposalForUser, getProposalVersionGroup } from "@/modules/proposals/queries";
+import { canViewSensitiveFields, type PermissionUser } from "@/permissions";
 import { formatRussianDate } from "@/utils/date";
 import { formatMoney } from "@/utils/money";
 import { buildTaskHref } from "@/utils/task-href";
@@ -22,7 +23,8 @@ export function ProposalDetailTabs({
   canCreateVersion,
   createVersionAction,
   canViewBonusAmounts,
-  bonusPercent
+  bonusPercent,
+  user
 }: {
   proposal: ProposalDetail;
   versions: ProposalVersions;
@@ -32,8 +34,10 @@ export function ProposalDetailTabs({
   createVersionAction: () => Promise<void>;
   canViewBonusAmounts: boolean;
   bonusPercent?: number | null;
+  user: PermissionUser;
 }) {
   const potentialBonus = bonusPercent ? proposal.amount * bonusPercent / 100 : null;
+  const canViewSensitive = canViewSensitiveFields(user, proposal);
 
   return (
     <EntityDetailTabs
@@ -51,9 +55,9 @@ export function ProposalDetailTabs({
                 detailText("Дизайнер", proposal.designer?.name),
                 detailText("Ответственный", proposal.responsible.name),
                 detailText("Создал", proposal.createdBy.name),
-                detailMoney("Сумма", proposal.amount, "0 ₽"),
-                detailText("Скидка, %", proposal.discountPercent),
-                detailMoney("Скидка, сумма", proposal.discountAmount, "0 ₽"),
+                canViewSensitive ? detailMoney("Сумма", proposal.amount, "0 ₽") : detailText("Сумма", "Скрыто"),
+                canViewSensitive ? detailText("Скидка, %", proposal.discountPercent) : detailText("Скидка, %", "Скрыто"),
+                canViewSensitive ? detailMoney("Скидка, сумма", proposal.discountAmount, "0 ₽") : detailText("Скидка, сумма", "Скрыто"),
                 detailText("Получатель", proposal.recipientName),
                 detailText("Тип получателя", proposal.recipientType ? recipientTypeLabels[proposal.recipientType] : null),
                 detailText("Контакт получателя", proposal.recipientContact),
@@ -67,9 +71,9 @@ export function ProposalDetailTabs({
               footer={
                 <div className="grid gap-4 md:grid-cols-2">
                   <TextBlock label="Файл КП">
-                    {proposal.fileUrl ? <Link className="hover:underline" href={proposal.fileUrl}>Скачать {proposal.fileName}</Link> : "Файл не прикреплен."}
+                    {proposal.fileUrl ? <Link className="hover:underline" href={`/api/proposals/${proposal.id}/download`}>Скачать {proposal.fileName}</Link> : "Файл не прикреплен."}
                   </TextBlock>
-                  <TextBlock label="Комментарий">{proposal.comment || "Комментариев пока нет."}</TextBlock>
+                  <TextBlock label="Комментарий">{canViewSensitive ? proposal.comment || "Комментариев пока нет." : "Скрыто"}</TextBlock>
                 </div>
               }
             />
@@ -83,6 +87,7 @@ export function ProposalDetailTabs({
               versions={versions}
               canCreateVersion={canCreateVersion}
               createVersionAction={createVersionAction}
+              user={user}
             />
           )
         },

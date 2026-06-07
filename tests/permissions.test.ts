@@ -21,8 +21,16 @@ import {
   canCreateProposal,
   canEditRecord,
   canExportDesignerBonusReports,
+  canExportAllData,
+  canExportReports,
+  canViewAuditLog,
   canIgnoreCrmViolation,
+  canManageRoles,
   canManageDesignerBonusAgreement,
+  canRestoreEntity,
+  canRunSecurityCheck,
+  canViewSensitiveFields,
+  canViewSecurityLog,
   canManageUsers,
   canManageObjectParticipants,
   canViewDesignerBonus,
@@ -171,5 +179,34 @@ describe("permissions", () => {
     expect(canCreateDesignerBonusAdjustment(owner)).toBe(true);
     expect(canCreateDesignerBonusAdjustment(salesLead)).toBe(false);
     expect(canCreateDesignerBonusAdjustment(administrator)).toBe(false);
+  });
+
+  it("keeps Stage 10 security controls on leadership and owner roles", () => {
+    expect(canExportAllData(owner)).toBe(true);
+    expect(canExportAllData(salesLead)).toBe(false);
+    expect(canExportReports(owner)).toBe(true);
+    expect(canExportReports(salesLead)).toBe(true);
+    expect(canExportReports(projectManager)).toBe(false);
+    expect(canViewSecurityLog(owner)).toBe(true);
+    expect(canViewSecurityLog(salesLead)).toBe(false);
+    expect(canViewAuditLog(owner)).toBe(true);
+    expect(canViewAuditLog(salesLead)).toBe(true);
+    expect(canManageRoles(owner)).toBe(true);
+    expect(canManageRoles(administrator)).toBe(false);
+    expect(canRunSecurityCheck(owner)).toBe(true);
+    expect(canRunSecurityCheck(salesLead)).toBe(false);
+  });
+
+  it("protects sensitive fields and restore rights", () => {
+    const archivedOwnRecord = { ...ownRecord, archivedAt: new Date() };
+
+    expect(canViewSensitiveFields(owner, foreignRecord)).toBe(true);
+    expect(canViewSensitiveFields(salesLead, foreignRecord)).toBe(true);
+    expect(canViewSensitiveFields(projectManager, ownRecord)).toBe(true);
+    expect(canViewSensitiveFields(projectManager, foreignRecord)).toBe(false);
+    expect(canViewSensitiveFields(administrator, ownRecord)).toBe(false);
+    expect(canRestoreEntity(owner, archivedOwnRecord)).toBe(true);
+    expect(canRestoreEntity(salesLead, archivedOwnRecord)).toBe(true);
+    expect(canRestoreEntity(projectManager, archivedOwnRecord)).toBe(false);
   });
 });

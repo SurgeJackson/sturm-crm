@@ -1,5 +1,5 @@
 import type { CrmViolationSeverity } from "@/generated/prisma/client";
-import { crmDisciplineStatus, type BonusEligibilityStatus } from "@/modules/crm-discipline/service";
+import { crmDisciplineStatus, type BonusEligibilityStatus } from "@/modules/crm-discipline/bonus";
 
 export const disciplineLabels = {
   correct: "Корректно",

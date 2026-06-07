@@ -2,7 +2,7 @@ import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../generated/prisma/client";
 import bcrypt from "bcryptjs";
-import { runCrmDisciplineCheck } from "../modules/crm-discipline/service";
+import { runCrmDisciplineCheck } from "../modules/crm-discipline/full-check";
 import { DEMO_PASSWORD } from "./seed-fixtures";
 import { seedCrmData } from "./seed-crm";
 import { prepareSeedProposalFile, seedRolePermissions, seedUserAccounts } from "./seed-support";

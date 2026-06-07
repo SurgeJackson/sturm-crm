@@ -92,17 +92,19 @@ export function ObjectHeaderBadges({
 export function ProposalHeaderBadges({
   status,
   version,
-  amount
+  amount,
+  canViewAmount = true
 }: {
   status: keyof typeof commercialProposalStatusLabels;
   version: number;
   amount?: number | null;
+  canViewAmount?: boolean;
 }) {
   return (
     <>
       <Badge variant={proposalStatusVariant(status)}>{commercialProposalStatusLabels[status]}</Badge>
       <Badge variant="outline">v{version}</Badge>
-      <Badge variant="outline">{formatMoney(amount, "0 ₽")}</Badge>
+      <Badge variant="outline">{canViewAmount ? formatMoney(amount, "0 ₽") : "Скрыто"}</Badge>
     </>
   );
 }

@@ -2,7 +2,8 @@ import type { Prisma } from "@/generated/prisma/client";
 import { auditEntityTypeLabels } from "@/lib/constants";
 import { prisma } from "@/lib/prisma";
 import { enumParam, upperEnumParam } from "@/modules/crm/param-parsing";
-import { crmEntityHref, crmViolationSeverityLabels, violationAccessWhere } from "@/modules/crm-discipline/service";
+import { crmEntityHref, crmViolationSeverityLabels } from "@/modules/crm-discipline/bonus";
+import { violationAccessWhere } from "@/modules/crm-discipline/queries";
 import { canViewAllData, type PermissionUser } from "@/permissions";
 import { entityArea, entityLabel, groupBy, periodWhere, reportPeriod, scoreRows, type ProblemRow, type ReportSearchParams } from "./common";
 

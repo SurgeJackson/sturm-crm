@@ -20,6 +20,7 @@ export type TaskListSearchParams = {
   today?: string;
   overdue?: string;
   noResult?: string;
+  archived?: string;
   entityType?: string;
   entityId?: string;
   page?: string;

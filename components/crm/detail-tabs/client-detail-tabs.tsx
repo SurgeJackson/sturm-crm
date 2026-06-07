@@ -4,6 +4,7 @@ import { ClientRelatedTables } from "@/components/crm/related";
 import { clientSourceLabels } from "@/lib/constants";
 import type { getAuditLogs } from "@/lib/audit-log";
 import type { getClientForUser } from "@/modules/clients/queries";
+import type { PermissionUser } from "@/permissions";
 import { formatRussianDate } from "@/utils/date";
 import { buildTaskHref } from "@/utils/task-href";
 
@@ -13,11 +14,13 @@ type AuditLogs = Awaited<ReturnType<typeof getAuditLogs>>;
 export function ClientDetailTabs({
   client,
   auditLogs,
-  canCreateTasks
+  canCreateTasks,
+  user
 }: {
   client: ClientDetail;
   auditLogs: AuditLogs;
   canCreateTasks: boolean;
+  user: PermissionUser;
 }) {
   return (
     <EntityDetailTabs
@@ -54,7 +57,7 @@ export function ClientDetailTabs({
         {
           value: "links",
           label: "Связи",
-          content: <ClientRelatedTables client={client} />
+          content: <ClientRelatedTables client={client} user={user} />
         },
         {
           value: "tasks",

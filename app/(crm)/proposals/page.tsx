@@ -49,7 +49,7 @@ export default async function ProposalsPage({ searchParams }: ProposalsPageProps
       />
 
       <ProposalsFilters params={params} users={context.users} clients={context.clients} objects={context.objects} deals={context.deals} designers={context.designers} />
-      <ProposalsTable proposals={proposals.items} />
+      <ProposalsTable proposals={proposals.items} user={user} />
 
       <Pagination
         total={proposals.total}

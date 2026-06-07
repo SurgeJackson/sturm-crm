@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/badge";
-import { bonusEligibilityLabels, computeBonusEligibilityStatus, crmDisciplineStatus } from "@/modules/crm-discipline/service";
+import { bonusEligibilityLabels, computeBonusEligibilityStatus, crmDisciplineStatus } from "@/modules/crm-discipline/bonus";
 import type { CrmViolationView } from "./types";
 import { bonusVariant, disciplineLabels, disciplineVariant } from "./variants";
 

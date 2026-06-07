@@ -1,7 +1,7 @@
 import type { Deal } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { writeEntityAuditLog, writeTrackedFieldAuditLogs } from "@/modules/crm/audit-helpers";
-import { expireViolationsForEntity, syncDealDiscipline } from "@/modules/crm-discipline/service";
+import { syncDealDiscipline } from "@/modules/crm-discipline/entity-sync";
 import { toDealDocument, type DealFormData } from "@/modules/deals/form";
 import { dealStatusAuditEvents, dealTrackedFields } from "@/modules/deals/services/audit";
 
@@ -95,29 +95,5 @@ export async function updateDeal(
   });
 
   await syncDealDiscipline(id, userId);
-  return after;
-}
-
-export async function archiveDeal(id: string, before: Deal, userId: string) {
-  const after = await prisma.$transaction(async (tx) => {
-    const archived = await tx.deal.update({
-      where: { id },
-      data: { archivedAt: new Date() }
-    });
-
-    await writeEntityAuditLog({
-      entityType: "DEAL",
-      entityId: id,
-      action: "ARCHIVE",
-      userId,
-      before,
-      after: archived,
-      client: tx
-    });
-
-    return archived;
-  });
-
-  await expireViolationsForEntity("DEAL", id, userId);
   return after;
 }

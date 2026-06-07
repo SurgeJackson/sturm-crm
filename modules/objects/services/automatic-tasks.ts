@@ -1,5 +1,5 @@
 import { daysFromNow } from "@/modules/crm/date-ranges";
-import { createAutomaticTask } from "@/modules/tasks/service";
+import { createAutomaticTask } from "@/modules/tasks/automatic-tasks";
 
 export async function createFrozenObjectReturnTask(object: {
   id: string;

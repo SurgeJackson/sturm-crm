@@ -11,8 +11,9 @@ import { enumParam, flagParam } from "@/modules/crm/param-parsing";
 import { pageFromParam } from "@/modules/crm/pagination";
 import { clientNameSelect, dealTitleSelect, designerNameSelect, objectTitleSelect, userSummarySelect } from "@/modules/crm/selects";
 import { withCrmViolations } from "@/modules/crm/violation-enrichment";
-import { taskInclude } from "@/modules/tasks/queries";
-import { computeBonusEligibilityStatus, getActiveViolationsForEntity } from "@/modules/crm-discipline/service";
+import { taskInclude } from "@/modules/tasks/query-shared";
+import { computeBonusEligibilityStatus } from "@/modules/crm-discipline/bonus";
+import { getActiveViolationsForEntity } from "@/modules/crm-discipline/queries";
 import { canViewRecord, type PermissionUser } from "@/permissions";
 
 export type ProposalListSearchParams = {
@@ -31,6 +32,7 @@ export type ProposalListSearchParams = {
   needsRecalculation?: string;
   accepted?: string;
   declined?: string;
+  archived?: string;
   sort?: string;
   page?: string;
 };
@@ -82,6 +84,7 @@ export async function getProposals(params: ProposalListSearchParams, user: Permi
   if (flagParam(params.needsRecalculation)) filters.push({ status: "NEEDS_RECALCULATION" });
   if (flagParam(params.accepted)) filters.push({ status: "ACCEPTED" });
   if (flagParam(params.declined)) filters.push({ status: "DECLINED" });
+  filters.push(flagParam(params.archived) ? { archivedAt: { not: null } } : { archivedAt: null });
 
   const where: Prisma.CommercialProposalWhereInput = { AND: filters };
   const orderBy = sortFromParam<Prisma.CommercialProposalOrderByWithRelationInput>(params.sort, {

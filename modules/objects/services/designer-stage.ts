@@ -1,7 +1,7 @@
 import type { DesignerRelationshipStage, ProjectObject } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { writeEntityAuditLog } from "@/modules/crm/audit-helpers";
-import { syncDesignerDiscipline } from "@/modules/crm-discipline/service";
+import { syncDesignerDiscipline } from "@/modules/crm-discipline/entity-sync";
 
 export async function moveDesignerToFirstObjectReceived(
   object: ProjectObject & { designer: { id: string; relationshipStage: DesignerRelationshipStage } | null },

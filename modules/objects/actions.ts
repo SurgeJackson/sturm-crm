@@ -3,7 +3,6 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
 import {
-  canArchiveRecord,
   canChangeObjectResponsible,
   canCreateObject,
   canEditRecord,
@@ -13,21 +12,19 @@ import {
   parseObjectForm,
   parseParticipantForm
 } from "@/modules/objects/form";
+import { moveDesignerToFirstObjectReceived } from "@/modules/objects/services/designer-stage";
 import {
-  archiveProjectObject,
-  createProjectObject,
   getProjectObjectForMutation,
   getProjectObjectWithDesignerForMutation,
-  moveDesignerToFirstObjectReceived,
-  updateProjectObject,
   validateObjectRelations
-} from "@/modules/objects/service";
+} from "@/modules/objects/services/queries";
+import { createProjectObject, updateProjectObject } from "@/modules/objects/services/workflow";
 import {
   archiveProjectObjectParticipant,
   createProjectObjectParticipant,
   getProjectObjectParticipantForMutation,
   updateProjectObjectParticipant
-} from "@/modules/objects/participants-service";
+} from "@/modules/objects/services/participants";
 
 export type ProjectObjectActionState = {
   errors?: Record<string, string[]>;
@@ -87,24 +84,6 @@ export async function updateProjectObjectAction(id: string, _prevState: ProjectO
   await updateProjectObject(id, before, parsed.data, responsibleId, user.id);
 
   redirect(`/objects/${id}?saved=1`);
-}
-
-export async function archiveProjectObjectAction(id: string) {
-  const user = await getCurrentUser();
-
-  if (!user) {
-    redirect("/login");
-  }
-
-  const before = await getProjectObjectForMutation(id);
-
-  if (!before || !canArchiveRecord(user, before)) {
-    redirect(`/objects/${id}?error=archive`);
-  }
-
-  await archiveProjectObject(id, before, user.id);
-
-  redirect(`/objects/${id}?archived=1`);
 }
 
 export async function createProjectObjectParticipantAction(

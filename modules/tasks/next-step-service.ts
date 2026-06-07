@@ -3,7 +3,7 @@ import { writeAuditLog } from "@/lib/audit-log";
 import { prisma } from "@/lib/prisma";
 import { closedTaskStatuses } from "@/modules/crm/domain-constants";
 import { toAuditValue } from "@/modules/crm/form-utils";
-import { syncTaskDiscipline } from "@/modules/crm-discipline/service";
+import { syncTaskDiscipline } from "@/modules/crm-discipline/entity-sync";
 
 export function nextStepTaskSyncData(source: TaskActivity) {
   return {

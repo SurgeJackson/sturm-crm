@@ -3,7 +3,6 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
 import {
-  canArchiveRecord,
   canChangeProposalFinancials,
   canChangeProposalResponsible,
   canChangeProposalStatus,
@@ -16,16 +15,14 @@ import {
   toProposalDocument
 } from "@/modules/proposals/form";
 import { getProposalFile, saveProposalFile } from "@/modules/proposals/files";
+import { moveDealToInvoiceFromProposal } from "@/modules/proposals/services/deal-sync";
 import {
-  archiveProposal,
-  createProposal,
-  createProposalVersion,
   getDealForProposal,
   getProposalForMutation,
-  getProposalWithDealForMutation,
-  moveDealToInvoiceFromProposal,
-  updateProposal
-} from "@/modules/proposals/service";
+  getProposalWithDealForMutation
+} from "@/modules/proposals/services/queries";
+import { createProposalVersion } from "@/modules/proposals/services/versioning";
+import { createProposal, updateProposal } from "@/modules/proposals/services/workflow";
 
 export type ProposalActionState = {
   errors?: Record<string, string[]>;
@@ -116,18 +113,6 @@ export async function updateProposalAction(id: string, _prevState: ProposalActio
   });
 
   redirect(`/proposals/${id}?saved=1`);
-}
-
-export async function archiveProposalAction(id: string) {
-  const user = await getCurrentUser();
-  if (!user) redirect("/login");
-
-  const before = await getProposalForMutation(id);
-  if (!before || !canArchiveRecord(user, before)) redirect(`/proposals/${id}?error=archive`);
-
-  await archiveProposal(id, before, user.id);
-
-  redirect(`/proposals/${id}?archived=1`);
 }
 
 export async function createProposalVersionAction(id: string) {

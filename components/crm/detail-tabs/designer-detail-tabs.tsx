@@ -12,6 +12,7 @@ import {
 import type { getAuditLogs } from "@/lib/audit-log";
 import type { getDesignerBonusSnapshot } from "@/modules/designer-bonuses/queries";
 import type { getDesignerForUser } from "@/modules/designers/queries";
+import { canViewSensitiveFields, type PermissionUser } from "@/permissions";
 import { formatRussianDate } from "@/utils/date";
 import { formatMoney } from "@/utils/money";
 import { buildTaskHref } from "@/utils/task-href";
@@ -26,7 +27,8 @@ export function DesignerDetailTabs({
   canCreateTasks,
   bonusSnapshot,
   canManageBonus,
-  canViewBonusAmounts
+  canViewBonusAmounts,
+  user
 }: {
   designer: DesignerDetail;
   auditLogs: AuditLogs;
@@ -34,6 +36,7 @@ export function DesignerDetailTabs({
   bonusSnapshot: BonusSnapshot | null;
   canManageBonus: boolean;
   canViewBonusAmounts: boolean;
+  user: PermissionUser;
 }) {
   const bonusTab = bonusSnapshot ? [{
     value: "bonuses",
@@ -115,7 +118,7 @@ export function DesignerDetailTabs({
         {
           value: "proposals",
           label: "КП",
-          content: <DesignerProposalsTable proposals={designer.proposals} />
+          content: <DesignerProposalsTable proposals={designer.proposals} user={user} />
         },
         ...bonusTab,
         {
@@ -125,8 +128,8 @@ export function DesignerDetailTabs({
             <div className="grid gap-4 md:grid-cols-4">
               <CompactMetricCard title="Передано объектов" value={designer.transferredObjectsCount} />
               <CompactMetricCard title="Активные объекты" value={designer.activeObjectsCount} />
-              <CompactMetricCard title="Сумма КП" value={formatMoney(designer.proposalsTotalAmount, "0 ₽")} />
-              <CompactMetricCard title="Сумма оплат" value={formatMoney(designer.paymentsTotalAmount, "0 ₽")} />
+              <CompactMetricCard title="Сумма КП" value={canViewSensitiveFields(user, designer) ? formatMoney(designer.proposalsTotalAmount, "0 ₽") : "Скрыто"} />
+              <CompactMetricCard title="Сумма оплат" value={canViewBonusAmounts ? formatMoney(designer.paymentsTotalAmount, "0 ₽") : "Скрыто"} />
             </div>
           )
         },

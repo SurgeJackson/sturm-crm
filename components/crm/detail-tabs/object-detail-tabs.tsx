@@ -5,6 +5,7 @@ import { ObjectDealsTable, ObjectParticipantsTables, ObjectProposalsTable } from
 import { CompactMetricCard } from "@/components/crm/summary-card";
 import type { getAuditLogs } from "@/lib/audit-log";
 import type { getProjectObjectForUser } from "@/modules/objects/queries";
+import type { PermissionUser } from "@/permissions";
 import { formatRussianDate } from "@/utils/date";
 import { formatMoney } from "@/utils/money";
 import { paymentSignedAmount } from "@/utils/payments";
@@ -21,7 +22,8 @@ export function ObjectDetailTabs({
   canCreateTasks,
   canManageParticipants,
   archiveParticipantAction,
-  canViewBonusAmounts
+  canViewBonusAmounts,
+  user
 }: {
   objectId: string;
   projectObject: ObjectDetail;
@@ -30,6 +32,7 @@ export function ObjectDetailTabs({
   canManageParticipants: boolean;
   archiveParticipantAction: ArchiveParticipantAction;
   canViewBonusAmounts: boolean;
+  user: PermissionUser;
 }) {
   const purchaseInfluencers = projectObject.participants.filter((participant) => participant.participantType === "PURCHASE_INFLUENCER");
   const implementationContacts = projectObject.participants.filter((participant) => participant.participantType === "IMPLEMENTATION_CONTACT");
@@ -101,7 +104,7 @@ export function ObjectDetailTabs({
         {
           value: "proposals",
           label: "КП",
-          content: <ObjectProposalsTable proposals={projectObject.proposals} />
+          content: <ObjectProposalsTable proposals={projectObject.proposals} user={user} />
         },
         {
           value: "tasks",

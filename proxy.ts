@@ -10,6 +10,10 @@ export async function proxy(request: NextRequest) {
   const hasAuthError = request.nextUrl.searchParams.has("error");
   const tokenCanEnterCrm = Boolean(token && token.isActive !== false && token.emailVerifiedAt !== null);
 
+  if (pathname.startsWith("/uploads/proposals/")) {
+    return new NextResponse("Not found", { status: 404 });
+  }
+
   if (!token && !isAuthPage) {
     const loginUrl = new URL("/auth/login", request.url);
     loginUrl.searchParams.set("callbackUrl", request.nextUrl.pathname);

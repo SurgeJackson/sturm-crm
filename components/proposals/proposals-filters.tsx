@@ -29,7 +29,8 @@ const shortcutLabels: Record<string, string> = {
   internalReview: "На проверке",
   needsRecalculation: "Требуется пересчет",
   accepted: "Принятые",
-  declined: "Отклоненные"
+  declined: "Отклоненные",
+  archived: "Архивные"
 };
 
 function optionLabel(options: Array<{ value: string; label: string }>, value?: string) {
@@ -107,7 +108,8 @@ export function ProposalsFilters({
             { label: "На проверке", patch: { internalReview: "1", page: undefined } },
             { label: "Требуется пересчет", patch: { needsRecalculation: "1", page: undefined } },
             { label: "Принятые", patch: { accepted: "1", page: undefined } },
-            { label: "Отклоненные", patch: { declined: "1", page: undefined } }
+            { label: "Отклоненные", patch: { declined: "1", page: undefined } },
+            { label: "Архивные", patch: { archived: "1", page: undefined } }
           ]}
         />
       </FilterActions>

@@ -4,7 +4,6 @@ import { redirect } from "next/navigation";
 import type { DealLossReason, DealStage } from "@/generated/prisma/client";
 import { getCurrentUser } from "@/auth/get-current-user";
 import {
-  canArchiveRecord,
   canChangeDealResponsible,
   canCloseDealAsLost,
   canCreateDeal,
@@ -12,15 +11,9 @@ import {
 } from "@/permissions";
 import { compactString } from "@/modules/crm/form-utils";
 import { dealLossReasons, dealStages, parseDealForm } from "@/modules/deals/form";
-import {
-  archiveDeal,
-  changeDealStage,
-  createDeal,
-  getDealForMutation,
-  getObjectForDeal,
-  markDealAsLost,
-  updateDeal
-} from "@/modules/deals/service";
+import { getDealForMutation, getObjectForDeal } from "@/modules/deals/services/queries";
+import { changeDealStage, markDealAsLost } from "@/modules/deals/services/stage";
+import { createDeal, updateDeal } from "@/modules/deals/services/workflow";
 
 export type DealActionState = {
   errors?: Record<string, string[]>;
@@ -83,24 +76,6 @@ export async function updateDealAction(id: string, _prevState: DealActionState, 
   await updateDeal(id, before, parsed.data, object, responsibleId, user.id, user.role === "ADMINISTRATOR");
 
   redirect(`/deals/${id}?saved=1`);
-}
-
-export async function archiveDealAction(id: string) {
-  const user = await getCurrentUser();
-
-  if (!user) {
-    redirect("/login");
-  }
-
-  const before = await getDealForMutation(id);
-
-  if (!before || !canArchiveRecord(user, before)) {
-    redirect(`/deals/${id}?error=archive`);
-  }
-
-  await archiveDeal(id, before, user.id);
-
-  redirect(`/deals/${id}?archived=1`);
 }
 
 export async function changeDealStageAction(id: string, formData: FormData) {

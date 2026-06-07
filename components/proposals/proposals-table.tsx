@@ -6,7 +6,6 @@ import {
   EmptyTableRow,
   EntityLinkCell,
   FileLinkCell,
-  MoneyCell,
   TableCard,
   TextLinkCell,
   VersionCell
@@ -14,11 +13,13 @@ import {
 import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { commercialProposalStatusLabels } from "@/lib/constants";
 import type { getProposals } from "@/modules/proposals/queries";
+import { canViewSensitiveFields, type PermissionUser } from "@/permissions";
 import { formatRussianDate } from "@/utils/date";
+import { formatMoney } from "@/utils/money";
 
 type ProposalItem = Awaited<ReturnType<typeof getProposals>>["items"][number];
 
-export function ProposalsTable({ proposals }: { proposals: ProposalItem[] }) {
+export function ProposalsTable({ proposals, user }: { proposals: ProposalItem[]; user: PermissionUser }) {
   return (
     <TableCard>
       <TableHeader>
@@ -47,10 +48,10 @@ export function ProposalsTable({ proposals }: { proposals: ProposalItem[] }) {
               <TextLinkCell cellLabel="Клиент" href={`/clients/${proposal.client.id}`}>{proposal.client.name}</TextLinkCell>
               <BadgeCell cellLabel="Статус" variant={proposalStatusVariant(proposal.status)}>{commercialProposalStatusLabels[proposal.status]}</BadgeCell>
               <VersionCell cellLabel="Версия" value={proposal.version} />
-              <MoneyCell cellLabel="Сумма" value={proposal.amount} />
+              <TableCell label="Сумма">{canViewSensitiveFields(user, proposal) ? formatMoney(proposal.amount, "Без суммы") : "Скрыто"}</TableCell>
               <DateCell cellLabel="Отправлено">{formatRussianDate(proposal.sentAt)}</DateCell>
               <DateCell cellLabel="Follow-up">{formatRussianDate(proposal.nextTouchAt)}</DateCell>
-              <FileLinkCell cellLabel="Файл" href={proposal.fileUrl} />
+              <FileLinkCell cellLabel="Файл" href={proposal.fileUrl ? `/api/proposals/${proposal.id}/download` : null} />
               <CrmDisciplineCell violations={proposal.crmViolations} />
               <BonusEligibilityCell violations={proposal.crmViolations} />
             </TableRow>

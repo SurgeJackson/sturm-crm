@@ -4,19 +4,14 @@ import { redirect } from "next/navigation";
 import type { DesignerRelationshipStage } from "@/generated/prisma/client";
 import { getCurrentUser } from "@/auth/get-current-user";
 import {
-  canArchiveRecord,
   canChangeRecordResponsible,
   canCreateDesigner,
   canEditRecord
 } from "@/permissions";
 import { parseDesignerForm, relationshipStages } from "@/modules/designers/form";
-import {
-  archiveDesigner,
-  changeDesignerStage,
-  createDesigner,
-  getDesignerForMutation,
-  updateDesigner
-} from "@/modules/designers/service";
+import { getDesignerForMutation } from "@/modules/designers/services/queries";
+import { changeDesignerStage } from "@/modules/designers/services/stage";
+import { createDesigner, updateDesigner } from "@/modules/designers/services/workflow";
 
 export type DesignerActionState = {
   errors?: Record<string, string[]>;
@@ -70,27 +65,6 @@ export async function updateDesignerAction(id: string, _prevState: DesignerActio
   await updateDesigner(id, before, parsed.data, responsibleId, user.id);
 
   redirect(`/designers/${id}?saved=1`);
-}
-
-export async function archiveDesignerAction(id: string) {
-  const user = await getCurrentUser();
-
-  if (!user) {
-    redirect("/login");
-  }
-
-  const before = await getDesignerForMutation(id);
-
-  if (!before || !canArchiveRecord(user, {
-    createdById: before.createdById,
-    responsibleId: before.responsibleId
-  })) {
-    redirect(`/designers/${id}?error=archive`);
-  }
-
-  await archiveDesigner(id, before, user.id);
-
-  redirect(`/designers/${id}?archived=1`);
 }
 
 export async function changeDesignerStageAction(id: string, formData: FormData) {

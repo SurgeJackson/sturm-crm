@@ -3,7 +3,7 @@ import {
   computeBonusEligibilityStatus,
   crmDisciplineStatus,
   crmEntityHref
-} from "../modules/crm-discipline/service";
+} from "../modules/crm-discipline/bonus";
 
 describe("crm discipline service helpers", () => {
   it("computes bonus eligibility from active bonus violations", () => {
