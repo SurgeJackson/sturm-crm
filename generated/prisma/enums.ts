@@ -20,6 +20,15 @@ export const UserRole = {
 export type UserRole = (typeof UserRole)[keyof typeof UserRole]
 
 
+export const SecurityLogSeverity = {
+  INFO: 'INFO',
+  WARNING: 'WARNING',
+  CRITICAL: 'CRITICAL'
+} as const
+
+export type SecurityLogSeverity = (typeof SecurityLogSeverity)[keyof typeof SecurityLogSeverity]
+
+
 export const EntityStatus = {
   ACTIVE: 'ACTIVE',
   ARCHIVED: 'ARCHIVED',

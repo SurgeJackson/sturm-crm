@@ -15,6 +15,12 @@ enum UserRole {
   ADMINISTRATOR
 }
 
+enum SecurityLogSeverity {
+  INFO
+  WARNING
+  CRITICAL
+}
+
 enum EntityStatus {
   ACTIVE
   ARCHIVED
@@ -459,16 +465,23 @@ enum DesignerBonusAdjustmentType {
 }
 
 model User {
-  id             String    @id @default(cuid())
-  name           String
-  email          String    @unique
-  passwordHash   String?
-  authProviderId String?
-  role           UserRole
-  isActive       Boolean   @default(true)
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
-  lastLoginAt    DateTime?
+  id                        String    @id @default(cuid())
+  name                      String
+  email                     String    @unique
+  passwordHash              String?
+  authProviderId            String?
+  role                      UserRole
+  isActive                  Boolean   @default(true)
+  emailVerifiedAt           DateTime?
+  lastLoginAt               DateTime?
+  lastPasswordChangeAt      DateTime?
+  failedLoginAttempts       Int       @default(0)
+  lockedUntil               DateTime?
+  deactivatedAt             DateTime?
+  deactivatedById           String?
+  confidentialityAcceptedAt DateTime?
+  createdAt                 DateTime  @default(now())
+  updatedAt                 DateTime  @updatedAt
 
   clientsResponsible            Client[]                   @relation("ClientResponsible")
   clientsCreated                Client[]                   @relation("ClientCreatedBy")
@@ -500,6 +513,17 @@ model User {
   bonusAdjustmentsCreated       DesignerBonusAdjustment[]  @relation("DesignerBonusAdjustmentCreatedBy")
   bonusAdjustmentsApproved      DesignerBonusAdjustment[]  @relation("DesignerBonusAdjustmentApprovedBy")
   securityLogs                  SecurityLog[]              @relation("SecurityLogUser")
+  deactivatedBy                 User?                      @relation("UserDeactivatedBy", fields: [deactivatedById], references: [id])
+  deactivatedUsers              User[]                     @relation("UserDeactivatedBy")
+  emailVerificationTokens       EmailVerificationToken[]   @relation("EmailVerificationTokenUser")
+  passwordResetTokens           PasswordResetToken[]       @relation("PasswordResetTokenUser")
+  invitationsSent               UserInvitation[]           @relation("UserInvitationInvitedBy")
+
+  @@index([role])
+  @@index([isActive])
+  @@index([emailVerifiedAt])
+  @@index([lockedUntil])
+  @@index([deactivatedById])
 }
 
 model Client {
@@ -1084,18 +1108,98 @@ model DesignerBonusAdjustment {
 }
 
 model SecurityLog {
-  id         String           @id @default(cuid())
+  id         String              @id @default(cuid())
   action     String
   userId     String?
   entityType AuditEntityType?
   entityId   String?
+  ipAddress  String?
+  userAgent  String?
   metadata   Json?
-  createdAt  DateTime         @default(now())
+  severity   SecurityLogSeverity @default(INFO)
+  createdAt  DateTime            @default(now())
 
   user User? @relation("SecurityLogUser", fields: [userId], references: [id])
 
   @@index([action])
   @@index([userId])
   @@index([entityType, entityId])
+  @@index([severity])
   @@index([createdAt])
+}
+
+model EmailVerificationToken {
+  id        String    @id @default(cuid())
+  userId    String
+  email     String
+  tokenHash String
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+  ipAddress String?
+  userAgent String?
+
+  user User @relation("EmailVerificationTokenUser", fields: [userId], references: [id])
+
+  @@unique([tokenHash])
+  @@index([userId])
+  @@index([email])
+  @@index([expiresAt])
+  @@index([usedAt])
+}
+
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  userId    String
+  email     String
+  tokenHash String
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+  ipAddress String?
+  userAgent String?
+
+  user User @relation("PasswordResetTokenUser", fields: [userId], references: [id])
+
+  @@unique([tokenHash])
+  @@index([userId])
+  @@index([email])
+  @@index([expiresAt])
+  @@index([usedAt])
+}
+
+model UserInvitation {
+  id          String    @id @default(cuid())
+  email       String
+  name        String
+  role        UserRole
+  invitedById String
+  tokenHash   String
+  expiresAt   DateTime
+  acceptedAt  DateTime?
+  createdAt   DateTime  @default(now())
+  cancelledAt DateTime?
+  comment     String?
+
+  invitedBy User @relation("UserInvitationInvitedBy", fields: [invitedById], references: [id])
+
+  @@unique([tokenHash])
+  @@index([email])
+  @@index([role])
+  @@index([invitedById])
+  @@index([expiresAt])
+  @@index([acceptedAt])
+  @@index([cancelledAt])
+}
+
+model RolePermission {
+  id            String   @id @default(cuid())
+  role          UserRole
+  permissionKey String
+  isAllowed     Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@unique([role, permissionKey])
+  @@index([permissionKey])
 }

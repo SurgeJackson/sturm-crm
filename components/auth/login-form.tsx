@@ -7,6 +7,8 @@ import { LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { authErrorMessages } from "@/modules/auth/errors";
+import Link from "next/link";
 
 export function LoginForm() {
   const searchParams = useSearchParams();
@@ -14,6 +16,8 @@ export function LoginForm() {
   const [password, setPassword] = useState("Sturm12345");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const queryError = searchParams.get("error");
+  const visibleError = error ?? (queryError ? authErrorMessages[queryError] ?? "Не удалось выполнить вход." : null);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -29,7 +33,7 @@ export function LoginForm() {
     setIsLoading(false);
 
     if (result?.error) {
-      setError("Неверный email, пароль или пользователь отключен.");
+      setError(authErrorMessages[result.error] ?? "Неверный email или пароль.");
       return;
     }
 
@@ -60,11 +64,19 @@ export function LoginForm() {
           required
         />
       </div>
-      {error ? <p className="text-sm text-destructive">{error}</p> : null}
+      {visibleError ? <p className="text-sm text-destructive">{visibleError}</p> : null}
+      {searchParams.get("invitation") === "accepted" ? (
+        <p className="text-sm text-muted-foreground">Приглашение принято. Теперь можно войти.</p>
+      ) : null}
       <Button className="w-full" type="submit" disabled={isLoading}>
         <LogIn className="h-4 w-4" />
         {isLoading ? "Вход..." : "Войти"}
       </Button>
+      <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-sm text-muted-foreground">
+        <Link className="hover:underline" href="/auth/forgot-password">Забыли пароль?</Link>
+        <Link className="hover:underline" href="/auth/register">Зарегистрироваться</Link>
+        <Link className="hover:underline" href="/auth/resend-verification">Подтвердить email</Link>
+      </div>
     </form>
   );
 }

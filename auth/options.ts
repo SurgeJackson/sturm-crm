@@ -1,8 +1,8 @@
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { z } from "zod";
-import bcrypt from "bcryptjs";
-import { prisma } from "@/lib/prisma";
+import { getRequestContext } from "@/lib/request-context";
+import { authenticateCredentials } from "@/modules/auth/service";
 
 const credentialsSchema = z.object({
   email: z.string().email(),
@@ -30,31 +30,16 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
-        const user = await prisma.user.findUnique({
-          where: { email: parsed.data.email.toLowerCase() }
-        });
-
-        if (!user || !user.isActive || !user.passwordHash) {
-          return null;
-        }
-
-        const passwordMatches = await bcrypt.compare(parsed.data.password, user.passwordHash);
-
-        if (!passwordMatches) {
-          return null;
-        }
-
-        await prisma.user.update({
-          where: { id: user.id },
-          data: { lastLoginAt: new Date() }
-        });
+        const context = await getRequestContext();
+        const user = await authenticateCredentials(parsed.data.email, parsed.data.password, context);
 
         return {
           id: user.id,
           name: user.name,
           email: user.email,
           role: user.role,
-          isActive: user.isActive
+          isActive: user.isActive,
+          emailVerifiedAt: user.emailVerifiedAt
         };
       }
     })
@@ -64,6 +49,7 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.role = user.role;
         token.isActive = user.isActive;
+        token.emailVerifiedAt = user.emailVerifiedAt?.toISOString() ?? null;
       }
 
       return token;
@@ -73,6 +59,7 @@ export const authOptions: NextAuthOptions = {
         session.user.id = token.sub ?? "";
         session.user.role = token.role;
         session.user.isActive = token.isActive;
+        session.user.emailVerifiedAt = token.emailVerifiedAt;
       }
 
       return session;

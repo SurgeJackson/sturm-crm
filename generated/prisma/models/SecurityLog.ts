@@ -30,6 +30,9 @@ export type SecurityLogMinAggregateOutputType = {
   userId: string | null
   entityType: $Enums.AuditEntityType | null
   entityId: string | null
+  ipAddress: string | null
+  userAgent: string | null
+  severity: $Enums.SecurityLogSeverity | null
   createdAt: Date | null
 }
 
@@ -39,6 +42,9 @@ export type SecurityLogMaxAggregateOutputType = {
   userId: string | null
   entityType: $Enums.AuditEntityType | null
   entityId: string | null
+  ipAddress: string | null
+  userAgent: string | null
+  severity: $Enums.SecurityLogSeverity | null
   createdAt: Date | null
 }
 
@@ -48,7 +54,10 @@ export type SecurityLogCountAggregateOutputType = {
   userId: number
   entityType: number
   entityId: number
+  ipAddress: number
+  userAgent: number
   metadata: number
+  severity: number
   createdAt: number
   _all: number
 }
@@ -60,6 +69,9 @@ export type SecurityLogMinAggregateInputType = {
   userId?: true
   entityType?: true
   entityId?: true
+  ipAddress?: true
+  userAgent?: true
+  severity?: true
   createdAt?: true
 }
 
@@ -69,6 +81,9 @@ export type SecurityLogMaxAggregateInputType = {
   userId?: true
   entityType?: true
   entityId?: true
+  ipAddress?: true
+  userAgent?: true
+  severity?: true
   createdAt?: true
 }
 
@@ -78,7 +93,10 @@ export type SecurityLogCountAggregateInputType = {
   userId?: true
   entityType?: true
   entityId?: true
+  ipAddress?: true
+  userAgent?: true
   metadata?: true
+  severity?: true
   createdAt?: true
   _all?: true
 }
@@ -161,7 +179,10 @@ export type SecurityLogGroupByOutputType = {
   userId: string | null
   entityType: $Enums.AuditEntityType | null
   entityId: string | null
+  ipAddress: string | null
+  userAgent: string | null
   metadata: runtime.JsonValue | null
+  severity: $Enums.SecurityLogSeverity
   createdAt: Date
   _count: SecurityLogCountAggregateOutputType | null
   _min: SecurityLogMinAggregateOutputType | null
@@ -192,7 +213,10 @@ export type SecurityLogWhereInput = {
   userId?: Prisma.StringNullableFilter<"SecurityLog"> | string | null
   entityType?: Prisma.EnumAuditEntityTypeNullableFilter<"SecurityLog"> | $Enums.AuditEntityType | null
   entityId?: Prisma.StringNullableFilter<"SecurityLog"> | string | null
+  ipAddress?: Prisma.StringNullableFilter<"SecurityLog"> | string | null
+  userAgent?: Prisma.StringNullableFilter<"SecurityLog"> | string | null
   metadata?: Prisma.JsonNullableFilter<"SecurityLog">
+  severity?: Prisma.EnumSecurityLogSeverityFilter<"SecurityLog"> | $Enums.SecurityLogSeverity
   createdAt?: Prisma.DateTimeFilter<"SecurityLog"> | Date | string
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }
@@ -203,7 +227,10 @@ export type SecurityLogOrderByWithRelationInput = {
   userId?: Prisma.SortOrderInput | Prisma.SortOrder
   entityType?: Prisma.SortOrderInput | Prisma.SortOrder
   entityId?: Prisma.SortOrderInput | Prisma.SortOrder
+  ipAddress?: Prisma.SortOrderInput | Prisma.SortOrder
+  userAgent?: Prisma.SortOrderInput | Prisma.SortOrder
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
+  severity?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
 }
@@ -217,7 +244,10 @@ export type SecurityLogWhereUniqueInput = Prisma.AtLeast<{
   userId?: Prisma.StringNullableFilter<"SecurityLog"> | string | null
   entityType?: Prisma.EnumAuditEntityTypeNullableFilter<"SecurityLog"> | $Enums.AuditEntityType | null
   entityId?: Prisma.StringNullableFilter<"SecurityLog"> | string | null
+  ipAddress?: Prisma.StringNullableFilter<"SecurityLog"> | string | null
+  userAgent?: Prisma.StringNullableFilter<"SecurityLog"> | string | null
   metadata?: Prisma.JsonNullableFilter<"SecurityLog">
+  severity?: Prisma.EnumSecurityLogSeverityFilter<"SecurityLog"> | $Enums.SecurityLogSeverity
   createdAt?: Prisma.DateTimeFilter<"SecurityLog"> | Date | string
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }, "id">
@@ -228,7 +258,10 @@ export type SecurityLogOrderByWithAggregationInput = {
   userId?: Prisma.SortOrderInput | Prisma.SortOrder
   entityType?: Prisma.SortOrderInput | Prisma.SortOrder
   entityId?: Prisma.SortOrderInput | Prisma.SortOrder
+  ipAddress?: Prisma.SortOrderInput | Prisma.SortOrder
+  userAgent?: Prisma.SortOrderInput | Prisma.SortOrder
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
+  severity?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.SecurityLogCountOrderByAggregateInput
   _max?: Prisma.SecurityLogMaxOrderByAggregateInput
@@ -244,7 +277,10 @@ export type SecurityLogScalarWhereWithAggregatesInput = {
   userId?: Prisma.StringNullableWithAggregatesFilter<"SecurityLog"> | string | null
   entityType?: Prisma.EnumAuditEntityTypeNullableWithAggregatesFilter<"SecurityLog"> | $Enums.AuditEntityType | null
   entityId?: Prisma.StringNullableWithAggregatesFilter<"SecurityLog"> | string | null
+  ipAddress?: Prisma.StringNullableWithAggregatesFilter<"SecurityLog"> | string | null
+  userAgent?: Prisma.StringNullableWithAggregatesFilter<"SecurityLog"> | string | null
   metadata?: Prisma.JsonNullableWithAggregatesFilter<"SecurityLog">
+  severity?: Prisma.EnumSecurityLogSeverityWithAggregatesFilter<"SecurityLog"> | $Enums.SecurityLogSeverity
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"SecurityLog"> | Date | string
 }
 
@@ -253,7 +289,10 @@ export type SecurityLogCreateInput = {
   action: string
   entityType?: $Enums.AuditEntityType | null
   entityId?: string | null
+  ipAddress?: string | null
+  userAgent?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  severity?: $Enums.SecurityLogSeverity
   createdAt?: Date | string
   user?: Prisma.UserCreateNestedOneWithoutSecurityLogsInput
 }
@@ -264,7 +303,10 @@ export type SecurityLogUncheckedCreateInput = {
   userId?: string | null
   entityType?: $Enums.AuditEntityType | null
   entityId?: string | null
+  ipAddress?: string | null
+  userAgent?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  severity?: $Enums.SecurityLogSeverity
   createdAt?: Date | string
 }
 
@@ -273,7 +315,10 @@ export type SecurityLogUpdateInput = {
   action?: Prisma.StringFieldUpdateOperationsInput | string
   entityType?: Prisma.NullableEnumAuditEntityTypeFieldUpdateOperationsInput | $Enums.AuditEntityType | null
   entityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  severity?: Prisma.EnumSecurityLogSeverityFieldUpdateOperationsInput | $Enums.SecurityLogSeverity
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneWithoutSecurityLogsNestedInput
 }
@@ -284,7 +329,10 @@ export type SecurityLogUncheckedUpdateInput = {
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   entityType?: Prisma.NullableEnumAuditEntityTypeFieldUpdateOperationsInput | $Enums.AuditEntityType | null
   entityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  severity?: Prisma.EnumSecurityLogSeverityFieldUpdateOperationsInput | $Enums.SecurityLogSeverity
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -294,7 +342,10 @@ export type SecurityLogCreateManyInput = {
   userId?: string | null
   entityType?: $Enums.AuditEntityType | null
   entityId?: string | null
+  ipAddress?: string | null
+  userAgent?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  severity?: $Enums.SecurityLogSeverity
   createdAt?: Date | string
 }
 
@@ -303,7 +354,10 @@ export type SecurityLogUpdateManyMutationInput = {
   action?: Prisma.StringFieldUpdateOperationsInput | string
   entityType?: Prisma.NullableEnumAuditEntityTypeFieldUpdateOperationsInput | $Enums.AuditEntityType | null
   entityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  severity?: Prisma.EnumSecurityLogSeverityFieldUpdateOperationsInput | $Enums.SecurityLogSeverity
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -313,7 +367,10 @@ export type SecurityLogUncheckedUpdateManyInput = {
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   entityType?: Prisma.NullableEnumAuditEntityTypeFieldUpdateOperationsInput | $Enums.AuditEntityType | null
   entityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  severity?: Prisma.EnumSecurityLogSeverityFieldUpdateOperationsInput | $Enums.SecurityLogSeverity
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -333,7 +390,10 @@ export type SecurityLogCountOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   entityType?: Prisma.SortOrder
   entityId?: Prisma.SortOrder
+  ipAddress?: Prisma.SortOrder
+  userAgent?: Prisma.SortOrder
   metadata?: Prisma.SortOrder
+  severity?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -343,6 +403,9 @@ export type SecurityLogMaxOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   entityType?: Prisma.SortOrder
   entityId?: Prisma.SortOrder
+  ipAddress?: Prisma.SortOrder
+  userAgent?: Prisma.SortOrder
+  severity?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -352,6 +415,9 @@ export type SecurityLogMinOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   entityType?: Prisma.SortOrder
   entityId?: Prisma.SortOrder
+  ipAddress?: Prisma.SortOrder
+  userAgent?: Prisma.SortOrder
+  severity?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -401,12 +467,19 @@ export type NullableEnumAuditEntityTypeFieldUpdateOperationsInput = {
   set?: $Enums.AuditEntityType | null
 }
 
+export type EnumSecurityLogSeverityFieldUpdateOperationsInput = {
+  set?: $Enums.SecurityLogSeverity
+}
+
 export type SecurityLogCreateWithoutUserInput = {
   id?: string
   action: string
   entityType?: $Enums.AuditEntityType | null
   entityId?: string | null
+  ipAddress?: string | null
+  userAgent?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  severity?: $Enums.SecurityLogSeverity
   createdAt?: Date | string
 }
 
@@ -415,7 +488,10 @@ export type SecurityLogUncheckedCreateWithoutUserInput = {
   action: string
   entityType?: $Enums.AuditEntityType | null
   entityId?: string | null
+  ipAddress?: string | null
+  userAgent?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  severity?: $Enums.SecurityLogSeverity
   createdAt?: Date | string
 }
 
@@ -454,7 +530,10 @@ export type SecurityLogScalarWhereInput = {
   userId?: Prisma.StringNullableFilter<"SecurityLog"> | string | null
   entityType?: Prisma.EnumAuditEntityTypeNullableFilter<"SecurityLog"> | $Enums.AuditEntityType | null
   entityId?: Prisma.StringNullableFilter<"SecurityLog"> | string | null
+  ipAddress?: Prisma.StringNullableFilter<"SecurityLog"> | string | null
+  userAgent?: Prisma.StringNullableFilter<"SecurityLog"> | string | null
   metadata?: Prisma.JsonNullableFilter<"SecurityLog">
+  severity?: Prisma.EnumSecurityLogSeverityFilter<"SecurityLog"> | $Enums.SecurityLogSeverity
   createdAt?: Prisma.DateTimeFilter<"SecurityLog"> | Date | string
 }
 
@@ -463,7 +542,10 @@ export type SecurityLogCreateManyUserInput = {
   action: string
   entityType?: $Enums.AuditEntityType | null
   entityId?: string | null
+  ipAddress?: string | null
+  userAgent?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  severity?: $Enums.SecurityLogSeverity
   createdAt?: Date | string
 }
 
@@ -472,7 +554,10 @@ export type SecurityLogUpdateWithoutUserInput = {
   action?: Prisma.StringFieldUpdateOperationsInput | string
   entityType?: Prisma.NullableEnumAuditEntityTypeFieldUpdateOperationsInput | $Enums.AuditEntityType | null
   entityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  severity?: Prisma.EnumSecurityLogSeverityFieldUpdateOperationsInput | $Enums.SecurityLogSeverity
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -481,7 +566,10 @@ export type SecurityLogUncheckedUpdateWithoutUserInput = {
   action?: Prisma.StringFieldUpdateOperationsInput | string
   entityType?: Prisma.NullableEnumAuditEntityTypeFieldUpdateOperationsInput | $Enums.AuditEntityType | null
   entityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  severity?: Prisma.EnumSecurityLogSeverityFieldUpdateOperationsInput | $Enums.SecurityLogSeverity
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -490,7 +578,10 @@ export type SecurityLogUncheckedUpdateManyWithoutUserInput = {
   action?: Prisma.StringFieldUpdateOperationsInput | string
   entityType?: Prisma.NullableEnumAuditEntityTypeFieldUpdateOperationsInput | $Enums.AuditEntityType | null
   entityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  severity?: Prisma.EnumSecurityLogSeverityFieldUpdateOperationsInput | $Enums.SecurityLogSeverity
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -502,7 +593,10 @@ export type SecurityLogSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   userId?: boolean
   entityType?: boolean
   entityId?: boolean
+  ipAddress?: boolean
+  userAgent?: boolean
   metadata?: boolean
+  severity?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.SecurityLog$userArgs<ExtArgs>
 }, ExtArgs["result"]["securityLog"]>
@@ -513,7 +607,10 @@ export type SecurityLogSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   userId?: boolean
   entityType?: boolean
   entityId?: boolean
+  ipAddress?: boolean
+  userAgent?: boolean
   metadata?: boolean
+  severity?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.SecurityLog$userArgs<ExtArgs>
 }, ExtArgs["result"]["securityLog"]>
@@ -524,7 +621,10 @@ export type SecurityLogSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   userId?: boolean
   entityType?: boolean
   entityId?: boolean
+  ipAddress?: boolean
+  userAgent?: boolean
   metadata?: boolean
+  severity?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.SecurityLog$userArgs<ExtArgs>
 }, ExtArgs["result"]["securityLog"]>
@@ -535,11 +635,14 @@ export type SecurityLogSelectScalar = {
   userId?: boolean
   entityType?: boolean
   entityId?: boolean
+  ipAddress?: boolean
+  userAgent?: boolean
   metadata?: boolean
+  severity?: boolean
   createdAt?: boolean
 }
 
-export type SecurityLogOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "action" | "userId" | "entityType" | "entityId" | "metadata" | "createdAt", ExtArgs["result"]["securityLog"]>
+export type SecurityLogOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "action" | "userId" | "entityType" | "entityId" | "ipAddress" | "userAgent" | "metadata" | "severity" | "createdAt", ExtArgs["result"]["securityLog"]>
 export type SecurityLogInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.SecurityLog$userArgs<ExtArgs>
 }
@@ -561,7 +664,10 @@ export type $SecurityLogPayload<ExtArgs extends runtime.Types.Extensions.Interna
     userId: string | null
     entityType: $Enums.AuditEntityType | null
     entityId: string | null
+    ipAddress: string | null
+    userAgent: string | null
     metadata: runtime.JsonValue | null
+    severity: $Enums.SecurityLogSeverity
     createdAt: Date
   }, ExtArgs["result"]["securityLog"]>
   composites: {}
@@ -992,7 +1098,10 @@ export interface SecurityLogFieldRefs {
   readonly userId: Prisma.FieldRef<"SecurityLog", 'String'>
   readonly entityType: Prisma.FieldRef<"SecurityLog", 'AuditEntityType'>
   readonly entityId: Prisma.FieldRef<"SecurityLog", 'String'>
+  readonly ipAddress: Prisma.FieldRef<"SecurityLog", 'String'>
+  readonly userAgent: Prisma.FieldRef<"SecurityLog", 'String'>
   readonly metadata: Prisma.FieldRef<"SecurityLog", 'Json'>
+  readonly severity: Prisma.FieldRef<"SecurityLog", 'SecurityLogSeverity'>
   readonly createdAt: Prisma.FieldRef<"SecurityLog", 'DateTime'>
 }
 

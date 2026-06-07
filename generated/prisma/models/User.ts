@@ -20,8 +20,18 @@ export type UserModel = runtime.Types.Result.DefaultSelection<Prisma.$UserPayloa
 
 export type AggregateUser = {
   _count: UserCountAggregateOutputType | null
+  _avg: UserAvgAggregateOutputType | null
+  _sum: UserSumAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
+}
+
+export type UserAvgAggregateOutputType = {
+  failedLoginAttempts: number | null
+}
+
+export type UserSumAggregateOutputType = {
+  failedLoginAttempts: number | null
 }
 
 export type UserMinAggregateOutputType = {
@@ -32,9 +42,16 @@ export type UserMinAggregateOutputType = {
   authProviderId: string | null
   role: $Enums.UserRole | null
   isActive: boolean | null
+  emailVerifiedAt: Date | null
+  lastLoginAt: Date | null
+  lastPasswordChangeAt: Date | null
+  failedLoginAttempts: number | null
+  lockedUntil: Date | null
+  deactivatedAt: Date | null
+  deactivatedById: string | null
+  confidentialityAcceptedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
-  lastLoginAt: Date | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -45,9 +62,16 @@ export type UserMaxAggregateOutputType = {
   authProviderId: string | null
   role: $Enums.UserRole | null
   isActive: boolean | null
+  emailVerifiedAt: Date | null
+  lastLoginAt: Date | null
+  lastPasswordChangeAt: Date | null
+  failedLoginAttempts: number | null
+  lockedUntil: Date | null
+  deactivatedAt: Date | null
+  deactivatedById: string | null
+  confidentialityAcceptedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
-  lastLoginAt: Date | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -58,12 +82,27 @@ export type UserCountAggregateOutputType = {
   authProviderId: number
   role: number
   isActive: number
+  emailVerifiedAt: number
+  lastLoginAt: number
+  lastPasswordChangeAt: number
+  failedLoginAttempts: number
+  lockedUntil: number
+  deactivatedAt: number
+  deactivatedById: number
+  confidentialityAcceptedAt: number
   createdAt: number
   updatedAt: number
-  lastLoginAt: number
   _all: number
 }
 
+
+export type UserAvgAggregateInputType = {
+  failedLoginAttempts?: true
+}
+
+export type UserSumAggregateInputType = {
+  failedLoginAttempts?: true
+}
 
 export type UserMinAggregateInputType = {
   id?: true
@@ -73,9 +112,16 @@ export type UserMinAggregateInputType = {
   authProviderId?: true
   role?: true
   isActive?: true
+  emailVerifiedAt?: true
+  lastLoginAt?: true
+  lastPasswordChangeAt?: true
+  failedLoginAttempts?: true
+  lockedUntil?: true
+  deactivatedAt?: true
+  deactivatedById?: true
+  confidentialityAcceptedAt?: true
   createdAt?: true
   updatedAt?: true
-  lastLoginAt?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -86,9 +132,16 @@ export type UserMaxAggregateInputType = {
   authProviderId?: true
   role?: true
   isActive?: true
+  emailVerifiedAt?: true
+  lastLoginAt?: true
+  lastPasswordChangeAt?: true
+  failedLoginAttempts?: true
+  lockedUntil?: true
+  deactivatedAt?: true
+  deactivatedById?: true
+  confidentialityAcceptedAt?: true
   createdAt?: true
   updatedAt?: true
-  lastLoginAt?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -99,9 +152,16 @@ export type UserCountAggregateInputType = {
   authProviderId?: true
   role?: true
   isActive?: true
+  emailVerifiedAt?: true
+  lastLoginAt?: true
+  lastPasswordChangeAt?: true
+  failedLoginAttempts?: true
+  lockedUntil?: true
+  deactivatedAt?: true
+  deactivatedById?: true
+  confidentialityAcceptedAt?: true
   createdAt?: true
   updatedAt?: true
-  lastLoginAt?: true
   _all?: true
 }
 
@@ -143,6 +203,18 @@ export type UserAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    *
+   * Select which fields to average
+  **/
+  _avg?: UserAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   *
+   * Select which fields to sum
+  **/
+  _sum?: UserSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   *
    * Select which fields to find the minimum value
   **/
   _min?: UserMinAggregateInputType
@@ -173,6 +245,8 @@ export type UserGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   _count?: UserCountAggregateInputType | true
+  _avg?: UserAvgAggregateInputType
+  _sum?: UserSumAggregateInputType
   _min?: UserMinAggregateInputType
   _max?: UserMaxAggregateInputType
 }
@@ -185,10 +259,19 @@ export type UserGroupByOutputType = {
   authProviderId: string | null
   role: $Enums.UserRole
   isActive: boolean
+  emailVerifiedAt: Date | null
+  lastLoginAt: Date | null
+  lastPasswordChangeAt: Date | null
+  failedLoginAttempts: number
+  lockedUntil: Date | null
+  deactivatedAt: Date | null
+  deactivatedById: string | null
+  confidentialityAcceptedAt: Date | null
   createdAt: Date
   updatedAt: Date
-  lastLoginAt: Date | null
   _count: UserCountAggregateOutputType | null
+  _avg: UserAvgAggregateOutputType | null
+  _sum: UserSumAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
 }
@@ -219,9 +302,16 @@ export type UserWhereInput = {
   authProviderId?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.EnumUserRoleFilter<"User"> | $Enums.UserRole
   isActive?: Prisma.BoolFilter<"User"> | boolean
+  emailVerifiedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  lastLoginAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  lastPasswordChangeAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  failedLoginAttempts?: Prisma.IntFilter<"User"> | number
+  lockedUntil?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  deactivatedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  deactivatedById?: Prisma.StringNullableFilter<"User"> | string | null
+  confidentialityAcceptedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
-  lastLoginAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   clientsResponsible?: Prisma.ClientListRelationFilter
   clientsCreated?: Prisma.ClientListRelationFilter
   designersResponsible?: Prisma.DesignerListRelationFilter
@@ -252,6 +342,11 @@ export type UserWhereInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentListRelationFilter
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentListRelationFilter
   securityLogs?: Prisma.SecurityLogListRelationFilter
+  deactivatedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  deactivatedUsers?: Prisma.UserListRelationFilter
+  emailVerificationTokens?: Prisma.EmailVerificationTokenListRelationFilter
+  passwordResetTokens?: Prisma.PasswordResetTokenListRelationFilter
+  invitationsSent?: Prisma.UserInvitationListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -262,9 +357,16 @@ export type UserOrderByWithRelationInput = {
   authProviderId?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  emailVerifiedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastLoginAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastPasswordChangeAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  failedLoginAttempts?: Prisma.SortOrder
+  lockedUntil?: Prisma.SortOrderInput | Prisma.SortOrder
+  deactivatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  deactivatedById?: Prisma.SortOrderInput | Prisma.SortOrder
+  confidentialityAcceptedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  lastLoginAt?: Prisma.SortOrderInput | Prisma.SortOrder
   clientsResponsible?: Prisma.ClientOrderByRelationAggregateInput
   clientsCreated?: Prisma.ClientOrderByRelationAggregateInput
   designersResponsible?: Prisma.DesignerOrderByRelationAggregateInput
@@ -295,6 +397,11 @@ export type UserOrderByWithRelationInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentOrderByRelationAggregateInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentOrderByRelationAggregateInput
   securityLogs?: Prisma.SecurityLogOrderByRelationAggregateInput
+  deactivatedBy?: Prisma.UserOrderByWithRelationInput
+  deactivatedUsers?: Prisma.UserOrderByRelationAggregateInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenOrderByRelationAggregateInput
+  passwordResetTokens?: Prisma.PasswordResetTokenOrderByRelationAggregateInput
+  invitationsSent?: Prisma.UserInvitationOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -308,9 +415,16 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   authProviderId?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.EnumUserRoleFilter<"User"> | $Enums.UserRole
   isActive?: Prisma.BoolFilter<"User"> | boolean
+  emailVerifiedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  lastLoginAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  lastPasswordChangeAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  failedLoginAttempts?: Prisma.IntFilter<"User"> | number
+  lockedUntil?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  deactivatedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  deactivatedById?: Prisma.StringNullableFilter<"User"> | string | null
+  confidentialityAcceptedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
-  lastLoginAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   clientsResponsible?: Prisma.ClientListRelationFilter
   clientsCreated?: Prisma.ClientListRelationFilter
   designersResponsible?: Prisma.DesignerListRelationFilter
@@ -341,6 +455,11 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentListRelationFilter
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentListRelationFilter
   securityLogs?: Prisma.SecurityLogListRelationFilter
+  deactivatedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  deactivatedUsers?: Prisma.UserListRelationFilter
+  emailVerificationTokens?: Prisma.EmailVerificationTokenListRelationFilter
+  passwordResetTokens?: Prisma.PasswordResetTokenListRelationFilter
+  invitationsSent?: Prisma.UserInvitationListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -351,12 +470,21 @@ export type UserOrderByWithAggregationInput = {
   authProviderId?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  emailVerifiedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastLoginAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastPasswordChangeAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  failedLoginAttempts?: Prisma.SortOrder
+  lockedUntil?: Prisma.SortOrderInput | Prisma.SortOrder
+  deactivatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  deactivatedById?: Prisma.SortOrderInput | Prisma.SortOrder
+  confidentialityAcceptedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  lastLoginAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
+  _avg?: Prisma.UserAvgOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
+  _sum?: Prisma.UserSumOrderByAggregateInput
 }
 
 export type UserScalarWhereWithAggregatesInput = {
@@ -370,9 +498,16 @@ export type UserScalarWhereWithAggregatesInput = {
   authProviderId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   role?: Prisma.EnumUserRoleWithAggregatesFilter<"User"> | $Enums.UserRole
   isActive?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
+  emailVerifiedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  lastLoginAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  lastPasswordChangeAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  failedLoginAttempts?: Prisma.IntWithAggregatesFilter<"User"> | number
+  lockedUntil?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  deactivatedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  deactivatedById?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  confidentialityAcceptedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
-  lastLoginAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
 }
 
 export type UserCreateInput = {
@@ -383,9 +518,15 @@ export type UserCreateInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
@@ -416,6 +557,11 @@ export type UserCreateInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -426,9 +572,16 @@ export type UserUncheckedCreateInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
@@ -459,6 +612,10 @@ export type UserUncheckedCreateInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUpdateInput = {
@@ -469,9 +626,15 @@ export type UserUpdateInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
@@ -502,6 +665,11 @@ export type UserUpdateInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -512,9 +680,16 @@ export type UserUncheckedUpdateInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -545,6 +720,10 @@ export type UserUncheckedUpdateInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -555,9 +734,16 @@ export type UserCreateManyInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
 }
 
 export type UserUpdateManyMutationInput = {
@@ -568,9 +754,15 @@ export type UserUpdateManyMutationInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type UserUncheckedUpdateManyInput = {
@@ -581,9 +773,31 @@ export type UserUncheckedUpdateManyInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type UserNullableScalarRelationFilter = {
+  is?: Prisma.UserWhereInput | null
+  isNot?: Prisma.UserWhereInput | null
+}
+
+export type UserListRelationFilter = {
+  every?: Prisma.UserWhereInput
+  some?: Prisma.UserWhereInput
+  none?: Prisma.UserWhereInput
+}
+
+export type UserOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -594,9 +808,20 @@ export type UserCountOrderByAggregateInput = {
   authProviderId?: Prisma.SortOrder
   role?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  emailVerifiedAt?: Prisma.SortOrder
+  lastLoginAt?: Prisma.SortOrder
+  lastPasswordChangeAt?: Prisma.SortOrder
+  failedLoginAttempts?: Prisma.SortOrder
+  lockedUntil?: Prisma.SortOrder
+  deactivatedAt?: Prisma.SortOrder
+  deactivatedById?: Prisma.SortOrder
+  confidentialityAcceptedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  lastLoginAt?: Prisma.SortOrder
+}
+
+export type UserAvgOrderByAggregateInput = {
+  failedLoginAttempts?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -607,9 +832,16 @@ export type UserMaxOrderByAggregateInput = {
   authProviderId?: Prisma.SortOrder
   role?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  emailVerifiedAt?: Prisma.SortOrder
+  lastLoginAt?: Prisma.SortOrder
+  lastPasswordChangeAt?: Prisma.SortOrder
+  failedLoginAttempts?: Prisma.SortOrder
+  lockedUntil?: Prisma.SortOrder
+  deactivatedAt?: Prisma.SortOrder
+  deactivatedById?: Prisma.SortOrder
+  confidentialityAcceptedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  lastLoginAt?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
@@ -620,9 +852,20 @@ export type UserMinOrderByAggregateInput = {
   authProviderId?: Prisma.SortOrder
   role?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  emailVerifiedAt?: Prisma.SortOrder
+  lastLoginAt?: Prisma.SortOrder
+  lastPasswordChangeAt?: Prisma.SortOrder
+  failedLoginAttempts?: Prisma.SortOrder
+  lockedUntil?: Prisma.SortOrder
+  deactivatedAt?: Prisma.SortOrder
+  deactivatedById?: Prisma.SortOrder
+  confidentialityAcceptedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  lastLoginAt?: Prisma.SortOrder
+}
+
+export type UserSumOrderByAggregateInput = {
+  failedLoginAttempts?: Prisma.SortOrder
 }
 
 export type UserScalarRelationFilter = {
@@ -630,9 +873,24 @@ export type UserScalarRelationFilter = {
   isNot?: Prisma.UserWhereInput
 }
 
-export type UserNullableScalarRelationFilter = {
-  is?: Prisma.UserWhereInput | null
-  isNot?: Prisma.UserWhereInput | null
+export type UserCreateNestedOneWithoutDeactivatedUsersInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDeactivatedUsersInput, Prisma.UserUncheckedCreateWithoutDeactivatedUsersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDeactivatedUsersInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedManyWithoutDeactivatedByInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDeactivatedByInput, Prisma.UserUncheckedCreateWithoutDeactivatedByInput> | Prisma.UserCreateWithoutDeactivatedByInput[] | Prisma.UserUncheckedCreateWithoutDeactivatedByInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDeactivatedByInput | Prisma.UserCreateOrConnectWithoutDeactivatedByInput[]
+  createMany?: Prisma.UserCreateManyDeactivatedByInputEnvelope
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+}
+
+export type UserUncheckedCreateNestedManyWithoutDeactivatedByInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDeactivatedByInput, Prisma.UserUncheckedCreateWithoutDeactivatedByInput> | Prisma.UserCreateWithoutDeactivatedByInput[] | Prisma.UserUncheckedCreateWithoutDeactivatedByInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDeactivatedByInput | Prisma.UserCreateOrConnectWithoutDeactivatedByInput[]
+  createMany?: Prisma.UserCreateManyDeactivatedByInputEnvelope
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
 }
 
 export type StringFieldUpdateOperationsInput = {
@@ -651,12 +909,58 @@ export type BoolFieldUpdateOperationsInput = {
   set?: boolean
 }
 
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
+}
+
+export type IntFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
 }
 
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
+export type UserUpdateOneWithoutDeactivatedUsersNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDeactivatedUsersInput, Prisma.UserUncheckedCreateWithoutDeactivatedUsersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDeactivatedUsersInput
+  upsert?: Prisma.UserUpsertWithoutDeactivatedUsersInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDeactivatedUsersInput, Prisma.UserUpdateWithoutDeactivatedUsersInput>, Prisma.UserUncheckedUpdateWithoutDeactivatedUsersInput>
+}
+
+export type UserUpdateManyWithoutDeactivatedByNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDeactivatedByInput, Prisma.UserUncheckedCreateWithoutDeactivatedByInput> | Prisma.UserCreateWithoutDeactivatedByInput[] | Prisma.UserUncheckedCreateWithoutDeactivatedByInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDeactivatedByInput | Prisma.UserCreateOrConnectWithoutDeactivatedByInput[]
+  upsert?: Prisma.UserUpsertWithWhereUniqueWithoutDeactivatedByInput | Prisma.UserUpsertWithWhereUniqueWithoutDeactivatedByInput[]
+  createMany?: Prisma.UserCreateManyDeactivatedByInputEnvelope
+  set?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  disconnect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  delete?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  update?: Prisma.UserUpdateWithWhereUniqueWithoutDeactivatedByInput | Prisma.UserUpdateWithWhereUniqueWithoutDeactivatedByInput[]
+  updateMany?: Prisma.UserUpdateManyWithWhereWithoutDeactivatedByInput | Prisma.UserUpdateManyWithWhereWithoutDeactivatedByInput[]
+  deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+}
+
+export type UserUncheckedUpdateManyWithoutDeactivatedByNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDeactivatedByInput, Prisma.UserUncheckedCreateWithoutDeactivatedByInput> | Prisma.UserCreateWithoutDeactivatedByInput[] | Prisma.UserUncheckedCreateWithoutDeactivatedByInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDeactivatedByInput | Prisma.UserCreateOrConnectWithoutDeactivatedByInput[]
+  upsert?: Prisma.UserUpsertWithWhereUniqueWithoutDeactivatedByInput | Prisma.UserUpsertWithWhereUniqueWithoutDeactivatedByInput[]
+  createMany?: Prisma.UserCreateManyDeactivatedByInputEnvelope
+  set?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  disconnect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  delete?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  update?: Prisma.UserUpdateWithWhereUniqueWithoutDeactivatedByInput | Prisma.UserUpdateWithWhereUniqueWithoutDeactivatedByInput[]
+  updateMany?: Prisma.UserUpdateManyWithWhereWithoutDeactivatedByInput | Prisma.UserUpdateManyWithWhereWithoutDeactivatedByInput[]
+  deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
 }
 
 export type UserCreateNestedOneWithoutClientsResponsibleInput = {
@@ -1101,7 +1405,49 @@ export type UserUpdateOneWithoutSecurityLogsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSecurityLogsInput, Prisma.UserUpdateWithoutSecurityLogsInput>, Prisma.UserUncheckedUpdateWithoutSecurityLogsInput>
 }
 
-export type UserCreateWithoutClientsResponsibleInput = {
+export type UserCreateNestedOneWithoutEmailVerificationTokensInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutEmailVerificationTokensInput, Prisma.UserUncheckedCreateWithoutEmailVerificationTokensInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutEmailVerificationTokensInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutEmailVerificationTokensNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutEmailVerificationTokensInput, Prisma.UserUncheckedCreateWithoutEmailVerificationTokensInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutEmailVerificationTokensInput
+  upsert?: Prisma.UserUpsertWithoutEmailVerificationTokensInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutEmailVerificationTokensInput, Prisma.UserUpdateWithoutEmailVerificationTokensInput>, Prisma.UserUncheckedUpdateWithoutEmailVerificationTokensInput>
+}
+
+export type UserCreateNestedOneWithoutPasswordResetTokensInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPasswordResetTokensInput, Prisma.UserUncheckedCreateWithoutPasswordResetTokensInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPasswordResetTokensInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPasswordResetTokensNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPasswordResetTokensInput, Prisma.UserUncheckedCreateWithoutPasswordResetTokensInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPasswordResetTokensInput
+  upsert?: Prisma.UserUpsertWithoutPasswordResetTokensInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPasswordResetTokensInput, Prisma.UserUpdateWithoutPasswordResetTokensInput>, Prisma.UserUncheckedUpdateWithoutPasswordResetTokensInput>
+}
+
+export type UserCreateNestedOneWithoutInvitationsSentInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutInvitationsSentInput, Prisma.UserUncheckedCreateWithoutInvitationsSentInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutInvitationsSentInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutInvitationsSentNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutInvitationsSentInput, Prisma.UserUncheckedCreateWithoutInvitationsSentInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutInvitationsSentInput
+  upsert?: Prisma.UserUpsertWithoutInvitationsSentInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutInvitationsSentInput, Prisma.UserUpdateWithoutInvitationsSentInput>, Prisma.UserUncheckedUpdateWithoutInvitationsSentInput>
+}
+
+export type UserCreateWithoutDeactivatedUsersInput = {
   id?: string
   name: string
   email: string
@@ -1109,9 +1455,16 @@ export type UserCreateWithoutClientsResponsibleInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
+  clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
   designersCreated?: Prisma.DesignerCreateNestedManyWithoutCreatedByInput
@@ -1141,9 +1494,13 @@ export type UserCreateWithoutClientsResponsibleInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
 }
 
-export type UserUncheckedCreateWithoutClientsResponsibleInput = {
+export type UserUncheckedCreateWithoutDeactivatedUsersInput = {
   id?: string
   name: string
   email: string
@@ -1151,9 +1508,17 @@ export type UserUncheckedCreateWithoutClientsResponsibleInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
+  clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
   designersCreated?: Prisma.DesignerUncheckedCreateNestedManyWithoutCreatedByInput
@@ -1183,6 +1548,392 @@ export type UserUncheckedCreateWithoutClientsResponsibleInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
+}
+
+export type UserCreateOrConnectWithoutDeactivatedUsersInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutDeactivatedUsersInput, Prisma.UserUncheckedCreateWithoutDeactivatedUsersInput>
+}
+
+export type UserCreateWithoutDeactivatedByInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash?: string | null
+  authProviderId?: string | null
+  role: $Enums.UserRole
+  isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
+  clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
+  designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
+  designersCreated?: Prisma.DesignerCreateNestedManyWithoutCreatedByInput
+  objectsResponsible?: Prisma.ProjectObjectCreateNestedManyWithoutResponsibleInput
+  objectsCreated?: Prisma.ProjectObjectCreateNestedManyWithoutCreatedByInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantCreateNestedManyWithoutResponsibleInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantCreateNestedManyWithoutCreatedByInput
+  dealsResponsible?: Prisma.DealCreateNestedManyWithoutResponsibleInput
+  dealsCreated?: Prisma.DealCreateNestedManyWithoutCreatedByInput
+  proposalsResponsible?: Prisma.CommercialProposalCreateNestedManyWithoutResponsibleInput
+  proposalsCreated?: Prisma.CommercialProposalCreateNestedManyWithoutCreatedByInput
+  proposalsUploaded?: Prisma.CommercialProposalCreateNestedManyWithoutUploadedByInput
+  tasksResponsible?: Prisma.TaskActivityCreateNestedManyWithoutResponsibleInput
+  tasksCreated?: Prisma.TaskActivityCreateNestedManyWithoutCreatedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationCreateNestedManyWithoutResolvedByInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementCreateNestedManyWithoutCreatedByInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementCreateNestedManyWithoutApprovedByInput
+  paymentsCreated?: Prisma.PaymentCreateNestedManyWithoutCreatedByInput
+  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutConfirmedByInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualCreateNestedManyWithoutCreatedByInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutCreateNestedManyWithoutCreatedByInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutCreateNestedManyWithoutPaidByInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
+  securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
+}
+
+export type UserUncheckedCreateWithoutDeactivatedByInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash?: string | null
+  authProviderId?: string | null
+  role: $Enums.UserRole
+  isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
+  clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
+  designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
+  designersCreated?: Prisma.DesignerUncheckedCreateNestedManyWithoutCreatedByInput
+  objectsResponsible?: Prisma.ProjectObjectUncheckedCreateNestedManyWithoutResponsibleInput
+  objectsCreated?: Prisma.ProjectObjectUncheckedCreateNestedManyWithoutCreatedByInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUncheckedCreateNestedManyWithoutResponsibleInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUncheckedCreateNestedManyWithoutCreatedByInput
+  dealsResponsible?: Prisma.DealUncheckedCreateNestedManyWithoutResponsibleInput
+  dealsCreated?: Prisma.DealUncheckedCreateNestedManyWithoutCreatedByInput
+  proposalsResponsible?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutResponsibleInput
+  proposalsCreated?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutCreatedByInput
+  proposalsUploaded?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutUploadedByInput
+  tasksResponsible?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutResponsibleInput
+  tasksCreated?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutCreatedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResolvedByInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementUncheckedCreateNestedManyWithoutApprovedByInput
+  paymentsCreated?: Prisma.PaymentUncheckedCreateNestedManyWithoutCreatedByInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutConfirmedByInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualUncheckedCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutUncheckedCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUncheckedCreateNestedManyWithoutPaidByInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+  securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
+}
+
+export type UserCreateOrConnectWithoutDeactivatedByInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutDeactivatedByInput, Prisma.UserUncheckedCreateWithoutDeactivatedByInput>
+}
+
+export type UserCreateManyDeactivatedByInputEnvelope = {
+  data: Prisma.UserCreateManyDeactivatedByInput | Prisma.UserCreateManyDeactivatedByInput[]
+  skipDuplicates?: boolean
+}
+
+export type UserUpsertWithoutDeactivatedUsersInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutDeactivatedUsersInput, Prisma.UserUncheckedUpdateWithoutDeactivatedUsersInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutDeactivatedUsersInput, Prisma.UserUncheckedCreateWithoutDeactivatedUsersInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutDeactivatedUsersInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutDeactivatedUsersInput, Prisma.UserUncheckedUpdateWithoutDeactivatedUsersInput>
+}
+
+export type UserUpdateWithoutDeactivatedUsersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
+  clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
+  designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
+  designersCreated?: Prisma.DesignerUpdateManyWithoutCreatedByNestedInput
+  objectsResponsible?: Prisma.ProjectObjectUpdateManyWithoutResponsibleNestedInput
+  objectsCreated?: Prisma.ProjectObjectUpdateManyWithoutCreatedByNestedInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUpdateManyWithoutResponsibleNestedInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUpdateManyWithoutCreatedByNestedInput
+  dealsResponsible?: Prisma.DealUpdateManyWithoutResponsibleNestedInput
+  dealsCreated?: Prisma.DealUpdateManyWithoutCreatedByNestedInput
+  proposalsResponsible?: Prisma.CommercialProposalUpdateManyWithoutResponsibleNestedInput
+  proposalsCreated?: Prisma.CommercialProposalUpdateManyWithoutCreatedByNestedInput
+  proposalsUploaded?: Prisma.CommercialProposalUpdateManyWithoutUploadedByNestedInput
+  tasksResponsible?: Prisma.TaskActivityUpdateManyWithoutResponsibleNestedInput
+  tasksCreated?: Prisma.TaskActivityUpdateManyWithoutCreatedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUpdateManyWithoutResolvedByNestedInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementUpdateManyWithoutCreatedByNestedInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementUpdateManyWithoutApprovedByNestedInput
+  paymentsCreated?: Prisma.PaymentUpdateManyWithoutCreatedByNestedInput
+  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutConfirmedByNestedInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualUpdateManyWithoutCreatedByNestedInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutUpdateManyWithoutCreatedByNestedInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUpdateManyWithoutPaidByNestedInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
+  securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutDeactivatedUsersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
+  clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
+  designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
+  designersCreated?: Prisma.DesignerUncheckedUpdateManyWithoutCreatedByNestedInput
+  objectsResponsible?: Prisma.ProjectObjectUncheckedUpdateManyWithoutResponsibleNestedInput
+  objectsCreated?: Prisma.ProjectObjectUncheckedUpdateManyWithoutCreatedByNestedInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUncheckedUpdateManyWithoutResponsibleNestedInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUncheckedUpdateManyWithoutCreatedByNestedInput
+  dealsResponsible?: Prisma.DealUncheckedUpdateManyWithoutResponsibleNestedInput
+  dealsCreated?: Prisma.DealUncheckedUpdateManyWithoutCreatedByNestedInput
+  proposalsResponsible?: Prisma.CommercialProposalUncheckedUpdateManyWithoutResponsibleNestedInput
+  proposalsCreated?: Prisma.CommercialProposalUncheckedUpdateManyWithoutCreatedByNestedInput
+  proposalsUploaded?: Prisma.CommercialProposalUncheckedUpdateManyWithoutUploadedByNestedInput
+  tasksResponsible?: Prisma.TaskActivityUncheckedUpdateManyWithoutResponsibleNestedInput
+  tasksCreated?: Prisma.TaskActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedUpdateManyWithoutResolvedByNestedInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementUncheckedUpdateManyWithoutApprovedByNestedInput
+  paymentsCreated?: Prisma.PaymentUncheckedUpdateManyWithoutCreatedByNestedInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutConfirmedByNestedInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualUncheckedUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutUncheckedUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUncheckedUpdateManyWithoutPaidByNestedInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+  securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
+}
+
+export type UserUpsertWithWhereUniqueWithoutDeactivatedByInput = {
+  where: Prisma.UserWhereUniqueInput
+  update: Prisma.XOR<Prisma.UserUpdateWithoutDeactivatedByInput, Prisma.UserUncheckedUpdateWithoutDeactivatedByInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutDeactivatedByInput, Prisma.UserUncheckedCreateWithoutDeactivatedByInput>
+}
+
+export type UserUpdateWithWhereUniqueWithoutDeactivatedByInput = {
+  where: Prisma.UserWhereUniqueInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutDeactivatedByInput, Prisma.UserUncheckedUpdateWithoutDeactivatedByInput>
+}
+
+export type UserUpdateManyWithWhereWithoutDeactivatedByInput = {
+  where: Prisma.UserScalarWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateManyMutationInput, Prisma.UserUncheckedUpdateManyWithoutDeactivatedByInput>
+}
+
+export type UserScalarWhereInput = {
+  AND?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+  OR?: Prisma.UserScalarWhereInput[]
+  NOT?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+  id?: Prisma.StringFilter<"User"> | string
+  name?: Prisma.StringFilter<"User"> | string
+  email?: Prisma.StringFilter<"User"> | string
+  passwordHash?: Prisma.StringNullableFilter<"User"> | string | null
+  authProviderId?: Prisma.StringNullableFilter<"User"> | string | null
+  role?: Prisma.EnumUserRoleFilter<"User"> | $Enums.UserRole
+  isActive?: Prisma.BoolFilter<"User"> | boolean
+  emailVerifiedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  lastLoginAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  lastPasswordChangeAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  failedLoginAttempts?: Prisma.IntFilter<"User"> | number
+  lockedUntil?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  deactivatedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  deactivatedById?: Prisma.StringNullableFilter<"User"> | string | null
+  confidentialityAcceptedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+}
+
+export type UserCreateWithoutClientsResponsibleInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash?: string | null
+  authProviderId?: string | null
+  role: $Enums.UserRole
+  isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
+  designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
+  designersCreated?: Prisma.DesignerCreateNestedManyWithoutCreatedByInput
+  objectsResponsible?: Prisma.ProjectObjectCreateNestedManyWithoutResponsibleInput
+  objectsCreated?: Prisma.ProjectObjectCreateNestedManyWithoutCreatedByInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantCreateNestedManyWithoutResponsibleInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantCreateNestedManyWithoutCreatedByInput
+  dealsResponsible?: Prisma.DealCreateNestedManyWithoutResponsibleInput
+  dealsCreated?: Prisma.DealCreateNestedManyWithoutCreatedByInput
+  proposalsResponsible?: Prisma.CommercialProposalCreateNestedManyWithoutResponsibleInput
+  proposalsCreated?: Prisma.CommercialProposalCreateNestedManyWithoutCreatedByInput
+  proposalsUploaded?: Prisma.CommercialProposalCreateNestedManyWithoutUploadedByInput
+  tasksResponsible?: Prisma.TaskActivityCreateNestedManyWithoutResponsibleInput
+  tasksCreated?: Prisma.TaskActivityCreateNestedManyWithoutCreatedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationCreateNestedManyWithoutResolvedByInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementCreateNestedManyWithoutCreatedByInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementCreateNestedManyWithoutApprovedByInput
+  paymentsCreated?: Prisma.PaymentCreateNestedManyWithoutCreatedByInput
+  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutConfirmedByInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualCreateNestedManyWithoutCreatedByInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutCreateNestedManyWithoutCreatedByInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutCreateNestedManyWithoutPaidByInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
+  securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
+}
+
+export type UserUncheckedCreateWithoutClientsResponsibleInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash?: string | null
+  authProviderId?: string | null
+  role: $Enums.UserRole
+  isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
+  designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
+  designersCreated?: Prisma.DesignerUncheckedCreateNestedManyWithoutCreatedByInput
+  objectsResponsible?: Prisma.ProjectObjectUncheckedCreateNestedManyWithoutResponsibleInput
+  objectsCreated?: Prisma.ProjectObjectUncheckedCreateNestedManyWithoutCreatedByInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUncheckedCreateNestedManyWithoutResponsibleInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUncheckedCreateNestedManyWithoutCreatedByInput
+  dealsResponsible?: Prisma.DealUncheckedCreateNestedManyWithoutResponsibleInput
+  dealsCreated?: Prisma.DealUncheckedCreateNestedManyWithoutCreatedByInput
+  proposalsResponsible?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutResponsibleInput
+  proposalsCreated?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutCreatedByInput
+  proposalsUploaded?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutUploadedByInput
+  tasksResponsible?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutResponsibleInput
+  tasksCreated?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutCreatedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResolvedByInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementUncheckedCreateNestedManyWithoutApprovedByInput
+  paymentsCreated?: Prisma.PaymentUncheckedCreateNestedManyWithoutCreatedByInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutConfirmedByInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualUncheckedCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutUncheckedCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUncheckedCreateNestedManyWithoutPaidByInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+  securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutClientsResponsibleInput = {
@@ -1198,9 +1949,15 @@ export type UserCreateWithoutClientsCreatedInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
   designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
   designersCreated?: Prisma.DesignerCreateNestedManyWithoutCreatedByInput
@@ -1230,6 +1987,11 @@ export type UserCreateWithoutClientsCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutClientsCreatedInput = {
@@ -1240,9 +2002,16 @@ export type UserUncheckedCreateWithoutClientsCreatedInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
   designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
   designersCreated?: Prisma.DesignerUncheckedCreateNestedManyWithoutCreatedByInput
@@ -1272,6 +2041,10 @@ export type UserUncheckedCreateWithoutClientsCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutClientsCreatedInput = {
@@ -1298,9 +2071,15 @@ export type UserUpdateWithoutClientsResponsibleInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
   designersCreated?: Prisma.DesignerUpdateManyWithoutCreatedByNestedInput
@@ -1330,6 +2109,11 @@ export type UserUpdateWithoutClientsResponsibleInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutClientsResponsibleInput = {
@@ -1340,9 +2124,16 @@ export type UserUncheckedUpdateWithoutClientsResponsibleInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
   designersCreated?: Prisma.DesignerUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -1372,6 +2163,10 @@ export type UserUncheckedUpdateWithoutClientsResponsibleInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUpsertWithoutClientsCreatedInput = {
@@ -1393,9 +2188,15 @@ export type UserUpdateWithoutClientsCreatedInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
   designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
   designersCreated?: Prisma.DesignerUpdateManyWithoutCreatedByNestedInput
@@ -1425,6 +2226,11 @@ export type UserUpdateWithoutClientsCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutClientsCreatedInput = {
@@ -1435,9 +2241,16 @@ export type UserUncheckedUpdateWithoutClientsCreatedInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
   designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
   designersCreated?: Prisma.DesignerUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -1467,6 +2280,10 @@ export type UserUncheckedUpdateWithoutClientsCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserCreateWithoutDesignersResponsibleInput = {
@@ -1477,9 +2294,15 @@ export type UserCreateWithoutDesignersResponsibleInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
   designersCreated?: Prisma.DesignerCreateNestedManyWithoutCreatedByInput
@@ -1509,6 +2332,11 @@ export type UserCreateWithoutDesignersResponsibleInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutDesignersResponsibleInput = {
@@ -1519,9 +2347,16 @@ export type UserUncheckedCreateWithoutDesignersResponsibleInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
   designersCreated?: Prisma.DesignerUncheckedCreateNestedManyWithoutCreatedByInput
@@ -1551,6 +2386,10 @@ export type UserUncheckedCreateWithoutDesignersResponsibleInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutDesignersResponsibleInput = {
@@ -1566,9 +2405,15 @@ export type UserCreateWithoutDesignersCreatedInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
@@ -1598,6 +2443,11 @@ export type UserCreateWithoutDesignersCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutDesignersCreatedInput = {
@@ -1608,9 +2458,16 @@ export type UserUncheckedCreateWithoutDesignersCreatedInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
@@ -1640,6 +2497,10 @@ export type UserUncheckedCreateWithoutDesignersCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutDesignersCreatedInput = {
@@ -1666,9 +2527,15 @@ export type UserUpdateWithoutDesignersResponsibleInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
   designersCreated?: Prisma.DesignerUpdateManyWithoutCreatedByNestedInput
@@ -1698,6 +2565,11 @@ export type UserUpdateWithoutDesignersResponsibleInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDesignersResponsibleInput = {
@@ -1708,9 +2580,16 @@ export type UserUncheckedUpdateWithoutDesignersResponsibleInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
   designersCreated?: Prisma.DesignerUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -1740,6 +2619,10 @@ export type UserUncheckedUpdateWithoutDesignersResponsibleInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUpsertWithoutDesignersCreatedInput = {
@@ -1761,9 +2644,15 @@ export type UserUpdateWithoutDesignersCreatedInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
@@ -1793,6 +2682,11 @@ export type UserUpdateWithoutDesignersCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDesignersCreatedInput = {
@@ -1803,9 +2697,16 @@ export type UserUncheckedUpdateWithoutDesignersCreatedInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -1835,6 +2736,10 @@ export type UserUncheckedUpdateWithoutDesignersCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserCreateWithoutObjectsResponsibleInput = {
@@ -1845,9 +2750,15 @@ export type UserCreateWithoutObjectsResponsibleInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
@@ -1877,6 +2788,11 @@ export type UserCreateWithoutObjectsResponsibleInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutObjectsResponsibleInput = {
@@ -1887,9 +2803,16 @@ export type UserUncheckedCreateWithoutObjectsResponsibleInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
@@ -1919,6 +2842,10 @@ export type UserUncheckedCreateWithoutObjectsResponsibleInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutObjectsResponsibleInput = {
@@ -1934,9 +2861,15 @@ export type UserCreateWithoutObjectsCreatedInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
@@ -1966,6 +2899,11 @@ export type UserCreateWithoutObjectsCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutObjectsCreatedInput = {
@@ -1976,9 +2914,16 @@ export type UserUncheckedCreateWithoutObjectsCreatedInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
@@ -2008,6 +2953,10 @@ export type UserUncheckedCreateWithoutObjectsCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutObjectsCreatedInput = {
@@ -2034,9 +2983,15 @@ export type UserUpdateWithoutObjectsResponsibleInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
@@ -2066,6 +3021,11 @@ export type UserUpdateWithoutObjectsResponsibleInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutObjectsResponsibleInput = {
@@ -2076,9 +3036,16 @@ export type UserUncheckedUpdateWithoutObjectsResponsibleInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -2108,6 +3075,10 @@ export type UserUncheckedUpdateWithoutObjectsResponsibleInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUpsertWithoutObjectsCreatedInput = {
@@ -2129,9 +3100,15 @@ export type UserUpdateWithoutObjectsCreatedInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
@@ -2161,6 +3138,11 @@ export type UserUpdateWithoutObjectsCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutObjectsCreatedInput = {
@@ -2171,9 +3153,16 @@ export type UserUncheckedUpdateWithoutObjectsCreatedInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -2203,6 +3192,10 @@ export type UserUncheckedUpdateWithoutObjectsCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserCreateWithoutObjectParticipantsResponsibleInput = {
@@ -2213,9 +3206,15 @@ export type UserCreateWithoutObjectParticipantsResponsibleInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
@@ -2245,6 +3244,11 @@ export type UserCreateWithoutObjectParticipantsResponsibleInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutObjectParticipantsResponsibleInput = {
@@ -2255,9 +3259,16 @@ export type UserUncheckedCreateWithoutObjectParticipantsResponsibleInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
@@ -2287,6 +3298,10 @@ export type UserUncheckedCreateWithoutObjectParticipantsResponsibleInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutObjectParticipantsResponsibleInput = {
@@ -2302,9 +3317,15 @@ export type UserCreateWithoutObjectParticipantsCreatedInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
@@ -2334,6 +3355,11 @@ export type UserCreateWithoutObjectParticipantsCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutObjectParticipantsCreatedInput = {
@@ -2344,9 +3370,16 @@ export type UserUncheckedCreateWithoutObjectParticipantsCreatedInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
@@ -2376,6 +3409,10 @@ export type UserUncheckedCreateWithoutObjectParticipantsCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutObjectParticipantsCreatedInput = {
@@ -2402,9 +3439,15 @@ export type UserUpdateWithoutObjectParticipantsResponsibleInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
@@ -2434,6 +3477,11 @@ export type UserUpdateWithoutObjectParticipantsResponsibleInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutObjectParticipantsResponsibleInput = {
@@ -2444,9 +3492,16 @@ export type UserUncheckedUpdateWithoutObjectParticipantsResponsibleInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -2476,6 +3531,10 @@ export type UserUncheckedUpdateWithoutObjectParticipantsResponsibleInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUpsertWithoutObjectParticipantsCreatedInput = {
@@ -2497,9 +3556,15 @@ export type UserUpdateWithoutObjectParticipantsCreatedInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
@@ -2529,6 +3594,11 @@ export type UserUpdateWithoutObjectParticipantsCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutObjectParticipantsCreatedInput = {
@@ -2539,9 +3609,16 @@ export type UserUncheckedUpdateWithoutObjectParticipantsCreatedInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -2571,6 +3648,10 @@ export type UserUncheckedUpdateWithoutObjectParticipantsCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserCreateWithoutDealsResponsibleInput = {
@@ -2581,9 +3662,15 @@ export type UserCreateWithoutDealsResponsibleInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
@@ -2613,6 +3700,11 @@ export type UserCreateWithoutDealsResponsibleInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutDealsResponsibleInput = {
@@ -2623,9 +3715,16 @@ export type UserUncheckedCreateWithoutDealsResponsibleInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
@@ -2655,6 +3754,10 @@ export type UserUncheckedCreateWithoutDealsResponsibleInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutDealsResponsibleInput = {
@@ -2670,9 +3773,15 @@ export type UserCreateWithoutDealsCreatedInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
@@ -2702,6 +3811,11 @@ export type UserCreateWithoutDealsCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutDealsCreatedInput = {
@@ -2712,9 +3826,16 @@ export type UserUncheckedCreateWithoutDealsCreatedInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
@@ -2744,6 +3865,10 @@ export type UserUncheckedCreateWithoutDealsCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutDealsCreatedInput = {
@@ -2770,9 +3895,15 @@ export type UserUpdateWithoutDealsResponsibleInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
@@ -2802,6 +3933,11 @@ export type UserUpdateWithoutDealsResponsibleInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDealsResponsibleInput = {
@@ -2812,9 +3948,16 @@ export type UserUncheckedUpdateWithoutDealsResponsibleInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -2844,6 +3987,10 @@ export type UserUncheckedUpdateWithoutDealsResponsibleInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUpsertWithoutDealsCreatedInput = {
@@ -2865,9 +4012,15 @@ export type UserUpdateWithoutDealsCreatedInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
@@ -2897,6 +4050,11 @@ export type UserUpdateWithoutDealsCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDealsCreatedInput = {
@@ -2907,9 +4065,16 @@ export type UserUncheckedUpdateWithoutDealsCreatedInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -2939,6 +4104,10 @@ export type UserUncheckedUpdateWithoutDealsCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserCreateWithoutProposalsResponsibleInput = {
@@ -2949,9 +4118,15 @@ export type UserCreateWithoutProposalsResponsibleInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
@@ -2981,6 +4156,11 @@ export type UserCreateWithoutProposalsResponsibleInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutProposalsResponsibleInput = {
@@ -2991,9 +4171,16 @@ export type UserUncheckedCreateWithoutProposalsResponsibleInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
@@ -3023,6 +4210,10 @@ export type UserUncheckedCreateWithoutProposalsResponsibleInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutProposalsResponsibleInput = {
@@ -3038,9 +4229,15 @@ export type UserCreateWithoutProposalsCreatedInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
@@ -3070,6 +4267,11 @@ export type UserCreateWithoutProposalsCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutProposalsCreatedInput = {
@@ -3080,9 +4282,16 @@ export type UserUncheckedCreateWithoutProposalsCreatedInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
@@ -3112,6 +4321,10 @@ export type UserUncheckedCreateWithoutProposalsCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutProposalsCreatedInput = {
@@ -3127,9 +4340,15 @@ export type UserCreateWithoutProposalsUploadedInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
@@ -3159,6 +4378,11 @@ export type UserCreateWithoutProposalsUploadedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutProposalsUploadedInput = {
@@ -3169,9 +4393,16 @@ export type UserUncheckedCreateWithoutProposalsUploadedInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
@@ -3201,6 +4432,10 @@ export type UserUncheckedCreateWithoutProposalsUploadedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutProposalsUploadedInput = {
@@ -3227,9 +4462,15 @@ export type UserUpdateWithoutProposalsResponsibleInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
@@ -3259,6 +4500,11 @@ export type UserUpdateWithoutProposalsResponsibleInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProposalsResponsibleInput = {
@@ -3269,9 +4515,16 @@ export type UserUncheckedUpdateWithoutProposalsResponsibleInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -3301,6 +4554,10 @@ export type UserUncheckedUpdateWithoutProposalsResponsibleInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUpsertWithoutProposalsCreatedInput = {
@@ -3322,9 +4579,15 @@ export type UserUpdateWithoutProposalsCreatedInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
@@ -3354,6 +4617,11 @@ export type UserUpdateWithoutProposalsCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProposalsCreatedInput = {
@@ -3364,9 +4632,16 @@ export type UserUncheckedUpdateWithoutProposalsCreatedInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -3396,6 +4671,10 @@ export type UserUncheckedUpdateWithoutProposalsCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUpsertWithoutProposalsUploadedInput = {
@@ -3417,9 +4696,15 @@ export type UserUpdateWithoutProposalsUploadedInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
@@ -3449,6 +4734,11 @@ export type UserUpdateWithoutProposalsUploadedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProposalsUploadedInput = {
@@ -3459,9 +4749,16 @@ export type UserUncheckedUpdateWithoutProposalsUploadedInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -3491,6 +4788,10 @@ export type UserUncheckedUpdateWithoutProposalsUploadedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserCreateWithoutTasksResponsibleInput = {
@@ -3501,9 +4802,15 @@ export type UserCreateWithoutTasksResponsibleInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
@@ -3533,6 +4840,11 @@ export type UserCreateWithoutTasksResponsibleInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutTasksResponsibleInput = {
@@ -3543,9 +4855,16 @@ export type UserUncheckedCreateWithoutTasksResponsibleInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
@@ -3575,6 +4894,10 @@ export type UserUncheckedCreateWithoutTasksResponsibleInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutTasksResponsibleInput = {
@@ -3590,9 +4913,15 @@ export type UserCreateWithoutTasksCreatedInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
@@ -3622,6 +4951,11 @@ export type UserCreateWithoutTasksCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutTasksCreatedInput = {
@@ -3632,9 +4966,16 @@ export type UserUncheckedCreateWithoutTasksCreatedInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
@@ -3664,6 +5005,10 @@ export type UserUncheckedCreateWithoutTasksCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutTasksCreatedInput = {
@@ -3690,9 +5035,15 @@ export type UserUpdateWithoutTasksResponsibleInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
@@ -3722,6 +5073,11 @@ export type UserUpdateWithoutTasksResponsibleInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTasksResponsibleInput = {
@@ -3732,9 +5088,16 @@ export type UserUncheckedUpdateWithoutTasksResponsibleInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -3764,6 +5127,10 @@ export type UserUncheckedUpdateWithoutTasksResponsibleInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUpsertWithoutTasksCreatedInput = {
@@ -3785,9 +5152,15 @@ export type UserUpdateWithoutTasksCreatedInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
@@ -3817,6 +5190,11 @@ export type UserUpdateWithoutTasksCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTasksCreatedInput = {
@@ -3827,9 +5205,16 @@ export type UserUncheckedUpdateWithoutTasksCreatedInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -3859,6 +5244,10 @@ export type UserUncheckedUpdateWithoutTasksCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserCreateWithoutAuditLogsInput = {
@@ -3869,9 +5258,15 @@ export type UserCreateWithoutAuditLogsInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
@@ -3901,6 +5296,11 @@ export type UserCreateWithoutAuditLogsInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -3911,9 +5311,16 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
@@ -3943,6 +5350,10 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -3969,9 +5380,15 @@ export type UserUpdateWithoutAuditLogsInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
@@ -4001,6 +5418,11 @@ export type UserUpdateWithoutAuditLogsInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -4011,9 +5433,16 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -4043,6 +5472,10 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserCreateWithoutCrmViolationsResponsibleInput = {
@@ -4053,9 +5486,15 @@ export type UserCreateWithoutCrmViolationsResponsibleInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
@@ -4085,6 +5524,11 @@ export type UserCreateWithoutCrmViolationsResponsibleInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutCrmViolationsResponsibleInput = {
@@ -4095,9 +5539,16 @@ export type UserUncheckedCreateWithoutCrmViolationsResponsibleInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
@@ -4127,6 +5578,10 @@ export type UserUncheckedCreateWithoutCrmViolationsResponsibleInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutCrmViolationsResponsibleInput = {
@@ -4142,9 +5597,15 @@ export type UserCreateWithoutCrmViolationsResolvedInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
@@ -4174,6 +5635,11 @@ export type UserCreateWithoutCrmViolationsResolvedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutCrmViolationsResolvedInput = {
@@ -4184,9 +5650,16 @@ export type UserUncheckedCreateWithoutCrmViolationsResolvedInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
@@ -4216,6 +5689,10 @@ export type UserUncheckedCreateWithoutCrmViolationsResolvedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutCrmViolationsResolvedInput = {
@@ -4242,9 +5719,15 @@ export type UserUpdateWithoutCrmViolationsResponsibleInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
@@ -4274,6 +5757,11 @@ export type UserUpdateWithoutCrmViolationsResponsibleInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCrmViolationsResponsibleInput = {
@@ -4284,9 +5772,16 @@ export type UserUncheckedUpdateWithoutCrmViolationsResponsibleInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -4316,6 +5811,10 @@ export type UserUncheckedUpdateWithoutCrmViolationsResponsibleInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUpsertWithoutCrmViolationsResolvedInput = {
@@ -4337,9 +5836,15 @@ export type UserUpdateWithoutCrmViolationsResolvedInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
@@ -4369,6 +5874,11 @@ export type UserUpdateWithoutCrmViolationsResolvedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCrmViolationsResolvedInput = {
@@ -4379,9 +5889,16 @@ export type UserUncheckedUpdateWithoutCrmViolationsResolvedInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -4411,6 +5928,10 @@ export type UserUncheckedUpdateWithoutCrmViolationsResolvedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserCreateWithoutBonusAgreementsCreatedInput = {
@@ -4421,9 +5942,15 @@ export type UserCreateWithoutBonusAgreementsCreatedInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
@@ -4453,6 +5980,11 @@ export type UserCreateWithoutBonusAgreementsCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutBonusAgreementsCreatedInput = {
@@ -4463,9 +5995,16 @@ export type UserUncheckedCreateWithoutBonusAgreementsCreatedInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
@@ -4495,6 +6034,10 @@ export type UserUncheckedCreateWithoutBonusAgreementsCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutBonusAgreementsCreatedInput = {
@@ -4510,9 +6053,15 @@ export type UserCreateWithoutBonusAgreementsApprovedInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
@@ -4542,6 +6091,11 @@ export type UserCreateWithoutBonusAgreementsApprovedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutBonusAgreementsApprovedInput = {
@@ -4552,9 +6106,16 @@ export type UserUncheckedCreateWithoutBonusAgreementsApprovedInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
@@ -4584,6 +6145,10 @@ export type UserUncheckedCreateWithoutBonusAgreementsApprovedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutBonusAgreementsApprovedInput = {
@@ -4610,9 +6175,15 @@ export type UserUpdateWithoutBonusAgreementsCreatedInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
@@ -4642,6 +6213,11 @@ export type UserUpdateWithoutBonusAgreementsCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBonusAgreementsCreatedInput = {
@@ -4652,9 +6228,16 @@ export type UserUncheckedUpdateWithoutBonusAgreementsCreatedInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -4684,6 +6267,10 @@ export type UserUncheckedUpdateWithoutBonusAgreementsCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUpsertWithoutBonusAgreementsApprovedInput = {
@@ -4705,9 +6292,15 @@ export type UserUpdateWithoutBonusAgreementsApprovedInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
@@ -4737,6 +6330,11 @@ export type UserUpdateWithoutBonusAgreementsApprovedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBonusAgreementsApprovedInput = {
@@ -4747,9 +6345,16 @@ export type UserUncheckedUpdateWithoutBonusAgreementsApprovedInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -4779,6 +6384,10 @@ export type UserUncheckedUpdateWithoutBonusAgreementsApprovedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserCreateWithoutPaymentsCreatedInput = {
@@ -4789,9 +6398,15 @@ export type UserCreateWithoutPaymentsCreatedInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
@@ -4821,6 +6436,11 @@ export type UserCreateWithoutPaymentsCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutPaymentsCreatedInput = {
@@ -4831,9 +6451,16 @@ export type UserUncheckedCreateWithoutPaymentsCreatedInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
@@ -4863,6 +6490,10 @@ export type UserUncheckedCreateWithoutPaymentsCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutPaymentsCreatedInput = {
@@ -4878,9 +6509,15 @@ export type UserCreateWithoutPaymentsConfirmedInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
@@ -4910,6 +6547,11 @@ export type UserCreateWithoutPaymentsConfirmedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutPaymentsConfirmedInput = {
@@ -4920,9 +6562,16 @@ export type UserUncheckedCreateWithoutPaymentsConfirmedInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
@@ -4952,6 +6601,10 @@ export type UserUncheckedCreateWithoutPaymentsConfirmedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutPaymentsConfirmedInput = {
@@ -4978,9 +6631,15 @@ export type UserUpdateWithoutPaymentsCreatedInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
@@ -5010,6 +6669,11 @@ export type UserUpdateWithoutPaymentsCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPaymentsCreatedInput = {
@@ -5020,9 +6684,16 @@ export type UserUncheckedUpdateWithoutPaymentsCreatedInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -5052,6 +6723,10 @@ export type UserUncheckedUpdateWithoutPaymentsCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUpsertWithoutPaymentsConfirmedInput = {
@@ -5073,9 +6748,15 @@ export type UserUpdateWithoutPaymentsConfirmedInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
@@ -5105,6 +6786,11 @@ export type UserUpdateWithoutPaymentsConfirmedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPaymentsConfirmedInput = {
@@ -5115,9 +6801,16 @@ export type UserUncheckedUpdateWithoutPaymentsConfirmedInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -5147,6 +6840,10 @@ export type UserUncheckedUpdateWithoutPaymentsConfirmedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserCreateWithoutBonusAccrualsCreatedInput = {
@@ -5157,9 +6854,15 @@ export type UserCreateWithoutBonusAccrualsCreatedInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
@@ -5189,6 +6892,11 @@ export type UserCreateWithoutBonusAccrualsCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutBonusAccrualsCreatedInput = {
@@ -5199,9 +6907,16 @@ export type UserUncheckedCreateWithoutBonusAccrualsCreatedInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
@@ -5231,6 +6946,10 @@ export type UserUncheckedCreateWithoutBonusAccrualsCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutBonusAccrualsCreatedInput = {
@@ -5246,9 +6965,15 @@ export type UserCreateWithoutBonusAccrualsApprovedInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
@@ -5278,6 +7003,11 @@ export type UserCreateWithoutBonusAccrualsApprovedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutBonusAccrualsApprovedInput = {
@@ -5288,9 +7018,16 @@ export type UserUncheckedCreateWithoutBonusAccrualsApprovedInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
@@ -5320,6 +7057,10 @@ export type UserUncheckedCreateWithoutBonusAccrualsApprovedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutBonusAccrualsApprovedInput = {
@@ -5346,9 +7087,15 @@ export type UserUpdateWithoutBonusAccrualsCreatedInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
@@ -5378,6 +7125,11 @@ export type UserUpdateWithoutBonusAccrualsCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBonusAccrualsCreatedInput = {
@@ -5388,9 +7140,16 @@ export type UserUncheckedUpdateWithoutBonusAccrualsCreatedInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -5420,6 +7179,10 @@ export type UserUncheckedUpdateWithoutBonusAccrualsCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUpsertWithoutBonusAccrualsApprovedInput = {
@@ -5441,9 +7204,15 @@ export type UserUpdateWithoutBonusAccrualsApprovedInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
@@ -5473,6 +7242,11 @@ export type UserUpdateWithoutBonusAccrualsApprovedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBonusAccrualsApprovedInput = {
@@ -5483,9 +7257,16 @@ export type UserUncheckedUpdateWithoutBonusAccrualsApprovedInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -5515,6 +7296,10 @@ export type UserUncheckedUpdateWithoutBonusAccrualsApprovedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserCreateWithoutBonusPayoutsCreatedInput = {
@@ -5525,9 +7310,15 @@ export type UserCreateWithoutBonusPayoutsCreatedInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
@@ -5557,6 +7348,11 @@ export type UserCreateWithoutBonusPayoutsCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutBonusPayoutsCreatedInput = {
@@ -5567,9 +7363,16 @@ export type UserUncheckedCreateWithoutBonusPayoutsCreatedInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
@@ -5599,6 +7402,10 @@ export type UserUncheckedCreateWithoutBonusPayoutsCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutBonusPayoutsCreatedInput = {
@@ -5614,9 +7421,15 @@ export type UserCreateWithoutBonusPayoutsApprovedInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
@@ -5646,6 +7459,11 @@ export type UserCreateWithoutBonusPayoutsApprovedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutBonusPayoutsApprovedInput = {
@@ -5656,9 +7474,16 @@ export type UserUncheckedCreateWithoutBonusPayoutsApprovedInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
@@ -5688,6 +7513,10 @@ export type UserUncheckedCreateWithoutBonusPayoutsApprovedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutBonusPayoutsApprovedInput = {
@@ -5703,9 +7532,15 @@ export type UserCreateWithoutBonusPayoutsPaidInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
@@ -5735,6 +7570,11 @@ export type UserCreateWithoutBonusPayoutsPaidInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutBonusPayoutsPaidInput = {
@@ -5745,9 +7585,16 @@ export type UserUncheckedCreateWithoutBonusPayoutsPaidInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
@@ -5777,6 +7624,10 @@ export type UserUncheckedCreateWithoutBonusPayoutsPaidInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutBonusPayoutsPaidInput = {
@@ -5803,9 +7654,15 @@ export type UserUpdateWithoutBonusPayoutsCreatedInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
@@ -5835,6 +7692,11 @@ export type UserUpdateWithoutBonusPayoutsCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBonusPayoutsCreatedInput = {
@@ -5845,9 +7707,16 @@ export type UserUncheckedUpdateWithoutBonusPayoutsCreatedInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -5877,6 +7746,10 @@ export type UserUncheckedUpdateWithoutBonusPayoutsCreatedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUpsertWithoutBonusPayoutsApprovedInput = {
@@ -5898,9 +7771,15 @@ export type UserUpdateWithoutBonusPayoutsApprovedInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
@@ -5930,6 +7809,11 @@ export type UserUpdateWithoutBonusPayoutsApprovedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBonusPayoutsApprovedInput = {
@@ -5940,9 +7824,16 @@ export type UserUncheckedUpdateWithoutBonusPayoutsApprovedInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -5972,6 +7863,10 @@ export type UserUncheckedUpdateWithoutBonusPayoutsApprovedInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUpsertWithoutBonusPayoutsPaidInput = {
@@ -5993,9 +7888,15 @@ export type UserUpdateWithoutBonusPayoutsPaidInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
@@ -6025,6 +7926,11 @@ export type UserUpdateWithoutBonusPayoutsPaidInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBonusPayoutsPaidInput = {
@@ -6035,9 +7941,16 @@ export type UserUncheckedUpdateWithoutBonusPayoutsPaidInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -6067,6 +7980,10 @@ export type UserUncheckedUpdateWithoutBonusPayoutsPaidInput = {
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserCreateWithoutBonusAdjustmentsCreatedInput = {
@@ -6077,9 +7994,15 @@ export type UserCreateWithoutBonusAdjustmentsCreatedInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
@@ -6109,6 +8032,11 @@ export type UserCreateWithoutBonusAdjustmentsCreatedInput = {
   bonusPayoutsPaid?: Prisma.DesignerBonusPayoutCreateNestedManyWithoutPaidByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutBonusAdjustmentsCreatedInput = {
@@ -6119,9 +8047,16 @@ export type UserUncheckedCreateWithoutBonusAdjustmentsCreatedInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
@@ -6151,6 +8086,10 @@ export type UserUncheckedCreateWithoutBonusAdjustmentsCreatedInput = {
   bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUncheckedCreateNestedManyWithoutPaidByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
   securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutBonusAdjustmentsCreatedInput = {
@@ -6166,9 +8105,15 @@ export type UserCreateWithoutBonusAdjustmentsApprovedInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
@@ -6198,6 +8143,11 @@ export type UserCreateWithoutBonusAdjustmentsApprovedInput = {
   bonusPayoutsPaid?: Prisma.DesignerBonusPayoutCreateNestedManyWithoutPaidByInput
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
   securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutBonusAdjustmentsApprovedInput = {
@@ -6208,9 +8158,16 @@ export type UserUncheckedCreateWithoutBonusAdjustmentsApprovedInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
@@ -6240,6 +8197,10 @@ export type UserUncheckedCreateWithoutBonusAdjustmentsApprovedInput = {
   bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUncheckedCreateNestedManyWithoutPaidByInput
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
   securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutBonusAdjustmentsApprovedInput = {
@@ -6266,9 +8227,15 @@ export type UserUpdateWithoutBonusAdjustmentsCreatedInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
@@ -6298,6 +8265,11 @@ export type UserUpdateWithoutBonusAdjustmentsCreatedInput = {
   bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUpdateManyWithoutPaidByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBonusAdjustmentsCreatedInput = {
@@ -6308,9 +8280,16 @@ export type UserUncheckedUpdateWithoutBonusAdjustmentsCreatedInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -6340,6 +8319,10 @@ export type UserUncheckedUpdateWithoutBonusAdjustmentsCreatedInput = {
   bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUncheckedUpdateManyWithoutPaidByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
   securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUpsertWithoutBonusAdjustmentsApprovedInput = {
@@ -6361,9 +8344,15 @@ export type UserUpdateWithoutBonusAdjustmentsApprovedInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
@@ -6393,6 +8382,11 @@ export type UserUpdateWithoutBonusAdjustmentsApprovedInput = {
   bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUpdateManyWithoutPaidByNestedInput
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
   securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBonusAdjustmentsApprovedInput = {
@@ -6403,9 +8397,16 @@ export type UserUncheckedUpdateWithoutBonusAdjustmentsApprovedInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -6435,6 +8436,10 @@ export type UserUncheckedUpdateWithoutBonusAdjustmentsApprovedInput = {
   bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUncheckedUpdateManyWithoutPaidByNestedInput
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
   securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserCreateWithoutSecurityLogsInput = {
@@ -6445,9 +8450,15 @@ export type UserCreateWithoutSecurityLogsInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
@@ -6477,6 +8488,11 @@ export type UserCreateWithoutSecurityLogsInput = {
   bonusPayoutsPaid?: Prisma.DesignerBonusPayoutCreateNestedManyWithoutPaidByInput
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutSecurityLogsInput = {
@@ -6487,9 +8503,16 @@ export type UserUncheckedCreateWithoutSecurityLogsInput = {
   authProviderId?: string | null
   role: $Enums.UserRole
   isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  lastLoginAt?: Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
   clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
   designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
@@ -6519,6 +8542,10 @@ export type UserUncheckedCreateWithoutSecurityLogsInput = {
   bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUncheckedCreateNestedManyWithoutPaidByInput
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutSecurityLogsInput = {
@@ -6545,9 +8572,15 @@ export type UserUpdateWithoutSecurityLogsInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
@@ -6577,6 +8610,11 @@ export type UserUpdateWithoutSecurityLogsInput = {
   bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUpdateManyWithoutPaidByNestedInput
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSecurityLogsInput = {
@@ -6587,9 +8625,16 @@ export type UserUncheckedUpdateWithoutSecurityLogsInput = {
   authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
   clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
   designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -6619,6 +8664,838 @@ export type UserUncheckedUpdateWithoutSecurityLogsInput = {
   bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUncheckedUpdateManyWithoutPaidByNestedInput
   bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
   bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
+}
+
+export type UserCreateWithoutEmailVerificationTokensInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash?: string | null
+  authProviderId?: string | null
+  role: $Enums.UserRole
+  isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
+  clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
+  designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
+  designersCreated?: Prisma.DesignerCreateNestedManyWithoutCreatedByInput
+  objectsResponsible?: Prisma.ProjectObjectCreateNestedManyWithoutResponsibleInput
+  objectsCreated?: Prisma.ProjectObjectCreateNestedManyWithoutCreatedByInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantCreateNestedManyWithoutResponsibleInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantCreateNestedManyWithoutCreatedByInput
+  dealsResponsible?: Prisma.DealCreateNestedManyWithoutResponsibleInput
+  dealsCreated?: Prisma.DealCreateNestedManyWithoutCreatedByInput
+  proposalsResponsible?: Prisma.CommercialProposalCreateNestedManyWithoutResponsibleInput
+  proposalsCreated?: Prisma.CommercialProposalCreateNestedManyWithoutCreatedByInput
+  proposalsUploaded?: Prisma.CommercialProposalCreateNestedManyWithoutUploadedByInput
+  tasksResponsible?: Prisma.TaskActivityCreateNestedManyWithoutResponsibleInput
+  tasksCreated?: Prisma.TaskActivityCreateNestedManyWithoutCreatedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationCreateNestedManyWithoutResolvedByInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementCreateNestedManyWithoutCreatedByInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementCreateNestedManyWithoutApprovedByInput
+  paymentsCreated?: Prisma.PaymentCreateNestedManyWithoutCreatedByInput
+  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutConfirmedByInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualCreateNestedManyWithoutCreatedByInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutCreateNestedManyWithoutCreatedByInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutCreateNestedManyWithoutPaidByInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
+  securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
+}
+
+export type UserUncheckedCreateWithoutEmailVerificationTokensInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash?: string | null
+  authProviderId?: string | null
+  role: $Enums.UserRole
+  isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
+  clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
+  designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
+  designersCreated?: Prisma.DesignerUncheckedCreateNestedManyWithoutCreatedByInput
+  objectsResponsible?: Prisma.ProjectObjectUncheckedCreateNestedManyWithoutResponsibleInput
+  objectsCreated?: Prisma.ProjectObjectUncheckedCreateNestedManyWithoutCreatedByInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUncheckedCreateNestedManyWithoutResponsibleInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUncheckedCreateNestedManyWithoutCreatedByInput
+  dealsResponsible?: Prisma.DealUncheckedCreateNestedManyWithoutResponsibleInput
+  dealsCreated?: Prisma.DealUncheckedCreateNestedManyWithoutCreatedByInput
+  proposalsResponsible?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutResponsibleInput
+  proposalsCreated?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutCreatedByInput
+  proposalsUploaded?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutUploadedByInput
+  tasksResponsible?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutResponsibleInput
+  tasksCreated?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutCreatedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResolvedByInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementUncheckedCreateNestedManyWithoutApprovedByInput
+  paymentsCreated?: Prisma.PaymentUncheckedCreateNestedManyWithoutCreatedByInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutConfirmedByInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualUncheckedCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutUncheckedCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUncheckedCreateNestedManyWithoutPaidByInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+  securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
+}
+
+export type UserCreateOrConnectWithoutEmailVerificationTokensInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutEmailVerificationTokensInput, Prisma.UserUncheckedCreateWithoutEmailVerificationTokensInput>
+}
+
+export type UserUpsertWithoutEmailVerificationTokensInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutEmailVerificationTokensInput, Prisma.UserUncheckedUpdateWithoutEmailVerificationTokensInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutEmailVerificationTokensInput, Prisma.UserUncheckedCreateWithoutEmailVerificationTokensInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutEmailVerificationTokensInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutEmailVerificationTokensInput, Prisma.UserUncheckedUpdateWithoutEmailVerificationTokensInput>
+}
+
+export type UserUpdateWithoutEmailVerificationTokensInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
+  clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
+  designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
+  designersCreated?: Prisma.DesignerUpdateManyWithoutCreatedByNestedInput
+  objectsResponsible?: Prisma.ProjectObjectUpdateManyWithoutResponsibleNestedInput
+  objectsCreated?: Prisma.ProjectObjectUpdateManyWithoutCreatedByNestedInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUpdateManyWithoutResponsibleNestedInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUpdateManyWithoutCreatedByNestedInput
+  dealsResponsible?: Prisma.DealUpdateManyWithoutResponsibleNestedInput
+  dealsCreated?: Prisma.DealUpdateManyWithoutCreatedByNestedInput
+  proposalsResponsible?: Prisma.CommercialProposalUpdateManyWithoutResponsibleNestedInput
+  proposalsCreated?: Prisma.CommercialProposalUpdateManyWithoutCreatedByNestedInput
+  proposalsUploaded?: Prisma.CommercialProposalUpdateManyWithoutUploadedByNestedInput
+  tasksResponsible?: Prisma.TaskActivityUpdateManyWithoutResponsibleNestedInput
+  tasksCreated?: Prisma.TaskActivityUpdateManyWithoutCreatedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUpdateManyWithoutResolvedByNestedInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementUpdateManyWithoutCreatedByNestedInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementUpdateManyWithoutApprovedByNestedInput
+  paymentsCreated?: Prisma.PaymentUpdateManyWithoutCreatedByNestedInput
+  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutConfirmedByNestedInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualUpdateManyWithoutCreatedByNestedInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutUpdateManyWithoutCreatedByNestedInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUpdateManyWithoutPaidByNestedInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
+  securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutEmailVerificationTokensInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
+  clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
+  designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
+  designersCreated?: Prisma.DesignerUncheckedUpdateManyWithoutCreatedByNestedInput
+  objectsResponsible?: Prisma.ProjectObjectUncheckedUpdateManyWithoutResponsibleNestedInput
+  objectsCreated?: Prisma.ProjectObjectUncheckedUpdateManyWithoutCreatedByNestedInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUncheckedUpdateManyWithoutResponsibleNestedInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUncheckedUpdateManyWithoutCreatedByNestedInput
+  dealsResponsible?: Prisma.DealUncheckedUpdateManyWithoutResponsibleNestedInput
+  dealsCreated?: Prisma.DealUncheckedUpdateManyWithoutCreatedByNestedInput
+  proposalsResponsible?: Prisma.CommercialProposalUncheckedUpdateManyWithoutResponsibleNestedInput
+  proposalsCreated?: Prisma.CommercialProposalUncheckedUpdateManyWithoutCreatedByNestedInput
+  proposalsUploaded?: Prisma.CommercialProposalUncheckedUpdateManyWithoutUploadedByNestedInput
+  tasksResponsible?: Prisma.TaskActivityUncheckedUpdateManyWithoutResponsibleNestedInput
+  tasksCreated?: Prisma.TaskActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedUpdateManyWithoutResolvedByNestedInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementUncheckedUpdateManyWithoutApprovedByNestedInput
+  paymentsCreated?: Prisma.PaymentUncheckedUpdateManyWithoutCreatedByNestedInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutConfirmedByNestedInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualUncheckedUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutUncheckedUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUncheckedUpdateManyWithoutPaidByNestedInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+  securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
+}
+
+export type UserCreateWithoutPasswordResetTokensInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash?: string | null
+  authProviderId?: string | null
+  role: $Enums.UserRole
+  isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
+  clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
+  designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
+  designersCreated?: Prisma.DesignerCreateNestedManyWithoutCreatedByInput
+  objectsResponsible?: Prisma.ProjectObjectCreateNestedManyWithoutResponsibleInput
+  objectsCreated?: Prisma.ProjectObjectCreateNestedManyWithoutCreatedByInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantCreateNestedManyWithoutResponsibleInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantCreateNestedManyWithoutCreatedByInput
+  dealsResponsible?: Prisma.DealCreateNestedManyWithoutResponsibleInput
+  dealsCreated?: Prisma.DealCreateNestedManyWithoutCreatedByInput
+  proposalsResponsible?: Prisma.CommercialProposalCreateNestedManyWithoutResponsibleInput
+  proposalsCreated?: Prisma.CommercialProposalCreateNestedManyWithoutCreatedByInput
+  proposalsUploaded?: Prisma.CommercialProposalCreateNestedManyWithoutUploadedByInput
+  tasksResponsible?: Prisma.TaskActivityCreateNestedManyWithoutResponsibleInput
+  tasksCreated?: Prisma.TaskActivityCreateNestedManyWithoutCreatedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationCreateNestedManyWithoutResolvedByInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementCreateNestedManyWithoutCreatedByInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementCreateNestedManyWithoutApprovedByInput
+  paymentsCreated?: Prisma.PaymentCreateNestedManyWithoutCreatedByInput
+  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutConfirmedByInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualCreateNestedManyWithoutCreatedByInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutCreateNestedManyWithoutCreatedByInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutCreateNestedManyWithoutPaidByInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
+  securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
+}
+
+export type UserUncheckedCreateWithoutPasswordResetTokensInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash?: string | null
+  authProviderId?: string | null
+  role: $Enums.UserRole
+  isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
+  clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
+  designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
+  designersCreated?: Prisma.DesignerUncheckedCreateNestedManyWithoutCreatedByInput
+  objectsResponsible?: Prisma.ProjectObjectUncheckedCreateNestedManyWithoutResponsibleInput
+  objectsCreated?: Prisma.ProjectObjectUncheckedCreateNestedManyWithoutCreatedByInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUncheckedCreateNestedManyWithoutResponsibleInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUncheckedCreateNestedManyWithoutCreatedByInput
+  dealsResponsible?: Prisma.DealUncheckedCreateNestedManyWithoutResponsibleInput
+  dealsCreated?: Prisma.DealUncheckedCreateNestedManyWithoutCreatedByInput
+  proposalsResponsible?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutResponsibleInput
+  proposalsCreated?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutCreatedByInput
+  proposalsUploaded?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutUploadedByInput
+  tasksResponsible?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutResponsibleInput
+  tasksCreated?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutCreatedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResolvedByInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementUncheckedCreateNestedManyWithoutApprovedByInput
+  paymentsCreated?: Prisma.PaymentUncheckedCreateNestedManyWithoutCreatedByInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutConfirmedByInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualUncheckedCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutUncheckedCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUncheckedCreateNestedManyWithoutPaidByInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+  securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
+}
+
+export type UserCreateOrConnectWithoutPasswordResetTokensInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPasswordResetTokensInput, Prisma.UserUncheckedCreateWithoutPasswordResetTokensInput>
+}
+
+export type UserUpsertWithoutPasswordResetTokensInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPasswordResetTokensInput, Prisma.UserUncheckedUpdateWithoutPasswordResetTokensInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPasswordResetTokensInput, Prisma.UserUncheckedCreateWithoutPasswordResetTokensInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPasswordResetTokensInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPasswordResetTokensInput, Prisma.UserUncheckedUpdateWithoutPasswordResetTokensInput>
+}
+
+export type UserUpdateWithoutPasswordResetTokensInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
+  clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
+  designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
+  designersCreated?: Prisma.DesignerUpdateManyWithoutCreatedByNestedInput
+  objectsResponsible?: Prisma.ProjectObjectUpdateManyWithoutResponsibleNestedInput
+  objectsCreated?: Prisma.ProjectObjectUpdateManyWithoutCreatedByNestedInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUpdateManyWithoutResponsibleNestedInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUpdateManyWithoutCreatedByNestedInput
+  dealsResponsible?: Prisma.DealUpdateManyWithoutResponsibleNestedInput
+  dealsCreated?: Prisma.DealUpdateManyWithoutCreatedByNestedInput
+  proposalsResponsible?: Prisma.CommercialProposalUpdateManyWithoutResponsibleNestedInput
+  proposalsCreated?: Prisma.CommercialProposalUpdateManyWithoutCreatedByNestedInput
+  proposalsUploaded?: Prisma.CommercialProposalUpdateManyWithoutUploadedByNestedInput
+  tasksResponsible?: Prisma.TaskActivityUpdateManyWithoutResponsibleNestedInput
+  tasksCreated?: Prisma.TaskActivityUpdateManyWithoutCreatedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUpdateManyWithoutResolvedByNestedInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementUpdateManyWithoutCreatedByNestedInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementUpdateManyWithoutApprovedByNestedInput
+  paymentsCreated?: Prisma.PaymentUpdateManyWithoutCreatedByNestedInput
+  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutConfirmedByNestedInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualUpdateManyWithoutCreatedByNestedInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutUpdateManyWithoutCreatedByNestedInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUpdateManyWithoutPaidByNestedInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
+  securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPasswordResetTokensInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
+  clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
+  designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
+  designersCreated?: Prisma.DesignerUncheckedUpdateManyWithoutCreatedByNestedInput
+  objectsResponsible?: Prisma.ProjectObjectUncheckedUpdateManyWithoutResponsibleNestedInput
+  objectsCreated?: Prisma.ProjectObjectUncheckedUpdateManyWithoutCreatedByNestedInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUncheckedUpdateManyWithoutResponsibleNestedInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUncheckedUpdateManyWithoutCreatedByNestedInput
+  dealsResponsible?: Prisma.DealUncheckedUpdateManyWithoutResponsibleNestedInput
+  dealsCreated?: Prisma.DealUncheckedUpdateManyWithoutCreatedByNestedInput
+  proposalsResponsible?: Prisma.CommercialProposalUncheckedUpdateManyWithoutResponsibleNestedInput
+  proposalsCreated?: Prisma.CommercialProposalUncheckedUpdateManyWithoutCreatedByNestedInput
+  proposalsUploaded?: Prisma.CommercialProposalUncheckedUpdateManyWithoutUploadedByNestedInput
+  tasksResponsible?: Prisma.TaskActivityUncheckedUpdateManyWithoutResponsibleNestedInput
+  tasksCreated?: Prisma.TaskActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedUpdateManyWithoutResolvedByNestedInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementUncheckedUpdateManyWithoutApprovedByNestedInput
+  paymentsCreated?: Prisma.PaymentUncheckedUpdateManyWithoutCreatedByNestedInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutConfirmedByNestedInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualUncheckedUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutUncheckedUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUncheckedUpdateManyWithoutPaidByNestedInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+  securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
+}
+
+export type UserCreateWithoutInvitationsSentInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash?: string | null
+  authProviderId?: string | null
+  role: $Enums.UserRole
+  isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
+  clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
+  designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
+  designersCreated?: Prisma.DesignerCreateNestedManyWithoutCreatedByInput
+  objectsResponsible?: Prisma.ProjectObjectCreateNestedManyWithoutResponsibleInput
+  objectsCreated?: Prisma.ProjectObjectCreateNestedManyWithoutCreatedByInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantCreateNestedManyWithoutResponsibleInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantCreateNestedManyWithoutCreatedByInput
+  dealsResponsible?: Prisma.DealCreateNestedManyWithoutResponsibleInput
+  dealsCreated?: Prisma.DealCreateNestedManyWithoutCreatedByInput
+  proposalsResponsible?: Prisma.CommercialProposalCreateNestedManyWithoutResponsibleInput
+  proposalsCreated?: Prisma.CommercialProposalCreateNestedManyWithoutCreatedByInput
+  proposalsUploaded?: Prisma.CommercialProposalCreateNestedManyWithoutUploadedByInput
+  tasksResponsible?: Prisma.TaskActivityCreateNestedManyWithoutResponsibleInput
+  tasksCreated?: Prisma.TaskActivityCreateNestedManyWithoutCreatedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationCreateNestedManyWithoutResolvedByInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementCreateNestedManyWithoutCreatedByInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementCreateNestedManyWithoutApprovedByInput
+  paymentsCreated?: Prisma.PaymentCreateNestedManyWithoutCreatedByInput
+  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutConfirmedByInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualCreateNestedManyWithoutCreatedByInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutCreateNestedManyWithoutCreatedByInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutCreateNestedManyWithoutPaidByInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
+  securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutInvitationsSentInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash?: string | null
+  authProviderId?: string | null
+  role: $Enums.UserRole
+  isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
+  clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
+  designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
+  designersCreated?: Prisma.DesignerUncheckedCreateNestedManyWithoutCreatedByInput
+  objectsResponsible?: Prisma.ProjectObjectUncheckedCreateNestedManyWithoutResponsibleInput
+  objectsCreated?: Prisma.ProjectObjectUncheckedCreateNestedManyWithoutCreatedByInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUncheckedCreateNestedManyWithoutResponsibleInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUncheckedCreateNestedManyWithoutCreatedByInput
+  dealsResponsible?: Prisma.DealUncheckedCreateNestedManyWithoutResponsibleInput
+  dealsCreated?: Prisma.DealUncheckedCreateNestedManyWithoutCreatedByInput
+  proposalsResponsible?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutResponsibleInput
+  proposalsCreated?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutCreatedByInput
+  proposalsUploaded?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutUploadedByInput
+  tasksResponsible?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutResponsibleInput
+  tasksCreated?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutCreatedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResolvedByInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementUncheckedCreateNestedManyWithoutApprovedByInput
+  paymentsCreated?: Prisma.PaymentUncheckedCreateNestedManyWithoutCreatedByInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutConfirmedByInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualUncheckedCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutUncheckedCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUncheckedCreateNestedManyWithoutPaidByInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+  securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutInvitationsSentInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutInvitationsSentInput, Prisma.UserUncheckedCreateWithoutInvitationsSentInput>
+}
+
+export type UserUpsertWithoutInvitationsSentInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutInvitationsSentInput, Prisma.UserUncheckedUpdateWithoutInvitationsSentInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutInvitationsSentInput, Prisma.UserUncheckedCreateWithoutInvitationsSentInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutInvitationsSentInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutInvitationsSentInput, Prisma.UserUncheckedUpdateWithoutInvitationsSentInput>
+}
+
+export type UserUpdateWithoutInvitationsSentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
+  clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
+  designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
+  designersCreated?: Prisma.DesignerUpdateManyWithoutCreatedByNestedInput
+  objectsResponsible?: Prisma.ProjectObjectUpdateManyWithoutResponsibleNestedInput
+  objectsCreated?: Prisma.ProjectObjectUpdateManyWithoutCreatedByNestedInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUpdateManyWithoutResponsibleNestedInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUpdateManyWithoutCreatedByNestedInput
+  dealsResponsible?: Prisma.DealUpdateManyWithoutResponsibleNestedInput
+  dealsCreated?: Prisma.DealUpdateManyWithoutCreatedByNestedInput
+  proposalsResponsible?: Prisma.CommercialProposalUpdateManyWithoutResponsibleNestedInput
+  proposalsCreated?: Prisma.CommercialProposalUpdateManyWithoutCreatedByNestedInput
+  proposalsUploaded?: Prisma.CommercialProposalUpdateManyWithoutUploadedByNestedInput
+  tasksResponsible?: Prisma.TaskActivityUpdateManyWithoutResponsibleNestedInput
+  tasksCreated?: Prisma.TaskActivityUpdateManyWithoutCreatedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUpdateManyWithoutResolvedByNestedInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementUpdateManyWithoutCreatedByNestedInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementUpdateManyWithoutApprovedByNestedInput
+  paymentsCreated?: Prisma.PaymentUpdateManyWithoutCreatedByNestedInput
+  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutConfirmedByNestedInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualUpdateManyWithoutCreatedByNestedInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutUpdateManyWithoutCreatedByNestedInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUpdateManyWithoutPaidByNestedInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
+  securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutInvitationsSentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
+  clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
+  designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
+  designersCreated?: Prisma.DesignerUncheckedUpdateManyWithoutCreatedByNestedInput
+  objectsResponsible?: Prisma.ProjectObjectUncheckedUpdateManyWithoutResponsibleNestedInput
+  objectsCreated?: Prisma.ProjectObjectUncheckedUpdateManyWithoutCreatedByNestedInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUncheckedUpdateManyWithoutResponsibleNestedInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUncheckedUpdateManyWithoutCreatedByNestedInput
+  dealsResponsible?: Prisma.DealUncheckedUpdateManyWithoutResponsibleNestedInput
+  dealsCreated?: Prisma.DealUncheckedUpdateManyWithoutCreatedByNestedInput
+  proposalsResponsible?: Prisma.CommercialProposalUncheckedUpdateManyWithoutResponsibleNestedInput
+  proposalsCreated?: Prisma.CommercialProposalUncheckedUpdateManyWithoutCreatedByNestedInput
+  proposalsUploaded?: Prisma.CommercialProposalUncheckedUpdateManyWithoutUploadedByNestedInput
+  tasksResponsible?: Prisma.TaskActivityUncheckedUpdateManyWithoutResponsibleNestedInput
+  tasksCreated?: Prisma.TaskActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedUpdateManyWithoutResolvedByNestedInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementUncheckedUpdateManyWithoutApprovedByNestedInput
+  paymentsCreated?: Prisma.PaymentUncheckedUpdateManyWithoutCreatedByNestedInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutConfirmedByNestedInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualUncheckedUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutUncheckedUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUncheckedUpdateManyWithoutPaidByNestedInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+  securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateManyDeactivatedByInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash?: string | null
+  authProviderId?: string | null
+  role: $Enums.UserRole
+  isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type UserUpdateWithoutDeactivatedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
+  clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
+  designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
+  designersCreated?: Prisma.DesignerUpdateManyWithoutCreatedByNestedInput
+  objectsResponsible?: Prisma.ProjectObjectUpdateManyWithoutResponsibleNestedInput
+  objectsCreated?: Prisma.ProjectObjectUpdateManyWithoutCreatedByNestedInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUpdateManyWithoutResponsibleNestedInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUpdateManyWithoutCreatedByNestedInput
+  dealsResponsible?: Prisma.DealUpdateManyWithoutResponsibleNestedInput
+  dealsCreated?: Prisma.DealUpdateManyWithoutCreatedByNestedInput
+  proposalsResponsible?: Prisma.CommercialProposalUpdateManyWithoutResponsibleNestedInput
+  proposalsCreated?: Prisma.CommercialProposalUpdateManyWithoutCreatedByNestedInput
+  proposalsUploaded?: Prisma.CommercialProposalUpdateManyWithoutUploadedByNestedInput
+  tasksResponsible?: Prisma.TaskActivityUpdateManyWithoutResponsibleNestedInput
+  tasksCreated?: Prisma.TaskActivityUpdateManyWithoutCreatedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUpdateManyWithoutResolvedByNestedInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementUpdateManyWithoutCreatedByNestedInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementUpdateManyWithoutApprovedByNestedInput
+  paymentsCreated?: Prisma.PaymentUpdateManyWithoutCreatedByNestedInput
+  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutConfirmedByNestedInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualUpdateManyWithoutCreatedByNestedInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutUpdateManyWithoutCreatedByNestedInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUpdateManyWithoutPaidByNestedInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
+  securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutDeactivatedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
+  clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
+  designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
+  designersCreated?: Prisma.DesignerUncheckedUpdateManyWithoutCreatedByNestedInput
+  objectsResponsible?: Prisma.ProjectObjectUncheckedUpdateManyWithoutResponsibleNestedInput
+  objectsCreated?: Prisma.ProjectObjectUncheckedUpdateManyWithoutCreatedByNestedInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUncheckedUpdateManyWithoutResponsibleNestedInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUncheckedUpdateManyWithoutCreatedByNestedInput
+  dealsResponsible?: Prisma.DealUncheckedUpdateManyWithoutResponsibleNestedInput
+  dealsCreated?: Prisma.DealUncheckedUpdateManyWithoutCreatedByNestedInput
+  proposalsResponsible?: Prisma.CommercialProposalUncheckedUpdateManyWithoutResponsibleNestedInput
+  proposalsCreated?: Prisma.CommercialProposalUncheckedUpdateManyWithoutCreatedByNestedInput
+  proposalsUploaded?: Prisma.CommercialProposalUncheckedUpdateManyWithoutUploadedByNestedInput
+  tasksResponsible?: Prisma.TaskActivityUncheckedUpdateManyWithoutResponsibleNestedInput
+  tasksCreated?: Prisma.TaskActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedUpdateManyWithoutResolvedByNestedInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementUncheckedUpdateManyWithoutApprovedByNestedInput
+  paymentsCreated?: Prisma.PaymentUncheckedUpdateManyWithoutCreatedByNestedInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutConfirmedByNestedInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualUncheckedUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutUncheckedUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUncheckedUpdateManyWithoutPaidByNestedInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+  securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
+}
+
+export type UserUncheckedUpdateManyWithoutDeactivatedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -6657,6 +9534,10 @@ export type UserCountOutputType = {
   bonusAdjustmentsCreated: number
   bonusAdjustmentsApproved: number
   securityLogs: number
+  deactivatedUsers: number
+  emailVerificationTokens: number
+  passwordResetTokens: number
+  invitationsSent: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -6690,6 +9571,10 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   bonusAdjustmentsCreated?: boolean | UserCountOutputTypeCountBonusAdjustmentsCreatedArgs
   bonusAdjustmentsApproved?: boolean | UserCountOutputTypeCountBonusAdjustmentsApprovedArgs
   securityLogs?: boolean | UserCountOutputTypeCountSecurityLogsArgs
+  deactivatedUsers?: boolean | UserCountOutputTypeCountDeactivatedUsersArgs
+  emailVerificationTokens?: boolean | UserCountOutputTypeCountEmailVerificationTokensArgs
+  passwordResetTokens?: boolean | UserCountOutputTypeCountPasswordResetTokensArgs
+  invitationsSent?: boolean | UserCountOutputTypeCountInvitationsSentArgs
 }
 
 /**
@@ -6912,6 +9797,34 @@ export type UserCountOutputTypeCountSecurityLogsArgs<ExtArgs extends runtime.Typ
   where?: Prisma.SecurityLogWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountDeactivatedUsersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountEmailVerificationTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.EmailVerificationTokenWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPasswordResetTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PasswordResetTokenWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountInvitationsSentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserInvitationWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -6921,9 +9834,16 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   authProviderId?: boolean
   role?: boolean
   isActive?: boolean
+  emailVerifiedAt?: boolean
+  lastLoginAt?: boolean
+  lastPasswordChangeAt?: boolean
+  failedLoginAttempts?: boolean
+  lockedUntil?: boolean
+  deactivatedAt?: boolean
+  deactivatedById?: boolean
+  confidentialityAcceptedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  lastLoginAt?: boolean
   clientsResponsible?: boolean | Prisma.User$clientsResponsibleArgs<ExtArgs>
   clientsCreated?: boolean | Prisma.User$clientsCreatedArgs<ExtArgs>
   designersResponsible?: boolean | Prisma.User$designersResponsibleArgs<ExtArgs>
@@ -6954,6 +9874,11 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   bonusAdjustmentsCreated?: boolean | Prisma.User$bonusAdjustmentsCreatedArgs<ExtArgs>
   bonusAdjustmentsApproved?: boolean | Prisma.User$bonusAdjustmentsApprovedArgs<ExtArgs>
   securityLogs?: boolean | Prisma.User$securityLogsArgs<ExtArgs>
+  deactivatedBy?: boolean | Prisma.User$deactivatedByArgs<ExtArgs>
+  deactivatedUsers?: boolean | Prisma.User$deactivatedUsersArgs<ExtArgs>
+  emailVerificationTokens?: boolean | Prisma.User$emailVerificationTokensArgs<ExtArgs>
+  passwordResetTokens?: boolean | Prisma.User$passwordResetTokensArgs<ExtArgs>
+  invitationsSent?: boolean | Prisma.User$invitationsSentArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -6965,9 +9890,17 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   authProviderId?: boolean
   role?: boolean
   isActive?: boolean
+  emailVerifiedAt?: boolean
+  lastLoginAt?: boolean
+  lastPasswordChangeAt?: boolean
+  failedLoginAttempts?: boolean
+  lockedUntil?: boolean
+  deactivatedAt?: boolean
+  deactivatedById?: boolean
+  confidentialityAcceptedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  lastLoginAt?: boolean
+  deactivatedBy?: boolean | Prisma.User$deactivatedByArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -6978,9 +9911,17 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   authProviderId?: boolean
   role?: boolean
   isActive?: boolean
+  emailVerifiedAt?: boolean
+  lastLoginAt?: boolean
+  lastPasswordChangeAt?: boolean
+  failedLoginAttempts?: boolean
+  lockedUntil?: boolean
+  deactivatedAt?: boolean
+  deactivatedById?: boolean
+  confidentialityAcceptedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  lastLoginAt?: boolean
+  deactivatedBy?: boolean | Prisma.User$deactivatedByArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
@@ -6991,12 +9932,19 @@ export type UserSelectScalar = {
   authProviderId?: boolean
   role?: boolean
   isActive?: boolean
+  emailVerifiedAt?: boolean
+  lastLoginAt?: boolean
+  lastPasswordChangeAt?: boolean
+  failedLoginAttempts?: boolean
+  lockedUntil?: boolean
+  deactivatedAt?: boolean
+  deactivatedById?: boolean
+  confidentialityAcceptedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  lastLoginAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "passwordHash" | "authProviderId" | "role" | "isActive" | "createdAt" | "updatedAt" | "lastLoginAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "passwordHash" | "authProviderId" | "role" | "isActive" | "emailVerifiedAt" | "lastLoginAt" | "lastPasswordChangeAt" | "failedLoginAttempts" | "lockedUntil" | "deactivatedAt" | "deactivatedById" | "confidentialityAcceptedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   clientsResponsible?: boolean | Prisma.User$clientsResponsibleArgs<ExtArgs>
   clientsCreated?: boolean | Prisma.User$clientsCreatedArgs<ExtArgs>
@@ -7028,10 +9976,19 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   bonusAdjustmentsCreated?: boolean | Prisma.User$bonusAdjustmentsCreatedArgs<ExtArgs>
   bonusAdjustmentsApproved?: boolean | Prisma.User$bonusAdjustmentsApprovedArgs<ExtArgs>
   securityLogs?: boolean | Prisma.User$securityLogsArgs<ExtArgs>
+  deactivatedBy?: boolean | Prisma.User$deactivatedByArgs<ExtArgs>
+  deactivatedUsers?: boolean | Prisma.User$deactivatedUsersArgs<ExtArgs>
+  emailVerificationTokens?: boolean | Prisma.User$emailVerificationTokensArgs<ExtArgs>
+  passwordResetTokens?: boolean | Prisma.User$passwordResetTokensArgs<ExtArgs>
+  invitationsSent?: boolean | Prisma.User$invitationsSentArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  deactivatedBy?: boolean | Prisma.User$deactivatedByArgs<ExtArgs>
+}
+export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  deactivatedBy?: boolean | Prisma.User$deactivatedByArgs<ExtArgs>
+}
 
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
@@ -7066,6 +10023,11 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     bonusAdjustmentsCreated: Prisma.$DesignerBonusAdjustmentPayload<ExtArgs>[]
     bonusAdjustmentsApproved: Prisma.$DesignerBonusAdjustmentPayload<ExtArgs>[]
     securityLogs: Prisma.$SecurityLogPayload<ExtArgs>[]
+    deactivatedBy: Prisma.$UserPayload<ExtArgs> | null
+    deactivatedUsers: Prisma.$UserPayload<ExtArgs>[]
+    emailVerificationTokens: Prisma.$EmailVerificationTokenPayload<ExtArgs>[]
+    passwordResetTokens: Prisma.$PasswordResetTokenPayload<ExtArgs>[]
+    invitationsSent: Prisma.$UserInvitationPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -7075,9 +10037,16 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     authProviderId: string | null
     role: $Enums.UserRole
     isActive: boolean
+    emailVerifiedAt: Date | null
+    lastLoginAt: Date | null
+    lastPasswordChangeAt: Date | null
+    failedLoginAttempts: number
+    lockedUntil: Date | null
+    deactivatedAt: Date | null
+    deactivatedById: string | null
+    confidentialityAcceptedAt: Date | null
     createdAt: Date
     updatedAt: Date
-    lastLoginAt: Date | null
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -7502,6 +10471,11 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   bonusAdjustmentsCreated<T extends Prisma.User$bonusAdjustmentsCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$bonusAdjustmentsCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DesignerBonusAdjustmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   bonusAdjustmentsApproved<T extends Prisma.User$bonusAdjustmentsApprovedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$bonusAdjustmentsApprovedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DesignerBonusAdjustmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   securityLogs<T extends Prisma.User$securityLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$securityLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SecurityLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  deactivatedBy<T extends Prisma.User$deactivatedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$deactivatedByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  deactivatedUsers<T extends Prisma.User$deactivatedUsersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$deactivatedUsersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  emailVerificationTokens<T extends Prisma.User$emailVerificationTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$emailVerificationTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EmailVerificationTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  passwordResetTokens<T extends Prisma.User$passwordResetTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$passwordResetTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PasswordResetTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  invitationsSent<T extends Prisma.User$invitationsSentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$invitationsSentArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserInvitationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7538,9 +10512,16 @@ export interface UserFieldRefs {
   readonly authProviderId: Prisma.FieldRef<"User", 'String'>
   readonly role: Prisma.FieldRef<"User", 'UserRole'>
   readonly isActive: Prisma.FieldRef<"User", 'Boolean'>
+  readonly emailVerifiedAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly lastLoginAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly lastPasswordChangeAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly failedLoginAttempts: Prisma.FieldRef<"User", 'Int'>
+  readonly lockedUntil: Prisma.FieldRef<"User", 'DateTime'>
+  readonly deactivatedAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly deactivatedById: Prisma.FieldRef<"User", 'String'>
+  readonly confidentialityAcceptedAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
-  readonly lastLoginAt: Prisma.FieldRef<"User", 'DateTime'>
 }
 
 
@@ -7795,6 +10776,10 @@ export type UserCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions
    */
   data: Prisma.UserCreateManyInput | Prisma.UserCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -7865,6 +10850,10 @@ export type UserUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions
    * Limit how many Users to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -8651,6 +11640,121 @@ export type User$securityLogsArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   distinct?: Prisma.SecurityLogScalarFieldEnum | Prisma.SecurityLogScalarFieldEnum[]
+}
+
+/**
+ * User.deactivatedBy
+ */
+export type User$deactivatedByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
+}
+
+/**
+ * User.deactivatedUsers
+ */
+export type User$deactivatedUsersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
+  orderBy?: Prisma.UserOrderByWithRelationInput | Prisma.UserOrderByWithRelationInput[]
+  cursor?: Prisma.UserWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserScalarFieldEnum | Prisma.UserScalarFieldEnum[]
+}
+
+/**
+ * User.emailVerificationTokens
+ */
+export type User$emailVerificationTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the EmailVerificationToken
+   */
+  select?: Prisma.EmailVerificationTokenSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the EmailVerificationToken
+   */
+  omit?: Prisma.EmailVerificationTokenOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EmailVerificationTokenInclude<ExtArgs> | null
+  where?: Prisma.EmailVerificationTokenWhereInput
+  orderBy?: Prisma.EmailVerificationTokenOrderByWithRelationInput | Prisma.EmailVerificationTokenOrderByWithRelationInput[]
+  cursor?: Prisma.EmailVerificationTokenWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.EmailVerificationTokenScalarFieldEnum | Prisma.EmailVerificationTokenScalarFieldEnum[]
+}
+
+/**
+ * User.passwordResetTokens
+ */
+export type User$passwordResetTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PasswordResetToken
+   */
+  select?: Prisma.PasswordResetTokenSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PasswordResetToken
+   */
+  omit?: Prisma.PasswordResetTokenOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PasswordResetTokenInclude<ExtArgs> | null
+  where?: Prisma.PasswordResetTokenWhereInput
+  orderBy?: Prisma.PasswordResetTokenOrderByWithRelationInput | Prisma.PasswordResetTokenOrderByWithRelationInput[]
+  cursor?: Prisma.PasswordResetTokenWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PasswordResetTokenScalarFieldEnum | Prisma.PasswordResetTokenScalarFieldEnum[]
+}
+
+/**
+ * User.invitationsSent
+ */
+export type User$invitationsSentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserInvitation
+   */
+  select?: Prisma.UserInvitationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserInvitation
+   */
+  omit?: Prisma.UserInvitationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInvitationInclude<ExtArgs> | null
+  where?: Prisma.UserInvitationWhereInput
+  orderBy?: Prisma.UserInvitationOrderByWithRelationInput | Prisma.UserInvitationOrderByWithRelationInput[]
+  cursor?: Prisma.UserInvitationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserInvitationScalarFieldEnum | Prisma.UserInvitationScalarFieldEnum[]
 }
 
 /**

@@ -11,12 +11,14 @@ declare module "next-auth" {
       image?: string | null;
       role: UserRole;
       isActive: boolean;
+      emailVerifiedAt?: string | null;
     };
   }
 
   interface User {
     role: UserRole;
     isActive: boolean;
+    emailVerifiedAt?: Date | null;
   }
 }
 
@@ -24,5 +26,6 @@ declare module "next-auth/jwt" {
   interface JWT {
     role: UserRole;
     isActive: boolean;
+    emailVerifiedAt?: string | null;
   }
 }

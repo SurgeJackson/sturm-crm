@@ -102,3 +102,23 @@ export type DesignerBonusAdjustment = Prisma.DesignerBonusAdjustmentModel
  *
  */
 export type SecurityLog = Prisma.SecurityLogModel
+/**
+ * Model EmailVerificationToken
+ *
+ */
+export type EmailVerificationToken = Prisma.EmailVerificationTokenModel
+/**
+ * Model PasswordResetToken
+ *
+ */
+export type PasswordResetToken = Prisma.PasswordResetTokenModel
+/**
+ * Model UserInvitation
+ *
+ */
+export type UserInvitation = Prisma.UserInvitationModel
+/**
+ * Model RolePermission
+ *
+ */
+export type RolePermission = Prisma.RolePermissionModel

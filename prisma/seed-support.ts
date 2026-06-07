@@ -1,9 +1,11 @@
-import type { PrismaClient } from "../generated/prisma/client";
+import type { PrismaClient, UserRole } from "../generated/prisma/client";
 import { mkdir, writeFile } from "fs/promises";
 import path from "path";
+import { defaultRolePermissions } from "../modules/admin/permissions";
 import { seedUsers } from "./seed-fixtures";
 
 export async function seedUserAccounts(prisma: PrismaClient, passwordHash: string) {
+  const now = new Date();
   for (const user of seedUsers) {
     await prisma.user.upsert({
       where: { email: user.email },
@@ -11,14 +13,35 @@ export async function seedUserAccounts(prisma: PrismaClient, passwordHash: strin
         name: user.name,
         role: user.role,
         isActive: true,
-        passwordHash
+        passwordHash,
+        emailVerifiedAt: now,
+        lastPasswordChangeAt: now,
+        failedLoginAttempts: 0,
+        lockedUntil: null,
+        deactivatedAt: null,
+        deactivatedById: null
       },
       create: {
         ...user,
         passwordHash,
-        isActive: true
+        isActive: true,
+        emailVerifiedAt: now,
+        lastPasswordChangeAt: now
       }
     });
+  }
+}
+
+export async function seedRolePermissions(prisma: PrismaClient) {
+  for (const [role, permissions] of Object.entries(defaultRolePermissions)) {
+    const userRole = role as UserRole;
+    for (const [permissionKey, isAllowed] of Object.entries(permissions)) {
+      await prisma.rolePermission.upsert({
+        where: { role_permissionKey: { role: userRole, permissionKey } },
+        update: { isAllowed },
+        create: { role: userRole, permissionKey, isAllowed }
+      });
+    }
   }
 }
 

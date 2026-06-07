@@ -5,15 +5,29 @@ import { getToken } from "next-auth/jwt";
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = await getToken({ req: request });
+  const isAuthPage = pathname === "/login" || pathname.startsWith("/auth/");
+  const isLoginPage = pathname === "/login" || pathname === "/auth/login";
+  const hasAuthError = request.nextUrl.searchParams.has("error");
+  const tokenCanEnterCrm = Boolean(token && token.isActive !== false && token.emailVerifiedAt !== null);
 
-  if (!token && pathname !== "/login") {
-    const loginUrl = new URL("/login", request.url);
+  if (!token && !isAuthPage) {
+    const loginUrl = new URL("/auth/login", request.url);
     loginUrl.searchParams.set("callbackUrl", request.nextUrl.pathname);
     return NextResponse.redirect(loginUrl);
   }
 
-  if (token && pathname === "/login") {
+  if (token && isLoginPage && tokenCanEnterCrm && !hasAuthError) {
     return NextResponse.redirect(new URL("/", request.url));
+  }
+
+  if (token && token.emailVerifiedAt === null && !isAuthPage) {
+    return NextResponse.redirect(new URL("/auth/resend-verification", request.url));
+  }
+
+  if (token && token.isActive === false && !isAuthPage) {
+    const loginUrl = new URL("/auth/login", request.url);
+    loginUrl.searchParams.set("error", "USER_NOT_ACTIVE");
+    return NextResponse.redirect(loginUrl);
   }
 
   if (pathname.startsWith("/settings") && token?.role !== "OWNER") {

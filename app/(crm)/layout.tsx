@@ -7,7 +7,19 @@ export default async function CrmLayout({ children }: { children: React.ReactNod
   const user = await getCurrentUser();
 
   if (!user) {
-    redirect("/login");
+    redirect("/auth/login");
+  }
+
+  if (!user.emailVerifiedAt) {
+    redirect("/auth/resend-verification");
+  }
+
+  if (!user.isActive || user.deactivatedAt) {
+    redirect("/auth/login?error=USER_NOT_ACTIVE");
+  }
+
+  if (user.lockedUntil && new Date(user.lockedUntil) > new Date()) {
+    redirect("/auth/login?error=USER_LOCKED");
   }
 
   return (

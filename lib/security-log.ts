@@ -1,4 +1,4 @@
-import type { AuditEntityType, Prisma, PrismaClient } from "@/generated/prisma/client";
+import type { AuditEntityType, Prisma, PrismaClient, SecurityLogSeverity } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 
 type SecurityLogClient = PrismaClient | Prisma.TransactionClient;
@@ -32,6 +32,9 @@ export async function writeSecurityLog({
   entityType,
   entityId,
   metadata,
+  ipAddress,
+  userAgent,
+  severity = "INFO",
   client = prisma
 }: {
   action: string;
@@ -39,6 +42,9 @@ export async function writeSecurityLog({
   entityType?: AuditEntityType;
   entityId?: string;
   metadata?: unknown;
+  ipAddress?: string | null;
+  userAgent?: string | null;
+  severity?: SecurityLogSeverity;
   client?: SecurityLogClient;
 }) {
   const existingUserId = await existingSecurityLogUserId(client, userId);
@@ -48,6 +54,9 @@ export async function writeSecurityLog({
       userId: existingUserId,
       entityType,
       entityId,
+      ipAddress: ipAddress ?? null,
+      userAgent: userAgent ?? null,
+      severity,
       metadata: userId && !existingUserId ? metadataWithMissingUserId(metadata, userId) : jsonMetadata(metadata)
     }
   });

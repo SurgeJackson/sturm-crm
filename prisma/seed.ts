@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 import { runCrmDisciplineCheck } from "../modules/crm-discipline/service";
 import { DEMO_PASSWORD } from "./seed-fixtures";
 import { seedCrmData } from "./seed-crm";
-import { prepareSeedProposalFile, seedUserAccounts } from "./seed-support";
+import { prepareSeedProposalFile, seedRolePermissions, seedUserAccounts } from "./seed-support";
 
 const adapter = new PrismaPg({
   connectionString: process.env.DATABASE_URL
@@ -18,6 +18,7 @@ async function main() {
   const year = now.getFullYear();
   await prepareSeedProposalFile();
   await seedUserAccounts(prisma, passwordHash);
+  await seedRolePermissions(prisma);
 
   await seedCrmData(prisma, now, year);
 

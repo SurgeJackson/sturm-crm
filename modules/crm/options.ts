@@ -41,7 +41,8 @@ import {
   taskAutoRuleLabels,
   taskPriorityLabels,
   taskRecordTypeLabels,
-  taskStatusLabels
+  taskStatusLabels,
+  roleLabels
 } from "@/lib/constants";
 
 export function toOptions<T extends string>(labels: Record<T, string>) {
@@ -52,6 +53,7 @@ export function toOptions<T extends string>(labels: Record<T, string>) {
 }
 
 export const clientTypeOptions = toOptions(clientTypeLabels);
+export const roleOptions = toOptions(roleLabels);
 export const clientSourceOptions = toOptions(clientSourceLabels);
 export const clientStatusOptions = toOptions(clientStatusLabels);
 export const designerRoleOptions = toOptions(designerRoleLabels);
