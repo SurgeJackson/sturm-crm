@@ -18,6 +18,14 @@ export type PermissionKey =
   | "settings.manage"
   | "bonuses.view"
   | "bonuses.manage"
+  | "timeClock.viewOwn"
+  | "timeClock.mark"
+  | "timeClock.manageLocations"
+  | "timeClock.manageShifts"
+  | "timeClock.reviewEvents"
+  | "timeClock.manageDevices"
+  | "timeClock.viewTimesheet"
+  | "timeClock.manageAdjustments"
   | "import.manage"
   | "export.allData";
 
@@ -39,6 +47,14 @@ export const permissionLabels: Record<PermissionKey, string> = {
   "settings.manage": "Настройки: управление",
   "bonuses.view": "Бонусы: просмотр",
   "bonuses.manage": "Бонусы: управление",
+  "timeClock.viewOwn": "Учет времени: свой день",
+  "timeClock.mark": "Учет времени: отметка прихода/ухода",
+  "timeClock.manageLocations": "Учет времени: рабочие точки",
+  "timeClock.manageShifts": "Учет времени: график смен",
+  "timeClock.reviewEvents": "Учет времени: спорные отметки",
+  "timeClock.manageDevices": "Учет времени: устройства",
+  "timeClock.viewTimesheet": "Учет времени: табель",
+  "timeClock.manageAdjustments": "Учет времени: корректировки",
   "import.manage": "Импорт: управление",
   "export.allData": "Экспорт: все данные"
 };
@@ -60,18 +76,47 @@ export const defaultRolePermissions: Record<UserRole, Record<PermissionKey, bool
     "crm.proposals.viewAll": true,
     "crm.tasks.viewAll": true,
     "reports.viewAll": true,
-    "bonuses.view": true
+    "bonuses.view": true,
+    "timeClock.viewOwn": true,
+    "timeClock.mark": true,
+    "timeClock.manageLocations": true,
+    "timeClock.manageShifts": true,
+    "timeClock.reviewEvents": true,
+    "timeClock.manageDevices": true,
+    "timeClock.viewTimesheet": true,
+    "timeClock.manageAdjustments": true
   },
   STORE_MANAGER: {
-    ...Object.fromEntries(permissionKeys.map((key) => [key, false])) as Record<PermissionKey, boolean>
+    ...Object.fromEntries(permissionKeys.map((key) => [key, false])) as Record<PermissionKey, boolean>,
+    "timeClock.viewOwn": true,
+    "timeClock.mark": true,
+    "timeClock.manageShifts": true,
+    "timeClock.reviewEvents": true,
+    "timeClock.manageDevices": true,
+    "timeClock.viewTimesheet": true,
+    "timeClock.manageAdjustments": true
   },
   PROJECT_MANAGER: {
     ...Object.fromEntries(permissionKeys.map((key) => [key, false])) as Record<PermissionKey, boolean>,
-    "bonuses.view": true
+    "bonuses.view": true,
+    "timeClock.viewOwn": true,
+    "timeClock.mark": true,
+    "timeClock.manageShifts": true,
+    "timeClock.reviewEvents": true,
+    "timeClock.manageDevices": true,
+    "timeClock.viewTimesheet": true,
+    "timeClock.manageAdjustments": true
   },
   ADMINISTRATOR: {
     ...Object.fromEntries(permissionKeys.map((key) => [key, false])) as Record<PermissionKey, boolean>,
-    "users.view": true
+    "users.view": true,
+    "timeClock.viewOwn": true,
+    "timeClock.mark": true,
+    "timeClock.manageLocations": true,
+    "timeClock.manageShifts": true,
+    "timeClock.reviewEvents": true,
+    "timeClock.manageDevices": true,
+    "timeClock.manageAdjustments": true
   }
 };
 

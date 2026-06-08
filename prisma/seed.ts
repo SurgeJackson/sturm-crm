@@ -6,6 +6,7 @@ import { runCrmDisciplineCheck } from "../modules/crm-discipline/full-check";
 import { DEMO_PASSWORD } from "./seed-fixtures";
 import { seedCrmData } from "./seed-crm";
 import { prepareSeedProposalFile, seedRolePermissions, seedUserAccounts } from "./seed-support";
+import { seedTimeClock } from "./seed-time-clock";
 
 const adapter = new PrismaPg({
   connectionString: process.env.DATABASE_URL
@@ -21,6 +22,7 @@ async function main() {
   await seedRolePermissions(prisma);
 
   await seedCrmData(prisma, now, year);
+  await seedTimeClock(prisma, now);
 
   const discipline = await runCrmDisciplineCheck("seed_owner");
 

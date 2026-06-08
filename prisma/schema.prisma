@@ -192,6 +192,17 @@ enum AuditEntityType {
   DESIGNER_BONUS_ACCRUAL
   DESIGNER_BONUS_PAYOUT
   DESIGNER_BONUS_ADJUSTMENT
+  EMPLOYEE_PROFILE
+  WORK_LOCATION
+  WORK_SHIFT
+  EMPLOYEE_TRUSTED_DEVICE
+  LOCATION_DISPLAY_DEVICE
+  LOCATION_DISPLAY_SETUP_TOKEN
+  LOCATION_DISPLAY_SESSION
+  QR_TOKEN
+  TIME_EVENT
+  TIMESHEET_DAY
+  TIME_ADJUSTMENT_REQUEST
 }
 
 enum CrmViolationSeverity {
@@ -464,6 +475,90 @@ enum DesignerBonusAdjustmentType {
   OTHER
 }
 
+enum EmployeeEmploymentStatus {
+  ACTIVE
+  INACTIVE
+  DISMISSED
+}
+
+enum WorkShiftStatus {
+  PLANNED
+  COMPLETED
+  MISSED
+  CANCELLED
+  PENDING_REVIEW
+}
+
+enum EmployeeDeviceStatus {
+  TRUSTED
+  PENDING
+  BLOCKED
+}
+
+enum LocationDisplayDeviceStatus {
+  ACTIVE
+  PENDING
+  BLOCKED
+  REVOKED
+}
+
+enum LocationDisplaySessionStatus {
+  ACTIVE
+  REVOKED
+  EXPIRED
+}
+
+enum QrTokenStatus {
+  ACTIVE
+  USED
+  EXPIRED
+  REVOKED
+}
+
+enum TimeEventType {
+  CHECK_IN
+  CHECK_OUT
+  BREAK_START
+  BREAK_END
+}
+
+enum TimeEventSource {
+  QR_GEO_WEB
+  MANUAL
+}
+
+enum TimeEventStatus {
+  ACCEPTED
+  PENDING_REVIEW
+  REJECTED
+  MANUAL
+}
+
+enum TimesheetDayStatus {
+  SCHEDULED
+  OK
+  LATE
+  EARLY_LEAVE
+  LATE_AND_EARLY_LEAVE
+  MISSING_CHECK_IN
+  MISSING_CHECK_OUT
+  ABSENT
+  PENDING_REVIEW
+  MANUAL_ADJUSTED
+}
+
+enum TimeAdjustmentAction {
+  ADD_EVENT
+  EDIT_EVENT
+  DELETE_EVENT
+}
+
+enum TimeAdjustmentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 model User {
   id                        String    @id @default(cuid())
   name                      String
@@ -483,41 +578,53 @@ model User {
   createdAt                 DateTime  @default(now())
   updatedAt                 DateTime  @updatedAt
 
-  clientsResponsible            Client[]                   @relation("ClientResponsible")
-  clientsCreated                Client[]                   @relation("ClientCreatedBy")
-  designersResponsible          Designer[]                 @relation("DesignerResponsible")
-  designersCreated              Designer[]                 @relation("DesignerCreatedBy")
-  objectsResponsible            ProjectObject[]            @relation("ObjectResponsible")
-  objectsCreated                ProjectObject[]            @relation("ObjectCreatedBy")
-  objectParticipantsResponsible ProjectObjectParticipant[] @relation("ObjectParticipantResponsible")
-  objectParticipantsCreated     ProjectObjectParticipant[] @relation("ObjectParticipantCreatedBy")
-  dealsResponsible              Deal[]                     @relation("DealResponsible")
-  dealsCreated                  Deal[]                     @relation("DealCreatedBy")
-  proposalsResponsible          CommercialProposal[]       @relation("ProposalResponsible")
-  proposalsCreated              CommercialProposal[]       @relation("ProposalCreatedBy")
-  proposalsUploaded             CommercialProposal[]       @relation("ProposalUploadedBy")
-  tasksResponsible              TaskActivity[]             @relation("TaskResponsible")
-  tasksCreated                  TaskActivity[]             @relation("TaskCreatedBy")
-  auditLogs                     AuditLog[]                 @relation("AuditLogUser")
-  crmViolationsResponsible      CrmViolation[]             @relation("CrmViolationResponsible")
-  crmViolationsResolved         CrmViolation[]             @relation("CrmViolationResolvedBy")
-  bonusAgreementsCreated        DesignerBonusAgreement[]   @relation("DesignerBonusAgreementCreatedBy")
-  bonusAgreementsApproved       DesignerBonusAgreement[]   @relation("DesignerBonusAgreementApprovedBy")
-  paymentsCreated               Payment[]                  @relation("PaymentCreatedBy")
-  paymentsConfirmed             Payment[]                  @relation("PaymentConfirmedBy")
-  bonusAccrualsCreated          DesignerBonusAccrual[]     @relation("DesignerBonusAccrualCreatedBy")
-  bonusAccrualsApproved         DesignerBonusAccrual[]     @relation("DesignerBonusAccrualApprovedBy")
-  bonusPayoutsCreated           DesignerBonusPayout[]      @relation("DesignerBonusPayoutCreatedBy")
-  bonusPayoutsApproved          DesignerBonusPayout[]      @relation("DesignerBonusPayoutApprovedBy")
-  bonusPayoutsPaid              DesignerBonusPayout[]      @relation("DesignerBonusPayoutPaidBy")
-  bonusAdjustmentsCreated       DesignerBonusAdjustment[]  @relation("DesignerBonusAdjustmentCreatedBy")
-  bonusAdjustmentsApproved      DesignerBonusAdjustment[]  @relation("DesignerBonusAdjustmentApprovedBy")
-  securityLogs                  SecurityLog[]              @relation("SecurityLogUser")
-  deactivatedBy                 User?                      @relation("UserDeactivatedBy", fields: [deactivatedById], references: [id])
-  deactivatedUsers              User[]                     @relation("UserDeactivatedBy")
-  emailVerificationTokens       EmailVerificationToken[]   @relation("EmailVerificationTokenUser")
-  passwordResetTokens           PasswordResetToken[]       @relation("PasswordResetTokenUser")
-  invitationsSent               UserInvitation[]           @relation("UserInvitationInvitedBy")
+  clientsResponsible             Client[]                    @relation("ClientResponsible")
+  clientsCreated                 Client[]                    @relation("ClientCreatedBy")
+  designersResponsible           Designer[]                  @relation("DesignerResponsible")
+  designersCreated               Designer[]                  @relation("DesignerCreatedBy")
+  objectsResponsible             ProjectObject[]             @relation("ObjectResponsible")
+  objectsCreated                 ProjectObject[]             @relation("ObjectCreatedBy")
+  objectParticipantsResponsible  ProjectObjectParticipant[]  @relation("ObjectParticipantResponsible")
+  objectParticipantsCreated      ProjectObjectParticipant[]  @relation("ObjectParticipantCreatedBy")
+  dealsResponsible               Deal[]                      @relation("DealResponsible")
+  dealsCreated                   Deal[]                      @relation("DealCreatedBy")
+  proposalsResponsible           CommercialProposal[]        @relation("ProposalResponsible")
+  proposalsCreated               CommercialProposal[]        @relation("ProposalCreatedBy")
+  proposalsUploaded              CommercialProposal[]        @relation("ProposalUploadedBy")
+  tasksResponsible               TaskActivity[]              @relation("TaskResponsible")
+  tasksCreated                   TaskActivity[]              @relation("TaskCreatedBy")
+  auditLogs                      AuditLog[]                  @relation("AuditLogUser")
+  crmViolationsResponsible       CrmViolation[]              @relation("CrmViolationResponsible")
+  crmViolationsResolved          CrmViolation[]              @relation("CrmViolationResolvedBy")
+  bonusAgreementsCreated         DesignerBonusAgreement[]    @relation("DesignerBonusAgreementCreatedBy")
+  bonusAgreementsApproved        DesignerBonusAgreement[]    @relation("DesignerBonusAgreementApprovedBy")
+  paymentsCreated                Payment[]                   @relation("PaymentCreatedBy")
+  paymentsConfirmed              Payment[]                   @relation("PaymentConfirmedBy")
+  bonusAccrualsCreated           DesignerBonusAccrual[]      @relation("DesignerBonusAccrualCreatedBy")
+  bonusAccrualsApproved          DesignerBonusAccrual[]      @relation("DesignerBonusAccrualApprovedBy")
+  bonusPayoutsCreated            DesignerBonusPayout[]       @relation("DesignerBonusPayoutCreatedBy")
+  bonusPayoutsApproved           DesignerBonusPayout[]       @relation("DesignerBonusPayoutApprovedBy")
+  bonusPayoutsPaid               DesignerBonusPayout[]       @relation("DesignerBonusPayoutPaidBy")
+  bonusAdjustmentsCreated        DesignerBonusAdjustment[]   @relation("DesignerBonusAdjustmentCreatedBy")
+  bonusAdjustmentsApproved       DesignerBonusAdjustment[]   @relation("DesignerBonusAdjustmentApprovedBy")
+  securityLogs                   SecurityLog[]               @relation("SecurityLogUser")
+  employeeProfile                EmployeeProfile?            @relation("EmployeeProfileUser")
+  workShiftsCreated              WorkShift[]                 @relation("WorkShiftCreatedBy")
+  locationDisplayDevicesApproved LocationDisplayDevice[]     @relation("LocationDisplayDeviceApprovedBy")
+  locationDisplayDevicesRevoked  LocationDisplayDevice[]     @relation("LocationDisplayDeviceRevokedBy")
+  displaySetupTokensCreated      LocationDisplaySetupToken[] @relation("LocationDisplaySetupTokenCreatedBy")
+  timeEvents                     TimeEvent[]                 @relation("TimeEventUser")
+  timeEventsReviewed             TimeEvent[]                 @relation("TimeEventReviewedBy")
+  timesheetDays                  TimesheetDay[]              @relation("TimesheetDayUser")
+  timeAdjustmentRequests         TimeAdjustmentRequest[]     @relation("TimeAdjustmentRequestUser")
+  timeAdjustmentRequestsReviewed TimeAdjustmentRequest[]     @relation("TimeAdjustmentRequestReviewedBy")
+  employeeDevicesApproved        EmployeeTrustedDevice[]     @relation("EmployeeTrustedDeviceApprovedBy")
+  employeeDevicesBlocked         EmployeeTrustedDevice[]     @relation("EmployeeTrustedDeviceBlockedBy")
+  deactivatedBy                  User?                       @relation("UserDeactivatedBy", fields: [deactivatedById], references: [id])
+  deactivatedUsers               User[]                      @relation("UserDeactivatedBy")
+  emailVerificationTokens        EmailVerificationToken[]    @relation("EmailVerificationTokenUser")
+  passwordResetTokens            PasswordResetToken[]        @relation("PasswordResetTokenUser")
+  invitationsSent                UserInvitation[]            @relation("UserInvitationInvitedBy")
 
   @@index([role])
   @@index([isActive])
@@ -1105,6 +1212,328 @@ model DesignerBonusAdjustment {
   @@index([approvedAt])
   @@index([archivedAt])
   @@index([designerId, approvedAt, createdAt])
+}
+
+model EmployeeProfile {
+  id                 String                   @id @default(cuid())
+  userId             String                   @unique
+  departmentId       String?
+  defaultLocationId  String?
+  position           String?
+  employmentStatus   EmployeeEmploymentStatus @default(ACTIVE)
+  trustedDeviceLimit Int                      @default(2)
+  createdAt          DateTime                 @default(now())
+  updatedAt          DateTime                 @updatedAt
+
+  user               User                    @relation("EmployeeProfileUser", fields: [userId], references: [id])
+  defaultLocation    WorkLocation?           @relation("EmployeeDefaultLocation", fields: [defaultLocationId], references: [id])
+  shifts             WorkShift[]
+  trustedDevices     EmployeeTrustedDevice[]
+  timeEvents         TimeEvent[]
+  timesheetDays      TimesheetDay[]
+  adjustmentRequests TimeAdjustmentRequest[]
+  qrTokensUsed       QrToken[]
+
+  @@index([employmentStatus])
+  @@index([defaultLocationId])
+}
+
+model WorkLocation {
+  id                       String   @id @default(cuid())
+  name                     String
+  code                     String   @unique
+  address                  String
+  latitude                 Float
+  longitude                Float
+  allowedRadiusMeters      Int      @default(100)
+  maxAllowedAccuracyMeters Int      @default(150)
+  timezone                 String   @default("Europe/Moscow")
+  allowedIpRanges          String[] @default([])
+  isActive                 Boolean  @default(true)
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
+
+  defaultEmployees EmployeeProfile[]           @relation("EmployeeDefaultLocation")
+  shifts           WorkShift[]
+  displayDevices   LocationDisplayDevice[]
+  setupTokens      LocationDisplaySetupToken[]
+  displaySessions  LocationDisplaySession[]
+  qrTokens         QrToken[]
+  timeEvents       TimeEvent[]
+  timesheetDays    TimesheetDay[]
+
+  @@index([isActive])
+  @@index([code])
+}
+
+model WorkShift {
+  id           String          @id @default(cuid())
+  employeeId   String
+  locationId   String
+  date         String
+  startsAt     DateTime
+  endsAt       DateTime
+  breakMinutes Int             @default(0)
+  status       WorkShiftStatus @default(PLANNED)
+  createdById  String
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  employee           EmployeeProfile         @relation(fields: [employeeId], references: [id])
+  location           WorkLocation            @relation(fields: [locationId], references: [id])
+  createdBy          User                    @relation("WorkShiftCreatedBy", fields: [createdById], references: [id])
+  timeEvents         TimeEvent[]
+  timesheetDays      TimesheetDay[]
+  adjustmentRequests TimeAdjustmentRequest[]
+
+  @@index([employeeId])
+  @@index([locationId])
+  @@index([date])
+  @@index([status])
+  @@index([employeeId, date])
+  @@index([locationId, date])
+}
+
+model EmployeeTrustedDevice {
+  id              String               @id @default(cuid())
+  employeeId      String
+  deviceId        String
+  deviceName      String?
+  fingerprintHash String
+  userAgent       String
+  browser         String?
+  os              String?
+  status          EmployeeDeviceStatus @default(PENDING)
+  firstSeenAt     DateTime             @default(now())
+  lastSeenAt      DateTime             @default(now())
+  approvedById    String?
+  approvedAt      DateTime?
+  blockedById     String?
+  blockedAt       DateTime?
+  blockReason     String?
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+
+  employee   EmployeeProfile @relation(fields: [employeeId], references: [id])
+  approvedBy User?           @relation("EmployeeTrustedDeviceApprovedBy", fields: [approvedById], references: [id])
+  blockedBy  User?           @relation("EmployeeTrustedDeviceBlockedBy", fields: [blockedById], references: [id])
+  timeEvents TimeEvent[]
+
+  @@unique([employeeId, deviceId])
+  @@index([deviceId])
+  @@index([fingerprintHash])
+  @@index([status])
+  @@index([lastSeenAt])
+}
+
+model LocationDisplayDevice {
+  id              String                      @id @default(cuid())
+  locationId      String
+  name            String
+  deviceId        String
+  fingerprintHash String
+  userAgent       String
+  status          LocationDisplayDeviceStatus @default(ACTIVE)
+  lastSeenAt      DateTime?
+  lastIpAddress   String?
+  approvedById    String
+  approvedAt      DateTime                    @default(now())
+  revokedById     String?
+  revokedAt       DateTime?
+  revokeReason    String?
+  createdAt       DateTime                    @default(now())
+  updatedAt       DateTime                    @updatedAt
+
+  location        WorkLocation             @relation(fields: [locationId], references: [id])
+  approvedBy      User                     @relation("LocationDisplayDeviceApprovedBy", fields: [approvedById], references: [id])
+  revokedBy       User?                    @relation("LocationDisplayDeviceRevokedBy", fields: [revokedById], references: [id])
+  displaySessions LocationDisplaySession[]
+  qrTokens        QrToken[]
+
+  @@unique([locationId, deviceId])
+  @@index([deviceId])
+  @@index([status])
+  @@index([lastSeenAt])
+}
+
+model LocationDisplaySetupToken {
+  id             String    @id @default(cuid())
+  locationId     String
+  tokenHash      String
+  expiresAt      DateTime
+  usedAt         DateTime?
+  usedByDeviceId String?
+  createdById    String
+  createdAt      DateTime  @default(now())
+
+  location  WorkLocation @relation(fields: [locationId], references: [id])
+  createdBy User         @relation("LocationDisplaySetupTokenCreatedBy", fields: [createdById], references: [id])
+
+  @@unique([tokenHash])
+  @@index([locationId])
+  @@index([expiresAt])
+  @@index([usedAt])
+}
+
+model LocationDisplaySession {
+  id              String                       @id @default(cuid())
+  locationId      String
+  displayDeviceId String
+  sessionHash     String
+  status          LocationDisplaySessionStatus @default(ACTIVE)
+  expiresAt       DateTime
+  lastSeenAt      DateTime?
+  lastIpAddress   String?
+  createdAt       DateTime                     @default(now())
+  updatedAt       DateTime                     @updatedAt
+
+  location      WorkLocation          @relation(fields: [locationId], references: [id])
+  displayDevice LocationDisplayDevice @relation(fields: [displayDeviceId], references: [id])
+  qrTokens      QrToken[]
+
+  @@unique([sessionHash])
+  @@index([locationId])
+  @@index([displayDeviceId])
+  @@index([status])
+  @@index([expiresAt])
+}
+
+model QrToken {
+  id               String        @id @default(cuid())
+  locationId       String
+  displayDeviceId  String
+  displaySessionId String
+  tokenHash        String
+  issuedAt         DateTime      @default(now())
+  expiresAt        DateTime
+  usedAt           DateTime?
+  usedByEmployeeId String?
+  status           QrTokenStatus @default(ACTIVE)
+  createdAt        DateTime      @default(now())
+
+  location       WorkLocation           @relation(fields: [locationId], references: [id])
+  displayDevice  LocationDisplayDevice  @relation(fields: [displayDeviceId], references: [id])
+  displaySession LocationDisplaySession @relation(fields: [displaySessionId], references: [id])
+  usedByEmployee EmployeeProfile?       @relation(fields: [usedByEmployeeId], references: [id])
+  timeEvents     TimeEvent[]
+
+  @@unique([tokenHash])
+  @@index([locationId])
+  @@index([displayDeviceId])
+  @@index([displaySessionId])
+  @@index([status, expiresAt])
+}
+
+model TimeEvent {
+  id                         String          @id @default(cuid())
+  employeeId                 String
+  userId                     String
+  locationId                 String
+  shiftId                    String?
+  qrTokenId                  String?
+  type                       TimeEventType
+  occurredAt                 DateTime
+  clientTime                 DateTime?
+  source                     TimeEventSource @default(QR_GEO_WEB)
+  latitude                   Float?
+  longitude                  Float?
+  accuracy                   Float?
+  distanceFromLocationMeters Float?
+  deviceId                   String?
+  trustedDeviceId            String?
+  ipAddress                  String?
+  userAgent                  String?
+  status                     TimeEventStatus @default(PENDING_REVIEW)
+  riskFlags                  String[]        @default([])
+  reviewComment              String?
+  reviewedById               String?
+  reviewedAt                 DateTime?
+  createdAt                  DateTime        @default(now())
+  updatedAt                  DateTime        @updatedAt
+
+  employee          EmployeeProfile         @relation(fields: [employeeId], references: [id])
+  user              User                    @relation("TimeEventUser", fields: [userId], references: [id])
+  location          WorkLocation            @relation(fields: [locationId], references: [id])
+  shift             WorkShift?              @relation(fields: [shiftId], references: [id])
+  qrToken           QrToken?                @relation(fields: [qrTokenId], references: [id])
+  trustedDevice     EmployeeTrustedDevice?  @relation(fields: [trustedDeviceId], references: [id])
+  reviewedBy        User?                   @relation("TimeEventReviewedBy", fields: [reviewedById], references: [id])
+  adjustmentTargets TimeAdjustmentRequest[] @relation("TimeAdjustmentTargetEvent")
+
+  @@index([employeeId])
+  @@index([userId])
+  @@index([locationId])
+  @@index([shiftId])
+  @@index([qrTokenId])
+  @@index([status])
+  @@index([type])
+  @@index([occurredAt])
+  @@index([employeeId, occurredAt])
+}
+
+model TimesheetDay {
+  id                String             @id @default(cuid())
+  employeeId        String
+  userId            String
+  date              String
+  shiftId           String?
+  locationId        String?
+  plannedStart      DateTime?
+  plannedEnd        DateTime?
+  actualCheckIn     DateTime?
+  actualCheckOut    DateTime?
+  workedMinutes     Int                @default(0)
+  lateMinutes       Int                @default(0)
+  earlyLeaveMinutes Int                @default(0)
+  overtimeMinutes   Int                @default(0)
+  status            TimesheetDayStatus @default(SCHEDULED)
+  hasPendingEvents  Boolean            @default(false)
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+
+  employee EmployeeProfile @relation(fields: [employeeId], references: [id])
+  user     User            @relation("TimesheetDayUser", fields: [userId], references: [id])
+  shift    WorkShift?      @relation(fields: [shiftId], references: [id])
+  location WorkLocation?   @relation(fields: [locationId], references: [id])
+
+  @@unique([employeeId, date])
+  @@index([userId])
+  @@index([date])
+  @@index([shiftId])
+  @@index([locationId])
+  @@index([status])
+  @@index([hasPendingEvents])
+}
+
+model TimeAdjustmentRequest {
+  id                  String               @id @default(cuid())
+  employeeId          String
+  userId              String
+  shiftId             String?
+  date                String
+  requestedAction     TimeAdjustmentAction
+  eventType           TimeEventType?
+  targetEventId       String?
+  requestedOccurredAt DateTime?
+  comment             String
+  status              TimeAdjustmentStatus @default(PENDING)
+  reviewedById        String?
+  reviewedAt          DateTime?
+  reviewComment       String?
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+
+  employee    EmployeeProfile @relation(fields: [employeeId], references: [id])
+  user        User            @relation("TimeAdjustmentRequestUser", fields: [userId], references: [id])
+  shift       WorkShift?      @relation(fields: [shiftId], references: [id])
+  targetEvent TimeEvent?      @relation("TimeAdjustmentTargetEvent", fields: [targetEventId], references: [id])
+  reviewedBy  User?           @relation("TimeAdjustmentRequestReviewedBy", fields: [reviewedById], references: [id])
+
+  @@index([employeeId])
+  @@index([userId])
+  @@index([date])
+  @@index([status])
+  @@index([reviewedById])
 }
 
 model SecurityLog {

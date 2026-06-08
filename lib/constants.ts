@@ -7,4 +7,5 @@ export * from "@/lib/constants/designers";
 export * from "@/lib/constants/objects";
 export * from "@/lib/constants/proposals";
 export * from "@/lib/constants/tasks";
+export * from "@/lib/constants/time-clock";
 export * from "@/lib/constants/users";

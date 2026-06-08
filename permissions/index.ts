@@ -259,6 +259,43 @@ export function canConfirmPayment(user?: PermissionUser | null) {
   return canViewPayments(user);
 }
 
+export function canViewOwnTimeClock(user?: PermissionUser | null) {
+  return isActive(user);
+}
+
+export function canMarkTimeClock(user?: PermissionUser | null) {
+  return isActive(user);
+}
+
+export function canManageWorkLocations(user?: PermissionUser | null) {
+  if (!isActive(user)) return false;
+  return user.role === "OWNER" || user.role === "SALES_LEAD" || user.role === "ADMINISTRATOR";
+}
+
+export function canManageWorkShifts(user?: PermissionUser | null) {
+  if (!isActive(user)) return false;
+  return managerRoles.has(user.role);
+}
+
+export function canReviewTimeEvents(user?: PermissionUser | null) {
+  if (!isActive(user)) return false;
+  return managerRoles.has(user.role);
+}
+
+export function canManageEmployeeDevices(user?: PermissionUser | null) {
+  if (!isActive(user)) return false;
+  return managerRoles.has(user.role);
+}
+
+export function canViewTimesheet(user?: PermissionUser | null) {
+  if (!isActive(user)) return false;
+  return user.role !== "ADMINISTRATOR";
+}
+
+export function canManageTimeAdjustments(user?: PermissionUser | null) {
+  return canReviewTimeEvents(user);
+}
+
 function ownsBonusContext(user: PermissionUser, record?: OwnedRecord | null) {
   return Boolean(user.id && record && (record.createdById === user.id || record.responsibleId === user.id));
 }

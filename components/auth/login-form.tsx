@@ -17,6 +17,7 @@ export function LoginForm() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const queryError = searchParams.get("error");
+  const rawCallbackUrl = searchParams.get("callbackUrl");
   const visibleError = error ?? (queryError ? authErrorMessages[queryError] ?? "Не удалось выполнить вход." : null);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
@@ -24,11 +25,20 @@ export function LoginForm() {
     setError(null);
     setIsLoading(true);
 
-    const result = await signIn("credentials", {
-      email,
-      password,
-      redirect: false
-    });
+    const callbackUrl = safeCallbackUrl(rawCallbackUrl);
+    let result;
+    try {
+      result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+        callbackUrl
+      });
+    } catch {
+      setIsLoading(false);
+      setError("Не удалось выполнить вход. Проверьте подключение и повторите попытку.");
+      return;
+    }
 
     setIsLoading(false);
 
@@ -37,7 +47,7 @@ export function LoginForm() {
       return;
     }
 
-    window.location.href = searchParams.get("callbackUrl") ?? "/";
+    window.location.assign(safeCallbackUrl(result?.url ?? callbackUrl));
   }
 
   return (
@@ -79,4 +89,20 @@ export function LoginForm() {
       </div>
     </form>
   );
+}
+
+function safeCallbackUrl(value: string | null) {
+  if (!value) return "/";
+  if (value.startsWith("/") && !value.startsWith("//")) return value;
+
+  try {
+    const url = new URL(value);
+    if (url.origin === window.location.origin) {
+      return `${url.pathname}${url.search}${url.hash}`;
+    }
+  } catch {
+    return "/";
+  }
+
+  return "/";
 }
