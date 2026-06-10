@@ -200,6 +200,11 @@ enum AuditEntityType {
   LOCATION_DISPLAY_SETUP_TOKEN
   LOCATION_DISPLAY_SESSION
   QR_TOKEN
+  SHIFT_TEMPLATE
+  SCHEDULE_PLAN
+  SCHEDULE_PLAN_CELL
+  SCHEDULE_PLAN_APPROVAL_LOG
+  SCHEDULE_DAY_STATUS
   TIME_EVENT
   TIMESHEET_DAY
   TIME_ADJUSTMENT_REQUEST
@@ -536,6 +541,10 @@ enum TimeEventStatus {
 
 enum TimesheetDayStatus {
   SCHEDULED
+  DAY_OFF
+  VACATION
+  SICK_LEAVE
+  BUSINESS_TRIP
   OK
   LATE
   EARLY_LEAVE
@@ -557,6 +566,42 @@ enum TimeAdjustmentStatus {
   PENDING
   APPROVED
   REJECTED
+}
+
+enum SchedulePlanStatus {
+  DRAFT
+  PENDING_APPROVAL
+  APPROVED
+  RETURNED_FOR_REVISION
+  REQUIRES_REAPPROVAL
+  ARCHIVED
+}
+
+enum SchedulePlanCellType {
+  SHIFT
+  DAY_OFF
+  VACATION
+  SICK_LEAVE
+  BUSINESS_TRIP
+  EMPTY
+}
+
+enum ScheduleDayStatusType {
+  DAY_OFF
+  VACATION
+  SICK_LEAVE
+  BUSINESS_TRIP
+}
+
+enum SchedulePlanApprovalAction {
+  CREATED
+  SAVED_DRAFT
+  SUBMITTED
+  APPROVED
+  RETURNED_FOR_REVISION
+  CHANGED_AFTER_APPROVAL
+  NEW_VERSION_CREATED
+  ARCHIVED
 }
 
 model User {
@@ -618,6 +663,13 @@ model User {
   timesheetDays                  TimesheetDay[]              @relation("TimesheetDayUser")
   timeAdjustmentRequests         TimeAdjustmentRequest[]     @relation("TimeAdjustmentRequestUser")
   timeAdjustmentRequestsReviewed TimeAdjustmentRequest[]     @relation("TimeAdjustmentRequestReviewedBy")
+  schedulePlansCreated           SchedulePlan[]              @relation("SchedulePlanCreatedBy")
+  schedulePlansSubmitted         SchedulePlan[]              @relation("SchedulePlanSubmittedBy")
+  schedulePlansApproved          SchedulePlan[]              @relation("SchedulePlanApprovedBy")
+  schedulePlansReturned          SchedulePlan[]              @relation("SchedulePlanReturnedBy")
+  schedulePlanCells              SchedulePlanCell[]          @relation("SchedulePlanCellUser")
+  schedulePlanApprovalLogs       SchedulePlanApprovalLog[]   @relation("SchedulePlanApprovalLogActor")
+  scheduleDayStatuses            ScheduleDayStatus[]         @relation("ScheduleDayStatusUser")
   employeeDevicesApproved        EmployeeTrustedDevice[]     @relation("EmployeeTrustedDeviceApprovedBy")
   employeeDevicesBlocked         EmployeeTrustedDevice[]     @relation("EmployeeTrustedDeviceBlockedBy")
   deactivatedBy                  User?                       @relation("UserDeactivatedBy", fields: [deactivatedById], references: [id])
@@ -1233,6 +1285,8 @@ model EmployeeProfile {
   timesheetDays      TimesheetDay[]
   adjustmentRequests TimeAdjustmentRequest[]
   qrTokensUsed       QrToken[]
+  schedulePlanCells  SchedulePlanCell[]
+  scheduleDayStatuses ScheduleDayStatus[]
 
   @@index([employmentStatus])
   @@index([defaultLocationId])
@@ -1253,38 +1307,165 @@ model WorkLocation {
   createdAt                DateTime @default(now())
   updatedAt                DateTime @updatedAt
 
-  defaultEmployees EmployeeProfile[]           @relation("EmployeeDefaultLocation")
-  shifts           WorkShift[]
-  displayDevices   LocationDisplayDevice[]
-  setupTokens      LocationDisplaySetupToken[]
-  displaySessions  LocationDisplaySession[]
-  qrTokens         QrToken[]
-  timeEvents       TimeEvent[]
-  timesheetDays    TimesheetDay[]
+  defaultEmployees  EmployeeProfile[]           @relation("EmployeeDefaultLocation")
+  shifts            WorkShift[]
+  displayDevices    LocationDisplayDevice[]
+  setupTokens       LocationDisplaySetupToken[]
+  displaySessions   LocationDisplaySession[]
+  qrTokens          QrToken[]
+  shiftTemplates    ShiftTemplate[]
+  schedulePlans     SchedulePlan[]
+  schedulePlanCells SchedulePlanCell[]
+  scheduleDayStatuses ScheduleDayStatus[]
+  timeEvents        TimeEvent[]
+  timesheetDays     TimesheetDay[]
 
   @@index([isActive])
   @@index([code])
 }
 
-model WorkShift {
-  id           String          @id @default(cuid())
-  employeeId   String
+model ShiftTemplate {
+  id           String   @id @default(cuid())
   locationId   String
-  date         String
-  startsAt     DateTime
-  endsAt       DateTime
-  breakMinutes Int             @default(0)
-  status       WorkShiftStatus @default(PLANNED)
-  createdById  String
-  createdAt    DateTime        @default(now())
-  updatedAt    DateTime        @updatedAt
+  name         String
+  code         String
+  startsAt     String
+  endsAt       String
+  breakMinutes Int      @default(0)
+  color        String?
+  isActive     Boolean  @default(true)
+  sortOrder    Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
-  employee           EmployeeProfile         @relation(fields: [employeeId], references: [id])
-  location           WorkLocation            @relation(fields: [locationId], references: [id])
-  createdBy          User                    @relation("WorkShiftCreatedBy", fields: [createdById], references: [id])
-  timeEvents         TimeEvent[]
-  timesheetDays      TimesheetDay[]
-  adjustmentRequests TimeAdjustmentRequest[]
+  location          WorkLocation       @relation(fields: [locationId], references: [id])
+  schedulePlanCells SchedulePlanCell[]
+
+  @@unique([locationId, code])
+  @@index([locationId])
+  @@index([isActive])
+  @@index([sortOrder])
+}
+
+model SchedulePlan {
+  id                    String             @id @default(cuid())
+  locationId            String
+  year                  Int
+  month                 Int
+  version               Int                @default(1)
+  status                SchedulePlanStatus @default(DRAFT)
+  title                 String?
+  createdById           String
+  submittedById         String?
+  submittedAt           DateTime?
+  approvedById          String?
+  approvedAt            DateTime?
+  returnedById          String?
+  returnedAt            DateTime?
+  returnComment         String?
+  basedOnSchedulePlanId String?
+  isCurrentApproved     Boolean            @default(false)
+  createdAt             DateTime           @default(now())
+  updatedAt             DateTime           @updatedAt
+
+  location            WorkLocation              @relation(fields: [locationId], references: [id])
+  createdBy           User                      @relation("SchedulePlanCreatedBy", fields: [createdById], references: [id])
+  submittedBy         User?                     @relation("SchedulePlanSubmittedBy", fields: [submittedById], references: [id])
+  approvedBy          User?                     @relation("SchedulePlanApprovedBy", fields: [approvedById], references: [id])
+  returnedBy          User?                     @relation("SchedulePlanReturnedBy", fields: [returnedById], references: [id])
+  basedOnSchedulePlan SchedulePlan?             @relation("SchedulePlanRevision", fields: [basedOnSchedulePlanId], references: [id])
+  revisions           SchedulePlan[]            @relation("SchedulePlanRevision")
+  cells               SchedulePlanCell[]
+  approvalLogs        SchedulePlanApprovalLog[]
+  sourceWorkShifts    WorkShift[]               @relation("WorkShiftSourceSchedulePlan")
+  dayStatuses         ScheduleDayStatus[]
+
+  @@unique([locationId, year, month, version])
+  @@index([locationId, year, month])
+  @@index([status])
+  @@index([createdById])
+  @@index([submittedById])
+  @@index([approvedById])
+  @@index([returnedById])
+  @@index([basedOnSchedulePlanId])
+  @@index([isCurrentApproved])
+}
+
+model SchedulePlanCell {
+  id              String               @id @default(cuid())
+  schedulePlanId  String
+  employeeId      String
+  userId          String
+  locationId      String
+  date            String
+  cellType        SchedulePlanCellType @default(EMPTY)
+  shiftTemplateId String?
+  startsAt        DateTime?
+  endsAt          DateTime?
+  breakMinutes    Int?
+  comment         String?
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+
+  schedulePlan  SchedulePlan    @relation(fields: [schedulePlanId], references: [id])
+  employee      EmployeeProfile @relation(fields: [employeeId], references: [id])
+  user          User            @relation("SchedulePlanCellUser", fields: [userId], references: [id])
+  location      WorkLocation    @relation(fields: [locationId], references: [id])
+  shiftTemplate ShiftTemplate?  @relation(fields: [shiftTemplateId], references: [id])
+  sourceWorkShift WorkShift?    @relation("WorkShiftSourceSchedulePlanCell")
+  dayStatus       ScheduleDayStatus?
+
+  @@unique([schedulePlanId, employeeId, date])
+  @@index([schedulePlanId])
+  @@index([employeeId])
+  @@index([userId])
+  @@index([locationId])
+  @@index([date])
+  @@index([cellType])
+  @@index([shiftTemplateId])
+}
+
+model SchedulePlanApprovalLog {
+  id             String                     @id @default(cuid())
+  schedulePlanId String
+  action         SchedulePlanApprovalAction
+  actorUserId    String
+  comment        String?
+  createdAt      DateTime                   @default(now())
+
+  schedulePlan SchedulePlan @relation(fields: [schedulePlanId], references: [id])
+  actor        User         @relation("SchedulePlanApprovalLogActor", fields: [actorUserId], references: [id])
+
+  @@index([schedulePlanId])
+  @@index([actorUserId])
+  @@index([action])
+  @@index([createdAt])
+}
+
+model WorkShift {
+  id                       String          @id @default(cuid())
+  employeeId               String
+  locationId               String
+  date                     String
+  startsAt                 DateTime
+  endsAt                   DateTime
+  breakMinutes             Int             @default(0)
+  status                   WorkShiftStatus @default(PLANNED)
+  createdById              String
+  sourceSchedulePlanId     String?
+  sourceSchedulePlanCellId String?         @unique
+  scheduleVersion          Int?
+  createdAt                DateTime        @default(now())
+  updatedAt                DateTime        @updatedAt
+
+  employee               EmployeeProfile         @relation(fields: [employeeId], references: [id])
+  location               WorkLocation            @relation(fields: [locationId], references: [id])
+  createdBy              User                    @relation("WorkShiftCreatedBy", fields: [createdById], references: [id])
+  sourceSchedulePlan     SchedulePlan?           @relation("WorkShiftSourceSchedulePlan", fields: [sourceSchedulePlanId], references: [id])
+  sourceSchedulePlanCell SchedulePlanCell?       @relation("WorkShiftSourceSchedulePlanCell", fields: [sourceSchedulePlanCellId], references: [id])
+  timeEvents             TimeEvent[]
+  timesheetDays          TimesheetDay[]
+  adjustmentRequests     TimeAdjustmentRequest[]
 
   @@index([employeeId])
   @@index([locationId])
@@ -1292,6 +1473,39 @@ model WorkShift {
   @@index([status])
   @@index([employeeId, date])
   @@index([locationId, date])
+  @@index([sourceSchedulePlanId])
+  @@index([scheduleVersion])
+}
+
+model ScheduleDayStatus {
+  id                       String                @id @default(cuid())
+  schedulePlanId           String
+  schedulePlanCellId       String                @unique
+  employeeId               String
+  userId                   String
+  locationId               String
+  date                     String
+  status                   ScheduleDayStatusType
+  comment                  String?
+  scheduleVersion          Int
+  createdAt                DateTime              @default(now())
+  updatedAt                DateTime              @updatedAt
+
+  schedulePlan     SchedulePlan     @relation(fields: [schedulePlanId], references: [id])
+  schedulePlanCell SchedulePlanCell @relation(fields: [schedulePlanCellId], references: [id])
+  employee         EmployeeProfile  @relation(fields: [employeeId], references: [id])
+  user             User             @relation("ScheduleDayStatusUser", fields: [userId], references: [id])
+  location         WorkLocation     @relation(fields: [locationId], references: [id])
+  timesheetDay     TimesheetDay?
+
+  @@unique([employeeId, date])
+  @@index([schedulePlanId])
+  @@index([employeeId])
+  @@index([userId])
+  @@index([locationId])
+  @@index([date])
+  @@index([status])
+  @@index([scheduleVersion])
 }
 
 model EmployeeTrustedDevice {
@@ -1469,6 +1683,7 @@ model TimeEvent {
   @@index([type])
   @@index([occurredAt])
   @@index([employeeId, occurredAt])
+  @@index([locationId, occurredAt])
 }
 
 model TimesheetDay {
@@ -1477,6 +1692,7 @@ model TimesheetDay {
   userId            String
   date              String
   shiftId           String?
+  scheduleDayStatusId String?             @unique
   locationId        String?
   plannedStart      DateTime?
   plannedEnd        DateTime?
@@ -1494,13 +1710,16 @@ model TimesheetDay {
   employee EmployeeProfile @relation(fields: [employeeId], references: [id])
   user     User            @relation("TimesheetDayUser", fields: [userId], references: [id])
   shift    WorkShift?      @relation(fields: [shiftId], references: [id])
+  scheduleDayStatus ScheduleDayStatus? @relation(fields: [scheduleDayStatusId], references: [id])
   location WorkLocation?   @relation(fields: [locationId], references: [id])
 
   @@unique([employeeId, date])
   @@index([userId])
   @@index([date])
   @@index([shiftId])
+  @@index([scheduleDayStatusId])
   @@index([locationId])
+  @@index([locationId, date])
   @@index([status])
   @@index([hasPendingEvents])
 }
@@ -1530,6 +1749,7 @@ model TimeAdjustmentRequest {
   reviewedBy  User?           @relation("TimeAdjustmentRequestReviewedBy", fields: [reviewedById], references: [id])
 
   @@index([employeeId])
+  @@index([employeeId, date])
   @@index([userId])
   @@index([date])
   @@index([status])

@@ -16,6 +16,7 @@ import {
   canViewOwnTimeClock,
   canViewPayments,
   canViewReports,
+  canViewSchedulePlanner,
   canViewSecurityLog,
   canViewTimesheet
 } from "@/permissions";
@@ -37,6 +38,7 @@ const mobileLinks = [
 
 const timeClockMobileLinks = [
   { href: "/employee/time-clock", label: "Мое время" },
+  { href: "/admin/schedule-planner", label: "Планировщик" },
   { href: "/admin/timesheet", label: "Табель" },
   { href: "/admin/work-locations", label: "Рабочие точки" },
   { href: "/admin/work-shifts", label: "График смен" },
@@ -59,6 +61,7 @@ export function MobileNav({ user }: MobileNavProps) {
     if (href === "/payments") return canViewPayments(user);
     if (href === "/designer-bonuses/accruals") return canViewDesignerBonusReports(user);
     if (href === "/employee/time-clock") return canViewOwnTimeClock(user);
+    if (href === "/admin/schedule-planner") return canViewSchedulePlanner(user);
     if (href === "/admin/timesheet") return canViewTimesheet(user);
     if (href === "/admin/work-locations") return canManageWorkLocations(user);
     if (href === "/admin/work-shifts") return canManageWorkShifts(user);

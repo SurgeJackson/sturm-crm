@@ -402,7 +402,12 @@ export const ModelName = {
   DesignerBonusAdjustment: 'DesignerBonusAdjustment',
   EmployeeProfile: 'EmployeeProfile',
   WorkLocation: 'WorkLocation',
+  ShiftTemplate: 'ShiftTemplate',
+  SchedulePlan: 'SchedulePlan',
+  SchedulePlanCell: 'SchedulePlanCell',
+  SchedulePlanApprovalLog: 'SchedulePlanApprovalLog',
   WorkShift: 'WorkShift',
+  ScheduleDayStatus: 'ScheduleDayStatus',
   EmployeeTrustedDevice: 'EmployeeTrustedDevice',
   LocationDisplayDevice: 'LocationDisplayDevice',
   LocationDisplaySetupToken: 'LocationDisplaySetupToken',
@@ -431,7 +436,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "client" | "designer" | "projectObject" | "projectObjectParticipant" | "deal" | "commercialProposal" | "proposalCounter" | "taskActivity" | "auditLog" | "crmViolation" | "designerBonusAgreement" | "payment" | "designerBonusAccrual" | "designerBonusPayout" | "designerBonusAdjustment" | "employeeProfile" | "workLocation" | "workShift" | "employeeTrustedDevice" | "locationDisplayDevice" | "locationDisplaySetupToken" | "locationDisplaySession" | "qrToken" | "timeEvent" | "timesheetDay" | "timeAdjustmentRequest" | "securityLog" | "emailVerificationToken" | "passwordResetToken" | "userInvitation" | "rolePermission"
+    modelProps: "user" | "client" | "designer" | "projectObject" | "projectObjectParticipant" | "deal" | "commercialProposal" | "proposalCounter" | "taskActivity" | "auditLog" | "crmViolation" | "designerBonusAgreement" | "payment" | "designerBonusAccrual" | "designerBonusPayout" | "designerBonusAdjustment" | "employeeProfile" | "workLocation" | "shiftTemplate" | "schedulePlan" | "schedulePlanCell" | "schedulePlanApprovalLog" | "workShift" | "scheduleDayStatus" | "employeeTrustedDevice" | "locationDisplayDevice" | "locationDisplaySetupToken" | "locationDisplaySession" | "qrToken" | "timeEvent" | "timesheetDay" | "timeAdjustmentRequest" | "securityLog" | "emailVerificationToken" | "passwordResetToken" | "userInvitation" | "rolePermission"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1767,6 +1772,302 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ShiftTemplate: {
+      payload: Prisma.$ShiftTemplatePayload<ExtArgs>
+      fields: Prisma.ShiftTemplateFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ShiftTemplateFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShiftTemplatePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ShiftTemplateFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShiftTemplatePayload>
+        }
+        findFirst: {
+          args: Prisma.ShiftTemplateFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShiftTemplatePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ShiftTemplateFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShiftTemplatePayload>
+        }
+        findMany: {
+          args: Prisma.ShiftTemplateFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShiftTemplatePayload>[]
+        }
+        create: {
+          args: Prisma.ShiftTemplateCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShiftTemplatePayload>
+        }
+        createMany: {
+          args: Prisma.ShiftTemplateCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ShiftTemplateCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShiftTemplatePayload>[]
+        }
+        delete: {
+          args: Prisma.ShiftTemplateDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShiftTemplatePayload>
+        }
+        update: {
+          args: Prisma.ShiftTemplateUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShiftTemplatePayload>
+        }
+        deleteMany: {
+          args: Prisma.ShiftTemplateDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ShiftTemplateUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ShiftTemplateUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShiftTemplatePayload>[]
+        }
+        upsert: {
+          args: Prisma.ShiftTemplateUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShiftTemplatePayload>
+        }
+        aggregate: {
+          args: Prisma.ShiftTemplateAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateShiftTemplate>
+        }
+        groupBy: {
+          args: Prisma.ShiftTemplateGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ShiftTemplateGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ShiftTemplateCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ShiftTemplateCountAggregateOutputType> | number
+        }
+      }
+    }
+    SchedulePlan: {
+      payload: Prisma.$SchedulePlanPayload<ExtArgs>
+      fields: Prisma.SchedulePlanFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SchedulePlanFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SchedulePlanPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SchedulePlanFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SchedulePlanPayload>
+        }
+        findFirst: {
+          args: Prisma.SchedulePlanFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SchedulePlanPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SchedulePlanFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SchedulePlanPayload>
+        }
+        findMany: {
+          args: Prisma.SchedulePlanFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SchedulePlanPayload>[]
+        }
+        create: {
+          args: Prisma.SchedulePlanCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SchedulePlanPayload>
+        }
+        createMany: {
+          args: Prisma.SchedulePlanCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SchedulePlanCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SchedulePlanPayload>[]
+        }
+        delete: {
+          args: Prisma.SchedulePlanDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SchedulePlanPayload>
+        }
+        update: {
+          args: Prisma.SchedulePlanUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SchedulePlanPayload>
+        }
+        deleteMany: {
+          args: Prisma.SchedulePlanDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SchedulePlanUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SchedulePlanUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SchedulePlanPayload>[]
+        }
+        upsert: {
+          args: Prisma.SchedulePlanUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SchedulePlanPayload>
+        }
+        aggregate: {
+          args: Prisma.SchedulePlanAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSchedulePlan>
+        }
+        groupBy: {
+          args: Prisma.SchedulePlanGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SchedulePlanGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SchedulePlanCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SchedulePlanCountAggregateOutputType> | number
+        }
+      }
+    }
+    SchedulePlanCell: {
+      payload: Prisma.$SchedulePlanCellPayload<ExtArgs>
+      fields: Prisma.SchedulePlanCellFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SchedulePlanCellFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SchedulePlanCellPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SchedulePlanCellFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SchedulePlanCellPayload>
+        }
+        findFirst: {
+          args: Prisma.SchedulePlanCellFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SchedulePlanCellPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SchedulePlanCellFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SchedulePlanCellPayload>
+        }
+        findMany: {
+          args: Prisma.SchedulePlanCellFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SchedulePlanCellPayload>[]
+        }
+        create: {
+          args: Prisma.SchedulePlanCellCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SchedulePlanCellPayload>
+        }
+        createMany: {
+          args: Prisma.SchedulePlanCellCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SchedulePlanCellCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SchedulePlanCellPayload>[]
+        }
+        delete: {
+          args: Prisma.SchedulePlanCellDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SchedulePlanCellPayload>
+        }
+        update: {
+          args: Prisma.SchedulePlanCellUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SchedulePlanCellPayload>
+        }
+        deleteMany: {
+          args: Prisma.SchedulePlanCellDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SchedulePlanCellUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SchedulePlanCellUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SchedulePlanCellPayload>[]
+        }
+        upsert: {
+          args: Prisma.SchedulePlanCellUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SchedulePlanCellPayload>
+        }
+        aggregate: {
+          args: Prisma.SchedulePlanCellAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSchedulePlanCell>
+        }
+        groupBy: {
+          args: Prisma.SchedulePlanCellGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SchedulePlanCellGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SchedulePlanCellCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SchedulePlanCellCountAggregateOutputType> | number
+        }
+      }
+    }
+    SchedulePlanApprovalLog: {
+      payload: Prisma.$SchedulePlanApprovalLogPayload<ExtArgs>
+      fields: Prisma.SchedulePlanApprovalLogFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SchedulePlanApprovalLogFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SchedulePlanApprovalLogPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SchedulePlanApprovalLogFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SchedulePlanApprovalLogPayload>
+        }
+        findFirst: {
+          args: Prisma.SchedulePlanApprovalLogFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SchedulePlanApprovalLogPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SchedulePlanApprovalLogFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SchedulePlanApprovalLogPayload>
+        }
+        findMany: {
+          args: Prisma.SchedulePlanApprovalLogFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SchedulePlanApprovalLogPayload>[]
+        }
+        create: {
+          args: Prisma.SchedulePlanApprovalLogCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SchedulePlanApprovalLogPayload>
+        }
+        createMany: {
+          args: Prisma.SchedulePlanApprovalLogCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SchedulePlanApprovalLogCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SchedulePlanApprovalLogPayload>[]
+        }
+        delete: {
+          args: Prisma.SchedulePlanApprovalLogDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SchedulePlanApprovalLogPayload>
+        }
+        update: {
+          args: Prisma.SchedulePlanApprovalLogUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SchedulePlanApprovalLogPayload>
+        }
+        deleteMany: {
+          args: Prisma.SchedulePlanApprovalLogDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SchedulePlanApprovalLogUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SchedulePlanApprovalLogUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SchedulePlanApprovalLogPayload>[]
+        }
+        upsert: {
+          args: Prisma.SchedulePlanApprovalLogUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SchedulePlanApprovalLogPayload>
+        }
+        aggregate: {
+          args: Prisma.SchedulePlanApprovalLogAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSchedulePlanApprovalLog>
+        }
+        groupBy: {
+          args: Prisma.SchedulePlanApprovalLogGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SchedulePlanApprovalLogGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SchedulePlanApprovalLogCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SchedulePlanApprovalLogCountAggregateOutputType> | number
+        }
+      }
+    }
     WorkShift: {
       payload: Prisma.$WorkShiftPayload<ExtArgs>
       fields: Prisma.WorkShiftFieldRefs
@@ -1838,6 +2139,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.WorkShiftCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.WorkShiftCountAggregateOutputType> | number
+        }
+      }
+    }
+    ScheduleDayStatus: {
+      payload: Prisma.$ScheduleDayStatusPayload<ExtArgs>
+      fields: Prisma.ScheduleDayStatusFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ScheduleDayStatusFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduleDayStatusPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ScheduleDayStatusFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduleDayStatusPayload>
+        }
+        findFirst: {
+          args: Prisma.ScheduleDayStatusFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduleDayStatusPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ScheduleDayStatusFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduleDayStatusPayload>
+        }
+        findMany: {
+          args: Prisma.ScheduleDayStatusFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduleDayStatusPayload>[]
+        }
+        create: {
+          args: Prisma.ScheduleDayStatusCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduleDayStatusPayload>
+        }
+        createMany: {
+          args: Prisma.ScheduleDayStatusCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ScheduleDayStatusCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduleDayStatusPayload>[]
+        }
+        delete: {
+          args: Prisma.ScheduleDayStatusDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduleDayStatusPayload>
+        }
+        update: {
+          args: Prisma.ScheduleDayStatusUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduleDayStatusPayload>
+        }
+        deleteMany: {
+          args: Prisma.ScheduleDayStatusDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ScheduleDayStatusUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ScheduleDayStatusUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduleDayStatusPayload>[]
+        }
+        upsert: {
+          args: Prisma.ScheduleDayStatusUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduleDayStatusPayload>
+        }
+        aggregate: {
+          args: Prisma.ScheduleDayStatusAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateScheduleDayStatus>
+        }
+        groupBy: {
+          args: Prisma.ScheduleDayStatusGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ScheduleDayStatusGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ScheduleDayStatusCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ScheduleDayStatusCountAggregateOutputType> | number
         }
       }
     }
@@ -3277,6 +3652,81 @@ export const WorkLocationScalarFieldEnum = {
 export type WorkLocationScalarFieldEnum = (typeof WorkLocationScalarFieldEnum)[keyof typeof WorkLocationScalarFieldEnum]
 
 
+export const ShiftTemplateScalarFieldEnum = {
+  id: 'id',
+  locationId: 'locationId',
+  name: 'name',
+  code: 'code',
+  startsAt: 'startsAt',
+  endsAt: 'endsAt',
+  breakMinutes: 'breakMinutes',
+  color: 'color',
+  isActive: 'isActive',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ShiftTemplateScalarFieldEnum = (typeof ShiftTemplateScalarFieldEnum)[keyof typeof ShiftTemplateScalarFieldEnum]
+
+
+export const SchedulePlanScalarFieldEnum = {
+  id: 'id',
+  locationId: 'locationId',
+  year: 'year',
+  month: 'month',
+  version: 'version',
+  status: 'status',
+  title: 'title',
+  createdById: 'createdById',
+  submittedById: 'submittedById',
+  submittedAt: 'submittedAt',
+  approvedById: 'approvedById',
+  approvedAt: 'approvedAt',
+  returnedById: 'returnedById',
+  returnedAt: 'returnedAt',
+  returnComment: 'returnComment',
+  basedOnSchedulePlanId: 'basedOnSchedulePlanId',
+  isCurrentApproved: 'isCurrentApproved',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SchedulePlanScalarFieldEnum = (typeof SchedulePlanScalarFieldEnum)[keyof typeof SchedulePlanScalarFieldEnum]
+
+
+export const SchedulePlanCellScalarFieldEnum = {
+  id: 'id',
+  schedulePlanId: 'schedulePlanId',
+  employeeId: 'employeeId',
+  userId: 'userId',
+  locationId: 'locationId',
+  date: 'date',
+  cellType: 'cellType',
+  shiftTemplateId: 'shiftTemplateId',
+  startsAt: 'startsAt',
+  endsAt: 'endsAt',
+  breakMinutes: 'breakMinutes',
+  comment: 'comment',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SchedulePlanCellScalarFieldEnum = (typeof SchedulePlanCellScalarFieldEnum)[keyof typeof SchedulePlanCellScalarFieldEnum]
+
+
+export const SchedulePlanApprovalLogScalarFieldEnum = {
+  id: 'id',
+  schedulePlanId: 'schedulePlanId',
+  action: 'action',
+  actorUserId: 'actorUserId',
+  comment: 'comment',
+  createdAt: 'createdAt'
+} as const
+
+export type SchedulePlanApprovalLogScalarFieldEnum = (typeof SchedulePlanApprovalLogScalarFieldEnum)[keyof typeof SchedulePlanApprovalLogScalarFieldEnum]
+
+
 export const WorkShiftScalarFieldEnum = {
   id: 'id',
   employeeId: 'employeeId',
@@ -3287,11 +3737,32 @@ export const WorkShiftScalarFieldEnum = {
   breakMinutes: 'breakMinutes',
   status: 'status',
   createdById: 'createdById',
+  sourceSchedulePlanId: 'sourceSchedulePlanId',
+  sourceSchedulePlanCellId: 'sourceSchedulePlanCellId',
+  scheduleVersion: 'scheduleVersion',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type WorkShiftScalarFieldEnum = (typeof WorkShiftScalarFieldEnum)[keyof typeof WorkShiftScalarFieldEnum]
+
+
+export const ScheduleDayStatusScalarFieldEnum = {
+  id: 'id',
+  schedulePlanId: 'schedulePlanId',
+  schedulePlanCellId: 'schedulePlanCellId',
+  employeeId: 'employeeId',
+  userId: 'userId',
+  locationId: 'locationId',
+  date: 'date',
+  status: 'status',
+  comment: 'comment',
+  scheduleVersion: 'scheduleVersion',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ScheduleDayStatusScalarFieldEnum = (typeof ScheduleDayStatusScalarFieldEnum)[keyof typeof ScheduleDayStatusScalarFieldEnum]
 
 
 export const EmployeeTrustedDeviceScalarFieldEnum = {
@@ -3424,6 +3895,7 @@ export const TimesheetDayScalarFieldEnum = {
   userId: 'userId',
   date: 'date',
   shiftId: 'shiftId',
+  scheduleDayStatusId: 'scheduleDayStatusId',
   locationId: 'locationId',
   plannedStart: 'plannedStart',
   plannedEnd: 'plannedEnd',
@@ -4350,6 +4822,48 @@ export type ListEnumEmployeeEmploymentStatusFieldRefInput<$PrismaModel> = FieldR
 
 
 /**
+ * Reference to a field of type 'SchedulePlanStatus'
+ */
+export type EnumSchedulePlanStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SchedulePlanStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'SchedulePlanStatus[]'
+ */
+export type ListEnumSchedulePlanStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SchedulePlanStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'SchedulePlanCellType'
+ */
+export type EnumSchedulePlanCellTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SchedulePlanCellType'>
+    
+
+
+/**
+ * Reference to a field of type 'SchedulePlanCellType[]'
+ */
+export type ListEnumSchedulePlanCellTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SchedulePlanCellType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'SchedulePlanApprovalAction'
+ */
+export type EnumSchedulePlanApprovalActionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SchedulePlanApprovalAction'>
+    
+
+
+/**
+ * Reference to a field of type 'SchedulePlanApprovalAction[]'
+ */
+export type ListEnumSchedulePlanApprovalActionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SchedulePlanApprovalAction[]'>
+    
+
+
+/**
  * Reference to a field of type 'WorkShiftStatus'
  */
 export type EnumWorkShiftStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WorkShiftStatus'>
@@ -4360,6 +4874,20 @@ export type EnumWorkShiftStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$
  * Reference to a field of type 'WorkShiftStatus[]'
  */
 export type ListEnumWorkShiftStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WorkShiftStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'ScheduleDayStatusType'
+ */
+export type EnumScheduleDayStatusTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ScheduleDayStatusType'>
+    
+
+
+/**
+ * Reference to a field of type 'ScheduleDayStatusType[]'
+ */
+export type ListEnumScheduleDayStatusTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ScheduleDayStatusType[]'>
     
 
 
@@ -4644,7 +5172,12 @@ export type GlobalOmitConfig = {
   designerBonusAdjustment?: Prisma.DesignerBonusAdjustmentOmit
   employeeProfile?: Prisma.EmployeeProfileOmit
   workLocation?: Prisma.WorkLocationOmit
+  shiftTemplate?: Prisma.ShiftTemplateOmit
+  schedulePlan?: Prisma.SchedulePlanOmit
+  schedulePlanCell?: Prisma.SchedulePlanCellOmit
+  schedulePlanApprovalLog?: Prisma.SchedulePlanApprovalLogOmit
   workShift?: Prisma.WorkShiftOmit
+  scheduleDayStatus?: Prisma.ScheduleDayStatusOmit
   employeeTrustedDevice?: Prisma.EmployeeTrustedDeviceOmit
   locationDisplayDevice?: Prisma.LocationDisplayDeviceOmit
   locationDisplaySetupToken?: Prisma.LocationDisplaySetupTokenOmit

@@ -256,6 +256,8 @@ export type EmployeeProfileWhereInput = {
   timesheetDays?: Prisma.TimesheetDayListRelationFilter
   adjustmentRequests?: Prisma.TimeAdjustmentRequestListRelationFilter
   qrTokensUsed?: Prisma.QrTokenListRelationFilter
+  schedulePlanCells?: Prisma.SchedulePlanCellListRelationFilter
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusListRelationFilter
 }
 
 export type EmployeeProfileOrderByWithRelationInput = {
@@ -276,6 +278,8 @@ export type EmployeeProfileOrderByWithRelationInput = {
   timesheetDays?: Prisma.TimesheetDayOrderByRelationAggregateInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestOrderByRelationAggregateInput
   qrTokensUsed?: Prisma.QrTokenOrderByRelationAggregateInput
+  schedulePlanCells?: Prisma.SchedulePlanCellOrderByRelationAggregateInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusOrderByRelationAggregateInput
 }
 
 export type EmployeeProfileWhereUniqueInput = Prisma.AtLeast<{
@@ -299,6 +303,8 @@ export type EmployeeProfileWhereUniqueInput = Prisma.AtLeast<{
   timesheetDays?: Prisma.TimesheetDayListRelationFilter
   adjustmentRequests?: Prisma.TimeAdjustmentRequestListRelationFilter
   qrTokensUsed?: Prisma.QrTokenListRelationFilter
+  schedulePlanCells?: Prisma.SchedulePlanCellListRelationFilter
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusListRelationFilter
 }, "id" | "userId">
 
 export type EmployeeProfileOrderByWithAggregationInput = {
@@ -349,6 +355,8 @@ export type EmployeeProfileCreateInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutEmployeeInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutEmployeeInput
   qrTokensUsed?: Prisma.QrTokenCreateNestedManyWithoutUsedByEmployeeInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutEmployeeInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeProfileUncheckedCreateInput = {
@@ -367,6 +375,8 @@ export type EmployeeProfileUncheckedCreateInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutEmployeeInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutEmployeeInput
   qrTokensUsed?: Prisma.QrTokenUncheckedCreateNestedManyWithoutUsedByEmployeeInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutEmployeeInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeProfileUpdateInput = {
@@ -385,6 +395,8 @@ export type EmployeeProfileUpdateInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutEmployeeNestedInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutEmployeeNestedInput
   qrTokensUsed?: Prisma.QrTokenUpdateManyWithoutUsedByEmployeeNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutEmployeeNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeProfileUncheckedUpdateInput = {
@@ -403,6 +415,8 @@ export type EmployeeProfileUncheckedUpdateInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutEmployeeNestedInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutEmployeeNestedInput
   qrTokensUsed?: Prisma.QrTokenUncheckedUpdateManyWithoutUsedByEmployeeNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutEmployeeNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeProfileCreateManyInput = {
@@ -581,6 +595,20 @@ export type EmployeeProfileUncheckedUpdateManyWithoutDefaultLocationNestedInput 
   deleteMany?: Prisma.EmployeeProfileScalarWhereInput | Prisma.EmployeeProfileScalarWhereInput[]
 }
 
+export type EmployeeProfileCreateNestedOneWithoutSchedulePlanCellsInput = {
+  create?: Prisma.XOR<Prisma.EmployeeProfileCreateWithoutSchedulePlanCellsInput, Prisma.EmployeeProfileUncheckedCreateWithoutSchedulePlanCellsInput>
+  connectOrCreate?: Prisma.EmployeeProfileCreateOrConnectWithoutSchedulePlanCellsInput
+  connect?: Prisma.EmployeeProfileWhereUniqueInput
+}
+
+export type EmployeeProfileUpdateOneRequiredWithoutSchedulePlanCellsNestedInput = {
+  create?: Prisma.XOR<Prisma.EmployeeProfileCreateWithoutSchedulePlanCellsInput, Prisma.EmployeeProfileUncheckedCreateWithoutSchedulePlanCellsInput>
+  connectOrCreate?: Prisma.EmployeeProfileCreateOrConnectWithoutSchedulePlanCellsInput
+  upsert?: Prisma.EmployeeProfileUpsertWithoutSchedulePlanCellsInput
+  connect?: Prisma.EmployeeProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EmployeeProfileUpdateToOneWithWhereWithoutSchedulePlanCellsInput, Prisma.EmployeeProfileUpdateWithoutSchedulePlanCellsInput>, Prisma.EmployeeProfileUncheckedUpdateWithoutSchedulePlanCellsInput>
+}
+
 export type EmployeeProfileCreateNestedOneWithoutShiftsInput = {
   create?: Prisma.XOR<Prisma.EmployeeProfileCreateWithoutShiftsInput, Prisma.EmployeeProfileUncheckedCreateWithoutShiftsInput>
   connectOrCreate?: Prisma.EmployeeProfileCreateOrConnectWithoutShiftsInput
@@ -593,6 +621,20 @@ export type EmployeeProfileUpdateOneRequiredWithoutShiftsNestedInput = {
   upsert?: Prisma.EmployeeProfileUpsertWithoutShiftsInput
   connect?: Prisma.EmployeeProfileWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.EmployeeProfileUpdateToOneWithWhereWithoutShiftsInput, Prisma.EmployeeProfileUpdateWithoutShiftsInput>, Prisma.EmployeeProfileUncheckedUpdateWithoutShiftsInput>
+}
+
+export type EmployeeProfileCreateNestedOneWithoutScheduleDayStatusesInput = {
+  create?: Prisma.XOR<Prisma.EmployeeProfileCreateWithoutScheduleDayStatusesInput, Prisma.EmployeeProfileUncheckedCreateWithoutScheduleDayStatusesInput>
+  connectOrCreate?: Prisma.EmployeeProfileCreateOrConnectWithoutScheduleDayStatusesInput
+  connect?: Prisma.EmployeeProfileWhereUniqueInput
+}
+
+export type EmployeeProfileUpdateOneRequiredWithoutScheduleDayStatusesNestedInput = {
+  create?: Prisma.XOR<Prisma.EmployeeProfileCreateWithoutScheduleDayStatusesInput, Prisma.EmployeeProfileUncheckedCreateWithoutScheduleDayStatusesInput>
+  connectOrCreate?: Prisma.EmployeeProfileCreateOrConnectWithoutScheduleDayStatusesInput
+  upsert?: Prisma.EmployeeProfileUpsertWithoutScheduleDayStatusesInput
+  connect?: Prisma.EmployeeProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EmployeeProfileUpdateToOneWithWhereWithoutScheduleDayStatusesInput, Prisma.EmployeeProfileUpdateWithoutScheduleDayStatusesInput>, Prisma.EmployeeProfileUncheckedUpdateWithoutScheduleDayStatusesInput>
 }
 
 export type EmployeeProfileCreateNestedOneWithoutTrustedDevicesInput = {
@@ -682,6 +724,8 @@ export type EmployeeProfileCreateWithoutUserInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutEmployeeInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutEmployeeInput
   qrTokensUsed?: Prisma.QrTokenCreateNestedManyWithoutUsedByEmployeeInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutEmployeeInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeProfileUncheckedCreateWithoutUserInput = {
@@ -699,6 +743,8 @@ export type EmployeeProfileUncheckedCreateWithoutUserInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutEmployeeInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutEmployeeInput
   qrTokensUsed?: Prisma.QrTokenUncheckedCreateNestedManyWithoutUsedByEmployeeInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutEmployeeInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeProfileCreateOrConnectWithoutUserInput = {
@@ -732,6 +778,8 @@ export type EmployeeProfileUpdateWithoutUserInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutEmployeeNestedInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutEmployeeNestedInput
   qrTokensUsed?: Prisma.QrTokenUpdateManyWithoutUsedByEmployeeNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutEmployeeNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeProfileUncheckedUpdateWithoutUserInput = {
@@ -749,6 +797,8 @@ export type EmployeeProfileUncheckedUpdateWithoutUserInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutEmployeeNestedInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutEmployeeNestedInput
   qrTokensUsed?: Prisma.QrTokenUncheckedUpdateManyWithoutUsedByEmployeeNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutEmployeeNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeProfileCreateWithoutDefaultLocationInput = {
@@ -766,6 +816,8 @@ export type EmployeeProfileCreateWithoutDefaultLocationInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutEmployeeInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutEmployeeInput
   qrTokensUsed?: Prisma.QrTokenCreateNestedManyWithoutUsedByEmployeeInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutEmployeeInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeProfileUncheckedCreateWithoutDefaultLocationInput = {
@@ -783,6 +835,8 @@ export type EmployeeProfileUncheckedCreateWithoutDefaultLocationInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutEmployeeInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutEmployeeInput
   qrTokensUsed?: Prisma.QrTokenUncheckedCreateNestedManyWithoutUsedByEmployeeInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutEmployeeInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeProfileCreateOrConnectWithoutDefaultLocationInput = {
@@ -826,6 +880,98 @@ export type EmployeeProfileScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"EmployeeProfile"> | Date | string
 }
 
+export type EmployeeProfileCreateWithoutSchedulePlanCellsInput = {
+  id?: string
+  departmentId?: string | null
+  position?: string | null
+  employmentStatus?: $Enums.EmployeeEmploymentStatus
+  trustedDeviceLimit?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutEmployeeProfileInput
+  defaultLocation?: Prisma.WorkLocationCreateNestedOneWithoutDefaultEmployeesInput
+  shifts?: Prisma.WorkShiftCreateNestedManyWithoutEmployeeInput
+  trustedDevices?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutEmployeeInput
+  timeEvents?: Prisma.TimeEventCreateNestedManyWithoutEmployeeInput
+  timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutEmployeeInput
+  adjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutEmployeeInput
+  qrTokensUsed?: Prisma.QrTokenCreateNestedManyWithoutUsedByEmployeeInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutEmployeeInput
+}
+
+export type EmployeeProfileUncheckedCreateWithoutSchedulePlanCellsInput = {
+  id?: string
+  userId: string
+  departmentId?: string | null
+  defaultLocationId?: string | null
+  position?: string | null
+  employmentStatus?: $Enums.EmployeeEmploymentStatus
+  trustedDeviceLimit?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  shifts?: Prisma.WorkShiftUncheckedCreateNestedManyWithoutEmployeeInput
+  trustedDevices?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutEmployeeInput
+  timeEvents?: Prisma.TimeEventUncheckedCreateNestedManyWithoutEmployeeInput
+  timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutEmployeeInput
+  adjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  qrTokensUsed?: Prisma.QrTokenUncheckedCreateNestedManyWithoutUsedByEmployeeInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutEmployeeInput
+}
+
+export type EmployeeProfileCreateOrConnectWithoutSchedulePlanCellsInput = {
+  where: Prisma.EmployeeProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.EmployeeProfileCreateWithoutSchedulePlanCellsInput, Prisma.EmployeeProfileUncheckedCreateWithoutSchedulePlanCellsInput>
+}
+
+export type EmployeeProfileUpsertWithoutSchedulePlanCellsInput = {
+  update: Prisma.XOR<Prisma.EmployeeProfileUpdateWithoutSchedulePlanCellsInput, Prisma.EmployeeProfileUncheckedUpdateWithoutSchedulePlanCellsInput>
+  create: Prisma.XOR<Prisma.EmployeeProfileCreateWithoutSchedulePlanCellsInput, Prisma.EmployeeProfileUncheckedCreateWithoutSchedulePlanCellsInput>
+  where?: Prisma.EmployeeProfileWhereInput
+}
+
+export type EmployeeProfileUpdateToOneWithWhereWithoutSchedulePlanCellsInput = {
+  where?: Prisma.EmployeeProfileWhereInput
+  data: Prisma.XOR<Prisma.EmployeeProfileUpdateWithoutSchedulePlanCellsInput, Prisma.EmployeeProfileUncheckedUpdateWithoutSchedulePlanCellsInput>
+}
+
+export type EmployeeProfileUpdateWithoutSchedulePlanCellsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  departmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  employmentStatus?: Prisma.EnumEmployeeEmploymentStatusFieldUpdateOperationsInput | $Enums.EmployeeEmploymentStatus
+  trustedDeviceLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutEmployeeProfileNestedInput
+  defaultLocation?: Prisma.WorkLocationUpdateOneWithoutDefaultEmployeesNestedInput
+  shifts?: Prisma.WorkShiftUpdateManyWithoutEmployeeNestedInput
+  trustedDevices?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutEmployeeNestedInput
+  timeEvents?: Prisma.TimeEventUpdateManyWithoutEmployeeNestedInput
+  timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutEmployeeNestedInput
+  adjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutEmployeeNestedInput
+  qrTokensUsed?: Prisma.QrTokenUpdateManyWithoutUsedByEmployeeNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutEmployeeNestedInput
+}
+
+export type EmployeeProfileUncheckedUpdateWithoutSchedulePlanCellsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  departmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultLocationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  employmentStatus?: Prisma.EnumEmployeeEmploymentStatusFieldUpdateOperationsInput | $Enums.EmployeeEmploymentStatus
+  trustedDeviceLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  shifts?: Prisma.WorkShiftUncheckedUpdateManyWithoutEmployeeNestedInput
+  trustedDevices?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeEvents?: Prisma.TimeEventUncheckedUpdateManyWithoutEmployeeNestedInput
+  timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutEmployeeNestedInput
+  adjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  qrTokensUsed?: Prisma.QrTokenUncheckedUpdateManyWithoutUsedByEmployeeNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutEmployeeNestedInput
+}
+
 export type EmployeeProfileCreateWithoutShiftsInput = {
   id?: string
   departmentId?: string | null
@@ -841,6 +987,8 @@ export type EmployeeProfileCreateWithoutShiftsInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutEmployeeInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutEmployeeInput
   qrTokensUsed?: Prisma.QrTokenCreateNestedManyWithoutUsedByEmployeeInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutEmployeeInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeProfileUncheckedCreateWithoutShiftsInput = {
@@ -858,6 +1006,8 @@ export type EmployeeProfileUncheckedCreateWithoutShiftsInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutEmployeeInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutEmployeeInput
   qrTokensUsed?: Prisma.QrTokenUncheckedCreateNestedManyWithoutUsedByEmployeeInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutEmployeeInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeProfileCreateOrConnectWithoutShiftsInput = {
@@ -891,6 +1041,8 @@ export type EmployeeProfileUpdateWithoutShiftsInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutEmployeeNestedInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutEmployeeNestedInput
   qrTokensUsed?: Prisma.QrTokenUpdateManyWithoutUsedByEmployeeNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutEmployeeNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeProfileUncheckedUpdateWithoutShiftsInput = {
@@ -908,6 +1060,100 @@ export type EmployeeProfileUncheckedUpdateWithoutShiftsInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutEmployeeNestedInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutEmployeeNestedInput
   qrTokensUsed?: Prisma.QrTokenUncheckedUpdateManyWithoutUsedByEmployeeNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutEmployeeNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutEmployeeNestedInput
+}
+
+export type EmployeeProfileCreateWithoutScheduleDayStatusesInput = {
+  id?: string
+  departmentId?: string | null
+  position?: string | null
+  employmentStatus?: $Enums.EmployeeEmploymentStatus
+  trustedDeviceLimit?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutEmployeeProfileInput
+  defaultLocation?: Prisma.WorkLocationCreateNestedOneWithoutDefaultEmployeesInput
+  shifts?: Prisma.WorkShiftCreateNestedManyWithoutEmployeeInput
+  trustedDevices?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutEmployeeInput
+  timeEvents?: Prisma.TimeEventCreateNestedManyWithoutEmployeeInput
+  timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutEmployeeInput
+  adjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutEmployeeInput
+  qrTokensUsed?: Prisma.QrTokenCreateNestedManyWithoutUsedByEmployeeInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutEmployeeInput
+}
+
+export type EmployeeProfileUncheckedCreateWithoutScheduleDayStatusesInput = {
+  id?: string
+  userId: string
+  departmentId?: string | null
+  defaultLocationId?: string | null
+  position?: string | null
+  employmentStatus?: $Enums.EmployeeEmploymentStatus
+  trustedDeviceLimit?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  shifts?: Prisma.WorkShiftUncheckedCreateNestedManyWithoutEmployeeInput
+  trustedDevices?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutEmployeeInput
+  timeEvents?: Prisma.TimeEventUncheckedCreateNestedManyWithoutEmployeeInput
+  timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutEmployeeInput
+  adjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  qrTokensUsed?: Prisma.QrTokenUncheckedCreateNestedManyWithoutUsedByEmployeeInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutEmployeeInput
+}
+
+export type EmployeeProfileCreateOrConnectWithoutScheduleDayStatusesInput = {
+  where: Prisma.EmployeeProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.EmployeeProfileCreateWithoutScheduleDayStatusesInput, Prisma.EmployeeProfileUncheckedCreateWithoutScheduleDayStatusesInput>
+}
+
+export type EmployeeProfileUpsertWithoutScheduleDayStatusesInput = {
+  update: Prisma.XOR<Prisma.EmployeeProfileUpdateWithoutScheduleDayStatusesInput, Prisma.EmployeeProfileUncheckedUpdateWithoutScheduleDayStatusesInput>
+  create: Prisma.XOR<Prisma.EmployeeProfileCreateWithoutScheduleDayStatusesInput, Prisma.EmployeeProfileUncheckedCreateWithoutScheduleDayStatusesInput>
+  where?: Prisma.EmployeeProfileWhereInput
+}
+
+export type EmployeeProfileUpdateToOneWithWhereWithoutScheduleDayStatusesInput = {
+  where?: Prisma.EmployeeProfileWhereInput
+  data: Prisma.XOR<Prisma.EmployeeProfileUpdateWithoutScheduleDayStatusesInput, Prisma.EmployeeProfileUncheckedUpdateWithoutScheduleDayStatusesInput>
+}
+
+export type EmployeeProfileUpdateWithoutScheduleDayStatusesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  departmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  employmentStatus?: Prisma.EnumEmployeeEmploymentStatusFieldUpdateOperationsInput | $Enums.EmployeeEmploymentStatus
+  trustedDeviceLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutEmployeeProfileNestedInput
+  defaultLocation?: Prisma.WorkLocationUpdateOneWithoutDefaultEmployeesNestedInput
+  shifts?: Prisma.WorkShiftUpdateManyWithoutEmployeeNestedInput
+  trustedDevices?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutEmployeeNestedInput
+  timeEvents?: Prisma.TimeEventUpdateManyWithoutEmployeeNestedInput
+  timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutEmployeeNestedInput
+  adjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutEmployeeNestedInput
+  qrTokensUsed?: Prisma.QrTokenUpdateManyWithoutUsedByEmployeeNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutEmployeeNestedInput
+}
+
+export type EmployeeProfileUncheckedUpdateWithoutScheduleDayStatusesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  departmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultLocationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  employmentStatus?: Prisma.EnumEmployeeEmploymentStatusFieldUpdateOperationsInput | $Enums.EmployeeEmploymentStatus
+  trustedDeviceLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  shifts?: Prisma.WorkShiftUncheckedUpdateManyWithoutEmployeeNestedInput
+  trustedDevices?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeEvents?: Prisma.TimeEventUncheckedUpdateManyWithoutEmployeeNestedInput
+  timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutEmployeeNestedInput
+  adjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  qrTokensUsed?: Prisma.QrTokenUncheckedUpdateManyWithoutUsedByEmployeeNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeProfileCreateWithoutTrustedDevicesInput = {
@@ -925,6 +1171,8 @@ export type EmployeeProfileCreateWithoutTrustedDevicesInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutEmployeeInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutEmployeeInput
   qrTokensUsed?: Prisma.QrTokenCreateNestedManyWithoutUsedByEmployeeInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutEmployeeInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeProfileUncheckedCreateWithoutTrustedDevicesInput = {
@@ -942,6 +1190,8 @@ export type EmployeeProfileUncheckedCreateWithoutTrustedDevicesInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutEmployeeInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutEmployeeInput
   qrTokensUsed?: Prisma.QrTokenUncheckedCreateNestedManyWithoutUsedByEmployeeInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutEmployeeInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeProfileCreateOrConnectWithoutTrustedDevicesInput = {
@@ -975,6 +1225,8 @@ export type EmployeeProfileUpdateWithoutTrustedDevicesInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutEmployeeNestedInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutEmployeeNestedInput
   qrTokensUsed?: Prisma.QrTokenUpdateManyWithoutUsedByEmployeeNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutEmployeeNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeProfileUncheckedUpdateWithoutTrustedDevicesInput = {
@@ -992,6 +1244,8 @@ export type EmployeeProfileUncheckedUpdateWithoutTrustedDevicesInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutEmployeeNestedInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutEmployeeNestedInput
   qrTokensUsed?: Prisma.QrTokenUncheckedUpdateManyWithoutUsedByEmployeeNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutEmployeeNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeProfileCreateWithoutQrTokensUsedInput = {
@@ -1009,6 +1263,8 @@ export type EmployeeProfileCreateWithoutQrTokensUsedInput = {
   timeEvents?: Prisma.TimeEventCreateNestedManyWithoutEmployeeInput
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutEmployeeInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutEmployeeInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutEmployeeInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeProfileUncheckedCreateWithoutQrTokensUsedInput = {
@@ -1026,6 +1282,8 @@ export type EmployeeProfileUncheckedCreateWithoutQrTokensUsedInput = {
   timeEvents?: Prisma.TimeEventUncheckedCreateNestedManyWithoutEmployeeInput
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutEmployeeInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutEmployeeInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeProfileCreateOrConnectWithoutQrTokensUsedInput = {
@@ -1059,6 +1317,8 @@ export type EmployeeProfileUpdateWithoutQrTokensUsedInput = {
   timeEvents?: Prisma.TimeEventUpdateManyWithoutEmployeeNestedInput
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutEmployeeNestedInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutEmployeeNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutEmployeeNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeProfileUncheckedUpdateWithoutQrTokensUsedInput = {
@@ -1076,6 +1336,8 @@ export type EmployeeProfileUncheckedUpdateWithoutQrTokensUsedInput = {
   timeEvents?: Prisma.TimeEventUncheckedUpdateManyWithoutEmployeeNestedInput
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutEmployeeNestedInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutEmployeeNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeProfileCreateWithoutTimeEventsInput = {
@@ -1093,6 +1355,8 @@ export type EmployeeProfileCreateWithoutTimeEventsInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutEmployeeInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutEmployeeInput
   qrTokensUsed?: Prisma.QrTokenCreateNestedManyWithoutUsedByEmployeeInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutEmployeeInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeProfileUncheckedCreateWithoutTimeEventsInput = {
@@ -1110,6 +1374,8 @@ export type EmployeeProfileUncheckedCreateWithoutTimeEventsInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutEmployeeInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutEmployeeInput
   qrTokensUsed?: Prisma.QrTokenUncheckedCreateNestedManyWithoutUsedByEmployeeInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutEmployeeInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeProfileCreateOrConnectWithoutTimeEventsInput = {
@@ -1143,6 +1409,8 @@ export type EmployeeProfileUpdateWithoutTimeEventsInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutEmployeeNestedInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutEmployeeNestedInput
   qrTokensUsed?: Prisma.QrTokenUpdateManyWithoutUsedByEmployeeNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutEmployeeNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeProfileUncheckedUpdateWithoutTimeEventsInput = {
@@ -1160,6 +1428,8 @@ export type EmployeeProfileUncheckedUpdateWithoutTimeEventsInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutEmployeeNestedInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutEmployeeNestedInput
   qrTokensUsed?: Prisma.QrTokenUncheckedUpdateManyWithoutUsedByEmployeeNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutEmployeeNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeProfileCreateWithoutTimesheetDaysInput = {
@@ -1177,6 +1447,8 @@ export type EmployeeProfileCreateWithoutTimesheetDaysInput = {
   timeEvents?: Prisma.TimeEventCreateNestedManyWithoutEmployeeInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutEmployeeInput
   qrTokensUsed?: Prisma.QrTokenCreateNestedManyWithoutUsedByEmployeeInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutEmployeeInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeProfileUncheckedCreateWithoutTimesheetDaysInput = {
@@ -1194,6 +1466,8 @@ export type EmployeeProfileUncheckedCreateWithoutTimesheetDaysInput = {
   timeEvents?: Prisma.TimeEventUncheckedCreateNestedManyWithoutEmployeeInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutEmployeeInput
   qrTokensUsed?: Prisma.QrTokenUncheckedCreateNestedManyWithoutUsedByEmployeeInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutEmployeeInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeProfileCreateOrConnectWithoutTimesheetDaysInput = {
@@ -1227,6 +1501,8 @@ export type EmployeeProfileUpdateWithoutTimesheetDaysInput = {
   timeEvents?: Prisma.TimeEventUpdateManyWithoutEmployeeNestedInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutEmployeeNestedInput
   qrTokensUsed?: Prisma.QrTokenUpdateManyWithoutUsedByEmployeeNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutEmployeeNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeProfileUncheckedUpdateWithoutTimesheetDaysInput = {
@@ -1244,6 +1520,8 @@ export type EmployeeProfileUncheckedUpdateWithoutTimesheetDaysInput = {
   timeEvents?: Prisma.TimeEventUncheckedUpdateManyWithoutEmployeeNestedInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutEmployeeNestedInput
   qrTokensUsed?: Prisma.QrTokenUncheckedUpdateManyWithoutUsedByEmployeeNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutEmployeeNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeProfileCreateWithoutAdjustmentRequestsInput = {
@@ -1261,6 +1539,8 @@ export type EmployeeProfileCreateWithoutAdjustmentRequestsInput = {
   timeEvents?: Prisma.TimeEventCreateNestedManyWithoutEmployeeInput
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutEmployeeInput
   qrTokensUsed?: Prisma.QrTokenCreateNestedManyWithoutUsedByEmployeeInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutEmployeeInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeProfileUncheckedCreateWithoutAdjustmentRequestsInput = {
@@ -1278,6 +1558,8 @@ export type EmployeeProfileUncheckedCreateWithoutAdjustmentRequestsInput = {
   timeEvents?: Prisma.TimeEventUncheckedCreateNestedManyWithoutEmployeeInput
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutEmployeeInput
   qrTokensUsed?: Prisma.QrTokenUncheckedCreateNestedManyWithoutUsedByEmployeeInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutEmployeeInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeProfileCreateOrConnectWithoutAdjustmentRequestsInput = {
@@ -1311,6 +1593,8 @@ export type EmployeeProfileUpdateWithoutAdjustmentRequestsInput = {
   timeEvents?: Prisma.TimeEventUpdateManyWithoutEmployeeNestedInput
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutEmployeeNestedInput
   qrTokensUsed?: Prisma.QrTokenUpdateManyWithoutUsedByEmployeeNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutEmployeeNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeProfileUncheckedUpdateWithoutAdjustmentRequestsInput = {
@@ -1328,6 +1612,8 @@ export type EmployeeProfileUncheckedUpdateWithoutAdjustmentRequestsInput = {
   timeEvents?: Prisma.TimeEventUncheckedUpdateManyWithoutEmployeeNestedInput
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutEmployeeNestedInput
   qrTokensUsed?: Prisma.QrTokenUncheckedUpdateManyWithoutUsedByEmployeeNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutEmployeeNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeProfileCreateManyDefaultLocationInput = {
@@ -1356,6 +1642,8 @@ export type EmployeeProfileUpdateWithoutDefaultLocationInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutEmployeeNestedInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutEmployeeNestedInput
   qrTokensUsed?: Prisma.QrTokenUpdateManyWithoutUsedByEmployeeNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutEmployeeNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeProfileUncheckedUpdateWithoutDefaultLocationInput = {
@@ -1373,6 +1661,8 @@ export type EmployeeProfileUncheckedUpdateWithoutDefaultLocationInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutEmployeeNestedInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutEmployeeNestedInput
   qrTokensUsed?: Prisma.QrTokenUncheckedUpdateManyWithoutUsedByEmployeeNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutEmployeeNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeProfileUncheckedUpdateManyWithoutDefaultLocationInput = {
@@ -1398,6 +1688,8 @@ export type EmployeeProfileCountOutputType = {
   timesheetDays: number
   adjustmentRequests: number
   qrTokensUsed: number
+  schedulePlanCells: number
+  scheduleDayStatuses: number
 }
 
 export type EmployeeProfileCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1407,6 +1699,8 @@ export type EmployeeProfileCountOutputTypeSelect<ExtArgs extends runtime.Types.E
   timesheetDays?: boolean | EmployeeProfileCountOutputTypeCountTimesheetDaysArgs
   adjustmentRequests?: boolean | EmployeeProfileCountOutputTypeCountAdjustmentRequestsArgs
   qrTokensUsed?: boolean | EmployeeProfileCountOutputTypeCountQrTokensUsedArgs
+  schedulePlanCells?: boolean | EmployeeProfileCountOutputTypeCountSchedulePlanCellsArgs
+  scheduleDayStatuses?: boolean | EmployeeProfileCountOutputTypeCountScheduleDayStatusesArgs
 }
 
 /**
@@ -1461,6 +1755,20 @@ export type EmployeeProfileCountOutputTypeCountQrTokensUsedArgs<ExtArgs extends 
   where?: Prisma.QrTokenWhereInput
 }
 
+/**
+ * EmployeeProfileCountOutputType without action
+ */
+export type EmployeeProfileCountOutputTypeCountSchedulePlanCellsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SchedulePlanCellWhereInput
+}
+
+/**
+ * EmployeeProfileCountOutputType without action
+ */
+export type EmployeeProfileCountOutputTypeCountScheduleDayStatusesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ScheduleDayStatusWhereInput
+}
+
 
 export type EmployeeProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1480,6 +1788,8 @@ export type EmployeeProfileSelect<ExtArgs extends runtime.Types.Extensions.Inter
   timesheetDays?: boolean | Prisma.EmployeeProfile$timesheetDaysArgs<ExtArgs>
   adjustmentRequests?: boolean | Prisma.EmployeeProfile$adjustmentRequestsArgs<ExtArgs>
   qrTokensUsed?: boolean | Prisma.EmployeeProfile$qrTokensUsedArgs<ExtArgs>
+  schedulePlanCells?: boolean | Prisma.EmployeeProfile$schedulePlanCellsArgs<ExtArgs>
+  scheduleDayStatuses?: boolean | Prisma.EmployeeProfile$scheduleDayStatusesArgs<ExtArgs>
   _count?: boolean | Prisma.EmployeeProfileCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["employeeProfile"]>
 
@@ -1533,6 +1843,8 @@ export type EmployeeProfileInclude<ExtArgs extends runtime.Types.Extensions.Inte
   timesheetDays?: boolean | Prisma.EmployeeProfile$timesheetDaysArgs<ExtArgs>
   adjustmentRequests?: boolean | Prisma.EmployeeProfile$adjustmentRequestsArgs<ExtArgs>
   qrTokensUsed?: boolean | Prisma.EmployeeProfile$qrTokensUsedArgs<ExtArgs>
+  schedulePlanCells?: boolean | Prisma.EmployeeProfile$schedulePlanCellsArgs<ExtArgs>
+  scheduleDayStatuses?: boolean | Prisma.EmployeeProfile$scheduleDayStatusesArgs<ExtArgs>
   _count?: boolean | Prisma.EmployeeProfileCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type EmployeeProfileIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1555,6 +1867,8 @@ export type $EmployeeProfilePayload<ExtArgs extends runtime.Types.Extensions.Int
     timesheetDays: Prisma.$TimesheetDayPayload<ExtArgs>[]
     adjustmentRequests: Prisma.$TimeAdjustmentRequestPayload<ExtArgs>[]
     qrTokensUsed: Prisma.$QrTokenPayload<ExtArgs>[]
+    schedulePlanCells: Prisma.$SchedulePlanCellPayload<ExtArgs>[]
+    scheduleDayStatuses: Prisma.$ScheduleDayStatusPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1968,6 +2282,8 @@ export interface Prisma__EmployeeProfileClient<T, Null = never, ExtArgs extends 
   timesheetDays<T extends Prisma.EmployeeProfile$timesheetDaysArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EmployeeProfile$timesheetDaysArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TimesheetDayPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   adjustmentRequests<T extends Prisma.EmployeeProfile$adjustmentRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EmployeeProfile$adjustmentRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TimeAdjustmentRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   qrTokensUsed<T extends Prisma.EmployeeProfile$qrTokensUsedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EmployeeProfile$qrTokensUsedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QrTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  schedulePlanCells<T extends Prisma.EmployeeProfile$schedulePlanCellsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EmployeeProfile$schedulePlanCellsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SchedulePlanCellPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  scheduleDayStatuses<T extends Prisma.EmployeeProfile$scheduleDayStatusesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EmployeeProfile$scheduleDayStatusesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ScheduleDayStatusPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2567,6 +2883,54 @@ export type EmployeeProfile$qrTokensUsedArgs<ExtArgs extends runtime.Types.Exten
   take?: number
   skip?: number
   distinct?: Prisma.QrTokenScalarFieldEnum | Prisma.QrTokenScalarFieldEnum[]
+}
+
+/**
+ * EmployeeProfile.schedulePlanCells
+ */
+export type EmployeeProfile$schedulePlanCellsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SchedulePlanCell
+   */
+  select?: Prisma.SchedulePlanCellSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SchedulePlanCell
+   */
+  omit?: Prisma.SchedulePlanCellOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SchedulePlanCellInclude<ExtArgs> | null
+  where?: Prisma.SchedulePlanCellWhereInput
+  orderBy?: Prisma.SchedulePlanCellOrderByWithRelationInput | Prisma.SchedulePlanCellOrderByWithRelationInput[]
+  cursor?: Prisma.SchedulePlanCellWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SchedulePlanCellScalarFieldEnum | Prisma.SchedulePlanCellScalarFieldEnum[]
+}
+
+/**
+ * EmployeeProfile.scheduleDayStatuses
+ */
+export type EmployeeProfile$scheduleDayStatusesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ScheduleDayStatus
+   */
+  select?: Prisma.ScheduleDayStatusSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ScheduleDayStatus
+   */
+  omit?: Prisma.ScheduleDayStatusOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ScheduleDayStatusInclude<ExtArgs> | null
+  where?: Prisma.ScheduleDayStatusWhereInput
+  orderBy?: Prisma.ScheduleDayStatusOrderByWithRelationInput | Prisma.ScheduleDayStatusOrderByWithRelationInput[]
+  cursor?: Prisma.ScheduleDayStatusWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ScheduleDayStatusScalarFieldEnum | Prisma.ScheduleDayStatusScalarFieldEnum[]
 }
 
 /**

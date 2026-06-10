@@ -1,6 +1,7 @@
 import type {
   EmployeeDeviceStatus,
   Prisma,
+  ScheduleDayStatusType,
   PrismaClient,
   TimeEventStatus,
   TimeEventType,
@@ -225,6 +226,89 @@ export async function setWorkLocationActive(id: string, isActive: boolean, actor
       after: location
     }, tx);
     return location;
+  });
+}
+
+export async function createShiftTemplate(data: {
+  locationId: string;
+  name: string;
+  code: string;
+  startsAt: string;
+  endsAt: string;
+  breakMinutes: number;
+  color?: string;
+  isActive: boolean;
+  sortOrder: number;
+}, actorUserId: string) {
+  try {
+    return await prisma.$transaction(async (tx) => {
+      const location = await tx.workLocation.findUnique({ where: { id: data.locationId } });
+      if (!location) throw new TimeClockServiceError("Рабочая точка не найдена");
+      const template = await tx.shiftTemplate.create({
+        data: {
+          ...data,
+          color: data.color || null,
+          code: data.code.toLowerCase()
+        }
+      });
+      await writeAuditLog({
+        entityType: "SHIFT_TEMPLATE",
+        entityId: template.id,
+        action: "shift_template.created",
+        userId: actorUserId,
+        after: template
+      }, tx);
+      return template;
+    });
+  } catch (error) {
+    if (isUniqueConstraint(error)) throw new TimeClockServiceError("Смена с таким кодом уже существует для этой точки");
+    throw error;
+  }
+}
+
+export async function updateShiftTemplate(id: string, data: Omit<Parameters<typeof createShiftTemplate>[0], "locationId">, actorUserId: string) {
+  try {
+    return await prisma.$transaction(async (tx) => {
+      const before = await tx.shiftTemplate.findUnique({ where: { id } });
+      if (!before) throw new TimeClockServiceError("Шаблон смены не найден");
+      const template = await tx.shiftTemplate.update({
+        where: { id },
+        data: {
+          ...data,
+          color: data.color || null,
+          code: data.code.toLowerCase()
+        }
+      });
+      await writeAuditLog({
+        entityType: "SHIFT_TEMPLATE",
+        entityId: template.id,
+        action: "shift_template.updated",
+        userId: actorUserId,
+        before,
+        after: template
+      }, tx);
+      return template;
+    });
+  } catch (error) {
+    if (isUniqueConstraint(error)) throw new TimeClockServiceError("Смена с таким кодом уже существует для этой точки");
+    throw error;
+  }
+}
+
+export async function setShiftTemplateActive(id: string, isActive: boolean, actorUserId: string) {
+  return prisma.$transaction(async (tx) => {
+    const before = await tx.shiftTemplate.findUnique({ where: { id } });
+    if (!before) throw new TimeClockServiceError("Шаблон смены не найден");
+    const template = await tx.shiftTemplate.update({ where: { id }, data: { isActive } });
+    await writeAuditLog({
+      entityType: "SHIFT_TEMPLATE",
+      entityId: template.id,
+      action: isActive ? "shift_template.activated" : "shift_template.deactivated",
+      userId: actorUserId,
+      before,
+      after: template
+    }, tx);
+    return template;
   });
 }
 
@@ -745,6 +829,9 @@ export async function recalculateTimesheetDay(employeeId: string, date: string, 
     where: { employeeId, date, status: { not: "CANCELLED" } },
     orderBy: { startsAt: "asc" }
   });
+  const scheduleDayStatus = await client.scheduleDayStatus.findUnique({
+    where: { employeeId_date: { employeeId, date } }
+  });
   const events = await client.timeEvent.findMany({
     where: {
       employeeId,
@@ -778,17 +865,19 @@ export async function recalculateTimesheetDay(employeeId: string, date: string, 
     hasPendingEvents,
     hasManual,
     lateMinutes,
-    earlyLeaveMinutes
+    earlyLeaveMinutes,
+    scheduleDayStatus: shift ? null : scheduleDayStatus
   });
 
   return client.timesheetDay.upsert({
     where: { employeeId_date: { employeeId, date } },
     update: {
       userId: employee.userId,
-      shiftId: shift?.id,
-      locationId: shift?.locationId,
-      plannedStart: shift?.startsAt,
-      plannedEnd: shift?.endsAt,
+      shiftId: shift?.id ?? null,
+      scheduleDayStatusId: shift ? null : scheduleDayStatus?.id ?? null,
+      locationId: shift?.locationId ?? scheduleDayStatus?.locationId ?? null,
+      plannedStart: shift?.startsAt ?? null,
+      plannedEnd: shift?.endsAt ?? null,
       actualCheckIn,
       actualCheckOut,
       workedMinutes,
@@ -802,10 +891,11 @@ export async function recalculateTimesheetDay(employeeId: string, date: string, 
       employeeId,
       userId: employee.userId,
       date,
-      shiftId: shift?.id,
-      locationId: shift?.locationId,
-      plannedStart: shift?.startsAt,
-      plannedEnd: shift?.endsAt,
+      shiftId: shift?.id ?? null,
+      scheduleDayStatusId: shift ? null : scheduleDayStatus?.id ?? null,
+      locationId: shift?.locationId ?? scheduleDayStatus?.locationId ?? null,
+      plannedStart: shift?.startsAt ?? null,
+      plannedEnd: shift?.endsAt ?? null,
       actualCheckIn,
       actualCheckOut,
       workedMinutes,
@@ -825,7 +915,8 @@ function resolveTimesheetStatus({
   hasPendingEvents,
   hasManual,
   lateMinutes,
-  earlyLeaveMinutes
+  earlyLeaveMinutes,
+  scheduleDayStatus
 }: {
   shift: { endsAt: Date } | null;
   actualCheckIn?: Date | null;
@@ -834,9 +925,12 @@ function resolveTimesheetStatus({
   hasManual: boolean;
   lateMinutes: number;
   earlyLeaveMinutes: number;
+  scheduleDayStatus?: { status: ScheduleDayStatusType } | null;
 }): TimesheetDayStatus {
   if (hasPendingEvents) return "PENDING_REVIEW";
   if (hasManual) return "MANUAL_ADJUSTED";
+  if (scheduleDayStatus && !actualCheckIn && !actualCheckOut) return scheduleDayStatusToTimesheetStatus(scheduleDayStatus.status);
+  if (scheduleDayStatus && (actualCheckIn || actualCheckOut)) return "PENDING_REVIEW";
   if (!shift) return actualCheckIn || actualCheckOut ? "PENDING_REVIEW" : "ABSENT";
   if (!actualCheckIn && !actualCheckOut) return new Date() > shift.endsAt ? "ABSENT" : "SCHEDULED";
   if (!actualCheckIn) return "MISSING_CHECK_IN";
@@ -845,6 +939,13 @@ function resolveTimesheetStatus({
   if (lateMinutes > 0) return "LATE";
   if (earlyLeaveMinutes > 0) return "EARLY_LEAVE";
   return "OK";
+}
+
+function scheduleDayStatusToTimesheetStatus(status: ScheduleDayStatusType): TimesheetDayStatus {
+  if (status === "DAY_OFF") return "DAY_OFF";
+  if (status === "VACATION") return "VACATION";
+  if (status === "SICK_LEAVE") return "SICK_LEAVE";
+  return "BUSINESS_TRIP";
 }
 
 export async function approveTimeEvent(id: string, actorUserId: string, comment?: string, overrideOccurredAt?: string) {

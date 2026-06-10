@@ -352,6 +352,13 @@ export type UserWhereInput = {
   timesheetDays?: Prisma.TimesheetDayListRelationFilter
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestListRelationFilter
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestListRelationFilter
+  schedulePlansCreated?: Prisma.SchedulePlanListRelationFilter
+  schedulePlansSubmitted?: Prisma.SchedulePlanListRelationFilter
+  schedulePlansApproved?: Prisma.SchedulePlanListRelationFilter
+  schedulePlansReturned?: Prisma.SchedulePlanListRelationFilter
+  schedulePlanCells?: Prisma.SchedulePlanCellListRelationFilter
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogListRelationFilter
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusListRelationFilter
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceListRelationFilter
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceListRelationFilter
   deactivatedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
@@ -419,6 +426,13 @@ export type UserOrderByWithRelationInput = {
   timesheetDays?: Prisma.TimesheetDayOrderByRelationAggregateInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestOrderByRelationAggregateInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestOrderByRelationAggregateInput
+  schedulePlansCreated?: Prisma.SchedulePlanOrderByRelationAggregateInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanOrderByRelationAggregateInput
+  schedulePlansApproved?: Prisma.SchedulePlanOrderByRelationAggregateInput
+  schedulePlansReturned?: Prisma.SchedulePlanOrderByRelationAggregateInput
+  schedulePlanCells?: Prisma.SchedulePlanCellOrderByRelationAggregateInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogOrderByRelationAggregateInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusOrderByRelationAggregateInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceOrderByRelationAggregateInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceOrderByRelationAggregateInput
   deactivatedBy?: Prisma.UserOrderByWithRelationInput
@@ -489,6 +503,13 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   timesheetDays?: Prisma.TimesheetDayListRelationFilter
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestListRelationFilter
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestListRelationFilter
+  schedulePlansCreated?: Prisma.SchedulePlanListRelationFilter
+  schedulePlansSubmitted?: Prisma.SchedulePlanListRelationFilter
+  schedulePlansApproved?: Prisma.SchedulePlanListRelationFilter
+  schedulePlansReturned?: Prisma.SchedulePlanListRelationFilter
+  schedulePlanCells?: Prisma.SchedulePlanCellListRelationFilter
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogListRelationFilter
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusListRelationFilter
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceListRelationFilter
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceListRelationFilter
   deactivatedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
@@ -603,6 +624,13 @@ export type UserCreateInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -670,6 +698,13 @@ export type UserUncheckedCreateInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -735,6 +770,13 @@ export type UserUpdateInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -802,6 +844,13 @@ export type UserUncheckedUpdateInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -1487,6 +1536,96 @@ export type UserUpdateOneRequiredWithoutEmployeeProfileNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutEmployeeProfileInput, Prisma.UserUpdateWithoutEmployeeProfileInput>, Prisma.UserUncheckedUpdateWithoutEmployeeProfileInput>
 }
 
+export type UserCreateNestedOneWithoutSchedulePlansCreatedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSchedulePlansCreatedInput, Prisma.UserUncheckedCreateWithoutSchedulePlansCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSchedulePlansCreatedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutSchedulePlansSubmittedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSchedulePlansSubmittedInput, Prisma.UserUncheckedCreateWithoutSchedulePlansSubmittedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSchedulePlansSubmittedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutSchedulePlansApprovedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSchedulePlansApprovedInput, Prisma.UserUncheckedCreateWithoutSchedulePlansApprovedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSchedulePlansApprovedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutSchedulePlansReturnedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSchedulePlansReturnedInput, Prisma.UserUncheckedCreateWithoutSchedulePlansReturnedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSchedulePlansReturnedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutSchedulePlansCreatedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSchedulePlansCreatedInput, Prisma.UserUncheckedCreateWithoutSchedulePlansCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSchedulePlansCreatedInput
+  upsert?: Prisma.UserUpsertWithoutSchedulePlansCreatedInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSchedulePlansCreatedInput, Prisma.UserUpdateWithoutSchedulePlansCreatedInput>, Prisma.UserUncheckedUpdateWithoutSchedulePlansCreatedInput>
+}
+
+export type UserUpdateOneWithoutSchedulePlansSubmittedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSchedulePlansSubmittedInput, Prisma.UserUncheckedCreateWithoutSchedulePlansSubmittedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSchedulePlansSubmittedInput
+  upsert?: Prisma.UserUpsertWithoutSchedulePlansSubmittedInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSchedulePlansSubmittedInput, Prisma.UserUpdateWithoutSchedulePlansSubmittedInput>, Prisma.UserUncheckedUpdateWithoutSchedulePlansSubmittedInput>
+}
+
+export type UserUpdateOneWithoutSchedulePlansApprovedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSchedulePlansApprovedInput, Prisma.UserUncheckedCreateWithoutSchedulePlansApprovedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSchedulePlansApprovedInput
+  upsert?: Prisma.UserUpsertWithoutSchedulePlansApprovedInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSchedulePlansApprovedInput, Prisma.UserUpdateWithoutSchedulePlansApprovedInput>, Prisma.UserUncheckedUpdateWithoutSchedulePlansApprovedInput>
+}
+
+export type UserUpdateOneWithoutSchedulePlansReturnedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSchedulePlansReturnedInput, Prisma.UserUncheckedCreateWithoutSchedulePlansReturnedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSchedulePlansReturnedInput
+  upsert?: Prisma.UserUpsertWithoutSchedulePlansReturnedInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSchedulePlansReturnedInput, Prisma.UserUpdateWithoutSchedulePlansReturnedInput>, Prisma.UserUncheckedUpdateWithoutSchedulePlansReturnedInput>
+}
+
+export type UserCreateNestedOneWithoutSchedulePlanCellsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSchedulePlanCellsInput, Prisma.UserUncheckedCreateWithoutSchedulePlanCellsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSchedulePlanCellsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutSchedulePlanCellsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSchedulePlanCellsInput, Prisma.UserUncheckedCreateWithoutSchedulePlanCellsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSchedulePlanCellsInput
+  upsert?: Prisma.UserUpsertWithoutSchedulePlanCellsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSchedulePlanCellsInput, Prisma.UserUpdateWithoutSchedulePlanCellsInput>, Prisma.UserUncheckedUpdateWithoutSchedulePlanCellsInput>
+}
+
+export type UserCreateNestedOneWithoutSchedulePlanApprovalLogsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSchedulePlanApprovalLogsInput, Prisma.UserUncheckedCreateWithoutSchedulePlanApprovalLogsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSchedulePlanApprovalLogsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutSchedulePlanApprovalLogsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSchedulePlanApprovalLogsInput, Prisma.UserUncheckedCreateWithoutSchedulePlanApprovalLogsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSchedulePlanApprovalLogsInput
+  upsert?: Prisma.UserUpsertWithoutSchedulePlanApprovalLogsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSchedulePlanApprovalLogsInput, Prisma.UserUpdateWithoutSchedulePlanApprovalLogsInput>, Prisma.UserUncheckedUpdateWithoutSchedulePlanApprovalLogsInput>
+}
+
 export type UserCreateNestedOneWithoutWorkShiftsCreatedInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutWorkShiftsCreatedInput, Prisma.UserUncheckedCreateWithoutWorkShiftsCreatedInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutWorkShiftsCreatedInput
@@ -1499,6 +1638,20 @@ export type UserUpdateOneRequiredWithoutWorkShiftsCreatedNestedInput = {
   upsert?: Prisma.UserUpsertWithoutWorkShiftsCreatedInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutWorkShiftsCreatedInput, Prisma.UserUpdateWithoutWorkShiftsCreatedInput>, Prisma.UserUncheckedUpdateWithoutWorkShiftsCreatedInput>
+}
+
+export type UserCreateNestedOneWithoutScheduleDayStatusesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutScheduleDayStatusesInput, Prisma.UserUncheckedCreateWithoutScheduleDayStatusesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutScheduleDayStatusesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutScheduleDayStatusesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutScheduleDayStatusesInput, Prisma.UserUncheckedCreateWithoutScheduleDayStatusesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutScheduleDayStatusesInput
+  upsert?: Prisma.UserUpsertWithoutScheduleDayStatusesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutScheduleDayStatusesInput, Prisma.UserUpdateWithoutScheduleDayStatusesInput>, Prisma.UserUncheckedUpdateWithoutScheduleDayStatusesInput>
 }
 
 export type UserCreateNestedOneWithoutEmployeeDevicesApprovedInput = {
@@ -1766,6 +1919,13 @@ export type UserCreateWithoutDeactivatedUsersInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -1832,6 +1992,13 @@ export type UserUncheckedCreateWithoutDeactivatedUsersInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
@@ -1901,6 +2068,13 @@ export type UserCreateWithoutDeactivatedByInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
@@ -1966,6 +2140,13 @@ export type UserUncheckedCreateWithoutDeactivatedByInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -2052,6 +2233,13 @@ export type UserUpdateWithoutDeactivatedUsersInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -2118,6 +2306,13 @@ export type UserUncheckedUpdateWithoutDeactivatedUsersInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -2220,6 +2415,13 @@ export type UserCreateWithoutClientsResponsibleInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -2286,6 +2488,13 @@ export type UserUncheckedCreateWithoutClientsResponsibleInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -2355,6 +2564,13 @@ export type UserCreateWithoutClientsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -2421,6 +2637,13 @@ export type UserUncheckedCreateWithoutClientsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -2501,6 +2724,13 @@ export type UserUpdateWithoutClientsResponsibleInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -2567,6 +2797,13 @@ export type UserUncheckedUpdateWithoutClientsResponsibleInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -2642,6 +2879,13 @@ export type UserUpdateWithoutClientsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -2708,6 +2952,13 @@ export type UserUncheckedUpdateWithoutClientsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -2772,6 +3023,13 @@ export type UserCreateWithoutDesignersResponsibleInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -2838,6 +3096,13 @@ export type UserUncheckedCreateWithoutDesignersResponsibleInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -2907,6 +3172,13 @@ export type UserCreateWithoutDesignersCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -2973,6 +3245,13 @@ export type UserUncheckedCreateWithoutDesignersCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -3053,6 +3332,13 @@ export type UserUpdateWithoutDesignersResponsibleInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -3119,6 +3405,13 @@ export type UserUncheckedUpdateWithoutDesignersResponsibleInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -3194,6 +3487,13 @@ export type UserUpdateWithoutDesignersCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -3260,6 +3560,13 @@ export type UserUncheckedUpdateWithoutDesignersCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -3324,6 +3631,13 @@ export type UserCreateWithoutObjectsResponsibleInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -3390,6 +3704,13 @@ export type UserUncheckedCreateWithoutObjectsResponsibleInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -3459,6 +3780,13 @@ export type UserCreateWithoutObjectsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -3525,6 +3853,13 @@ export type UserUncheckedCreateWithoutObjectsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -3605,6 +3940,13 @@ export type UserUpdateWithoutObjectsResponsibleInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -3671,6 +4013,13 @@ export type UserUncheckedUpdateWithoutObjectsResponsibleInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -3746,6 +4095,13 @@ export type UserUpdateWithoutObjectsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -3812,6 +4168,13 @@ export type UserUncheckedUpdateWithoutObjectsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -3876,6 +4239,13 @@ export type UserCreateWithoutObjectParticipantsResponsibleInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -3942,6 +4312,13 @@ export type UserUncheckedCreateWithoutObjectParticipantsResponsibleInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -4011,6 +4388,13 @@ export type UserCreateWithoutObjectParticipantsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -4077,6 +4461,13 @@ export type UserUncheckedCreateWithoutObjectParticipantsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -4157,6 +4548,13 @@ export type UserUpdateWithoutObjectParticipantsResponsibleInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -4223,6 +4621,13 @@ export type UserUncheckedUpdateWithoutObjectParticipantsResponsibleInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -4298,6 +4703,13 @@ export type UserUpdateWithoutObjectParticipantsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -4364,6 +4776,13 @@ export type UserUncheckedUpdateWithoutObjectParticipantsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -4428,6 +4847,13 @@ export type UserCreateWithoutDealsResponsibleInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -4494,6 +4920,13 @@ export type UserUncheckedCreateWithoutDealsResponsibleInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -4563,6 +4996,13 @@ export type UserCreateWithoutDealsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -4629,6 +5069,13 @@ export type UserUncheckedCreateWithoutDealsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -4709,6 +5156,13 @@ export type UserUpdateWithoutDealsResponsibleInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -4775,6 +5229,13 @@ export type UserUncheckedUpdateWithoutDealsResponsibleInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -4850,6 +5311,13 @@ export type UserUpdateWithoutDealsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -4916,6 +5384,13 @@ export type UserUncheckedUpdateWithoutDealsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -4980,6 +5455,13 @@ export type UserCreateWithoutProposalsResponsibleInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -5046,6 +5528,13 @@ export type UserUncheckedCreateWithoutProposalsResponsibleInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -5115,6 +5604,13 @@ export type UserCreateWithoutProposalsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -5181,6 +5677,13 @@ export type UserUncheckedCreateWithoutProposalsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -5250,6 +5753,13 @@ export type UserCreateWithoutProposalsUploadedInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -5316,6 +5826,13 @@ export type UserUncheckedCreateWithoutProposalsUploadedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -5396,6 +5913,13 @@ export type UserUpdateWithoutProposalsResponsibleInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -5462,6 +5986,13 @@ export type UserUncheckedUpdateWithoutProposalsResponsibleInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -5537,6 +6068,13 @@ export type UserUpdateWithoutProposalsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -5603,6 +6141,13 @@ export type UserUncheckedUpdateWithoutProposalsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -5678,6 +6223,13 @@ export type UserUpdateWithoutProposalsUploadedInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -5744,6 +6296,13 @@ export type UserUncheckedUpdateWithoutProposalsUploadedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -5808,6 +6367,13 @@ export type UserCreateWithoutTasksResponsibleInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -5874,6 +6440,13 @@ export type UserUncheckedCreateWithoutTasksResponsibleInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -5943,6 +6516,13 @@ export type UserCreateWithoutTasksCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -6009,6 +6589,13 @@ export type UserUncheckedCreateWithoutTasksCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -6089,6 +6676,13 @@ export type UserUpdateWithoutTasksResponsibleInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -6155,6 +6749,13 @@ export type UserUncheckedUpdateWithoutTasksResponsibleInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -6230,6 +6831,13 @@ export type UserUpdateWithoutTasksCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -6296,6 +6904,13 @@ export type UserUncheckedUpdateWithoutTasksCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -6360,6 +6975,13 @@ export type UserCreateWithoutAuditLogsInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -6426,6 +7048,13 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -6506,6 +7135,13 @@ export type UserUpdateWithoutAuditLogsInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -6572,6 +7208,13 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -6636,6 +7279,13 @@ export type UserCreateWithoutCrmViolationsResponsibleInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -6702,6 +7352,13 @@ export type UserUncheckedCreateWithoutCrmViolationsResponsibleInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -6771,6 +7428,13 @@ export type UserCreateWithoutCrmViolationsResolvedInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -6837,6 +7501,13 @@ export type UserUncheckedCreateWithoutCrmViolationsResolvedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -6917,6 +7588,13 @@ export type UserUpdateWithoutCrmViolationsResponsibleInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -6983,6 +7661,13 @@ export type UserUncheckedUpdateWithoutCrmViolationsResponsibleInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -7058,6 +7743,13 @@ export type UserUpdateWithoutCrmViolationsResolvedInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -7124,6 +7816,13 @@ export type UserUncheckedUpdateWithoutCrmViolationsResolvedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -7188,6 +7887,13 @@ export type UserCreateWithoutBonusAgreementsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -7254,6 +7960,13 @@ export type UserUncheckedCreateWithoutBonusAgreementsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -7323,6 +8036,13 @@ export type UserCreateWithoutBonusAgreementsApprovedInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -7389,6 +8109,13 @@ export type UserUncheckedCreateWithoutBonusAgreementsApprovedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -7469,6 +8196,13 @@ export type UserUpdateWithoutBonusAgreementsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -7535,6 +8269,13 @@ export type UserUncheckedUpdateWithoutBonusAgreementsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -7610,6 +8351,13 @@ export type UserUpdateWithoutBonusAgreementsApprovedInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -7676,6 +8424,13 @@ export type UserUncheckedUpdateWithoutBonusAgreementsApprovedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -7740,6 +8495,13 @@ export type UserCreateWithoutPaymentsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -7806,6 +8568,13 @@ export type UserUncheckedCreateWithoutPaymentsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -7875,6 +8644,13 @@ export type UserCreateWithoutPaymentsConfirmedInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -7941,6 +8717,13 @@ export type UserUncheckedCreateWithoutPaymentsConfirmedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -8021,6 +8804,13 @@ export type UserUpdateWithoutPaymentsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -8087,6 +8877,13 @@ export type UserUncheckedUpdateWithoutPaymentsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -8162,6 +8959,13 @@ export type UserUpdateWithoutPaymentsConfirmedInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -8228,6 +9032,13 @@ export type UserUncheckedUpdateWithoutPaymentsConfirmedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -8292,6 +9103,13 @@ export type UserCreateWithoutBonusAccrualsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -8358,6 +9176,13 @@ export type UserUncheckedCreateWithoutBonusAccrualsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -8427,6 +9252,13 @@ export type UserCreateWithoutBonusAccrualsApprovedInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -8493,6 +9325,13 @@ export type UserUncheckedCreateWithoutBonusAccrualsApprovedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -8573,6 +9412,13 @@ export type UserUpdateWithoutBonusAccrualsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -8639,6 +9485,13 @@ export type UserUncheckedUpdateWithoutBonusAccrualsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -8714,6 +9567,13 @@ export type UserUpdateWithoutBonusAccrualsApprovedInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -8780,6 +9640,13 @@ export type UserUncheckedUpdateWithoutBonusAccrualsApprovedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -8844,6 +9711,13 @@ export type UserCreateWithoutBonusPayoutsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -8910,6 +9784,13 @@ export type UserUncheckedCreateWithoutBonusPayoutsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -8979,6 +9860,13 @@ export type UserCreateWithoutBonusPayoutsApprovedInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -9045,6 +9933,13 @@ export type UserUncheckedCreateWithoutBonusPayoutsApprovedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -9114,6 +10009,13 @@ export type UserCreateWithoutBonusPayoutsPaidInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -9180,6 +10082,13 @@ export type UserUncheckedCreateWithoutBonusPayoutsPaidInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -9260,6 +10169,13 @@ export type UserUpdateWithoutBonusPayoutsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -9326,6 +10242,13 @@ export type UserUncheckedUpdateWithoutBonusPayoutsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -9401,6 +10324,13 @@ export type UserUpdateWithoutBonusPayoutsApprovedInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -9467,6 +10397,13 @@ export type UserUncheckedUpdateWithoutBonusPayoutsApprovedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -9542,6 +10479,13 @@ export type UserUpdateWithoutBonusPayoutsPaidInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -9608,6 +10552,13 @@ export type UserUncheckedUpdateWithoutBonusPayoutsPaidInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -9672,6 +10623,13 @@ export type UserCreateWithoutBonusAdjustmentsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -9738,6 +10696,13 @@ export type UserUncheckedCreateWithoutBonusAdjustmentsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -9807,6 +10772,13 @@ export type UserCreateWithoutBonusAdjustmentsApprovedInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -9873,6 +10845,13 @@ export type UserUncheckedCreateWithoutBonusAdjustmentsApprovedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -9953,6 +10932,13 @@ export type UserUpdateWithoutBonusAdjustmentsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -10019,6 +11005,13 @@ export type UserUncheckedUpdateWithoutBonusAdjustmentsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -10094,6 +11087,13 @@ export type UserUpdateWithoutBonusAdjustmentsApprovedInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -10160,6 +11160,13 @@ export type UserUncheckedUpdateWithoutBonusAdjustmentsApprovedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -10224,6 +11231,13 @@ export type UserCreateWithoutEmployeeProfileInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -10290,6 +11304,13 @@ export type UserUncheckedCreateWithoutEmployeeProfileInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -10370,6 +11391,13 @@ export type UserUpdateWithoutEmployeeProfileInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -10436,6 +11464,1837 @@ export type UserUncheckedUpdateWithoutEmployeeProfileInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
+  employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
+  employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
+}
+
+export type UserCreateWithoutSchedulePlansCreatedInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash?: string | null
+  authProviderId?: string | null
+  role: $Enums.UserRole
+  isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
+  clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
+  designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
+  designersCreated?: Prisma.DesignerCreateNestedManyWithoutCreatedByInput
+  objectsResponsible?: Prisma.ProjectObjectCreateNestedManyWithoutResponsibleInput
+  objectsCreated?: Prisma.ProjectObjectCreateNestedManyWithoutCreatedByInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantCreateNestedManyWithoutResponsibleInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantCreateNestedManyWithoutCreatedByInput
+  dealsResponsible?: Prisma.DealCreateNestedManyWithoutResponsibleInput
+  dealsCreated?: Prisma.DealCreateNestedManyWithoutCreatedByInput
+  proposalsResponsible?: Prisma.CommercialProposalCreateNestedManyWithoutResponsibleInput
+  proposalsCreated?: Prisma.CommercialProposalCreateNestedManyWithoutCreatedByInput
+  proposalsUploaded?: Prisma.CommercialProposalCreateNestedManyWithoutUploadedByInput
+  tasksResponsible?: Prisma.TaskActivityCreateNestedManyWithoutResponsibleInput
+  tasksCreated?: Prisma.TaskActivityCreateNestedManyWithoutCreatedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationCreateNestedManyWithoutResolvedByInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementCreateNestedManyWithoutCreatedByInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementCreateNestedManyWithoutApprovedByInput
+  paymentsCreated?: Prisma.PaymentCreateNestedManyWithoutCreatedByInput
+  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutConfirmedByInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualCreateNestedManyWithoutCreatedByInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutCreateNestedManyWithoutCreatedByInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutCreateNestedManyWithoutPaidByInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
+  securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  employeeProfile?: Prisma.EmployeeProfileCreateNestedOneWithoutUserInput
+  workShiftsCreated?: Prisma.WorkShiftCreateNestedManyWithoutCreatedByInput
+  locationDisplayDevicesApproved?: Prisma.LocationDisplayDeviceCreateNestedManyWithoutApprovedByInput
+  locationDisplayDevicesRevoked?: Prisma.LocationDisplayDeviceCreateNestedManyWithoutRevokedByInput
+  displaySetupTokensCreated?: Prisma.LocationDisplaySetupTokenCreateNestedManyWithoutCreatedByInput
+  timeEvents?: Prisma.TimeEventCreateNestedManyWithoutUserInput
+  timeEventsReviewed?: Prisma.TimeEventCreateNestedManyWithoutReviewedByInput
+  timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
+  timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
+  timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
+  employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
+  employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
+}
+
+export type UserUncheckedCreateWithoutSchedulePlansCreatedInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash?: string | null
+  authProviderId?: string | null
+  role: $Enums.UserRole
+  isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
+  clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
+  designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
+  designersCreated?: Prisma.DesignerUncheckedCreateNestedManyWithoutCreatedByInput
+  objectsResponsible?: Prisma.ProjectObjectUncheckedCreateNestedManyWithoutResponsibleInput
+  objectsCreated?: Prisma.ProjectObjectUncheckedCreateNestedManyWithoutCreatedByInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUncheckedCreateNestedManyWithoutResponsibleInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUncheckedCreateNestedManyWithoutCreatedByInput
+  dealsResponsible?: Prisma.DealUncheckedCreateNestedManyWithoutResponsibleInput
+  dealsCreated?: Prisma.DealUncheckedCreateNestedManyWithoutCreatedByInput
+  proposalsResponsible?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutResponsibleInput
+  proposalsCreated?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutCreatedByInput
+  proposalsUploaded?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutUploadedByInput
+  tasksResponsible?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutResponsibleInput
+  tasksCreated?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutCreatedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResolvedByInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementUncheckedCreateNestedManyWithoutApprovedByInput
+  paymentsCreated?: Prisma.PaymentUncheckedCreateNestedManyWithoutCreatedByInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutConfirmedByInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualUncheckedCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutUncheckedCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUncheckedCreateNestedManyWithoutPaidByInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+  securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  employeeProfile?: Prisma.EmployeeProfileUncheckedCreateNestedOneWithoutUserInput
+  workShiftsCreated?: Prisma.WorkShiftUncheckedCreateNestedManyWithoutCreatedByInput
+  locationDisplayDevicesApproved?: Prisma.LocationDisplayDeviceUncheckedCreateNestedManyWithoutApprovedByInput
+  locationDisplayDevicesRevoked?: Prisma.LocationDisplayDeviceUncheckedCreateNestedManyWithoutRevokedByInput
+  displaySetupTokensCreated?: Prisma.LocationDisplaySetupTokenUncheckedCreateNestedManyWithoutCreatedByInput
+  timeEvents?: Prisma.TimeEventUncheckedCreateNestedManyWithoutUserInput
+  timeEventsReviewed?: Prisma.TimeEventUncheckedCreateNestedManyWithoutReviewedByInput
+  timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
+  timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
+  timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
+  employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
+  employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
+}
+
+export type UserCreateOrConnectWithoutSchedulePlansCreatedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSchedulePlansCreatedInput, Prisma.UserUncheckedCreateWithoutSchedulePlansCreatedInput>
+}
+
+export type UserCreateWithoutSchedulePlansSubmittedInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash?: string | null
+  authProviderId?: string | null
+  role: $Enums.UserRole
+  isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
+  clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
+  designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
+  designersCreated?: Prisma.DesignerCreateNestedManyWithoutCreatedByInput
+  objectsResponsible?: Prisma.ProjectObjectCreateNestedManyWithoutResponsibleInput
+  objectsCreated?: Prisma.ProjectObjectCreateNestedManyWithoutCreatedByInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantCreateNestedManyWithoutResponsibleInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantCreateNestedManyWithoutCreatedByInput
+  dealsResponsible?: Prisma.DealCreateNestedManyWithoutResponsibleInput
+  dealsCreated?: Prisma.DealCreateNestedManyWithoutCreatedByInput
+  proposalsResponsible?: Prisma.CommercialProposalCreateNestedManyWithoutResponsibleInput
+  proposalsCreated?: Prisma.CommercialProposalCreateNestedManyWithoutCreatedByInput
+  proposalsUploaded?: Prisma.CommercialProposalCreateNestedManyWithoutUploadedByInput
+  tasksResponsible?: Prisma.TaskActivityCreateNestedManyWithoutResponsibleInput
+  tasksCreated?: Prisma.TaskActivityCreateNestedManyWithoutCreatedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationCreateNestedManyWithoutResolvedByInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementCreateNestedManyWithoutCreatedByInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementCreateNestedManyWithoutApprovedByInput
+  paymentsCreated?: Prisma.PaymentCreateNestedManyWithoutCreatedByInput
+  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutConfirmedByInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualCreateNestedManyWithoutCreatedByInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutCreateNestedManyWithoutCreatedByInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutCreateNestedManyWithoutPaidByInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
+  securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  employeeProfile?: Prisma.EmployeeProfileCreateNestedOneWithoutUserInput
+  workShiftsCreated?: Prisma.WorkShiftCreateNestedManyWithoutCreatedByInput
+  locationDisplayDevicesApproved?: Prisma.LocationDisplayDeviceCreateNestedManyWithoutApprovedByInput
+  locationDisplayDevicesRevoked?: Prisma.LocationDisplayDeviceCreateNestedManyWithoutRevokedByInput
+  displaySetupTokensCreated?: Prisma.LocationDisplaySetupTokenCreateNestedManyWithoutCreatedByInput
+  timeEvents?: Prisma.TimeEventCreateNestedManyWithoutUserInput
+  timeEventsReviewed?: Prisma.TimeEventCreateNestedManyWithoutReviewedByInput
+  timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
+  timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
+  timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
+  employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
+  employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
+}
+
+export type UserUncheckedCreateWithoutSchedulePlansSubmittedInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash?: string | null
+  authProviderId?: string | null
+  role: $Enums.UserRole
+  isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
+  clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
+  designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
+  designersCreated?: Prisma.DesignerUncheckedCreateNestedManyWithoutCreatedByInput
+  objectsResponsible?: Prisma.ProjectObjectUncheckedCreateNestedManyWithoutResponsibleInput
+  objectsCreated?: Prisma.ProjectObjectUncheckedCreateNestedManyWithoutCreatedByInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUncheckedCreateNestedManyWithoutResponsibleInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUncheckedCreateNestedManyWithoutCreatedByInput
+  dealsResponsible?: Prisma.DealUncheckedCreateNestedManyWithoutResponsibleInput
+  dealsCreated?: Prisma.DealUncheckedCreateNestedManyWithoutCreatedByInput
+  proposalsResponsible?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutResponsibleInput
+  proposalsCreated?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutCreatedByInput
+  proposalsUploaded?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutUploadedByInput
+  tasksResponsible?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutResponsibleInput
+  tasksCreated?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutCreatedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResolvedByInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementUncheckedCreateNestedManyWithoutApprovedByInput
+  paymentsCreated?: Prisma.PaymentUncheckedCreateNestedManyWithoutCreatedByInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutConfirmedByInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualUncheckedCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutUncheckedCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUncheckedCreateNestedManyWithoutPaidByInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+  securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  employeeProfile?: Prisma.EmployeeProfileUncheckedCreateNestedOneWithoutUserInput
+  workShiftsCreated?: Prisma.WorkShiftUncheckedCreateNestedManyWithoutCreatedByInput
+  locationDisplayDevicesApproved?: Prisma.LocationDisplayDeviceUncheckedCreateNestedManyWithoutApprovedByInput
+  locationDisplayDevicesRevoked?: Prisma.LocationDisplayDeviceUncheckedCreateNestedManyWithoutRevokedByInput
+  displaySetupTokensCreated?: Prisma.LocationDisplaySetupTokenUncheckedCreateNestedManyWithoutCreatedByInput
+  timeEvents?: Prisma.TimeEventUncheckedCreateNestedManyWithoutUserInput
+  timeEventsReviewed?: Prisma.TimeEventUncheckedCreateNestedManyWithoutReviewedByInput
+  timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
+  timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
+  timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
+  employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
+  employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
+}
+
+export type UserCreateOrConnectWithoutSchedulePlansSubmittedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSchedulePlansSubmittedInput, Prisma.UserUncheckedCreateWithoutSchedulePlansSubmittedInput>
+}
+
+export type UserCreateWithoutSchedulePlansApprovedInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash?: string | null
+  authProviderId?: string | null
+  role: $Enums.UserRole
+  isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
+  clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
+  designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
+  designersCreated?: Prisma.DesignerCreateNestedManyWithoutCreatedByInput
+  objectsResponsible?: Prisma.ProjectObjectCreateNestedManyWithoutResponsibleInput
+  objectsCreated?: Prisma.ProjectObjectCreateNestedManyWithoutCreatedByInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantCreateNestedManyWithoutResponsibleInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantCreateNestedManyWithoutCreatedByInput
+  dealsResponsible?: Prisma.DealCreateNestedManyWithoutResponsibleInput
+  dealsCreated?: Prisma.DealCreateNestedManyWithoutCreatedByInput
+  proposalsResponsible?: Prisma.CommercialProposalCreateNestedManyWithoutResponsibleInput
+  proposalsCreated?: Prisma.CommercialProposalCreateNestedManyWithoutCreatedByInput
+  proposalsUploaded?: Prisma.CommercialProposalCreateNestedManyWithoutUploadedByInput
+  tasksResponsible?: Prisma.TaskActivityCreateNestedManyWithoutResponsibleInput
+  tasksCreated?: Prisma.TaskActivityCreateNestedManyWithoutCreatedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationCreateNestedManyWithoutResolvedByInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementCreateNestedManyWithoutCreatedByInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementCreateNestedManyWithoutApprovedByInput
+  paymentsCreated?: Prisma.PaymentCreateNestedManyWithoutCreatedByInput
+  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutConfirmedByInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualCreateNestedManyWithoutCreatedByInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutCreateNestedManyWithoutCreatedByInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutCreateNestedManyWithoutPaidByInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
+  securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  employeeProfile?: Prisma.EmployeeProfileCreateNestedOneWithoutUserInput
+  workShiftsCreated?: Prisma.WorkShiftCreateNestedManyWithoutCreatedByInput
+  locationDisplayDevicesApproved?: Prisma.LocationDisplayDeviceCreateNestedManyWithoutApprovedByInput
+  locationDisplayDevicesRevoked?: Prisma.LocationDisplayDeviceCreateNestedManyWithoutRevokedByInput
+  displaySetupTokensCreated?: Prisma.LocationDisplaySetupTokenCreateNestedManyWithoutCreatedByInput
+  timeEvents?: Prisma.TimeEventCreateNestedManyWithoutUserInput
+  timeEventsReviewed?: Prisma.TimeEventCreateNestedManyWithoutReviewedByInput
+  timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
+  timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
+  timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
+  employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
+  employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
+}
+
+export type UserUncheckedCreateWithoutSchedulePlansApprovedInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash?: string | null
+  authProviderId?: string | null
+  role: $Enums.UserRole
+  isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
+  clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
+  designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
+  designersCreated?: Prisma.DesignerUncheckedCreateNestedManyWithoutCreatedByInput
+  objectsResponsible?: Prisma.ProjectObjectUncheckedCreateNestedManyWithoutResponsibleInput
+  objectsCreated?: Prisma.ProjectObjectUncheckedCreateNestedManyWithoutCreatedByInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUncheckedCreateNestedManyWithoutResponsibleInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUncheckedCreateNestedManyWithoutCreatedByInput
+  dealsResponsible?: Prisma.DealUncheckedCreateNestedManyWithoutResponsibleInput
+  dealsCreated?: Prisma.DealUncheckedCreateNestedManyWithoutCreatedByInput
+  proposalsResponsible?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutResponsibleInput
+  proposalsCreated?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutCreatedByInput
+  proposalsUploaded?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutUploadedByInput
+  tasksResponsible?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutResponsibleInput
+  tasksCreated?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutCreatedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResolvedByInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementUncheckedCreateNestedManyWithoutApprovedByInput
+  paymentsCreated?: Prisma.PaymentUncheckedCreateNestedManyWithoutCreatedByInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutConfirmedByInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualUncheckedCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutUncheckedCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUncheckedCreateNestedManyWithoutPaidByInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+  securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  employeeProfile?: Prisma.EmployeeProfileUncheckedCreateNestedOneWithoutUserInput
+  workShiftsCreated?: Prisma.WorkShiftUncheckedCreateNestedManyWithoutCreatedByInput
+  locationDisplayDevicesApproved?: Prisma.LocationDisplayDeviceUncheckedCreateNestedManyWithoutApprovedByInput
+  locationDisplayDevicesRevoked?: Prisma.LocationDisplayDeviceUncheckedCreateNestedManyWithoutRevokedByInput
+  displaySetupTokensCreated?: Prisma.LocationDisplaySetupTokenUncheckedCreateNestedManyWithoutCreatedByInput
+  timeEvents?: Prisma.TimeEventUncheckedCreateNestedManyWithoutUserInput
+  timeEventsReviewed?: Prisma.TimeEventUncheckedCreateNestedManyWithoutReviewedByInput
+  timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
+  timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
+  timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
+  employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
+  employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
+}
+
+export type UserCreateOrConnectWithoutSchedulePlansApprovedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSchedulePlansApprovedInput, Prisma.UserUncheckedCreateWithoutSchedulePlansApprovedInput>
+}
+
+export type UserCreateWithoutSchedulePlansReturnedInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash?: string | null
+  authProviderId?: string | null
+  role: $Enums.UserRole
+  isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
+  clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
+  designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
+  designersCreated?: Prisma.DesignerCreateNestedManyWithoutCreatedByInput
+  objectsResponsible?: Prisma.ProjectObjectCreateNestedManyWithoutResponsibleInput
+  objectsCreated?: Prisma.ProjectObjectCreateNestedManyWithoutCreatedByInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantCreateNestedManyWithoutResponsibleInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantCreateNestedManyWithoutCreatedByInput
+  dealsResponsible?: Prisma.DealCreateNestedManyWithoutResponsibleInput
+  dealsCreated?: Prisma.DealCreateNestedManyWithoutCreatedByInput
+  proposalsResponsible?: Prisma.CommercialProposalCreateNestedManyWithoutResponsibleInput
+  proposalsCreated?: Prisma.CommercialProposalCreateNestedManyWithoutCreatedByInput
+  proposalsUploaded?: Prisma.CommercialProposalCreateNestedManyWithoutUploadedByInput
+  tasksResponsible?: Prisma.TaskActivityCreateNestedManyWithoutResponsibleInput
+  tasksCreated?: Prisma.TaskActivityCreateNestedManyWithoutCreatedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationCreateNestedManyWithoutResolvedByInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementCreateNestedManyWithoutCreatedByInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementCreateNestedManyWithoutApprovedByInput
+  paymentsCreated?: Prisma.PaymentCreateNestedManyWithoutCreatedByInput
+  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutConfirmedByInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualCreateNestedManyWithoutCreatedByInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutCreateNestedManyWithoutCreatedByInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutCreateNestedManyWithoutPaidByInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
+  securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  employeeProfile?: Prisma.EmployeeProfileCreateNestedOneWithoutUserInput
+  workShiftsCreated?: Prisma.WorkShiftCreateNestedManyWithoutCreatedByInput
+  locationDisplayDevicesApproved?: Prisma.LocationDisplayDeviceCreateNestedManyWithoutApprovedByInput
+  locationDisplayDevicesRevoked?: Prisma.LocationDisplayDeviceCreateNestedManyWithoutRevokedByInput
+  displaySetupTokensCreated?: Prisma.LocationDisplaySetupTokenCreateNestedManyWithoutCreatedByInput
+  timeEvents?: Prisma.TimeEventCreateNestedManyWithoutUserInput
+  timeEventsReviewed?: Prisma.TimeEventCreateNestedManyWithoutReviewedByInput
+  timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
+  timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
+  timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
+  employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
+  employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
+}
+
+export type UserUncheckedCreateWithoutSchedulePlansReturnedInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash?: string | null
+  authProviderId?: string | null
+  role: $Enums.UserRole
+  isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
+  clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
+  designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
+  designersCreated?: Prisma.DesignerUncheckedCreateNestedManyWithoutCreatedByInput
+  objectsResponsible?: Prisma.ProjectObjectUncheckedCreateNestedManyWithoutResponsibleInput
+  objectsCreated?: Prisma.ProjectObjectUncheckedCreateNestedManyWithoutCreatedByInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUncheckedCreateNestedManyWithoutResponsibleInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUncheckedCreateNestedManyWithoutCreatedByInput
+  dealsResponsible?: Prisma.DealUncheckedCreateNestedManyWithoutResponsibleInput
+  dealsCreated?: Prisma.DealUncheckedCreateNestedManyWithoutCreatedByInput
+  proposalsResponsible?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutResponsibleInput
+  proposalsCreated?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutCreatedByInput
+  proposalsUploaded?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutUploadedByInput
+  tasksResponsible?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutResponsibleInput
+  tasksCreated?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutCreatedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResolvedByInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementUncheckedCreateNestedManyWithoutApprovedByInput
+  paymentsCreated?: Prisma.PaymentUncheckedCreateNestedManyWithoutCreatedByInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutConfirmedByInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualUncheckedCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutUncheckedCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUncheckedCreateNestedManyWithoutPaidByInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+  securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  employeeProfile?: Prisma.EmployeeProfileUncheckedCreateNestedOneWithoutUserInput
+  workShiftsCreated?: Prisma.WorkShiftUncheckedCreateNestedManyWithoutCreatedByInput
+  locationDisplayDevicesApproved?: Prisma.LocationDisplayDeviceUncheckedCreateNestedManyWithoutApprovedByInput
+  locationDisplayDevicesRevoked?: Prisma.LocationDisplayDeviceUncheckedCreateNestedManyWithoutRevokedByInput
+  displaySetupTokensCreated?: Prisma.LocationDisplaySetupTokenUncheckedCreateNestedManyWithoutCreatedByInput
+  timeEvents?: Prisma.TimeEventUncheckedCreateNestedManyWithoutUserInput
+  timeEventsReviewed?: Prisma.TimeEventUncheckedCreateNestedManyWithoutReviewedByInput
+  timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
+  timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
+  timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
+  employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
+  employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
+}
+
+export type UserCreateOrConnectWithoutSchedulePlansReturnedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSchedulePlansReturnedInput, Prisma.UserUncheckedCreateWithoutSchedulePlansReturnedInput>
+}
+
+export type UserUpsertWithoutSchedulePlansCreatedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSchedulePlansCreatedInput, Prisma.UserUncheckedUpdateWithoutSchedulePlansCreatedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSchedulePlansCreatedInput, Prisma.UserUncheckedCreateWithoutSchedulePlansCreatedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSchedulePlansCreatedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSchedulePlansCreatedInput, Prisma.UserUncheckedUpdateWithoutSchedulePlansCreatedInput>
+}
+
+export type UserUpdateWithoutSchedulePlansCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
+  clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
+  designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
+  designersCreated?: Prisma.DesignerUpdateManyWithoutCreatedByNestedInput
+  objectsResponsible?: Prisma.ProjectObjectUpdateManyWithoutResponsibleNestedInput
+  objectsCreated?: Prisma.ProjectObjectUpdateManyWithoutCreatedByNestedInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUpdateManyWithoutResponsibleNestedInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUpdateManyWithoutCreatedByNestedInput
+  dealsResponsible?: Prisma.DealUpdateManyWithoutResponsibleNestedInput
+  dealsCreated?: Prisma.DealUpdateManyWithoutCreatedByNestedInput
+  proposalsResponsible?: Prisma.CommercialProposalUpdateManyWithoutResponsibleNestedInput
+  proposalsCreated?: Prisma.CommercialProposalUpdateManyWithoutCreatedByNestedInput
+  proposalsUploaded?: Prisma.CommercialProposalUpdateManyWithoutUploadedByNestedInput
+  tasksResponsible?: Prisma.TaskActivityUpdateManyWithoutResponsibleNestedInput
+  tasksCreated?: Prisma.TaskActivityUpdateManyWithoutCreatedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUpdateManyWithoutResolvedByNestedInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementUpdateManyWithoutCreatedByNestedInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementUpdateManyWithoutApprovedByNestedInput
+  paymentsCreated?: Prisma.PaymentUpdateManyWithoutCreatedByNestedInput
+  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutConfirmedByNestedInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualUpdateManyWithoutCreatedByNestedInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutUpdateManyWithoutCreatedByNestedInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUpdateManyWithoutPaidByNestedInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
+  securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  employeeProfile?: Prisma.EmployeeProfileUpdateOneWithoutUserNestedInput
+  workShiftsCreated?: Prisma.WorkShiftUpdateManyWithoutCreatedByNestedInput
+  locationDisplayDevicesApproved?: Prisma.LocationDisplayDeviceUpdateManyWithoutApprovedByNestedInput
+  locationDisplayDevicesRevoked?: Prisma.LocationDisplayDeviceUpdateManyWithoutRevokedByNestedInput
+  displaySetupTokensCreated?: Prisma.LocationDisplaySetupTokenUpdateManyWithoutCreatedByNestedInput
+  timeEvents?: Prisma.TimeEventUpdateManyWithoutUserNestedInput
+  timeEventsReviewed?: Prisma.TimeEventUpdateManyWithoutReviewedByNestedInput
+  timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
+  timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
+  timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
+  employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
+  employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSchedulePlansCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
+  clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
+  designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
+  designersCreated?: Prisma.DesignerUncheckedUpdateManyWithoutCreatedByNestedInput
+  objectsResponsible?: Prisma.ProjectObjectUncheckedUpdateManyWithoutResponsibleNestedInput
+  objectsCreated?: Prisma.ProjectObjectUncheckedUpdateManyWithoutCreatedByNestedInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUncheckedUpdateManyWithoutResponsibleNestedInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUncheckedUpdateManyWithoutCreatedByNestedInput
+  dealsResponsible?: Prisma.DealUncheckedUpdateManyWithoutResponsibleNestedInput
+  dealsCreated?: Prisma.DealUncheckedUpdateManyWithoutCreatedByNestedInput
+  proposalsResponsible?: Prisma.CommercialProposalUncheckedUpdateManyWithoutResponsibleNestedInput
+  proposalsCreated?: Prisma.CommercialProposalUncheckedUpdateManyWithoutCreatedByNestedInput
+  proposalsUploaded?: Prisma.CommercialProposalUncheckedUpdateManyWithoutUploadedByNestedInput
+  tasksResponsible?: Prisma.TaskActivityUncheckedUpdateManyWithoutResponsibleNestedInput
+  tasksCreated?: Prisma.TaskActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedUpdateManyWithoutResolvedByNestedInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementUncheckedUpdateManyWithoutApprovedByNestedInput
+  paymentsCreated?: Prisma.PaymentUncheckedUpdateManyWithoutCreatedByNestedInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutConfirmedByNestedInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualUncheckedUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutUncheckedUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUncheckedUpdateManyWithoutPaidByNestedInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+  securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  employeeProfile?: Prisma.EmployeeProfileUncheckedUpdateOneWithoutUserNestedInput
+  workShiftsCreated?: Prisma.WorkShiftUncheckedUpdateManyWithoutCreatedByNestedInput
+  locationDisplayDevicesApproved?: Prisma.LocationDisplayDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
+  locationDisplayDevicesRevoked?: Prisma.LocationDisplayDeviceUncheckedUpdateManyWithoutRevokedByNestedInput
+  displaySetupTokensCreated?: Prisma.LocationDisplaySetupTokenUncheckedUpdateManyWithoutCreatedByNestedInput
+  timeEvents?: Prisma.TimeEventUncheckedUpdateManyWithoutUserNestedInput
+  timeEventsReviewed?: Prisma.TimeEventUncheckedUpdateManyWithoutReviewedByNestedInput
+  timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
+  timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
+  timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
+  employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
+  employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
+}
+
+export type UserUpsertWithoutSchedulePlansSubmittedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSchedulePlansSubmittedInput, Prisma.UserUncheckedUpdateWithoutSchedulePlansSubmittedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSchedulePlansSubmittedInput, Prisma.UserUncheckedCreateWithoutSchedulePlansSubmittedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSchedulePlansSubmittedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSchedulePlansSubmittedInput, Prisma.UserUncheckedUpdateWithoutSchedulePlansSubmittedInput>
+}
+
+export type UserUpdateWithoutSchedulePlansSubmittedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
+  clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
+  designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
+  designersCreated?: Prisma.DesignerUpdateManyWithoutCreatedByNestedInput
+  objectsResponsible?: Prisma.ProjectObjectUpdateManyWithoutResponsibleNestedInput
+  objectsCreated?: Prisma.ProjectObjectUpdateManyWithoutCreatedByNestedInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUpdateManyWithoutResponsibleNestedInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUpdateManyWithoutCreatedByNestedInput
+  dealsResponsible?: Prisma.DealUpdateManyWithoutResponsibleNestedInput
+  dealsCreated?: Prisma.DealUpdateManyWithoutCreatedByNestedInput
+  proposalsResponsible?: Prisma.CommercialProposalUpdateManyWithoutResponsibleNestedInput
+  proposalsCreated?: Prisma.CommercialProposalUpdateManyWithoutCreatedByNestedInput
+  proposalsUploaded?: Prisma.CommercialProposalUpdateManyWithoutUploadedByNestedInput
+  tasksResponsible?: Prisma.TaskActivityUpdateManyWithoutResponsibleNestedInput
+  tasksCreated?: Prisma.TaskActivityUpdateManyWithoutCreatedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUpdateManyWithoutResolvedByNestedInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementUpdateManyWithoutCreatedByNestedInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementUpdateManyWithoutApprovedByNestedInput
+  paymentsCreated?: Prisma.PaymentUpdateManyWithoutCreatedByNestedInput
+  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutConfirmedByNestedInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualUpdateManyWithoutCreatedByNestedInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutUpdateManyWithoutCreatedByNestedInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUpdateManyWithoutPaidByNestedInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
+  securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  employeeProfile?: Prisma.EmployeeProfileUpdateOneWithoutUserNestedInput
+  workShiftsCreated?: Prisma.WorkShiftUpdateManyWithoutCreatedByNestedInput
+  locationDisplayDevicesApproved?: Prisma.LocationDisplayDeviceUpdateManyWithoutApprovedByNestedInput
+  locationDisplayDevicesRevoked?: Prisma.LocationDisplayDeviceUpdateManyWithoutRevokedByNestedInput
+  displaySetupTokensCreated?: Prisma.LocationDisplaySetupTokenUpdateManyWithoutCreatedByNestedInput
+  timeEvents?: Prisma.TimeEventUpdateManyWithoutUserNestedInput
+  timeEventsReviewed?: Prisma.TimeEventUpdateManyWithoutReviewedByNestedInput
+  timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
+  timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
+  timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
+  employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
+  employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSchedulePlansSubmittedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
+  clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
+  designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
+  designersCreated?: Prisma.DesignerUncheckedUpdateManyWithoutCreatedByNestedInput
+  objectsResponsible?: Prisma.ProjectObjectUncheckedUpdateManyWithoutResponsibleNestedInput
+  objectsCreated?: Prisma.ProjectObjectUncheckedUpdateManyWithoutCreatedByNestedInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUncheckedUpdateManyWithoutResponsibleNestedInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUncheckedUpdateManyWithoutCreatedByNestedInput
+  dealsResponsible?: Prisma.DealUncheckedUpdateManyWithoutResponsibleNestedInput
+  dealsCreated?: Prisma.DealUncheckedUpdateManyWithoutCreatedByNestedInput
+  proposalsResponsible?: Prisma.CommercialProposalUncheckedUpdateManyWithoutResponsibleNestedInput
+  proposalsCreated?: Prisma.CommercialProposalUncheckedUpdateManyWithoutCreatedByNestedInput
+  proposalsUploaded?: Prisma.CommercialProposalUncheckedUpdateManyWithoutUploadedByNestedInput
+  tasksResponsible?: Prisma.TaskActivityUncheckedUpdateManyWithoutResponsibleNestedInput
+  tasksCreated?: Prisma.TaskActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedUpdateManyWithoutResolvedByNestedInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementUncheckedUpdateManyWithoutApprovedByNestedInput
+  paymentsCreated?: Prisma.PaymentUncheckedUpdateManyWithoutCreatedByNestedInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutConfirmedByNestedInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualUncheckedUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutUncheckedUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUncheckedUpdateManyWithoutPaidByNestedInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+  securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  employeeProfile?: Prisma.EmployeeProfileUncheckedUpdateOneWithoutUserNestedInput
+  workShiftsCreated?: Prisma.WorkShiftUncheckedUpdateManyWithoutCreatedByNestedInput
+  locationDisplayDevicesApproved?: Prisma.LocationDisplayDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
+  locationDisplayDevicesRevoked?: Prisma.LocationDisplayDeviceUncheckedUpdateManyWithoutRevokedByNestedInput
+  displaySetupTokensCreated?: Prisma.LocationDisplaySetupTokenUncheckedUpdateManyWithoutCreatedByNestedInput
+  timeEvents?: Prisma.TimeEventUncheckedUpdateManyWithoutUserNestedInput
+  timeEventsReviewed?: Prisma.TimeEventUncheckedUpdateManyWithoutReviewedByNestedInput
+  timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
+  timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
+  timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
+  employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
+  employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
+}
+
+export type UserUpsertWithoutSchedulePlansApprovedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSchedulePlansApprovedInput, Prisma.UserUncheckedUpdateWithoutSchedulePlansApprovedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSchedulePlansApprovedInput, Prisma.UserUncheckedCreateWithoutSchedulePlansApprovedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSchedulePlansApprovedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSchedulePlansApprovedInput, Prisma.UserUncheckedUpdateWithoutSchedulePlansApprovedInput>
+}
+
+export type UserUpdateWithoutSchedulePlansApprovedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
+  clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
+  designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
+  designersCreated?: Prisma.DesignerUpdateManyWithoutCreatedByNestedInput
+  objectsResponsible?: Prisma.ProjectObjectUpdateManyWithoutResponsibleNestedInput
+  objectsCreated?: Prisma.ProjectObjectUpdateManyWithoutCreatedByNestedInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUpdateManyWithoutResponsibleNestedInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUpdateManyWithoutCreatedByNestedInput
+  dealsResponsible?: Prisma.DealUpdateManyWithoutResponsibleNestedInput
+  dealsCreated?: Prisma.DealUpdateManyWithoutCreatedByNestedInput
+  proposalsResponsible?: Prisma.CommercialProposalUpdateManyWithoutResponsibleNestedInput
+  proposalsCreated?: Prisma.CommercialProposalUpdateManyWithoutCreatedByNestedInput
+  proposalsUploaded?: Prisma.CommercialProposalUpdateManyWithoutUploadedByNestedInput
+  tasksResponsible?: Prisma.TaskActivityUpdateManyWithoutResponsibleNestedInput
+  tasksCreated?: Prisma.TaskActivityUpdateManyWithoutCreatedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUpdateManyWithoutResolvedByNestedInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementUpdateManyWithoutCreatedByNestedInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementUpdateManyWithoutApprovedByNestedInput
+  paymentsCreated?: Prisma.PaymentUpdateManyWithoutCreatedByNestedInput
+  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutConfirmedByNestedInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualUpdateManyWithoutCreatedByNestedInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutUpdateManyWithoutCreatedByNestedInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUpdateManyWithoutPaidByNestedInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
+  securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  employeeProfile?: Prisma.EmployeeProfileUpdateOneWithoutUserNestedInput
+  workShiftsCreated?: Prisma.WorkShiftUpdateManyWithoutCreatedByNestedInput
+  locationDisplayDevicesApproved?: Prisma.LocationDisplayDeviceUpdateManyWithoutApprovedByNestedInput
+  locationDisplayDevicesRevoked?: Prisma.LocationDisplayDeviceUpdateManyWithoutRevokedByNestedInput
+  displaySetupTokensCreated?: Prisma.LocationDisplaySetupTokenUpdateManyWithoutCreatedByNestedInput
+  timeEvents?: Prisma.TimeEventUpdateManyWithoutUserNestedInput
+  timeEventsReviewed?: Prisma.TimeEventUpdateManyWithoutReviewedByNestedInput
+  timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
+  timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
+  timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
+  employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
+  employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSchedulePlansApprovedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
+  clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
+  designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
+  designersCreated?: Prisma.DesignerUncheckedUpdateManyWithoutCreatedByNestedInput
+  objectsResponsible?: Prisma.ProjectObjectUncheckedUpdateManyWithoutResponsibleNestedInput
+  objectsCreated?: Prisma.ProjectObjectUncheckedUpdateManyWithoutCreatedByNestedInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUncheckedUpdateManyWithoutResponsibleNestedInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUncheckedUpdateManyWithoutCreatedByNestedInput
+  dealsResponsible?: Prisma.DealUncheckedUpdateManyWithoutResponsibleNestedInput
+  dealsCreated?: Prisma.DealUncheckedUpdateManyWithoutCreatedByNestedInput
+  proposalsResponsible?: Prisma.CommercialProposalUncheckedUpdateManyWithoutResponsibleNestedInput
+  proposalsCreated?: Prisma.CommercialProposalUncheckedUpdateManyWithoutCreatedByNestedInput
+  proposalsUploaded?: Prisma.CommercialProposalUncheckedUpdateManyWithoutUploadedByNestedInput
+  tasksResponsible?: Prisma.TaskActivityUncheckedUpdateManyWithoutResponsibleNestedInput
+  tasksCreated?: Prisma.TaskActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedUpdateManyWithoutResolvedByNestedInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementUncheckedUpdateManyWithoutApprovedByNestedInput
+  paymentsCreated?: Prisma.PaymentUncheckedUpdateManyWithoutCreatedByNestedInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutConfirmedByNestedInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualUncheckedUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutUncheckedUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUncheckedUpdateManyWithoutPaidByNestedInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+  securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  employeeProfile?: Prisma.EmployeeProfileUncheckedUpdateOneWithoutUserNestedInput
+  workShiftsCreated?: Prisma.WorkShiftUncheckedUpdateManyWithoutCreatedByNestedInput
+  locationDisplayDevicesApproved?: Prisma.LocationDisplayDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
+  locationDisplayDevicesRevoked?: Prisma.LocationDisplayDeviceUncheckedUpdateManyWithoutRevokedByNestedInput
+  displaySetupTokensCreated?: Prisma.LocationDisplaySetupTokenUncheckedUpdateManyWithoutCreatedByNestedInput
+  timeEvents?: Prisma.TimeEventUncheckedUpdateManyWithoutUserNestedInput
+  timeEventsReviewed?: Prisma.TimeEventUncheckedUpdateManyWithoutReviewedByNestedInput
+  timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
+  timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
+  timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
+  employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
+  employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
+}
+
+export type UserUpsertWithoutSchedulePlansReturnedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSchedulePlansReturnedInput, Prisma.UserUncheckedUpdateWithoutSchedulePlansReturnedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSchedulePlansReturnedInput, Prisma.UserUncheckedCreateWithoutSchedulePlansReturnedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSchedulePlansReturnedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSchedulePlansReturnedInput, Prisma.UserUncheckedUpdateWithoutSchedulePlansReturnedInput>
+}
+
+export type UserUpdateWithoutSchedulePlansReturnedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
+  clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
+  designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
+  designersCreated?: Prisma.DesignerUpdateManyWithoutCreatedByNestedInput
+  objectsResponsible?: Prisma.ProjectObjectUpdateManyWithoutResponsibleNestedInput
+  objectsCreated?: Prisma.ProjectObjectUpdateManyWithoutCreatedByNestedInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUpdateManyWithoutResponsibleNestedInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUpdateManyWithoutCreatedByNestedInput
+  dealsResponsible?: Prisma.DealUpdateManyWithoutResponsibleNestedInput
+  dealsCreated?: Prisma.DealUpdateManyWithoutCreatedByNestedInput
+  proposalsResponsible?: Prisma.CommercialProposalUpdateManyWithoutResponsibleNestedInput
+  proposalsCreated?: Prisma.CommercialProposalUpdateManyWithoutCreatedByNestedInput
+  proposalsUploaded?: Prisma.CommercialProposalUpdateManyWithoutUploadedByNestedInput
+  tasksResponsible?: Prisma.TaskActivityUpdateManyWithoutResponsibleNestedInput
+  tasksCreated?: Prisma.TaskActivityUpdateManyWithoutCreatedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUpdateManyWithoutResolvedByNestedInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementUpdateManyWithoutCreatedByNestedInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementUpdateManyWithoutApprovedByNestedInput
+  paymentsCreated?: Prisma.PaymentUpdateManyWithoutCreatedByNestedInput
+  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutConfirmedByNestedInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualUpdateManyWithoutCreatedByNestedInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutUpdateManyWithoutCreatedByNestedInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUpdateManyWithoutPaidByNestedInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
+  securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  employeeProfile?: Prisma.EmployeeProfileUpdateOneWithoutUserNestedInput
+  workShiftsCreated?: Prisma.WorkShiftUpdateManyWithoutCreatedByNestedInput
+  locationDisplayDevicesApproved?: Prisma.LocationDisplayDeviceUpdateManyWithoutApprovedByNestedInput
+  locationDisplayDevicesRevoked?: Prisma.LocationDisplayDeviceUpdateManyWithoutRevokedByNestedInput
+  displaySetupTokensCreated?: Prisma.LocationDisplaySetupTokenUpdateManyWithoutCreatedByNestedInput
+  timeEvents?: Prisma.TimeEventUpdateManyWithoutUserNestedInput
+  timeEventsReviewed?: Prisma.TimeEventUpdateManyWithoutReviewedByNestedInput
+  timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
+  timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
+  timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
+  employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
+  employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSchedulePlansReturnedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
+  clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
+  designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
+  designersCreated?: Prisma.DesignerUncheckedUpdateManyWithoutCreatedByNestedInput
+  objectsResponsible?: Prisma.ProjectObjectUncheckedUpdateManyWithoutResponsibleNestedInput
+  objectsCreated?: Prisma.ProjectObjectUncheckedUpdateManyWithoutCreatedByNestedInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUncheckedUpdateManyWithoutResponsibleNestedInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUncheckedUpdateManyWithoutCreatedByNestedInput
+  dealsResponsible?: Prisma.DealUncheckedUpdateManyWithoutResponsibleNestedInput
+  dealsCreated?: Prisma.DealUncheckedUpdateManyWithoutCreatedByNestedInput
+  proposalsResponsible?: Prisma.CommercialProposalUncheckedUpdateManyWithoutResponsibleNestedInput
+  proposalsCreated?: Prisma.CommercialProposalUncheckedUpdateManyWithoutCreatedByNestedInput
+  proposalsUploaded?: Prisma.CommercialProposalUncheckedUpdateManyWithoutUploadedByNestedInput
+  tasksResponsible?: Prisma.TaskActivityUncheckedUpdateManyWithoutResponsibleNestedInput
+  tasksCreated?: Prisma.TaskActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedUpdateManyWithoutResolvedByNestedInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementUncheckedUpdateManyWithoutApprovedByNestedInput
+  paymentsCreated?: Prisma.PaymentUncheckedUpdateManyWithoutCreatedByNestedInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutConfirmedByNestedInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualUncheckedUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutUncheckedUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUncheckedUpdateManyWithoutPaidByNestedInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+  securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  employeeProfile?: Prisma.EmployeeProfileUncheckedUpdateOneWithoutUserNestedInput
+  workShiftsCreated?: Prisma.WorkShiftUncheckedUpdateManyWithoutCreatedByNestedInput
+  locationDisplayDevicesApproved?: Prisma.LocationDisplayDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
+  locationDisplayDevicesRevoked?: Prisma.LocationDisplayDeviceUncheckedUpdateManyWithoutRevokedByNestedInput
+  displaySetupTokensCreated?: Prisma.LocationDisplaySetupTokenUncheckedUpdateManyWithoutCreatedByNestedInput
+  timeEvents?: Prisma.TimeEventUncheckedUpdateManyWithoutUserNestedInput
+  timeEventsReviewed?: Prisma.TimeEventUncheckedUpdateManyWithoutReviewedByNestedInput
+  timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
+  timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
+  timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
+  employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
+  employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
+}
+
+export type UserCreateWithoutSchedulePlanCellsInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash?: string | null
+  authProviderId?: string | null
+  role: $Enums.UserRole
+  isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
+  clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
+  designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
+  designersCreated?: Prisma.DesignerCreateNestedManyWithoutCreatedByInput
+  objectsResponsible?: Prisma.ProjectObjectCreateNestedManyWithoutResponsibleInput
+  objectsCreated?: Prisma.ProjectObjectCreateNestedManyWithoutCreatedByInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantCreateNestedManyWithoutResponsibleInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantCreateNestedManyWithoutCreatedByInput
+  dealsResponsible?: Prisma.DealCreateNestedManyWithoutResponsibleInput
+  dealsCreated?: Prisma.DealCreateNestedManyWithoutCreatedByInput
+  proposalsResponsible?: Prisma.CommercialProposalCreateNestedManyWithoutResponsibleInput
+  proposalsCreated?: Prisma.CommercialProposalCreateNestedManyWithoutCreatedByInput
+  proposalsUploaded?: Prisma.CommercialProposalCreateNestedManyWithoutUploadedByInput
+  tasksResponsible?: Prisma.TaskActivityCreateNestedManyWithoutResponsibleInput
+  tasksCreated?: Prisma.TaskActivityCreateNestedManyWithoutCreatedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationCreateNestedManyWithoutResolvedByInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementCreateNestedManyWithoutCreatedByInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementCreateNestedManyWithoutApprovedByInput
+  paymentsCreated?: Prisma.PaymentCreateNestedManyWithoutCreatedByInput
+  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutConfirmedByInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualCreateNestedManyWithoutCreatedByInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutCreateNestedManyWithoutCreatedByInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutCreateNestedManyWithoutPaidByInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
+  securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  employeeProfile?: Prisma.EmployeeProfileCreateNestedOneWithoutUserInput
+  workShiftsCreated?: Prisma.WorkShiftCreateNestedManyWithoutCreatedByInput
+  locationDisplayDevicesApproved?: Prisma.LocationDisplayDeviceCreateNestedManyWithoutApprovedByInput
+  locationDisplayDevicesRevoked?: Prisma.LocationDisplayDeviceCreateNestedManyWithoutRevokedByInput
+  displaySetupTokensCreated?: Prisma.LocationDisplaySetupTokenCreateNestedManyWithoutCreatedByInput
+  timeEvents?: Prisma.TimeEventCreateNestedManyWithoutUserInput
+  timeEventsReviewed?: Prisma.TimeEventCreateNestedManyWithoutReviewedByInput
+  timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
+  timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
+  timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
+  employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
+  employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
+}
+
+export type UserUncheckedCreateWithoutSchedulePlanCellsInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash?: string | null
+  authProviderId?: string | null
+  role: $Enums.UserRole
+  isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
+  clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
+  designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
+  designersCreated?: Prisma.DesignerUncheckedCreateNestedManyWithoutCreatedByInput
+  objectsResponsible?: Prisma.ProjectObjectUncheckedCreateNestedManyWithoutResponsibleInput
+  objectsCreated?: Prisma.ProjectObjectUncheckedCreateNestedManyWithoutCreatedByInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUncheckedCreateNestedManyWithoutResponsibleInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUncheckedCreateNestedManyWithoutCreatedByInput
+  dealsResponsible?: Prisma.DealUncheckedCreateNestedManyWithoutResponsibleInput
+  dealsCreated?: Prisma.DealUncheckedCreateNestedManyWithoutCreatedByInput
+  proposalsResponsible?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutResponsibleInput
+  proposalsCreated?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutCreatedByInput
+  proposalsUploaded?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutUploadedByInput
+  tasksResponsible?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutResponsibleInput
+  tasksCreated?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutCreatedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResolvedByInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementUncheckedCreateNestedManyWithoutApprovedByInput
+  paymentsCreated?: Prisma.PaymentUncheckedCreateNestedManyWithoutCreatedByInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutConfirmedByInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualUncheckedCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutUncheckedCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUncheckedCreateNestedManyWithoutPaidByInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+  securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  employeeProfile?: Prisma.EmployeeProfileUncheckedCreateNestedOneWithoutUserInput
+  workShiftsCreated?: Prisma.WorkShiftUncheckedCreateNestedManyWithoutCreatedByInput
+  locationDisplayDevicesApproved?: Prisma.LocationDisplayDeviceUncheckedCreateNestedManyWithoutApprovedByInput
+  locationDisplayDevicesRevoked?: Prisma.LocationDisplayDeviceUncheckedCreateNestedManyWithoutRevokedByInput
+  displaySetupTokensCreated?: Prisma.LocationDisplaySetupTokenUncheckedCreateNestedManyWithoutCreatedByInput
+  timeEvents?: Prisma.TimeEventUncheckedCreateNestedManyWithoutUserInput
+  timeEventsReviewed?: Prisma.TimeEventUncheckedCreateNestedManyWithoutReviewedByInput
+  timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
+  timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
+  timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
+  employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
+  employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
+}
+
+export type UserCreateOrConnectWithoutSchedulePlanCellsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSchedulePlanCellsInput, Prisma.UserUncheckedCreateWithoutSchedulePlanCellsInput>
+}
+
+export type UserUpsertWithoutSchedulePlanCellsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSchedulePlanCellsInput, Prisma.UserUncheckedUpdateWithoutSchedulePlanCellsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSchedulePlanCellsInput, Prisma.UserUncheckedCreateWithoutSchedulePlanCellsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSchedulePlanCellsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSchedulePlanCellsInput, Prisma.UserUncheckedUpdateWithoutSchedulePlanCellsInput>
+}
+
+export type UserUpdateWithoutSchedulePlanCellsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
+  clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
+  designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
+  designersCreated?: Prisma.DesignerUpdateManyWithoutCreatedByNestedInput
+  objectsResponsible?: Prisma.ProjectObjectUpdateManyWithoutResponsibleNestedInput
+  objectsCreated?: Prisma.ProjectObjectUpdateManyWithoutCreatedByNestedInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUpdateManyWithoutResponsibleNestedInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUpdateManyWithoutCreatedByNestedInput
+  dealsResponsible?: Prisma.DealUpdateManyWithoutResponsibleNestedInput
+  dealsCreated?: Prisma.DealUpdateManyWithoutCreatedByNestedInput
+  proposalsResponsible?: Prisma.CommercialProposalUpdateManyWithoutResponsibleNestedInput
+  proposalsCreated?: Prisma.CommercialProposalUpdateManyWithoutCreatedByNestedInput
+  proposalsUploaded?: Prisma.CommercialProposalUpdateManyWithoutUploadedByNestedInput
+  tasksResponsible?: Prisma.TaskActivityUpdateManyWithoutResponsibleNestedInput
+  tasksCreated?: Prisma.TaskActivityUpdateManyWithoutCreatedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUpdateManyWithoutResolvedByNestedInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementUpdateManyWithoutCreatedByNestedInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementUpdateManyWithoutApprovedByNestedInput
+  paymentsCreated?: Prisma.PaymentUpdateManyWithoutCreatedByNestedInput
+  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutConfirmedByNestedInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualUpdateManyWithoutCreatedByNestedInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutUpdateManyWithoutCreatedByNestedInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUpdateManyWithoutPaidByNestedInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
+  securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  employeeProfile?: Prisma.EmployeeProfileUpdateOneWithoutUserNestedInput
+  workShiftsCreated?: Prisma.WorkShiftUpdateManyWithoutCreatedByNestedInput
+  locationDisplayDevicesApproved?: Prisma.LocationDisplayDeviceUpdateManyWithoutApprovedByNestedInput
+  locationDisplayDevicesRevoked?: Prisma.LocationDisplayDeviceUpdateManyWithoutRevokedByNestedInput
+  displaySetupTokensCreated?: Prisma.LocationDisplaySetupTokenUpdateManyWithoutCreatedByNestedInput
+  timeEvents?: Prisma.TimeEventUpdateManyWithoutUserNestedInput
+  timeEventsReviewed?: Prisma.TimeEventUpdateManyWithoutReviewedByNestedInput
+  timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
+  timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
+  timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
+  employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
+  employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSchedulePlanCellsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
+  clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
+  designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
+  designersCreated?: Prisma.DesignerUncheckedUpdateManyWithoutCreatedByNestedInput
+  objectsResponsible?: Prisma.ProjectObjectUncheckedUpdateManyWithoutResponsibleNestedInput
+  objectsCreated?: Prisma.ProjectObjectUncheckedUpdateManyWithoutCreatedByNestedInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUncheckedUpdateManyWithoutResponsibleNestedInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUncheckedUpdateManyWithoutCreatedByNestedInput
+  dealsResponsible?: Prisma.DealUncheckedUpdateManyWithoutResponsibleNestedInput
+  dealsCreated?: Prisma.DealUncheckedUpdateManyWithoutCreatedByNestedInput
+  proposalsResponsible?: Prisma.CommercialProposalUncheckedUpdateManyWithoutResponsibleNestedInput
+  proposalsCreated?: Prisma.CommercialProposalUncheckedUpdateManyWithoutCreatedByNestedInput
+  proposalsUploaded?: Prisma.CommercialProposalUncheckedUpdateManyWithoutUploadedByNestedInput
+  tasksResponsible?: Prisma.TaskActivityUncheckedUpdateManyWithoutResponsibleNestedInput
+  tasksCreated?: Prisma.TaskActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedUpdateManyWithoutResolvedByNestedInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementUncheckedUpdateManyWithoutApprovedByNestedInput
+  paymentsCreated?: Prisma.PaymentUncheckedUpdateManyWithoutCreatedByNestedInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutConfirmedByNestedInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualUncheckedUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutUncheckedUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUncheckedUpdateManyWithoutPaidByNestedInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+  securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  employeeProfile?: Prisma.EmployeeProfileUncheckedUpdateOneWithoutUserNestedInput
+  workShiftsCreated?: Prisma.WorkShiftUncheckedUpdateManyWithoutCreatedByNestedInput
+  locationDisplayDevicesApproved?: Prisma.LocationDisplayDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
+  locationDisplayDevicesRevoked?: Prisma.LocationDisplayDeviceUncheckedUpdateManyWithoutRevokedByNestedInput
+  displaySetupTokensCreated?: Prisma.LocationDisplaySetupTokenUncheckedUpdateManyWithoutCreatedByNestedInput
+  timeEvents?: Prisma.TimeEventUncheckedUpdateManyWithoutUserNestedInput
+  timeEventsReviewed?: Prisma.TimeEventUncheckedUpdateManyWithoutReviewedByNestedInput
+  timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
+  timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
+  timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
+  employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
+  employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
+}
+
+export type UserCreateWithoutSchedulePlanApprovalLogsInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash?: string | null
+  authProviderId?: string | null
+  role: $Enums.UserRole
+  isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
+  clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
+  designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
+  designersCreated?: Prisma.DesignerCreateNestedManyWithoutCreatedByInput
+  objectsResponsible?: Prisma.ProjectObjectCreateNestedManyWithoutResponsibleInput
+  objectsCreated?: Prisma.ProjectObjectCreateNestedManyWithoutCreatedByInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantCreateNestedManyWithoutResponsibleInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantCreateNestedManyWithoutCreatedByInput
+  dealsResponsible?: Prisma.DealCreateNestedManyWithoutResponsibleInput
+  dealsCreated?: Prisma.DealCreateNestedManyWithoutCreatedByInput
+  proposalsResponsible?: Prisma.CommercialProposalCreateNestedManyWithoutResponsibleInput
+  proposalsCreated?: Prisma.CommercialProposalCreateNestedManyWithoutCreatedByInput
+  proposalsUploaded?: Prisma.CommercialProposalCreateNestedManyWithoutUploadedByInput
+  tasksResponsible?: Prisma.TaskActivityCreateNestedManyWithoutResponsibleInput
+  tasksCreated?: Prisma.TaskActivityCreateNestedManyWithoutCreatedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationCreateNestedManyWithoutResolvedByInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementCreateNestedManyWithoutCreatedByInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementCreateNestedManyWithoutApprovedByInput
+  paymentsCreated?: Prisma.PaymentCreateNestedManyWithoutCreatedByInput
+  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutConfirmedByInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualCreateNestedManyWithoutCreatedByInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutCreateNestedManyWithoutCreatedByInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutCreateNestedManyWithoutPaidByInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
+  securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  employeeProfile?: Prisma.EmployeeProfileCreateNestedOneWithoutUserInput
+  workShiftsCreated?: Prisma.WorkShiftCreateNestedManyWithoutCreatedByInput
+  locationDisplayDevicesApproved?: Prisma.LocationDisplayDeviceCreateNestedManyWithoutApprovedByInput
+  locationDisplayDevicesRevoked?: Prisma.LocationDisplayDeviceCreateNestedManyWithoutRevokedByInput
+  displaySetupTokensCreated?: Prisma.LocationDisplaySetupTokenCreateNestedManyWithoutCreatedByInput
+  timeEvents?: Prisma.TimeEventCreateNestedManyWithoutUserInput
+  timeEventsReviewed?: Prisma.TimeEventCreateNestedManyWithoutReviewedByInput
+  timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
+  timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
+  timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
+  employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
+  employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
+}
+
+export type UserUncheckedCreateWithoutSchedulePlanApprovalLogsInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash?: string | null
+  authProviderId?: string | null
+  role: $Enums.UserRole
+  isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
+  clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
+  designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
+  designersCreated?: Prisma.DesignerUncheckedCreateNestedManyWithoutCreatedByInput
+  objectsResponsible?: Prisma.ProjectObjectUncheckedCreateNestedManyWithoutResponsibleInput
+  objectsCreated?: Prisma.ProjectObjectUncheckedCreateNestedManyWithoutCreatedByInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUncheckedCreateNestedManyWithoutResponsibleInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUncheckedCreateNestedManyWithoutCreatedByInput
+  dealsResponsible?: Prisma.DealUncheckedCreateNestedManyWithoutResponsibleInput
+  dealsCreated?: Prisma.DealUncheckedCreateNestedManyWithoutCreatedByInput
+  proposalsResponsible?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutResponsibleInput
+  proposalsCreated?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutCreatedByInput
+  proposalsUploaded?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutUploadedByInput
+  tasksResponsible?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutResponsibleInput
+  tasksCreated?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutCreatedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResolvedByInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementUncheckedCreateNestedManyWithoutApprovedByInput
+  paymentsCreated?: Prisma.PaymentUncheckedCreateNestedManyWithoutCreatedByInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutConfirmedByInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualUncheckedCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutUncheckedCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUncheckedCreateNestedManyWithoutPaidByInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+  securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  employeeProfile?: Prisma.EmployeeProfileUncheckedCreateNestedOneWithoutUserInput
+  workShiftsCreated?: Prisma.WorkShiftUncheckedCreateNestedManyWithoutCreatedByInput
+  locationDisplayDevicesApproved?: Prisma.LocationDisplayDeviceUncheckedCreateNestedManyWithoutApprovedByInput
+  locationDisplayDevicesRevoked?: Prisma.LocationDisplayDeviceUncheckedCreateNestedManyWithoutRevokedByInput
+  displaySetupTokensCreated?: Prisma.LocationDisplaySetupTokenUncheckedCreateNestedManyWithoutCreatedByInput
+  timeEvents?: Prisma.TimeEventUncheckedCreateNestedManyWithoutUserInput
+  timeEventsReviewed?: Prisma.TimeEventUncheckedCreateNestedManyWithoutReviewedByInput
+  timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
+  timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
+  timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
+  employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
+  employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
+}
+
+export type UserCreateOrConnectWithoutSchedulePlanApprovalLogsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSchedulePlanApprovalLogsInput, Prisma.UserUncheckedCreateWithoutSchedulePlanApprovalLogsInput>
+}
+
+export type UserUpsertWithoutSchedulePlanApprovalLogsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSchedulePlanApprovalLogsInput, Prisma.UserUncheckedUpdateWithoutSchedulePlanApprovalLogsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSchedulePlanApprovalLogsInput, Prisma.UserUncheckedCreateWithoutSchedulePlanApprovalLogsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSchedulePlanApprovalLogsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSchedulePlanApprovalLogsInput, Prisma.UserUncheckedUpdateWithoutSchedulePlanApprovalLogsInput>
+}
+
+export type UserUpdateWithoutSchedulePlanApprovalLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
+  clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
+  designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
+  designersCreated?: Prisma.DesignerUpdateManyWithoutCreatedByNestedInput
+  objectsResponsible?: Prisma.ProjectObjectUpdateManyWithoutResponsibleNestedInput
+  objectsCreated?: Prisma.ProjectObjectUpdateManyWithoutCreatedByNestedInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUpdateManyWithoutResponsibleNestedInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUpdateManyWithoutCreatedByNestedInput
+  dealsResponsible?: Prisma.DealUpdateManyWithoutResponsibleNestedInput
+  dealsCreated?: Prisma.DealUpdateManyWithoutCreatedByNestedInput
+  proposalsResponsible?: Prisma.CommercialProposalUpdateManyWithoutResponsibleNestedInput
+  proposalsCreated?: Prisma.CommercialProposalUpdateManyWithoutCreatedByNestedInput
+  proposalsUploaded?: Prisma.CommercialProposalUpdateManyWithoutUploadedByNestedInput
+  tasksResponsible?: Prisma.TaskActivityUpdateManyWithoutResponsibleNestedInput
+  tasksCreated?: Prisma.TaskActivityUpdateManyWithoutCreatedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUpdateManyWithoutResolvedByNestedInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementUpdateManyWithoutCreatedByNestedInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementUpdateManyWithoutApprovedByNestedInput
+  paymentsCreated?: Prisma.PaymentUpdateManyWithoutCreatedByNestedInput
+  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutConfirmedByNestedInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualUpdateManyWithoutCreatedByNestedInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutUpdateManyWithoutCreatedByNestedInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUpdateManyWithoutPaidByNestedInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
+  securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  employeeProfile?: Prisma.EmployeeProfileUpdateOneWithoutUserNestedInput
+  workShiftsCreated?: Prisma.WorkShiftUpdateManyWithoutCreatedByNestedInput
+  locationDisplayDevicesApproved?: Prisma.LocationDisplayDeviceUpdateManyWithoutApprovedByNestedInput
+  locationDisplayDevicesRevoked?: Prisma.LocationDisplayDeviceUpdateManyWithoutRevokedByNestedInput
+  displaySetupTokensCreated?: Prisma.LocationDisplaySetupTokenUpdateManyWithoutCreatedByNestedInput
+  timeEvents?: Prisma.TimeEventUpdateManyWithoutUserNestedInput
+  timeEventsReviewed?: Prisma.TimeEventUpdateManyWithoutReviewedByNestedInput
+  timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
+  timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
+  timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
+  employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
+  employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSchedulePlanApprovalLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
+  clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
+  designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
+  designersCreated?: Prisma.DesignerUncheckedUpdateManyWithoutCreatedByNestedInput
+  objectsResponsible?: Prisma.ProjectObjectUncheckedUpdateManyWithoutResponsibleNestedInput
+  objectsCreated?: Prisma.ProjectObjectUncheckedUpdateManyWithoutCreatedByNestedInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUncheckedUpdateManyWithoutResponsibleNestedInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUncheckedUpdateManyWithoutCreatedByNestedInput
+  dealsResponsible?: Prisma.DealUncheckedUpdateManyWithoutResponsibleNestedInput
+  dealsCreated?: Prisma.DealUncheckedUpdateManyWithoutCreatedByNestedInput
+  proposalsResponsible?: Prisma.CommercialProposalUncheckedUpdateManyWithoutResponsibleNestedInput
+  proposalsCreated?: Prisma.CommercialProposalUncheckedUpdateManyWithoutCreatedByNestedInput
+  proposalsUploaded?: Prisma.CommercialProposalUncheckedUpdateManyWithoutUploadedByNestedInput
+  tasksResponsible?: Prisma.TaskActivityUncheckedUpdateManyWithoutResponsibleNestedInput
+  tasksCreated?: Prisma.TaskActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedUpdateManyWithoutResolvedByNestedInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementUncheckedUpdateManyWithoutApprovedByNestedInput
+  paymentsCreated?: Prisma.PaymentUncheckedUpdateManyWithoutCreatedByNestedInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutConfirmedByNestedInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualUncheckedUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutUncheckedUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUncheckedUpdateManyWithoutPaidByNestedInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+  securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  employeeProfile?: Prisma.EmployeeProfileUncheckedUpdateOneWithoutUserNestedInput
+  workShiftsCreated?: Prisma.WorkShiftUncheckedUpdateManyWithoutCreatedByNestedInput
+  locationDisplayDevicesApproved?: Prisma.LocationDisplayDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
+  locationDisplayDevicesRevoked?: Prisma.LocationDisplayDeviceUncheckedUpdateManyWithoutRevokedByNestedInput
+  displaySetupTokensCreated?: Prisma.LocationDisplaySetupTokenUncheckedUpdateManyWithoutCreatedByNestedInput
+  timeEvents?: Prisma.TimeEventUncheckedUpdateManyWithoutUserNestedInput
+  timeEventsReviewed?: Prisma.TimeEventUncheckedUpdateManyWithoutReviewedByNestedInput
+  timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
+  timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
+  timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -10500,6 +13359,13 @@ export type UserCreateWithoutWorkShiftsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -10566,6 +13432,13 @@ export type UserUncheckedCreateWithoutWorkShiftsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -10646,6 +13519,13 @@ export type UserUpdateWithoutWorkShiftsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -10712,6 +13592,317 @@ export type UserUncheckedUpdateWithoutWorkShiftsCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
+  employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
+  employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
+  deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
+}
+
+export type UserCreateWithoutScheduleDayStatusesInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash?: string | null
+  authProviderId?: string | null
+  role: $Enums.UserRole
+  isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  confidentialityAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
+  clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
+  designersResponsible?: Prisma.DesignerCreateNestedManyWithoutResponsibleInput
+  designersCreated?: Prisma.DesignerCreateNestedManyWithoutCreatedByInput
+  objectsResponsible?: Prisma.ProjectObjectCreateNestedManyWithoutResponsibleInput
+  objectsCreated?: Prisma.ProjectObjectCreateNestedManyWithoutCreatedByInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantCreateNestedManyWithoutResponsibleInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantCreateNestedManyWithoutCreatedByInput
+  dealsResponsible?: Prisma.DealCreateNestedManyWithoutResponsibleInput
+  dealsCreated?: Prisma.DealCreateNestedManyWithoutCreatedByInput
+  proposalsResponsible?: Prisma.CommercialProposalCreateNestedManyWithoutResponsibleInput
+  proposalsCreated?: Prisma.CommercialProposalCreateNestedManyWithoutCreatedByInput
+  proposalsUploaded?: Prisma.CommercialProposalCreateNestedManyWithoutUploadedByInput
+  tasksResponsible?: Prisma.TaskActivityCreateNestedManyWithoutResponsibleInput
+  tasksCreated?: Prisma.TaskActivityCreateNestedManyWithoutCreatedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationCreateNestedManyWithoutResolvedByInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementCreateNestedManyWithoutCreatedByInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementCreateNestedManyWithoutApprovedByInput
+  paymentsCreated?: Prisma.PaymentCreateNestedManyWithoutCreatedByInput
+  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutConfirmedByInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualCreateNestedManyWithoutCreatedByInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutCreateNestedManyWithoutCreatedByInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutCreateNestedManyWithoutPaidByInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutCreatedByInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentCreateNestedManyWithoutApprovedByInput
+  securityLogs?: Prisma.SecurityLogCreateNestedManyWithoutUserInput
+  employeeProfile?: Prisma.EmployeeProfileCreateNestedOneWithoutUserInput
+  workShiftsCreated?: Prisma.WorkShiftCreateNestedManyWithoutCreatedByInput
+  locationDisplayDevicesApproved?: Prisma.LocationDisplayDeviceCreateNestedManyWithoutApprovedByInput
+  locationDisplayDevicesRevoked?: Prisma.LocationDisplayDeviceCreateNestedManyWithoutRevokedByInput
+  displaySetupTokensCreated?: Prisma.LocationDisplaySetupTokenCreateNestedManyWithoutCreatedByInput
+  timeEvents?: Prisma.TimeEventCreateNestedManyWithoutUserInput
+  timeEventsReviewed?: Prisma.TimeEventCreateNestedManyWithoutReviewedByInput
+  timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
+  timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
+  timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
+  employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
+  deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
+  deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationCreateNestedManyWithoutInvitedByInput
+}
+
+export type UserUncheckedCreateWithoutScheduleDayStatusesInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash?: string | null
+  authProviderId?: string | null
+  role: $Enums.UserRole
+  isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastPasswordChangeAt?: Date | string | null
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  deactivatedAt?: Date | string | null
+  deactivatedById?: string | null
+  confidentialityAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
+  clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
+  designersResponsible?: Prisma.DesignerUncheckedCreateNestedManyWithoutResponsibleInput
+  designersCreated?: Prisma.DesignerUncheckedCreateNestedManyWithoutCreatedByInput
+  objectsResponsible?: Prisma.ProjectObjectUncheckedCreateNestedManyWithoutResponsibleInput
+  objectsCreated?: Prisma.ProjectObjectUncheckedCreateNestedManyWithoutCreatedByInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUncheckedCreateNestedManyWithoutResponsibleInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUncheckedCreateNestedManyWithoutCreatedByInput
+  dealsResponsible?: Prisma.DealUncheckedCreateNestedManyWithoutResponsibleInput
+  dealsCreated?: Prisma.DealUncheckedCreateNestedManyWithoutCreatedByInput
+  proposalsResponsible?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutResponsibleInput
+  proposalsCreated?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutCreatedByInput
+  proposalsUploaded?: Prisma.CommercialProposalUncheckedCreateNestedManyWithoutUploadedByInput
+  tasksResponsible?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutResponsibleInput
+  tasksCreated?: Prisma.TaskActivityUncheckedCreateNestedManyWithoutCreatedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResponsibleInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedCreateNestedManyWithoutResolvedByInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementUncheckedCreateNestedManyWithoutApprovedByInput
+  paymentsCreated?: Prisma.PaymentUncheckedCreateNestedManyWithoutCreatedByInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutConfirmedByInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualUncheckedCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutUncheckedCreateNestedManyWithoutApprovedByInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUncheckedCreateNestedManyWithoutPaidByInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutCreatedByInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedCreateNestedManyWithoutApprovedByInput
+  securityLogs?: Prisma.SecurityLogUncheckedCreateNestedManyWithoutUserInput
+  employeeProfile?: Prisma.EmployeeProfileUncheckedCreateNestedOneWithoutUserInput
+  workShiftsCreated?: Prisma.WorkShiftUncheckedCreateNestedManyWithoutCreatedByInput
+  locationDisplayDevicesApproved?: Prisma.LocationDisplayDeviceUncheckedCreateNestedManyWithoutApprovedByInput
+  locationDisplayDevicesRevoked?: Prisma.LocationDisplayDeviceUncheckedCreateNestedManyWithoutRevokedByInput
+  displaySetupTokensCreated?: Prisma.LocationDisplaySetupTokenUncheckedCreateNestedManyWithoutCreatedByInput
+  timeEvents?: Prisma.TimeEventUncheckedCreateNestedManyWithoutUserInput
+  timeEventsReviewed?: Prisma.TimeEventUncheckedCreateNestedManyWithoutReviewedByInput
+  timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
+  timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
+  timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
+  employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
+  deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  invitationsSent?: Prisma.UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
+}
+
+export type UserCreateOrConnectWithoutScheduleDayStatusesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutScheduleDayStatusesInput, Prisma.UserUncheckedCreateWithoutScheduleDayStatusesInput>
+}
+
+export type UserUpsertWithoutScheduleDayStatusesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutScheduleDayStatusesInput, Prisma.UserUncheckedUpdateWithoutScheduleDayStatusesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutScheduleDayStatusesInput, Prisma.UserUncheckedCreateWithoutScheduleDayStatusesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutScheduleDayStatusesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutScheduleDayStatusesInput, Prisma.UserUncheckedUpdateWithoutScheduleDayStatusesInput>
+}
+
+export type UserUpdateWithoutScheduleDayStatusesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
+  clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
+  designersResponsible?: Prisma.DesignerUpdateManyWithoutResponsibleNestedInput
+  designersCreated?: Prisma.DesignerUpdateManyWithoutCreatedByNestedInput
+  objectsResponsible?: Prisma.ProjectObjectUpdateManyWithoutResponsibleNestedInput
+  objectsCreated?: Prisma.ProjectObjectUpdateManyWithoutCreatedByNestedInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUpdateManyWithoutResponsibleNestedInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUpdateManyWithoutCreatedByNestedInput
+  dealsResponsible?: Prisma.DealUpdateManyWithoutResponsibleNestedInput
+  dealsCreated?: Prisma.DealUpdateManyWithoutCreatedByNestedInput
+  proposalsResponsible?: Prisma.CommercialProposalUpdateManyWithoutResponsibleNestedInput
+  proposalsCreated?: Prisma.CommercialProposalUpdateManyWithoutCreatedByNestedInput
+  proposalsUploaded?: Prisma.CommercialProposalUpdateManyWithoutUploadedByNestedInput
+  tasksResponsible?: Prisma.TaskActivityUpdateManyWithoutResponsibleNestedInput
+  tasksCreated?: Prisma.TaskActivityUpdateManyWithoutCreatedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUpdateManyWithoutResolvedByNestedInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementUpdateManyWithoutCreatedByNestedInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementUpdateManyWithoutApprovedByNestedInput
+  paymentsCreated?: Prisma.PaymentUpdateManyWithoutCreatedByNestedInput
+  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutConfirmedByNestedInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualUpdateManyWithoutCreatedByNestedInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutUpdateManyWithoutCreatedByNestedInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUpdateManyWithoutPaidByNestedInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutCreatedByNestedInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUpdateManyWithoutApprovedByNestedInput
+  securityLogs?: Prisma.SecurityLogUpdateManyWithoutUserNestedInput
+  employeeProfile?: Prisma.EmployeeProfileUpdateOneWithoutUserNestedInput
+  workShiftsCreated?: Prisma.WorkShiftUpdateManyWithoutCreatedByNestedInput
+  locationDisplayDevicesApproved?: Prisma.LocationDisplayDeviceUpdateManyWithoutApprovedByNestedInput
+  locationDisplayDevicesRevoked?: Prisma.LocationDisplayDeviceUpdateManyWithoutRevokedByNestedInput
+  displaySetupTokensCreated?: Prisma.LocationDisplaySetupTokenUpdateManyWithoutCreatedByNestedInput
+  timeEvents?: Prisma.TimeEventUpdateManyWithoutUserNestedInput
+  timeEventsReviewed?: Prisma.TimeEventUpdateManyWithoutReviewedByNestedInput
+  timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
+  timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
+  timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
+  employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
+  deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
+  deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  invitationsSent?: Prisma.UserInvitationUpdateManyWithoutInvitedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutScheduleDayStatusesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authProviderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastPasswordChangeAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
+  clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
+  designersResponsible?: Prisma.DesignerUncheckedUpdateManyWithoutResponsibleNestedInput
+  designersCreated?: Prisma.DesignerUncheckedUpdateManyWithoutCreatedByNestedInput
+  objectsResponsible?: Prisma.ProjectObjectUncheckedUpdateManyWithoutResponsibleNestedInput
+  objectsCreated?: Prisma.ProjectObjectUncheckedUpdateManyWithoutCreatedByNestedInput
+  objectParticipantsResponsible?: Prisma.ProjectObjectParticipantUncheckedUpdateManyWithoutResponsibleNestedInput
+  objectParticipantsCreated?: Prisma.ProjectObjectParticipantUncheckedUpdateManyWithoutCreatedByNestedInput
+  dealsResponsible?: Prisma.DealUncheckedUpdateManyWithoutResponsibleNestedInput
+  dealsCreated?: Prisma.DealUncheckedUpdateManyWithoutCreatedByNestedInput
+  proposalsResponsible?: Prisma.CommercialProposalUncheckedUpdateManyWithoutResponsibleNestedInput
+  proposalsCreated?: Prisma.CommercialProposalUncheckedUpdateManyWithoutCreatedByNestedInput
+  proposalsUploaded?: Prisma.CommercialProposalUncheckedUpdateManyWithoutUploadedByNestedInput
+  tasksResponsible?: Prisma.TaskActivityUncheckedUpdateManyWithoutResponsibleNestedInput
+  tasksCreated?: Prisma.TaskActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  crmViolationsResponsible?: Prisma.CrmViolationUncheckedUpdateManyWithoutResponsibleNestedInput
+  crmViolationsResolved?: Prisma.CrmViolationUncheckedUpdateManyWithoutResolvedByNestedInput
+  bonusAgreementsCreated?: Prisma.DesignerBonusAgreementUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusAgreementsApproved?: Prisma.DesignerBonusAgreementUncheckedUpdateManyWithoutApprovedByNestedInput
+  paymentsCreated?: Prisma.PaymentUncheckedUpdateManyWithoutCreatedByNestedInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutConfirmedByNestedInput
+  bonusAccrualsCreated?: Prisma.DesignerBonusAccrualUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusAccrualsApproved?: Prisma.DesignerBonusAccrualUncheckedUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsCreated?: Prisma.DesignerBonusPayoutUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusPayoutsApproved?: Prisma.DesignerBonusPayoutUncheckedUpdateManyWithoutApprovedByNestedInput
+  bonusPayoutsPaid?: Prisma.DesignerBonusPayoutUncheckedUpdateManyWithoutPaidByNestedInput
+  bonusAdjustmentsCreated?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  bonusAdjustmentsApproved?: Prisma.DesignerBonusAdjustmentUncheckedUpdateManyWithoutApprovedByNestedInput
+  securityLogs?: Prisma.SecurityLogUncheckedUpdateManyWithoutUserNestedInput
+  employeeProfile?: Prisma.EmployeeProfileUncheckedUpdateOneWithoutUserNestedInput
+  workShiftsCreated?: Prisma.WorkShiftUncheckedUpdateManyWithoutCreatedByNestedInput
+  locationDisplayDevicesApproved?: Prisma.LocationDisplayDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
+  locationDisplayDevicesRevoked?: Prisma.LocationDisplayDeviceUncheckedUpdateManyWithoutRevokedByNestedInput
+  displaySetupTokensCreated?: Prisma.LocationDisplaySetupTokenUncheckedUpdateManyWithoutCreatedByNestedInput
+  timeEvents?: Prisma.TimeEventUncheckedUpdateManyWithoutUserNestedInput
+  timeEventsReviewed?: Prisma.TimeEventUncheckedUpdateManyWithoutReviewedByNestedInput
+  timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
+  timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
+  timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -10777,6 +13968,13 @@ export type UserCreateWithoutEmployeeDevicesApprovedInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
   deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
@@ -10843,6 +14041,13 @@ export type UserUncheckedCreateWithoutEmployeeDevicesApprovedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
   emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
@@ -10912,6 +14117,13 @@ export type UserCreateWithoutEmployeeDevicesBlockedInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
   deactivatedUsers?: Prisma.UserCreateNestedManyWithoutDeactivatedByInput
@@ -10978,6 +14190,13 @@ export type UserUncheckedCreateWithoutEmployeeDevicesBlockedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
   emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
@@ -11058,6 +14277,13 @@ export type UserUpdateWithoutEmployeeDevicesApprovedInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
   deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
@@ -11124,6 +14350,13 @@ export type UserUncheckedUpdateWithoutEmployeeDevicesApprovedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
   emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -11199,6 +14432,13 @@ export type UserUpdateWithoutEmployeeDevicesBlockedInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
   deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
@@ -11265,6 +14505,13 @@ export type UserUncheckedUpdateWithoutEmployeeDevicesBlockedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
   emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -11328,6 +14575,13 @@ export type UserCreateWithoutLocationDisplayDevicesApprovedInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -11394,6 +14648,13 @@ export type UserUncheckedCreateWithoutLocationDisplayDevicesApprovedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -11463,6 +14724,13 @@ export type UserCreateWithoutLocationDisplayDevicesRevokedInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -11529,6 +14797,13 @@ export type UserUncheckedCreateWithoutLocationDisplayDevicesRevokedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -11609,6 +14884,13 @@ export type UserUpdateWithoutLocationDisplayDevicesApprovedInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -11675,6 +14957,13 @@ export type UserUncheckedUpdateWithoutLocationDisplayDevicesApprovedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -11750,6 +15039,13 @@ export type UserUpdateWithoutLocationDisplayDevicesRevokedInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -11816,6 +15112,13 @@ export type UserUncheckedUpdateWithoutLocationDisplayDevicesRevokedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -11880,6 +15183,13 @@ export type UserCreateWithoutDisplaySetupTokensCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -11946,6 +15256,13 @@ export type UserUncheckedCreateWithoutDisplaySetupTokensCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -12026,6 +15343,13 @@ export type UserUpdateWithoutDisplaySetupTokensCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -12092,6 +15416,13 @@ export type UserUncheckedUpdateWithoutDisplaySetupTokensCreatedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -12156,6 +15487,13 @@ export type UserCreateWithoutTimeEventsInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -12222,6 +15560,13 @@ export type UserUncheckedCreateWithoutTimeEventsInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -12291,6 +15636,13 @@ export type UserCreateWithoutTimeEventsReviewedInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -12357,6 +15709,13 @@ export type UserUncheckedCreateWithoutTimeEventsReviewedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -12437,6 +15796,13 @@ export type UserUpdateWithoutTimeEventsInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -12503,6 +15869,13 @@ export type UserUncheckedUpdateWithoutTimeEventsInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -12578,6 +15951,13 @@ export type UserUpdateWithoutTimeEventsReviewedInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -12644,6 +16024,13 @@ export type UserUncheckedUpdateWithoutTimeEventsReviewedInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -12708,6 +16095,13 @@ export type UserCreateWithoutTimesheetDaysInput = {
   timeEventsReviewed?: Prisma.TimeEventCreateNestedManyWithoutReviewedByInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -12774,6 +16168,13 @@ export type UserUncheckedCreateWithoutTimesheetDaysInput = {
   timeEventsReviewed?: Prisma.TimeEventUncheckedCreateNestedManyWithoutReviewedByInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -12854,6 +16255,13 @@ export type UserUpdateWithoutTimesheetDaysInput = {
   timeEventsReviewed?: Prisma.TimeEventUpdateManyWithoutReviewedByNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -12920,6 +16328,13 @@ export type UserUncheckedUpdateWithoutTimesheetDaysInput = {
   timeEventsReviewed?: Prisma.TimeEventUncheckedUpdateManyWithoutReviewedByNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -12984,6 +16399,13 @@ export type UserCreateWithoutTimeAdjustmentRequestsInput = {
   timeEventsReviewed?: Prisma.TimeEventCreateNestedManyWithoutReviewedByInput
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -13050,6 +16472,13 @@ export type UserUncheckedCreateWithoutTimeAdjustmentRequestsInput = {
   timeEventsReviewed?: Prisma.TimeEventUncheckedCreateNestedManyWithoutReviewedByInput
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -13119,6 +16548,13 @@ export type UserCreateWithoutTimeAdjustmentRequestsReviewedInput = {
   timeEventsReviewed?: Prisma.TimeEventCreateNestedManyWithoutReviewedByInput
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -13185,6 +16621,13 @@ export type UserUncheckedCreateWithoutTimeAdjustmentRequestsReviewedInput = {
   timeEventsReviewed?: Prisma.TimeEventUncheckedCreateNestedManyWithoutReviewedByInput
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -13265,6 +16708,13 @@ export type UserUpdateWithoutTimeAdjustmentRequestsInput = {
   timeEventsReviewed?: Prisma.TimeEventUpdateManyWithoutReviewedByNestedInput
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -13331,6 +16781,13 @@ export type UserUncheckedUpdateWithoutTimeAdjustmentRequestsInput = {
   timeEventsReviewed?: Prisma.TimeEventUncheckedUpdateManyWithoutReviewedByNestedInput
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -13406,6 +16863,13 @@ export type UserUpdateWithoutTimeAdjustmentRequestsReviewedInput = {
   timeEventsReviewed?: Prisma.TimeEventUpdateManyWithoutReviewedByNestedInput
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -13472,6 +16936,13 @@ export type UserUncheckedUpdateWithoutTimeAdjustmentRequestsReviewedInput = {
   timeEventsReviewed?: Prisma.TimeEventUncheckedUpdateManyWithoutReviewedByNestedInput
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -13536,6 +17007,13 @@ export type UserCreateWithoutSecurityLogsInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -13602,6 +17080,13 @@ export type UserUncheckedCreateWithoutSecurityLogsInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -13682,6 +17167,13 @@ export type UserUpdateWithoutSecurityLogsInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -13748,6 +17240,13 @@ export type UserUncheckedUpdateWithoutSecurityLogsInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -13813,6 +17312,13 @@ export type UserCreateWithoutEmailVerificationTokensInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -13879,6 +17385,13 @@ export type UserUncheckedCreateWithoutEmailVerificationTokensInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -13959,6 +17472,13 @@ export type UserUpdateWithoutEmailVerificationTokensInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -14025,6 +17545,13 @@ export type UserUncheckedUpdateWithoutEmailVerificationTokensInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -14089,6 +17616,13 @@ export type UserCreateWithoutPasswordResetTokensInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -14155,6 +17689,13 @@ export type UserUncheckedCreateWithoutPasswordResetTokensInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -14235,6 +17776,13 @@ export type UserUpdateWithoutPasswordResetTokensInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -14301,6 +17849,13 @@ export type UserUncheckedUpdateWithoutPasswordResetTokensInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -14365,6 +17920,13 @@ export type UserCreateWithoutInvitationsSentInput = {
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceCreateNestedManyWithoutBlockedByInput
   deactivatedBy?: Prisma.UserCreateNestedOneWithoutDeactivatedUsersInput
@@ -14431,6 +17993,13 @@ export type UserUncheckedCreateWithoutInvitationsSentInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutUserInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutSubmittedByInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutApprovedByInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutReturnedByInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutUserInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedCreateNestedManyWithoutActorInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutUserInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutApprovedByInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedCreateNestedManyWithoutBlockedByInput
   deactivatedUsers?: Prisma.UserUncheckedCreateNestedManyWithoutDeactivatedByInput
@@ -14511,6 +18080,13 @@ export type UserUpdateWithoutInvitationsSentInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedBy?: Prisma.UserUpdateOneWithoutDeactivatedUsersNestedInput
@@ -14577,6 +18153,13 @@ export type UserUncheckedUpdateWithoutInvitationsSentInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -14660,6 +18243,13 @@ export type UserUpdateWithoutDeactivatedByInput = {
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUpdateManyWithoutDeactivatedByNestedInput
@@ -14725,6 +18315,13 @@ export type UserUncheckedUpdateWithoutDeactivatedByInput = {
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutUserNestedInput
   timeAdjustmentRequestsReviewed?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  schedulePlansCreated?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  schedulePlansSubmitted?: Prisma.SchedulePlanUncheckedUpdateManyWithoutSubmittedByNestedInput
+  schedulePlansApproved?: Prisma.SchedulePlanUncheckedUpdateManyWithoutApprovedByNestedInput
+  schedulePlansReturned?: Prisma.SchedulePlanUncheckedUpdateManyWithoutReturnedByNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutUserNestedInput
+  schedulePlanApprovalLogs?: Prisma.SchedulePlanApprovalLogUncheckedUpdateManyWithoutActorNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutUserNestedInput
   employeeDevicesApproved?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutApprovedByNestedInput
   employeeDevicesBlocked?: Prisma.EmployeeTrustedDeviceUncheckedUpdateManyWithoutBlockedByNestedInput
   deactivatedUsers?: Prisma.UserUncheckedUpdateManyWithoutDeactivatedByNestedInput
@@ -14797,6 +18394,13 @@ export type UserCountOutputType = {
   timesheetDays: number
   timeAdjustmentRequests: number
   timeAdjustmentRequestsReviewed: number
+  schedulePlansCreated: number
+  schedulePlansSubmitted: number
+  schedulePlansApproved: number
+  schedulePlansReturned: number
+  schedulePlanCells: number
+  schedulePlanApprovalLogs: number
+  scheduleDayStatuses: number
   employeeDevicesApproved: number
   employeeDevicesBlocked: number
   deactivatedUsers: number
@@ -14845,6 +18449,13 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   timesheetDays?: boolean | UserCountOutputTypeCountTimesheetDaysArgs
   timeAdjustmentRequests?: boolean | UserCountOutputTypeCountTimeAdjustmentRequestsArgs
   timeAdjustmentRequestsReviewed?: boolean | UserCountOutputTypeCountTimeAdjustmentRequestsReviewedArgs
+  schedulePlansCreated?: boolean | UserCountOutputTypeCountSchedulePlansCreatedArgs
+  schedulePlansSubmitted?: boolean | UserCountOutputTypeCountSchedulePlansSubmittedArgs
+  schedulePlansApproved?: boolean | UserCountOutputTypeCountSchedulePlansApprovedArgs
+  schedulePlansReturned?: boolean | UserCountOutputTypeCountSchedulePlansReturnedArgs
+  schedulePlanCells?: boolean | UserCountOutputTypeCountSchedulePlanCellsArgs
+  schedulePlanApprovalLogs?: boolean | UserCountOutputTypeCountSchedulePlanApprovalLogsArgs
+  scheduleDayStatuses?: boolean | UserCountOutputTypeCountScheduleDayStatusesArgs
   employeeDevicesApproved?: boolean | UserCountOutputTypeCountEmployeeDevicesApprovedArgs
   employeeDevicesBlocked?: boolean | UserCountOutputTypeCountEmployeeDevicesBlockedArgs
   deactivatedUsers?: boolean | UserCountOutputTypeCountDeactivatedUsersArgs
@@ -15139,6 +18750,55 @@ export type UserCountOutputTypeCountTimeAdjustmentRequestsReviewedArgs<ExtArgs e
 /**
  * UserCountOutputType without action
  */
+export type UserCountOutputTypeCountSchedulePlansCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SchedulePlanWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSchedulePlansSubmittedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SchedulePlanWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSchedulePlansApprovedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SchedulePlanWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSchedulePlansReturnedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SchedulePlanWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSchedulePlanCellsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SchedulePlanCellWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSchedulePlanApprovalLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SchedulePlanApprovalLogWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountScheduleDayStatusesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ScheduleDayStatusWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
 export type UserCountOutputTypeCountEmployeeDevicesApprovedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.EmployeeTrustedDeviceWhereInput
 }
@@ -15237,6 +18897,13 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   timesheetDays?: boolean | Prisma.User$timesheetDaysArgs<ExtArgs>
   timeAdjustmentRequests?: boolean | Prisma.User$timeAdjustmentRequestsArgs<ExtArgs>
   timeAdjustmentRequestsReviewed?: boolean | Prisma.User$timeAdjustmentRequestsReviewedArgs<ExtArgs>
+  schedulePlansCreated?: boolean | Prisma.User$schedulePlansCreatedArgs<ExtArgs>
+  schedulePlansSubmitted?: boolean | Prisma.User$schedulePlansSubmittedArgs<ExtArgs>
+  schedulePlansApproved?: boolean | Prisma.User$schedulePlansApprovedArgs<ExtArgs>
+  schedulePlansReturned?: boolean | Prisma.User$schedulePlansReturnedArgs<ExtArgs>
+  schedulePlanCells?: boolean | Prisma.User$schedulePlanCellsArgs<ExtArgs>
+  schedulePlanApprovalLogs?: boolean | Prisma.User$schedulePlanApprovalLogsArgs<ExtArgs>
+  scheduleDayStatuses?: boolean | Prisma.User$scheduleDayStatusesArgs<ExtArgs>
   employeeDevicesApproved?: boolean | Prisma.User$employeeDevicesApprovedArgs<ExtArgs>
   employeeDevicesBlocked?: boolean | Prisma.User$employeeDevicesBlockedArgs<ExtArgs>
   deactivatedBy?: boolean | Prisma.User$deactivatedByArgs<ExtArgs>
@@ -15351,6 +19018,13 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   timesheetDays?: boolean | Prisma.User$timesheetDaysArgs<ExtArgs>
   timeAdjustmentRequests?: boolean | Prisma.User$timeAdjustmentRequestsArgs<ExtArgs>
   timeAdjustmentRequestsReviewed?: boolean | Prisma.User$timeAdjustmentRequestsReviewedArgs<ExtArgs>
+  schedulePlansCreated?: boolean | Prisma.User$schedulePlansCreatedArgs<ExtArgs>
+  schedulePlansSubmitted?: boolean | Prisma.User$schedulePlansSubmittedArgs<ExtArgs>
+  schedulePlansApproved?: boolean | Prisma.User$schedulePlansApprovedArgs<ExtArgs>
+  schedulePlansReturned?: boolean | Prisma.User$schedulePlansReturnedArgs<ExtArgs>
+  schedulePlanCells?: boolean | Prisma.User$schedulePlanCellsArgs<ExtArgs>
+  schedulePlanApprovalLogs?: boolean | Prisma.User$schedulePlanApprovalLogsArgs<ExtArgs>
+  scheduleDayStatuses?: boolean | Prisma.User$scheduleDayStatusesArgs<ExtArgs>
   employeeDevicesApproved?: boolean | Prisma.User$employeeDevicesApprovedArgs<ExtArgs>
   employeeDevicesBlocked?: boolean | Prisma.User$employeeDevicesBlockedArgs<ExtArgs>
   deactivatedBy?: boolean | Prisma.User$deactivatedByArgs<ExtArgs>
@@ -15410,6 +19084,13 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     timesheetDays: Prisma.$TimesheetDayPayload<ExtArgs>[]
     timeAdjustmentRequests: Prisma.$TimeAdjustmentRequestPayload<ExtArgs>[]
     timeAdjustmentRequestsReviewed: Prisma.$TimeAdjustmentRequestPayload<ExtArgs>[]
+    schedulePlansCreated: Prisma.$SchedulePlanPayload<ExtArgs>[]
+    schedulePlansSubmitted: Prisma.$SchedulePlanPayload<ExtArgs>[]
+    schedulePlansApproved: Prisma.$SchedulePlanPayload<ExtArgs>[]
+    schedulePlansReturned: Prisma.$SchedulePlanPayload<ExtArgs>[]
+    schedulePlanCells: Prisma.$SchedulePlanCellPayload<ExtArgs>[]
+    schedulePlanApprovalLogs: Prisma.$SchedulePlanApprovalLogPayload<ExtArgs>[]
+    scheduleDayStatuses: Prisma.$ScheduleDayStatusPayload<ExtArgs>[]
     employeeDevicesApproved: Prisma.$EmployeeTrustedDevicePayload<ExtArgs>[]
     employeeDevicesBlocked: Prisma.$EmployeeTrustedDevicePayload<ExtArgs>[]
     deactivatedBy: Prisma.$UserPayload<ExtArgs> | null
@@ -15870,6 +19551,13 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   timesheetDays<T extends Prisma.User$timesheetDaysArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$timesheetDaysArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TimesheetDayPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   timeAdjustmentRequests<T extends Prisma.User$timeAdjustmentRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$timeAdjustmentRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TimeAdjustmentRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   timeAdjustmentRequestsReviewed<T extends Prisma.User$timeAdjustmentRequestsReviewedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$timeAdjustmentRequestsReviewedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TimeAdjustmentRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  schedulePlansCreated<T extends Prisma.User$schedulePlansCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$schedulePlansCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SchedulePlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  schedulePlansSubmitted<T extends Prisma.User$schedulePlansSubmittedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$schedulePlansSubmittedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SchedulePlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  schedulePlansApproved<T extends Prisma.User$schedulePlansApprovedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$schedulePlansApprovedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SchedulePlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  schedulePlansReturned<T extends Prisma.User$schedulePlansReturnedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$schedulePlansReturnedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SchedulePlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  schedulePlanCells<T extends Prisma.User$schedulePlanCellsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$schedulePlanCellsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SchedulePlanCellPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  schedulePlanApprovalLogs<T extends Prisma.User$schedulePlanApprovalLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$schedulePlanApprovalLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SchedulePlanApprovalLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  scheduleDayStatuses<T extends Prisma.User$scheduleDayStatusesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$scheduleDayStatusesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ScheduleDayStatusPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   employeeDevicesApproved<T extends Prisma.User$employeeDevicesApprovedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$employeeDevicesApprovedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EmployeeTrustedDevicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   employeeDevicesBlocked<T extends Prisma.User$employeeDevicesBlockedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$employeeDevicesBlockedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EmployeeTrustedDevicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   deactivatedBy<T extends Prisma.User$deactivatedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$deactivatedByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -17276,6 +20964,174 @@ export type User$timeAdjustmentRequestsReviewedArgs<ExtArgs extends runtime.Type
   take?: number
   skip?: number
   distinct?: Prisma.TimeAdjustmentRequestScalarFieldEnum | Prisma.TimeAdjustmentRequestScalarFieldEnum[]
+}
+
+/**
+ * User.schedulePlansCreated
+ */
+export type User$schedulePlansCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SchedulePlan
+   */
+  select?: Prisma.SchedulePlanSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SchedulePlan
+   */
+  omit?: Prisma.SchedulePlanOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SchedulePlanInclude<ExtArgs> | null
+  where?: Prisma.SchedulePlanWhereInput
+  orderBy?: Prisma.SchedulePlanOrderByWithRelationInput | Prisma.SchedulePlanOrderByWithRelationInput[]
+  cursor?: Prisma.SchedulePlanWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SchedulePlanScalarFieldEnum | Prisma.SchedulePlanScalarFieldEnum[]
+}
+
+/**
+ * User.schedulePlansSubmitted
+ */
+export type User$schedulePlansSubmittedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SchedulePlan
+   */
+  select?: Prisma.SchedulePlanSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SchedulePlan
+   */
+  omit?: Prisma.SchedulePlanOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SchedulePlanInclude<ExtArgs> | null
+  where?: Prisma.SchedulePlanWhereInput
+  orderBy?: Prisma.SchedulePlanOrderByWithRelationInput | Prisma.SchedulePlanOrderByWithRelationInput[]
+  cursor?: Prisma.SchedulePlanWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SchedulePlanScalarFieldEnum | Prisma.SchedulePlanScalarFieldEnum[]
+}
+
+/**
+ * User.schedulePlansApproved
+ */
+export type User$schedulePlansApprovedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SchedulePlan
+   */
+  select?: Prisma.SchedulePlanSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SchedulePlan
+   */
+  omit?: Prisma.SchedulePlanOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SchedulePlanInclude<ExtArgs> | null
+  where?: Prisma.SchedulePlanWhereInput
+  orderBy?: Prisma.SchedulePlanOrderByWithRelationInput | Prisma.SchedulePlanOrderByWithRelationInput[]
+  cursor?: Prisma.SchedulePlanWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SchedulePlanScalarFieldEnum | Prisma.SchedulePlanScalarFieldEnum[]
+}
+
+/**
+ * User.schedulePlansReturned
+ */
+export type User$schedulePlansReturnedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SchedulePlan
+   */
+  select?: Prisma.SchedulePlanSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SchedulePlan
+   */
+  omit?: Prisma.SchedulePlanOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SchedulePlanInclude<ExtArgs> | null
+  where?: Prisma.SchedulePlanWhereInput
+  orderBy?: Prisma.SchedulePlanOrderByWithRelationInput | Prisma.SchedulePlanOrderByWithRelationInput[]
+  cursor?: Prisma.SchedulePlanWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SchedulePlanScalarFieldEnum | Prisma.SchedulePlanScalarFieldEnum[]
+}
+
+/**
+ * User.schedulePlanCells
+ */
+export type User$schedulePlanCellsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SchedulePlanCell
+   */
+  select?: Prisma.SchedulePlanCellSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SchedulePlanCell
+   */
+  omit?: Prisma.SchedulePlanCellOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SchedulePlanCellInclude<ExtArgs> | null
+  where?: Prisma.SchedulePlanCellWhereInput
+  orderBy?: Prisma.SchedulePlanCellOrderByWithRelationInput | Prisma.SchedulePlanCellOrderByWithRelationInput[]
+  cursor?: Prisma.SchedulePlanCellWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SchedulePlanCellScalarFieldEnum | Prisma.SchedulePlanCellScalarFieldEnum[]
+}
+
+/**
+ * User.schedulePlanApprovalLogs
+ */
+export type User$schedulePlanApprovalLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SchedulePlanApprovalLog
+   */
+  select?: Prisma.SchedulePlanApprovalLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SchedulePlanApprovalLog
+   */
+  omit?: Prisma.SchedulePlanApprovalLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SchedulePlanApprovalLogInclude<ExtArgs> | null
+  where?: Prisma.SchedulePlanApprovalLogWhereInput
+  orderBy?: Prisma.SchedulePlanApprovalLogOrderByWithRelationInput | Prisma.SchedulePlanApprovalLogOrderByWithRelationInput[]
+  cursor?: Prisma.SchedulePlanApprovalLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SchedulePlanApprovalLogScalarFieldEnum | Prisma.SchedulePlanApprovalLogScalarFieldEnum[]
+}
+
+/**
+ * User.scheduleDayStatuses
+ */
+export type User$scheduleDayStatusesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ScheduleDayStatus
+   */
+  select?: Prisma.ScheduleDayStatusSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ScheduleDayStatus
+   */
+  omit?: Prisma.ScheduleDayStatusOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ScheduleDayStatusInclude<ExtArgs> | null
+  where?: Prisma.ScheduleDayStatusWhereInput
+  orderBy?: Prisma.ScheduleDayStatusOrderByWithRelationInput | Prisma.ScheduleDayStatusOrderByWithRelationInput[]
+  cursor?: Prisma.ScheduleDayStatusWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ScheduleDayStatusScalarFieldEnum | Prisma.ScheduleDayStatusScalarFieldEnum[]
 }
 
 /**

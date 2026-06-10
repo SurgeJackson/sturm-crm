@@ -68,6 +68,10 @@ export const timeEventStatusLabels: Record<TimeEventStatus, string> = {
 
 export const timesheetDayStatusLabels: Record<TimesheetDayStatus, string> = {
   SCHEDULED: "Запланировано",
+  DAY_OFF: "Выходной",
+  VACATION: "Отпуск",
+  SICK_LEAVE: "Больничный",
+  BUSINESS_TRIP: "Командировка",
   OK: "Без нарушений",
   LATE: "Опоздание",
   EARLY_LEAVE: "Ранний уход",

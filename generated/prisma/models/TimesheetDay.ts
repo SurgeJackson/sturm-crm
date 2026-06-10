@@ -46,6 +46,7 @@ export type TimesheetDayMinAggregateOutputType = {
   userId: string | null
   date: string | null
   shiftId: string | null
+  scheduleDayStatusId: string | null
   locationId: string | null
   plannedStart: Date | null
   plannedEnd: Date | null
@@ -67,6 +68,7 @@ export type TimesheetDayMaxAggregateOutputType = {
   userId: string | null
   date: string | null
   shiftId: string | null
+  scheduleDayStatusId: string | null
   locationId: string | null
   plannedStart: Date | null
   plannedEnd: Date | null
@@ -88,6 +90,7 @@ export type TimesheetDayCountAggregateOutputType = {
   userId: number
   date: number
   shiftId: number
+  scheduleDayStatusId: number
   locationId: number
   plannedStart: number
   plannedEnd: number
@@ -125,6 +128,7 @@ export type TimesheetDayMinAggregateInputType = {
   userId?: true
   date?: true
   shiftId?: true
+  scheduleDayStatusId?: true
   locationId?: true
   plannedStart?: true
   plannedEnd?: true
@@ -146,6 +150,7 @@ export type TimesheetDayMaxAggregateInputType = {
   userId?: true
   date?: true
   shiftId?: true
+  scheduleDayStatusId?: true
   locationId?: true
   plannedStart?: true
   plannedEnd?: true
@@ -167,6 +172,7 @@ export type TimesheetDayCountAggregateInputType = {
   userId?: true
   date?: true
   shiftId?: true
+  scheduleDayStatusId?: true
   locationId?: true
   plannedStart?: true
   plannedEnd?: true
@@ -275,6 +281,7 @@ export type TimesheetDayGroupByOutputType = {
   userId: string
   date: string
   shiftId: string | null
+  scheduleDayStatusId: string | null
   locationId: string | null
   plannedStart: Date | null
   plannedEnd: Date | null
@@ -319,6 +326,7 @@ export type TimesheetDayWhereInput = {
   userId?: Prisma.StringFilter<"TimesheetDay"> | string
   date?: Prisma.StringFilter<"TimesheetDay"> | string
   shiftId?: Prisma.StringNullableFilter<"TimesheetDay"> | string | null
+  scheduleDayStatusId?: Prisma.StringNullableFilter<"TimesheetDay"> | string | null
   locationId?: Prisma.StringNullableFilter<"TimesheetDay"> | string | null
   plannedStart?: Prisma.DateTimeNullableFilter<"TimesheetDay"> | Date | string | null
   plannedEnd?: Prisma.DateTimeNullableFilter<"TimesheetDay"> | Date | string | null
@@ -335,6 +343,7 @@ export type TimesheetDayWhereInput = {
   employee?: Prisma.XOR<Prisma.EmployeeProfileScalarRelationFilter, Prisma.EmployeeProfileWhereInput>
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   shift?: Prisma.XOR<Prisma.WorkShiftNullableScalarRelationFilter, Prisma.WorkShiftWhereInput> | null
+  scheduleDayStatus?: Prisma.XOR<Prisma.ScheduleDayStatusNullableScalarRelationFilter, Prisma.ScheduleDayStatusWhereInput> | null
   location?: Prisma.XOR<Prisma.WorkLocationNullableScalarRelationFilter, Prisma.WorkLocationWhereInput> | null
 }
 
@@ -344,6 +353,7 @@ export type TimesheetDayOrderByWithRelationInput = {
   userId?: Prisma.SortOrder
   date?: Prisma.SortOrder
   shiftId?: Prisma.SortOrderInput | Prisma.SortOrder
+  scheduleDayStatusId?: Prisma.SortOrderInput | Prisma.SortOrder
   locationId?: Prisma.SortOrderInput | Prisma.SortOrder
   plannedStart?: Prisma.SortOrderInput | Prisma.SortOrder
   plannedEnd?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -360,11 +370,13 @@ export type TimesheetDayOrderByWithRelationInput = {
   employee?: Prisma.EmployeeProfileOrderByWithRelationInput
   user?: Prisma.UserOrderByWithRelationInput
   shift?: Prisma.WorkShiftOrderByWithRelationInput
+  scheduleDayStatus?: Prisma.ScheduleDayStatusOrderByWithRelationInput
   location?: Prisma.WorkLocationOrderByWithRelationInput
 }
 
 export type TimesheetDayWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  scheduleDayStatusId?: string
   employeeId_date?: Prisma.TimesheetDayEmployeeIdDateCompoundUniqueInput
   AND?: Prisma.TimesheetDayWhereInput | Prisma.TimesheetDayWhereInput[]
   OR?: Prisma.TimesheetDayWhereInput[]
@@ -389,8 +401,9 @@ export type TimesheetDayWhereUniqueInput = Prisma.AtLeast<{
   employee?: Prisma.XOR<Prisma.EmployeeProfileScalarRelationFilter, Prisma.EmployeeProfileWhereInput>
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   shift?: Prisma.XOR<Prisma.WorkShiftNullableScalarRelationFilter, Prisma.WorkShiftWhereInput> | null
+  scheduleDayStatus?: Prisma.XOR<Prisma.ScheduleDayStatusNullableScalarRelationFilter, Prisma.ScheduleDayStatusWhereInput> | null
   location?: Prisma.XOR<Prisma.WorkLocationNullableScalarRelationFilter, Prisma.WorkLocationWhereInput> | null
-}, "id" | "employeeId_date">
+}, "id" | "scheduleDayStatusId" | "employeeId_date">
 
 export type TimesheetDayOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -398,6 +411,7 @@ export type TimesheetDayOrderByWithAggregationInput = {
   userId?: Prisma.SortOrder
   date?: Prisma.SortOrder
   shiftId?: Prisma.SortOrderInput | Prisma.SortOrder
+  scheduleDayStatusId?: Prisma.SortOrderInput | Prisma.SortOrder
   locationId?: Prisma.SortOrderInput | Prisma.SortOrder
   plannedStart?: Prisma.SortOrderInput | Prisma.SortOrder
   plannedEnd?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -427,6 +441,7 @@ export type TimesheetDayScalarWhereWithAggregatesInput = {
   userId?: Prisma.StringWithAggregatesFilter<"TimesheetDay"> | string
   date?: Prisma.StringWithAggregatesFilter<"TimesheetDay"> | string
   shiftId?: Prisma.StringNullableWithAggregatesFilter<"TimesheetDay"> | string | null
+  scheduleDayStatusId?: Prisma.StringNullableWithAggregatesFilter<"TimesheetDay"> | string | null
   locationId?: Prisma.StringNullableWithAggregatesFilter<"TimesheetDay"> | string | null
   plannedStart?: Prisma.DateTimeNullableWithAggregatesFilter<"TimesheetDay"> | Date | string | null
   plannedEnd?: Prisma.DateTimeNullableWithAggregatesFilter<"TimesheetDay"> | Date | string | null
@@ -460,6 +475,7 @@ export type TimesheetDayCreateInput = {
   employee: Prisma.EmployeeProfileCreateNestedOneWithoutTimesheetDaysInput
   user: Prisma.UserCreateNestedOneWithoutTimesheetDaysInput
   shift?: Prisma.WorkShiftCreateNestedOneWithoutTimesheetDaysInput
+  scheduleDayStatus?: Prisma.ScheduleDayStatusCreateNestedOneWithoutTimesheetDayInput
   location?: Prisma.WorkLocationCreateNestedOneWithoutTimesheetDaysInput
 }
 
@@ -469,6 +485,7 @@ export type TimesheetDayUncheckedCreateInput = {
   userId: string
   date: string
   shiftId?: string | null
+  scheduleDayStatusId?: string | null
   locationId?: string | null
   plannedStart?: Date | string | null
   plannedEnd?: Date | string | null
@@ -502,6 +519,7 @@ export type TimesheetDayUpdateInput = {
   employee?: Prisma.EmployeeProfileUpdateOneRequiredWithoutTimesheetDaysNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutTimesheetDaysNestedInput
   shift?: Prisma.WorkShiftUpdateOneWithoutTimesheetDaysNestedInput
+  scheduleDayStatus?: Prisma.ScheduleDayStatusUpdateOneWithoutTimesheetDayNestedInput
   location?: Prisma.WorkLocationUpdateOneWithoutTimesheetDaysNestedInput
 }
 
@@ -511,6 +529,7 @@ export type TimesheetDayUncheckedUpdateInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.StringFieldUpdateOperationsInput | string
   shiftId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scheduleDayStatusId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plannedStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   plannedEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -532,6 +551,7 @@ export type TimesheetDayCreateManyInput = {
   userId: string
   date: string
   shiftId?: string | null
+  scheduleDayStatusId?: string | null
   locationId?: string | null
   plannedStart?: Date | string | null
   plannedEnd?: Date | string | null
@@ -570,6 +590,7 @@ export type TimesheetDayUncheckedUpdateManyInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.StringFieldUpdateOperationsInput | string
   shiftId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scheduleDayStatusId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plannedStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   plannedEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -595,6 +616,11 @@ export type TimesheetDayOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type TimesheetDayNullableScalarRelationFilter = {
+  is?: Prisma.TimesheetDayWhereInput | null
+  isNot?: Prisma.TimesheetDayWhereInput | null
+}
+
 export type TimesheetDayEmployeeIdDateCompoundUniqueInput = {
   employeeId: string
   date: string
@@ -606,6 +632,7 @@ export type TimesheetDayCountOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   date?: Prisma.SortOrder
   shiftId?: Prisma.SortOrder
+  scheduleDayStatusId?: Prisma.SortOrder
   locationId?: Prisma.SortOrder
   plannedStart?: Prisma.SortOrder
   plannedEnd?: Prisma.SortOrder
@@ -634,6 +661,7 @@ export type TimesheetDayMaxOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   date?: Prisma.SortOrder
   shiftId?: Prisma.SortOrder
+  scheduleDayStatusId?: Prisma.SortOrder
   locationId?: Prisma.SortOrder
   plannedStart?: Prisma.SortOrder
   plannedEnd?: Prisma.SortOrder
@@ -655,6 +683,7 @@ export type TimesheetDayMinOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   date?: Prisma.SortOrder
   shiftId?: Prisma.SortOrder
+  scheduleDayStatusId?: Prisma.SortOrder
   locationId?: Prisma.SortOrder
   plannedStart?: Prisma.SortOrder
   plannedEnd?: Prisma.SortOrder
@@ -845,6 +874,38 @@ export type TimesheetDayUncheckedUpdateManyWithoutShiftNestedInput = {
   deleteMany?: Prisma.TimesheetDayScalarWhereInput | Prisma.TimesheetDayScalarWhereInput[]
 }
 
+export type TimesheetDayCreateNestedOneWithoutScheduleDayStatusInput = {
+  create?: Prisma.XOR<Prisma.TimesheetDayCreateWithoutScheduleDayStatusInput, Prisma.TimesheetDayUncheckedCreateWithoutScheduleDayStatusInput>
+  connectOrCreate?: Prisma.TimesheetDayCreateOrConnectWithoutScheduleDayStatusInput
+  connect?: Prisma.TimesheetDayWhereUniqueInput
+}
+
+export type TimesheetDayUncheckedCreateNestedOneWithoutScheduleDayStatusInput = {
+  create?: Prisma.XOR<Prisma.TimesheetDayCreateWithoutScheduleDayStatusInput, Prisma.TimesheetDayUncheckedCreateWithoutScheduleDayStatusInput>
+  connectOrCreate?: Prisma.TimesheetDayCreateOrConnectWithoutScheduleDayStatusInput
+  connect?: Prisma.TimesheetDayWhereUniqueInput
+}
+
+export type TimesheetDayUpdateOneWithoutScheduleDayStatusNestedInput = {
+  create?: Prisma.XOR<Prisma.TimesheetDayCreateWithoutScheduleDayStatusInput, Prisma.TimesheetDayUncheckedCreateWithoutScheduleDayStatusInput>
+  connectOrCreate?: Prisma.TimesheetDayCreateOrConnectWithoutScheduleDayStatusInput
+  upsert?: Prisma.TimesheetDayUpsertWithoutScheduleDayStatusInput
+  disconnect?: Prisma.TimesheetDayWhereInput | boolean
+  delete?: Prisma.TimesheetDayWhereInput | boolean
+  connect?: Prisma.TimesheetDayWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TimesheetDayUpdateToOneWithWhereWithoutScheduleDayStatusInput, Prisma.TimesheetDayUpdateWithoutScheduleDayStatusInput>, Prisma.TimesheetDayUncheckedUpdateWithoutScheduleDayStatusInput>
+}
+
+export type TimesheetDayUncheckedUpdateOneWithoutScheduleDayStatusNestedInput = {
+  create?: Prisma.XOR<Prisma.TimesheetDayCreateWithoutScheduleDayStatusInput, Prisma.TimesheetDayUncheckedCreateWithoutScheduleDayStatusInput>
+  connectOrCreate?: Prisma.TimesheetDayCreateOrConnectWithoutScheduleDayStatusInput
+  upsert?: Prisma.TimesheetDayUpsertWithoutScheduleDayStatusInput
+  disconnect?: Prisma.TimesheetDayWhereInput | boolean
+  delete?: Prisma.TimesheetDayWhereInput | boolean
+  connect?: Prisma.TimesheetDayWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TimesheetDayUpdateToOneWithWhereWithoutScheduleDayStatusInput, Prisma.TimesheetDayUpdateWithoutScheduleDayStatusInput>, Prisma.TimesheetDayUncheckedUpdateWithoutScheduleDayStatusInput>
+}
+
 export type EnumTimesheetDayStatusFieldUpdateOperationsInput = {
   set?: $Enums.TimesheetDayStatus
 }
@@ -866,6 +927,7 @@ export type TimesheetDayCreateWithoutUserInput = {
   updatedAt?: Date | string
   employee: Prisma.EmployeeProfileCreateNestedOneWithoutTimesheetDaysInput
   shift?: Prisma.WorkShiftCreateNestedOneWithoutTimesheetDaysInput
+  scheduleDayStatus?: Prisma.ScheduleDayStatusCreateNestedOneWithoutTimesheetDayInput
   location?: Prisma.WorkLocationCreateNestedOneWithoutTimesheetDaysInput
 }
 
@@ -874,6 +936,7 @@ export type TimesheetDayUncheckedCreateWithoutUserInput = {
   employeeId: string
   date: string
   shiftId?: string | null
+  scheduleDayStatusId?: string | null
   locationId?: string | null
   plannedStart?: Date | string | null
   plannedEnd?: Date | string | null
@@ -924,6 +987,7 @@ export type TimesheetDayScalarWhereInput = {
   userId?: Prisma.StringFilter<"TimesheetDay"> | string
   date?: Prisma.StringFilter<"TimesheetDay"> | string
   shiftId?: Prisma.StringNullableFilter<"TimesheetDay"> | string | null
+  scheduleDayStatusId?: Prisma.StringNullableFilter<"TimesheetDay"> | string | null
   locationId?: Prisma.StringNullableFilter<"TimesheetDay"> | string | null
   plannedStart?: Prisma.DateTimeNullableFilter<"TimesheetDay"> | Date | string | null
   plannedEnd?: Prisma.DateTimeNullableFilter<"TimesheetDay"> | Date | string | null
@@ -956,6 +1020,7 @@ export type TimesheetDayCreateWithoutEmployeeInput = {
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutTimesheetDaysInput
   shift?: Prisma.WorkShiftCreateNestedOneWithoutTimesheetDaysInput
+  scheduleDayStatus?: Prisma.ScheduleDayStatusCreateNestedOneWithoutTimesheetDayInput
   location?: Prisma.WorkLocationCreateNestedOneWithoutTimesheetDaysInput
 }
 
@@ -964,6 +1029,7 @@ export type TimesheetDayUncheckedCreateWithoutEmployeeInput = {
   userId: string
   date: string
   shiftId?: string | null
+  scheduleDayStatusId?: string | null
   locationId?: string | null
   plannedStart?: Date | string | null
   plannedEnd?: Date | string | null
@@ -1023,6 +1089,7 @@ export type TimesheetDayCreateWithoutLocationInput = {
   employee: Prisma.EmployeeProfileCreateNestedOneWithoutTimesheetDaysInput
   user: Prisma.UserCreateNestedOneWithoutTimesheetDaysInput
   shift?: Prisma.WorkShiftCreateNestedOneWithoutTimesheetDaysInput
+  scheduleDayStatus?: Prisma.ScheduleDayStatusCreateNestedOneWithoutTimesheetDayInput
 }
 
 export type TimesheetDayUncheckedCreateWithoutLocationInput = {
@@ -1031,6 +1098,7 @@ export type TimesheetDayUncheckedCreateWithoutLocationInput = {
   userId: string
   date: string
   shiftId?: string | null
+  scheduleDayStatusId?: string | null
   plannedStart?: Date | string | null
   plannedEnd?: Date | string | null
   actualCheckIn?: Date | string | null
@@ -1088,6 +1156,7 @@ export type TimesheetDayCreateWithoutShiftInput = {
   updatedAt?: Date | string
   employee: Prisma.EmployeeProfileCreateNestedOneWithoutTimesheetDaysInput
   user: Prisma.UserCreateNestedOneWithoutTimesheetDaysInput
+  scheduleDayStatus?: Prisma.ScheduleDayStatusCreateNestedOneWithoutTimesheetDayInput
   location?: Prisma.WorkLocationCreateNestedOneWithoutTimesheetDaysInput
 }
 
@@ -1096,6 +1165,7 @@ export type TimesheetDayUncheckedCreateWithoutShiftInput = {
   employeeId: string
   userId: string
   date: string
+  scheduleDayStatusId?: string | null
   locationId?: string | null
   plannedStart?: Date | string | null
   plannedEnd?: Date | string | null
@@ -1137,11 +1207,112 @@ export type TimesheetDayUpdateManyWithWhereWithoutShiftInput = {
   data: Prisma.XOR<Prisma.TimesheetDayUpdateManyMutationInput, Prisma.TimesheetDayUncheckedUpdateManyWithoutShiftInput>
 }
 
+export type TimesheetDayCreateWithoutScheduleDayStatusInput = {
+  id?: string
+  date: string
+  plannedStart?: Date | string | null
+  plannedEnd?: Date | string | null
+  actualCheckIn?: Date | string | null
+  actualCheckOut?: Date | string | null
+  workedMinutes?: number
+  lateMinutes?: number
+  earlyLeaveMinutes?: number
+  overtimeMinutes?: number
+  status?: $Enums.TimesheetDayStatus
+  hasPendingEvents?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  employee: Prisma.EmployeeProfileCreateNestedOneWithoutTimesheetDaysInput
+  user: Prisma.UserCreateNestedOneWithoutTimesheetDaysInput
+  shift?: Prisma.WorkShiftCreateNestedOneWithoutTimesheetDaysInput
+  location?: Prisma.WorkLocationCreateNestedOneWithoutTimesheetDaysInput
+}
+
+export type TimesheetDayUncheckedCreateWithoutScheduleDayStatusInput = {
+  id?: string
+  employeeId: string
+  userId: string
+  date: string
+  shiftId?: string | null
+  locationId?: string | null
+  plannedStart?: Date | string | null
+  plannedEnd?: Date | string | null
+  actualCheckIn?: Date | string | null
+  actualCheckOut?: Date | string | null
+  workedMinutes?: number
+  lateMinutes?: number
+  earlyLeaveMinutes?: number
+  overtimeMinutes?: number
+  status?: $Enums.TimesheetDayStatus
+  hasPendingEvents?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type TimesheetDayCreateOrConnectWithoutScheduleDayStatusInput = {
+  where: Prisma.TimesheetDayWhereUniqueInput
+  create: Prisma.XOR<Prisma.TimesheetDayCreateWithoutScheduleDayStatusInput, Prisma.TimesheetDayUncheckedCreateWithoutScheduleDayStatusInput>
+}
+
+export type TimesheetDayUpsertWithoutScheduleDayStatusInput = {
+  update: Prisma.XOR<Prisma.TimesheetDayUpdateWithoutScheduleDayStatusInput, Prisma.TimesheetDayUncheckedUpdateWithoutScheduleDayStatusInput>
+  create: Prisma.XOR<Prisma.TimesheetDayCreateWithoutScheduleDayStatusInput, Prisma.TimesheetDayUncheckedCreateWithoutScheduleDayStatusInput>
+  where?: Prisma.TimesheetDayWhereInput
+}
+
+export type TimesheetDayUpdateToOneWithWhereWithoutScheduleDayStatusInput = {
+  where?: Prisma.TimesheetDayWhereInput
+  data: Prisma.XOR<Prisma.TimesheetDayUpdateWithoutScheduleDayStatusInput, Prisma.TimesheetDayUncheckedUpdateWithoutScheduleDayStatusInput>
+}
+
+export type TimesheetDayUpdateWithoutScheduleDayStatusInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  date?: Prisma.StringFieldUpdateOperationsInput | string
+  plannedStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  plannedEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  actualCheckIn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  actualCheckOut?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  workedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  lateMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  earlyLeaveMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  overtimeMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumTimesheetDayStatusFieldUpdateOperationsInput | $Enums.TimesheetDayStatus
+  hasPendingEvents?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  employee?: Prisma.EmployeeProfileUpdateOneRequiredWithoutTimesheetDaysNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutTimesheetDaysNestedInput
+  shift?: Prisma.WorkShiftUpdateOneWithoutTimesheetDaysNestedInput
+  location?: Prisma.WorkLocationUpdateOneWithoutTimesheetDaysNestedInput
+}
+
+export type TimesheetDayUncheckedUpdateWithoutScheduleDayStatusInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  date?: Prisma.StringFieldUpdateOperationsInput | string
+  shiftId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plannedStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  plannedEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  actualCheckIn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  actualCheckOut?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  workedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  lateMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  earlyLeaveMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  overtimeMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumTimesheetDayStatusFieldUpdateOperationsInput | $Enums.TimesheetDayStatus
+  hasPendingEvents?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type TimesheetDayCreateManyUserInput = {
   id?: string
   employeeId: string
   date: string
   shiftId?: string | null
+  scheduleDayStatusId?: string | null
   locationId?: string | null
   plannedStart?: Date | string | null
   plannedEnd?: Date | string | null
@@ -1174,6 +1345,7 @@ export type TimesheetDayUpdateWithoutUserInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   employee?: Prisma.EmployeeProfileUpdateOneRequiredWithoutTimesheetDaysNestedInput
   shift?: Prisma.WorkShiftUpdateOneWithoutTimesheetDaysNestedInput
+  scheduleDayStatus?: Prisma.ScheduleDayStatusUpdateOneWithoutTimesheetDayNestedInput
   location?: Prisma.WorkLocationUpdateOneWithoutTimesheetDaysNestedInput
 }
 
@@ -1182,6 +1354,7 @@ export type TimesheetDayUncheckedUpdateWithoutUserInput = {
   employeeId?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.StringFieldUpdateOperationsInput | string
   shiftId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scheduleDayStatusId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plannedStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   plannedEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1202,6 +1375,7 @@ export type TimesheetDayUncheckedUpdateManyWithoutUserInput = {
   employeeId?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.StringFieldUpdateOperationsInput | string
   shiftId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scheduleDayStatusId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plannedStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   plannedEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1222,6 +1396,7 @@ export type TimesheetDayCreateManyEmployeeInput = {
   userId: string
   date: string
   shiftId?: string | null
+  scheduleDayStatusId?: string | null
   locationId?: string | null
   plannedStart?: Date | string | null
   plannedEnd?: Date | string | null
@@ -1254,6 +1429,7 @@ export type TimesheetDayUpdateWithoutEmployeeInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutTimesheetDaysNestedInput
   shift?: Prisma.WorkShiftUpdateOneWithoutTimesheetDaysNestedInput
+  scheduleDayStatus?: Prisma.ScheduleDayStatusUpdateOneWithoutTimesheetDayNestedInput
   location?: Prisma.WorkLocationUpdateOneWithoutTimesheetDaysNestedInput
 }
 
@@ -1262,6 +1438,7 @@ export type TimesheetDayUncheckedUpdateWithoutEmployeeInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.StringFieldUpdateOperationsInput | string
   shiftId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scheduleDayStatusId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plannedStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   plannedEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1282,6 +1459,7 @@ export type TimesheetDayUncheckedUpdateManyWithoutEmployeeInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.StringFieldUpdateOperationsInput | string
   shiftId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scheduleDayStatusId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plannedStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   plannedEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1303,6 +1481,7 @@ export type TimesheetDayCreateManyLocationInput = {
   userId: string
   date: string
   shiftId?: string | null
+  scheduleDayStatusId?: string | null
   plannedStart?: Date | string | null
   plannedEnd?: Date | string | null
   actualCheckIn?: Date | string | null
@@ -1335,6 +1514,7 @@ export type TimesheetDayUpdateWithoutLocationInput = {
   employee?: Prisma.EmployeeProfileUpdateOneRequiredWithoutTimesheetDaysNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutTimesheetDaysNestedInput
   shift?: Prisma.WorkShiftUpdateOneWithoutTimesheetDaysNestedInput
+  scheduleDayStatus?: Prisma.ScheduleDayStatusUpdateOneWithoutTimesheetDayNestedInput
 }
 
 export type TimesheetDayUncheckedUpdateWithoutLocationInput = {
@@ -1343,6 +1523,7 @@ export type TimesheetDayUncheckedUpdateWithoutLocationInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.StringFieldUpdateOperationsInput | string
   shiftId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scheduleDayStatusId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plannedStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   plannedEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   actualCheckIn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1363,6 +1544,7 @@ export type TimesheetDayUncheckedUpdateManyWithoutLocationInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.StringFieldUpdateOperationsInput | string
   shiftId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scheduleDayStatusId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plannedStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   plannedEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   actualCheckIn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1382,6 +1564,7 @@ export type TimesheetDayCreateManyShiftInput = {
   employeeId: string
   userId: string
   date: string
+  scheduleDayStatusId?: string | null
   locationId?: string | null
   plannedStart?: Date | string | null
   plannedEnd?: Date | string | null
@@ -1414,6 +1597,7 @@ export type TimesheetDayUpdateWithoutShiftInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   employee?: Prisma.EmployeeProfileUpdateOneRequiredWithoutTimesheetDaysNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutTimesheetDaysNestedInput
+  scheduleDayStatus?: Prisma.ScheduleDayStatusUpdateOneWithoutTimesheetDayNestedInput
   location?: Prisma.WorkLocationUpdateOneWithoutTimesheetDaysNestedInput
 }
 
@@ -1422,6 +1606,7 @@ export type TimesheetDayUncheckedUpdateWithoutShiftInput = {
   employeeId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.StringFieldUpdateOperationsInput | string
+  scheduleDayStatusId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plannedStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   plannedEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1442,6 +1627,7 @@ export type TimesheetDayUncheckedUpdateManyWithoutShiftInput = {
   employeeId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.StringFieldUpdateOperationsInput | string
+  scheduleDayStatusId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plannedStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   plannedEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1465,6 +1651,7 @@ export type TimesheetDaySelect<ExtArgs extends runtime.Types.Extensions.Internal
   userId?: boolean
   date?: boolean
   shiftId?: boolean
+  scheduleDayStatusId?: boolean
   locationId?: boolean
   plannedStart?: boolean
   plannedEnd?: boolean
@@ -1481,6 +1668,7 @@ export type TimesheetDaySelect<ExtArgs extends runtime.Types.Extensions.Internal
   employee?: boolean | Prisma.EmployeeProfileDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   shift?: boolean | Prisma.TimesheetDay$shiftArgs<ExtArgs>
+  scheduleDayStatus?: boolean | Prisma.TimesheetDay$scheduleDayStatusArgs<ExtArgs>
   location?: boolean | Prisma.TimesheetDay$locationArgs<ExtArgs>
 }, ExtArgs["result"]["timesheetDay"]>
 
@@ -1490,6 +1678,7 @@ export type TimesheetDaySelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   userId?: boolean
   date?: boolean
   shiftId?: boolean
+  scheduleDayStatusId?: boolean
   locationId?: boolean
   plannedStart?: boolean
   plannedEnd?: boolean
@@ -1506,6 +1695,7 @@ export type TimesheetDaySelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   employee?: boolean | Prisma.EmployeeProfileDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   shift?: boolean | Prisma.TimesheetDay$shiftArgs<ExtArgs>
+  scheduleDayStatus?: boolean | Prisma.TimesheetDay$scheduleDayStatusArgs<ExtArgs>
   location?: boolean | Prisma.TimesheetDay$locationArgs<ExtArgs>
 }, ExtArgs["result"]["timesheetDay"]>
 
@@ -1515,6 +1705,7 @@ export type TimesheetDaySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   userId?: boolean
   date?: boolean
   shiftId?: boolean
+  scheduleDayStatusId?: boolean
   locationId?: boolean
   plannedStart?: boolean
   plannedEnd?: boolean
@@ -1531,6 +1722,7 @@ export type TimesheetDaySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   employee?: boolean | Prisma.EmployeeProfileDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   shift?: boolean | Prisma.TimesheetDay$shiftArgs<ExtArgs>
+  scheduleDayStatus?: boolean | Prisma.TimesheetDay$scheduleDayStatusArgs<ExtArgs>
   location?: boolean | Prisma.TimesheetDay$locationArgs<ExtArgs>
 }, ExtArgs["result"]["timesheetDay"]>
 
@@ -1540,6 +1732,7 @@ export type TimesheetDaySelectScalar = {
   userId?: boolean
   date?: boolean
   shiftId?: boolean
+  scheduleDayStatusId?: boolean
   locationId?: boolean
   plannedStart?: boolean
   plannedEnd?: boolean
@@ -1555,23 +1748,26 @@ export type TimesheetDaySelectScalar = {
   updatedAt?: boolean
 }
 
-export type TimesheetDayOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "employeeId" | "userId" | "date" | "shiftId" | "locationId" | "plannedStart" | "plannedEnd" | "actualCheckIn" | "actualCheckOut" | "workedMinutes" | "lateMinutes" | "earlyLeaveMinutes" | "overtimeMinutes" | "status" | "hasPendingEvents" | "createdAt" | "updatedAt", ExtArgs["result"]["timesheetDay"]>
+export type TimesheetDayOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "employeeId" | "userId" | "date" | "shiftId" | "scheduleDayStatusId" | "locationId" | "plannedStart" | "plannedEnd" | "actualCheckIn" | "actualCheckOut" | "workedMinutes" | "lateMinutes" | "earlyLeaveMinutes" | "overtimeMinutes" | "status" | "hasPendingEvents" | "createdAt" | "updatedAt", ExtArgs["result"]["timesheetDay"]>
 export type TimesheetDayInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   employee?: boolean | Prisma.EmployeeProfileDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   shift?: boolean | Prisma.TimesheetDay$shiftArgs<ExtArgs>
+  scheduleDayStatus?: boolean | Prisma.TimesheetDay$scheduleDayStatusArgs<ExtArgs>
   location?: boolean | Prisma.TimesheetDay$locationArgs<ExtArgs>
 }
 export type TimesheetDayIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   employee?: boolean | Prisma.EmployeeProfileDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   shift?: boolean | Prisma.TimesheetDay$shiftArgs<ExtArgs>
+  scheduleDayStatus?: boolean | Prisma.TimesheetDay$scheduleDayStatusArgs<ExtArgs>
   location?: boolean | Prisma.TimesheetDay$locationArgs<ExtArgs>
 }
 export type TimesheetDayIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   employee?: boolean | Prisma.EmployeeProfileDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   shift?: boolean | Prisma.TimesheetDay$shiftArgs<ExtArgs>
+  scheduleDayStatus?: boolean | Prisma.TimesheetDay$scheduleDayStatusArgs<ExtArgs>
   location?: boolean | Prisma.TimesheetDay$locationArgs<ExtArgs>
 }
 
@@ -1581,6 +1777,7 @@ export type $TimesheetDayPayload<ExtArgs extends runtime.Types.Extensions.Intern
     employee: Prisma.$EmployeeProfilePayload<ExtArgs>
     user: Prisma.$UserPayload<ExtArgs>
     shift: Prisma.$WorkShiftPayload<ExtArgs> | null
+    scheduleDayStatus: Prisma.$ScheduleDayStatusPayload<ExtArgs> | null
     location: Prisma.$WorkLocationPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1589,6 +1786,7 @@ export type $TimesheetDayPayload<ExtArgs extends runtime.Types.Extensions.Intern
     userId: string
     date: string
     shiftId: string | null
+    scheduleDayStatusId: string | null
     locationId: string | null
     plannedStart: Date | null
     plannedEnd: Date | null
@@ -1999,6 +2197,7 @@ export interface Prisma__TimesheetDayClient<T, Null = never, ExtArgs extends run
   employee<T extends Prisma.EmployeeProfileDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EmployeeProfileDefaultArgs<ExtArgs>>): Prisma.Prisma__EmployeeProfileClient<runtime.Types.Result.GetResult<Prisma.$EmployeeProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   shift<T extends Prisma.TimesheetDay$shiftArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TimesheetDay$shiftArgs<ExtArgs>>): Prisma.Prisma__WorkShiftClient<runtime.Types.Result.GetResult<Prisma.$WorkShiftPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  scheduleDayStatus<T extends Prisma.TimesheetDay$scheduleDayStatusArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TimesheetDay$scheduleDayStatusArgs<ExtArgs>>): Prisma.Prisma__ScheduleDayStatusClient<runtime.Types.Result.GetResult<Prisma.$ScheduleDayStatusPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   location<T extends Prisma.TimesheetDay$locationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TimesheetDay$locationArgs<ExtArgs>>): Prisma.Prisma__WorkLocationClient<runtime.Types.Result.GetResult<Prisma.$WorkLocationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2034,6 +2233,7 @@ export interface TimesheetDayFieldRefs {
   readonly userId: Prisma.FieldRef<"TimesheetDay", 'String'>
   readonly date: Prisma.FieldRef<"TimesheetDay", 'String'>
   readonly shiftId: Prisma.FieldRef<"TimesheetDay", 'String'>
+  readonly scheduleDayStatusId: Prisma.FieldRef<"TimesheetDay", 'String'>
   readonly locationId: Prisma.FieldRef<"TimesheetDay", 'String'>
   readonly plannedStart: Prisma.FieldRef<"TimesheetDay", 'DateTime'>
   readonly plannedEnd: Prisma.FieldRef<"TimesheetDay", 'DateTime'>
@@ -2464,6 +2664,25 @@ export type TimesheetDay$shiftArgs<ExtArgs extends runtime.Types.Extensions.Inte
    */
   include?: Prisma.WorkShiftInclude<ExtArgs> | null
   where?: Prisma.WorkShiftWhereInput
+}
+
+/**
+ * TimesheetDay.scheduleDayStatus
+ */
+export type TimesheetDay$scheduleDayStatusArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ScheduleDayStatus
+   */
+  select?: Prisma.ScheduleDayStatusSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ScheduleDayStatus
+   */
+  omit?: Prisma.ScheduleDayStatusOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ScheduleDayStatusInclude<ExtArgs> | null
+  where?: Prisma.ScheduleDayStatusWhereInput
 }
 
 /**

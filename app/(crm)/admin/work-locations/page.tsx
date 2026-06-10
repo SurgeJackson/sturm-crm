@@ -111,6 +111,9 @@ export default async function WorkLocationsPage({ searchParams }: { searchParams
                       <form action={toggleWorkLocationAction.bind(null, location.id, !location.isActive)}>
                         <Button variant="outline" size="sm">{location.isActive ? "Выключить" : "Включить"}</Button>
                       </form>
+                      <Button asChild variant="outline" size="sm">
+                        <Link href={`/admin/work-locations/${location.id}/shift-templates`}>Шаблоны смен</Link>
+                      </Button>
                       <details>
                         <summary className="cursor-pointer text-xs text-muted-foreground">Редактировать</summary>
                         <form action={saveWorkLocationDirectAction} className="mt-2 grid gap-2">

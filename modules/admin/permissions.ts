@@ -26,6 +26,10 @@ export type PermissionKey =
   | "timeClock.manageDevices"
   | "timeClock.viewTimesheet"
   | "timeClock.manageAdjustments"
+  | "schedule_planner.view"
+  | "schedule_planner.edit"
+  | "schedule_planner.approve"
+  | "schedule_planner.manage_shift_templates"
   | "import.manage"
   | "export.allData";
 
@@ -55,6 +59,10 @@ export const permissionLabels: Record<PermissionKey, string> = {
   "timeClock.manageDevices": "Учет времени: устройства",
   "timeClock.viewTimesheet": "Учет времени: табель",
   "timeClock.manageAdjustments": "Учет времени: корректировки",
+  "schedule_planner.view": "Планировщик: просмотр графиков",
+  "schedule_planner.edit": "Планировщик: создание и редактирование графиков",
+  "schedule_planner.approve": "Планировщик: согласование графиков",
+  "schedule_planner.manage_shift_templates": "Планировщик: шаблоны смен",
   "import.manage": "Импорт: управление",
   "export.allData": "Экспорт: все данные"
 };
@@ -84,7 +92,11 @@ export const defaultRolePermissions: Record<UserRole, Record<PermissionKey, bool
     "timeClock.reviewEvents": true,
     "timeClock.manageDevices": true,
     "timeClock.viewTimesheet": true,
-    "timeClock.manageAdjustments": true
+    "timeClock.manageAdjustments": true,
+    "schedule_planner.view": true,
+    "schedule_planner.edit": true,
+    "schedule_planner.approve": true,
+    "schedule_planner.manage_shift_templates": true
   },
   STORE_MANAGER: {
     ...Object.fromEntries(permissionKeys.map((key) => [key, false])) as Record<PermissionKey, boolean>,
@@ -94,7 +106,11 @@ export const defaultRolePermissions: Record<UserRole, Record<PermissionKey, bool
     "timeClock.reviewEvents": true,
     "timeClock.manageDevices": true,
     "timeClock.viewTimesheet": true,
-    "timeClock.manageAdjustments": true
+    "timeClock.manageAdjustments": true,
+    "schedule_planner.view": true,
+    "schedule_planner.edit": true,
+    "schedule_planner.approve": false,
+    "schedule_planner.manage_shift_templates": false
   },
   PROJECT_MANAGER: {
     ...Object.fromEntries(permissionKeys.map((key) => [key, false])) as Record<PermissionKey, boolean>,
@@ -105,7 +121,11 @@ export const defaultRolePermissions: Record<UserRole, Record<PermissionKey, bool
     "timeClock.reviewEvents": true,
     "timeClock.manageDevices": true,
     "timeClock.viewTimesheet": true,
-    "timeClock.manageAdjustments": true
+    "timeClock.manageAdjustments": true,
+    "schedule_planner.view": true,
+    "schedule_planner.edit": true,
+    "schedule_planner.approve": false,
+    "schedule_planner.manage_shift_templates": false
   },
   ADMINISTRATOR: {
     ...Object.fromEntries(permissionKeys.map((key) => [key, false])) as Record<PermissionKey, boolean>,
@@ -116,7 +136,11 @@ export const defaultRolePermissions: Record<UserRole, Record<PermissionKey, bool
     "timeClock.manageShifts": true,
     "timeClock.reviewEvents": true,
     "timeClock.manageDevices": true,
-    "timeClock.manageAdjustments": true
+    "timeClock.manageAdjustments": true,
+    "schedule_planner.view": true,
+    "schedule_planner.edit": true,
+    "schedule_planner.approve": false,
+    "schedule_planner.manage_shift_templates": true
   }
 };
 

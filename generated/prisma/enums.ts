@@ -256,6 +256,11 @@ export const AuditEntityType = {
   LOCATION_DISPLAY_SETUP_TOKEN: 'LOCATION_DISPLAY_SETUP_TOKEN',
   LOCATION_DISPLAY_SESSION: 'LOCATION_DISPLAY_SESSION',
   QR_TOKEN: 'QR_TOKEN',
+  SHIFT_TEMPLATE: 'SHIFT_TEMPLATE',
+  SCHEDULE_PLAN: 'SCHEDULE_PLAN',
+  SCHEDULE_PLAN_CELL: 'SCHEDULE_PLAN_CELL',
+  SCHEDULE_PLAN_APPROVAL_LOG: 'SCHEDULE_PLAN_APPROVAL_LOG',
+  SCHEDULE_DAY_STATUS: 'SCHEDULE_DAY_STATUS',
   TIME_EVENT: 'TIME_EVENT',
   TIMESHEET_DAY: 'TIMESHEET_DAY',
   TIME_ADJUSTMENT_REQUEST: 'TIME_ADJUSTMENT_REQUEST'
@@ -712,6 +717,10 @@ export type TimeEventStatus = (typeof TimeEventStatus)[keyof typeof TimeEventSta
 
 export const TimesheetDayStatus = {
   SCHEDULED: 'SCHEDULED',
+  DAY_OFF: 'DAY_OFF',
+  VACATION: 'VACATION',
+  SICK_LEAVE: 'SICK_LEAVE',
+  BUSINESS_TRIP: 'BUSINESS_TRIP',
   OK: 'OK',
   LATE: 'LATE',
   EARLY_LEAVE: 'EARLY_LEAVE',
@@ -742,3 +751,51 @@ export const TimeAdjustmentStatus = {
 } as const
 
 export type TimeAdjustmentStatus = (typeof TimeAdjustmentStatus)[keyof typeof TimeAdjustmentStatus]
+
+
+export const SchedulePlanStatus = {
+  DRAFT: 'DRAFT',
+  PENDING_APPROVAL: 'PENDING_APPROVAL',
+  APPROVED: 'APPROVED',
+  RETURNED_FOR_REVISION: 'RETURNED_FOR_REVISION',
+  REQUIRES_REAPPROVAL: 'REQUIRES_REAPPROVAL',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type SchedulePlanStatus = (typeof SchedulePlanStatus)[keyof typeof SchedulePlanStatus]
+
+
+export const SchedulePlanCellType = {
+  SHIFT: 'SHIFT',
+  DAY_OFF: 'DAY_OFF',
+  VACATION: 'VACATION',
+  SICK_LEAVE: 'SICK_LEAVE',
+  BUSINESS_TRIP: 'BUSINESS_TRIP',
+  EMPTY: 'EMPTY'
+} as const
+
+export type SchedulePlanCellType = (typeof SchedulePlanCellType)[keyof typeof SchedulePlanCellType]
+
+
+export const ScheduleDayStatusType = {
+  DAY_OFF: 'DAY_OFF',
+  VACATION: 'VACATION',
+  SICK_LEAVE: 'SICK_LEAVE',
+  BUSINESS_TRIP: 'BUSINESS_TRIP'
+} as const
+
+export type ScheduleDayStatusType = (typeof ScheduleDayStatusType)[keyof typeof ScheduleDayStatusType]
+
+
+export const SchedulePlanApprovalAction = {
+  CREATED: 'CREATED',
+  SAVED_DRAFT: 'SAVED_DRAFT',
+  SUBMITTED: 'SUBMITTED',
+  APPROVED: 'APPROVED',
+  RETURNED_FOR_REVISION: 'RETURNED_FOR_REVISION',
+  CHANGED_AFTER_APPROVAL: 'CHANGED_AFTER_APPROVAL',
+  NEW_VERSION_CREATED: 'NEW_VERSION_CREATED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type SchedulePlanApprovalAction = (typeof SchedulePlanApprovalAction)[keyof typeof SchedulePlanApprovalAction]

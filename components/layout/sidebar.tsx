@@ -38,6 +38,7 @@ import {
   canViewOwnTimeClock,
   canViewPayments,
   canViewReports,
+  canViewSchedulePlanner,
   canViewSecurityLog,
   canViewTimesheet
 } from "@/permissions";
@@ -59,6 +60,7 @@ const navigation = [
 
 const timeClockNavigation = [
   { href: "/employee/time-clock", label: "Мое время", icon: Clock },
+  { href: "/admin/schedule-planner", label: "Планировщик", icon: CalendarDays },
   { href: "/admin/timesheet", label: "Табель", icon: CalendarClock },
   { href: "/admin/work-locations", label: "Рабочие точки", icon: MapPin },
   { href: "/admin/work-shifts", label: "График смен", icon: CalendarDays },
@@ -94,6 +96,7 @@ export function Sidebar({ user }: SidebarProps) {
     if (href === "/payments") return canViewPayments(user);
     if (href === "/designer-bonuses/accruals") return canViewDesignerBonusReports(user);
     if (href === "/employee/time-clock") return canViewOwnTimeClock(user);
+    if (href === "/admin/schedule-planner") return canViewSchedulePlanner(user);
     if (href === "/admin/timesheet") return canViewTimesheet(user);
     if (href === "/admin/work-locations") return canManageWorkLocations(user);
     if (href === "/admin/work-shifts") return canManageWorkShifts(user);

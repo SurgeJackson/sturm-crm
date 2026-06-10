@@ -29,6 +29,24 @@ export async function seedTimeClock(prisma: PrismaClient, now: Date) {
     }
   });
 
+  const shiftTemplates = [
+    { name: "10-19", code: "10-19", startsAt: "10:00", endsAt: "19:00", breakMinutes: 60, color: "#2563eb", sortOrder: 10 },
+    { name: "12-21", code: "12-21", startsAt: "12:00", endsAt: "21:00", breakMinutes: 60, color: "#16a34a", sortOrder: 20 },
+    { name: "10-21", code: "10-21", startsAt: "10:00", endsAt: "21:00", breakMinutes: 60, color: "#7c3aed", sortOrder: 30 },
+    { name: "Выезд", code: "field", startsAt: "10:00", endsAt: "19:00", breakMinutes: 60, color: "#ea580c", sortOrder: 40 }
+  ];
+  for (const template of shiftTemplates) {
+    await prisma.shiftTemplate.upsert({
+      where: { locationId_code: { locationId: location.id, code: template.code } },
+      update: { ...template, isActive: true },
+      create: {
+        locationId: location.id,
+        ...template,
+        isActive: true
+      }
+    });
+  }
+
   for (const user of seedUsers) {
     const profile = await prisma.employeeProfile.upsert({
       where: { userId: user.id },

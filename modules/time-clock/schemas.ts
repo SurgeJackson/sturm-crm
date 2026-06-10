@@ -57,6 +57,32 @@ export const workShiftSchema = z.object({
   breakMinutes: z.coerce.number().int().min(0).max(600).default(0)
 });
 
+const timeSchema = z.string().regex(/^\d{2}:\d{2}$/, "Укажите время в формате ЧЧ:ММ").refine((value) => {
+  const [hours, minutes] = value.split(":").map(Number);
+  return hours >= 0 && hours <= 23 && minutes >= 0 && minutes <= 59;
+}, "Укажите корректное время");
+
+export const shiftTemplateSchema = z.object({
+  id: z.string().optional(),
+  locationId: z.string().trim().min(1, "Выберите рабочую точку"),
+  name: z.string().trim().min(2, "Укажите название смены").max(120),
+  code: z.string().trim().min(1, "Укажите код").max(40).regex(/^[a-z0-9-]+$/, "Код может содержать латиницу, цифры и дефис"),
+  startsAt: timeSchema,
+  endsAt: timeSchema,
+  breakMinutes: z.coerce.number().int().min(0, "Обед не может быть отрицательным").max(600),
+  color: z.string().trim().regex(/^#[0-9a-fA-F]{6}$/, "Укажите цвет в формате #RRGGBB").optional().or(z.literal("")),
+  isActive: z.coerce.boolean().default(true),
+  sortOrder: z.coerce.number().int().min(0).max(10_000).default(0)
+}).superRefine((data, context) => {
+  if (timeToMinutes(data.endsAt) <= timeToMinutes(data.startsAt)) {
+    context.addIssue({
+      code: "custom",
+      path: ["endsAt"],
+      message: "Окончание должно быть позже начала"
+    });
+  }
+});
+
 export const setupTokenSchema = z.object({
   locationId: z.string().trim().min(1),
   expiresInMinutes: z.coerce.number().int().positive().max(60).optional()
@@ -103,4 +129,9 @@ export const reviewAdjustmentSchema = z.object({
 export function formValue(formData: FormData, name: string) {
   const value = formData.get(name);
   return typeof value === "string" ? value : undefined;
+}
+
+function timeToMinutes(value: string) {
+  const [hours, minutes] = value.split(":").map(Number);
+  return hours * 60 + minutes;
 }

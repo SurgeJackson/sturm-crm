@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   canArchiveRecord,
+  canApproveSchedulePlanner,
   canChangeDealResponsible,
   canChangeObjectResponsible,
   canChangeProposalFinancials,
@@ -195,6 +196,13 @@ describe("permissions", () => {
     expect(canManageRoles(administrator)).toBe(false);
     expect(canRunSecurityCheck(owner)).toBe(true);
     expect(canRunSecurityCheck(salesLead)).toBe(false);
+  });
+
+  it("keeps schedule approval on leadership roles", () => {
+    expect(canApproveSchedulePlanner(owner)).toBe(true);
+    expect(canApproveSchedulePlanner(salesLead)).toBe(true);
+    expect(canApproveSchedulePlanner(projectManager)).toBe(false);
+    expect(canApproveSchedulePlanner(administrator)).toBe(false);
   });
 
   it("protects sensitive fields and restore rights", () => {

@@ -22,6 +22,11 @@ export const auditEntityTypeLabels: Record<AuditEntityType, string> = {
   LOCATION_DISPLAY_SETUP_TOKEN: "Setup token QR-экрана",
   LOCATION_DISPLAY_SESSION: "Display-сессия",
   QR_TOKEN: "QR-токен",
+  SHIFT_TEMPLATE: "Шаблон смены",
+  SCHEDULE_PLAN: "Плановый график",
+  SCHEDULE_PLAN_CELL: "Ячейка планового графика",
+  SCHEDULE_PLAN_APPROVAL_LOG: "История согласования графика",
+  SCHEDULE_DAY_STATUS: "Статус дня графика",
   TIME_EVENT: "Отметка времени",
   TIMESHEET_DAY: "День табеля",
   TIME_ADJUSTMENT_REQUEST: "Заявка на корректировку времени"

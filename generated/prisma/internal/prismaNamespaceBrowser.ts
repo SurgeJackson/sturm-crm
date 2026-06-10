@@ -69,7 +69,12 @@ export const ModelName = {
   DesignerBonusAdjustment: 'DesignerBonusAdjustment',
   EmployeeProfile: 'EmployeeProfile',
   WorkLocation: 'WorkLocation',
+  ShiftTemplate: 'ShiftTemplate',
+  SchedulePlan: 'SchedulePlan',
+  SchedulePlanCell: 'SchedulePlanCell',
+  SchedulePlanApprovalLog: 'SchedulePlanApprovalLog',
   WorkShift: 'WorkShift',
+  ScheduleDayStatus: 'ScheduleDayStatus',
   EmployeeTrustedDevice: 'EmployeeTrustedDevice',
   LocationDisplayDevice: 'LocationDisplayDevice',
   LocationDisplaySetupToken: 'LocationDisplaySetupToken',
@@ -536,6 +541,81 @@ export const WorkLocationScalarFieldEnum = {
 export type WorkLocationScalarFieldEnum = (typeof WorkLocationScalarFieldEnum)[keyof typeof WorkLocationScalarFieldEnum]
 
 
+export const ShiftTemplateScalarFieldEnum = {
+  id: 'id',
+  locationId: 'locationId',
+  name: 'name',
+  code: 'code',
+  startsAt: 'startsAt',
+  endsAt: 'endsAt',
+  breakMinutes: 'breakMinutes',
+  color: 'color',
+  isActive: 'isActive',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ShiftTemplateScalarFieldEnum = (typeof ShiftTemplateScalarFieldEnum)[keyof typeof ShiftTemplateScalarFieldEnum]
+
+
+export const SchedulePlanScalarFieldEnum = {
+  id: 'id',
+  locationId: 'locationId',
+  year: 'year',
+  month: 'month',
+  version: 'version',
+  status: 'status',
+  title: 'title',
+  createdById: 'createdById',
+  submittedById: 'submittedById',
+  submittedAt: 'submittedAt',
+  approvedById: 'approvedById',
+  approvedAt: 'approvedAt',
+  returnedById: 'returnedById',
+  returnedAt: 'returnedAt',
+  returnComment: 'returnComment',
+  basedOnSchedulePlanId: 'basedOnSchedulePlanId',
+  isCurrentApproved: 'isCurrentApproved',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SchedulePlanScalarFieldEnum = (typeof SchedulePlanScalarFieldEnum)[keyof typeof SchedulePlanScalarFieldEnum]
+
+
+export const SchedulePlanCellScalarFieldEnum = {
+  id: 'id',
+  schedulePlanId: 'schedulePlanId',
+  employeeId: 'employeeId',
+  userId: 'userId',
+  locationId: 'locationId',
+  date: 'date',
+  cellType: 'cellType',
+  shiftTemplateId: 'shiftTemplateId',
+  startsAt: 'startsAt',
+  endsAt: 'endsAt',
+  breakMinutes: 'breakMinutes',
+  comment: 'comment',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SchedulePlanCellScalarFieldEnum = (typeof SchedulePlanCellScalarFieldEnum)[keyof typeof SchedulePlanCellScalarFieldEnum]
+
+
+export const SchedulePlanApprovalLogScalarFieldEnum = {
+  id: 'id',
+  schedulePlanId: 'schedulePlanId',
+  action: 'action',
+  actorUserId: 'actorUserId',
+  comment: 'comment',
+  createdAt: 'createdAt'
+} as const
+
+export type SchedulePlanApprovalLogScalarFieldEnum = (typeof SchedulePlanApprovalLogScalarFieldEnum)[keyof typeof SchedulePlanApprovalLogScalarFieldEnum]
+
+
 export const WorkShiftScalarFieldEnum = {
   id: 'id',
   employeeId: 'employeeId',
@@ -546,11 +626,32 @@ export const WorkShiftScalarFieldEnum = {
   breakMinutes: 'breakMinutes',
   status: 'status',
   createdById: 'createdById',
+  sourceSchedulePlanId: 'sourceSchedulePlanId',
+  sourceSchedulePlanCellId: 'sourceSchedulePlanCellId',
+  scheduleVersion: 'scheduleVersion',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type WorkShiftScalarFieldEnum = (typeof WorkShiftScalarFieldEnum)[keyof typeof WorkShiftScalarFieldEnum]
+
+
+export const ScheduleDayStatusScalarFieldEnum = {
+  id: 'id',
+  schedulePlanId: 'schedulePlanId',
+  schedulePlanCellId: 'schedulePlanCellId',
+  employeeId: 'employeeId',
+  userId: 'userId',
+  locationId: 'locationId',
+  date: 'date',
+  status: 'status',
+  comment: 'comment',
+  scheduleVersion: 'scheduleVersion',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ScheduleDayStatusScalarFieldEnum = (typeof ScheduleDayStatusScalarFieldEnum)[keyof typeof ScheduleDayStatusScalarFieldEnum]
 
 
 export const EmployeeTrustedDeviceScalarFieldEnum = {
@@ -683,6 +784,7 @@ export const TimesheetDayScalarFieldEnum = {
   userId: 'userId',
   date: 'date',
   shiftId: 'shiftId',
+  scheduleDayStatusId: 'scheduleDayStatusId',
   locationId: 'locationId',
   plannedStart: 'plannedStart',
   plannedEnd: 'plannedEnd',

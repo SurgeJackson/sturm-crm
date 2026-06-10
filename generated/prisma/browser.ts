@@ -108,10 +108,35 @@ export type EmployeeProfile = Prisma.EmployeeProfileModel
  */
 export type WorkLocation = Prisma.WorkLocationModel
 /**
+ * Model ShiftTemplate
+ * 
+ */
+export type ShiftTemplate = Prisma.ShiftTemplateModel
+/**
+ * Model SchedulePlan
+ * 
+ */
+export type SchedulePlan = Prisma.SchedulePlanModel
+/**
+ * Model SchedulePlanCell
+ * 
+ */
+export type SchedulePlanCell = Prisma.SchedulePlanCellModel
+/**
+ * Model SchedulePlanApprovalLog
+ * 
+ */
+export type SchedulePlanApprovalLog = Prisma.SchedulePlanApprovalLogModel
+/**
  * Model WorkShift
  * 
  */
 export type WorkShift = Prisma.WorkShiftModel
+/**
+ * Model ScheduleDayStatus
+ * 
+ */
+export type ScheduleDayStatus = Prisma.ScheduleDayStatusModel
 /**
  * Model EmployeeTrustedDevice
  * 

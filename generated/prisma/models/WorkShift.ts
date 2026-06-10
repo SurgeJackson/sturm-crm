@@ -28,10 +28,12 @@ export type AggregateWorkShift = {
 
 export type WorkShiftAvgAggregateOutputType = {
   breakMinutes: number | null
+  scheduleVersion: number | null
 }
 
 export type WorkShiftSumAggregateOutputType = {
   breakMinutes: number | null
+  scheduleVersion: number | null
 }
 
 export type WorkShiftMinAggregateOutputType = {
@@ -44,6 +46,9 @@ export type WorkShiftMinAggregateOutputType = {
   breakMinutes: number | null
   status: $Enums.WorkShiftStatus | null
   createdById: string | null
+  sourceSchedulePlanId: string | null
+  sourceSchedulePlanCellId: string | null
+  scheduleVersion: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -58,6 +63,9 @@ export type WorkShiftMaxAggregateOutputType = {
   breakMinutes: number | null
   status: $Enums.WorkShiftStatus | null
   createdById: string | null
+  sourceSchedulePlanId: string | null
+  sourceSchedulePlanCellId: string | null
+  scheduleVersion: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -72,6 +80,9 @@ export type WorkShiftCountAggregateOutputType = {
   breakMinutes: number
   status: number
   createdById: number
+  sourceSchedulePlanId: number
+  sourceSchedulePlanCellId: number
+  scheduleVersion: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -80,10 +91,12 @@ export type WorkShiftCountAggregateOutputType = {
 
 export type WorkShiftAvgAggregateInputType = {
   breakMinutes?: true
+  scheduleVersion?: true
 }
 
 export type WorkShiftSumAggregateInputType = {
   breakMinutes?: true
+  scheduleVersion?: true
 }
 
 export type WorkShiftMinAggregateInputType = {
@@ -96,6 +109,9 @@ export type WorkShiftMinAggregateInputType = {
   breakMinutes?: true
   status?: true
   createdById?: true
+  sourceSchedulePlanId?: true
+  sourceSchedulePlanCellId?: true
+  scheduleVersion?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -110,6 +126,9 @@ export type WorkShiftMaxAggregateInputType = {
   breakMinutes?: true
   status?: true
   createdById?: true
+  sourceSchedulePlanId?: true
+  sourceSchedulePlanCellId?: true
+  scheduleVersion?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -124,6 +143,9 @@ export type WorkShiftCountAggregateInputType = {
   breakMinutes?: true
   status?: true
   createdById?: true
+  sourceSchedulePlanId?: true
+  sourceSchedulePlanCellId?: true
+  scheduleVersion?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -225,6 +247,9 @@ export type WorkShiftGroupByOutputType = {
   breakMinutes: number
   status: $Enums.WorkShiftStatus
   createdById: string
+  sourceSchedulePlanId: string | null
+  sourceSchedulePlanCellId: string | null
+  scheduleVersion: number | null
   createdAt: Date
   updatedAt: Date
   _count: WorkShiftCountAggregateOutputType | null
@@ -262,11 +287,16 @@ export type WorkShiftWhereInput = {
   breakMinutes?: Prisma.IntFilter<"WorkShift"> | number
   status?: Prisma.EnumWorkShiftStatusFilter<"WorkShift"> | $Enums.WorkShiftStatus
   createdById?: Prisma.StringFilter<"WorkShift"> | string
+  sourceSchedulePlanId?: Prisma.StringNullableFilter<"WorkShift"> | string | null
+  sourceSchedulePlanCellId?: Prisma.StringNullableFilter<"WorkShift"> | string | null
+  scheduleVersion?: Prisma.IntNullableFilter<"WorkShift"> | number | null
   createdAt?: Prisma.DateTimeFilter<"WorkShift"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"WorkShift"> | Date | string
   employee?: Prisma.XOR<Prisma.EmployeeProfileScalarRelationFilter, Prisma.EmployeeProfileWhereInput>
   location?: Prisma.XOR<Prisma.WorkLocationScalarRelationFilter, Prisma.WorkLocationWhereInput>
   createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  sourceSchedulePlan?: Prisma.XOR<Prisma.SchedulePlanNullableScalarRelationFilter, Prisma.SchedulePlanWhereInput> | null
+  sourceSchedulePlanCell?: Prisma.XOR<Prisma.SchedulePlanCellNullableScalarRelationFilter, Prisma.SchedulePlanCellWhereInput> | null
   timeEvents?: Prisma.TimeEventListRelationFilter
   timesheetDays?: Prisma.TimesheetDayListRelationFilter
   adjustmentRequests?: Prisma.TimeAdjustmentRequestListRelationFilter
@@ -282,11 +312,16 @@ export type WorkShiftOrderByWithRelationInput = {
   breakMinutes?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
+  sourceSchedulePlanId?: Prisma.SortOrderInput | Prisma.SortOrder
+  sourceSchedulePlanCellId?: Prisma.SortOrderInput | Prisma.SortOrder
+  scheduleVersion?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   employee?: Prisma.EmployeeProfileOrderByWithRelationInput
   location?: Prisma.WorkLocationOrderByWithRelationInput
   createdBy?: Prisma.UserOrderByWithRelationInput
+  sourceSchedulePlan?: Prisma.SchedulePlanOrderByWithRelationInput
+  sourceSchedulePlanCell?: Prisma.SchedulePlanCellOrderByWithRelationInput
   timeEvents?: Prisma.TimeEventOrderByRelationAggregateInput
   timesheetDays?: Prisma.TimesheetDayOrderByRelationAggregateInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestOrderByRelationAggregateInput
@@ -294,6 +329,7 @@ export type WorkShiftOrderByWithRelationInput = {
 
 export type WorkShiftWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  sourceSchedulePlanCellId?: string
   AND?: Prisma.WorkShiftWhereInput | Prisma.WorkShiftWhereInput[]
   OR?: Prisma.WorkShiftWhereInput[]
   NOT?: Prisma.WorkShiftWhereInput | Prisma.WorkShiftWhereInput[]
@@ -305,15 +341,19 @@ export type WorkShiftWhereUniqueInput = Prisma.AtLeast<{
   breakMinutes?: Prisma.IntFilter<"WorkShift"> | number
   status?: Prisma.EnumWorkShiftStatusFilter<"WorkShift"> | $Enums.WorkShiftStatus
   createdById?: Prisma.StringFilter<"WorkShift"> | string
+  sourceSchedulePlanId?: Prisma.StringNullableFilter<"WorkShift"> | string | null
+  scheduleVersion?: Prisma.IntNullableFilter<"WorkShift"> | number | null
   createdAt?: Prisma.DateTimeFilter<"WorkShift"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"WorkShift"> | Date | string
   employee?: Prisma.XOR<Prisma.EmployeeProfileScalarRelationFilter, Prisma.EmployeeProfileWhereInput>
   location?: Prisma.XOR<Prisma.WorkLocationScalarRelationFilter, Prisma.WorkLocationWhereInput>
   createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  sourceSchedulePlan?: Prisma.XOR<Prisma.SchedulePlanNullableScalarRelationFilter, Prisma.SchedulePlanWhereInput> | null
+  sourceSchedulePlanCell?: Prisma.XOR<Prisma.SchedulePlanCellNullableScalarRelationFilter, Prisma.SchedulePlanCellWhereInput> | null
   timeEvents?: Prisma.TimeEventListRelationFilter
   timesheetDays?: Prisma.TimesheetDayListRelationFilter
   adjustmentRequests?: Prisma.TimeAdjustmentRequestListRelationFilter
-}, "id">
+}, "id" | "sourceSchedulePlanCellId">
 
 export type WorkShiftOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -325,6 +365,9 @@ export type WorkShiftOrderByWithAggregationInput = {
   breakMinutes?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
+  sourceSchedulePlanId?: Prisma.SortOrderInput | Prisma.SortOrder
+  sourceSchedulePlanCellId?: Prisma.SortOrderInput | Prisma.SortOrder
+  scheduleVersion?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.WorkShiftCountOrderByAggregateInput
@@ -347,6 +390,9 @@ export type WorkShiftScalarWhereWithAggregatesInput = {
   breakMinutes?: Prisma.IntWithAggregatesFilter<"WorkShift"> | number
   status?: Prisma.EnumWorkShiftStatusWithAggregatesFilter<"WorkShift"> | $Enums.WorkShiftStatus
   createdById?: Prisma.StringWithAggregatesFilter<"WorkShift"> | string
+  sourceSchedulePlanId?: Prisma.StringNullableWithAggregatesFilter<"WorkShift"> | string | null
+  sourceSchedulePlanCellId?: Prisma.StringNullableWithAggregatesFilter<"WorkShift"> | string | null
+  scheduleVersion?: Prisma.IntNullableWithAggregatesFilter<"WorkShift"> | number | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"WorkShift"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"WorkShift"> | Date | string
 }
@@ -358,11 +404,14 @@ export type WorkShiftCreateInput = {
   endsAt: Date | string
   breakMinutes?: number
   status?: $Enums.WorkShiftStatus
+  scheduleVersion?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   employee: Prisma.EmployeeProfileCreateNestedOneWithoutShiftsInput
   location: Prisma.WorkLocationCreateNestedOneWithoutShiftsInput
   createdBy: Prisma.UserCreateNestedOneWithoutWorkShiftsCreatedInput
+  sourceSchedulePlan?: Prisma.SchedulePlanCreateNestedOneWithoutSourceWorkShiftsInput
+  sourceSchedulePlanCell?: Prisma.SchedulePlanCellCreateNestedOneWithoutSourceWorkShiftInput
   timeEvents?: Prisma.TimeEventCreateNestedManyWithoutShiftInput
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutShiftInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutShiftInput
@@ -378,6 +427,9 @@ export type WorkShiftUncheckedCreateInput = {
   breakMinutes?: number
   status?: $Enums.WorkShiftStatus
   createdById: string
+  sourceSchedulePlanId?: string | null
+  sourceSchedulePlanCellId?: string | null
+  scheduleVersion?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   timeEvents?: Prisma.TimeEventUncheckedCreateNestedManyWithoutShiftInput
@@ -392,11 +444,14 @@ export type WorkShiftUpdateInput = {
   endsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   breakMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumWorkShiftStatusFieldUpdateOperationsInput | $Enums.WorkShiftStatus
+  scheduleVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   employee?: Prisma.EmployeeProfileUpdateOneRequiredWithoutShiftsNestedInput
   location?: Prisma.WorkLocationUpdateOneRequiredWithoutShiftsNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutWorkShiftsCreatedNestedInput
+  sourceSchedulePlan?: Prisma.SchedulePlanUpdateOneWithoutSourceWorkShiftsNestedInput
+  sourceSchedulePlanCell?: Prisma.SchedulePlanCellUpdateOneWithoutSourceWorkShiftNestedInput
   timeEvents?: Prisma.TimeEventUpdateManyWithoutShiftNestedInput
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutShiftNestedInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutShiftNestedInput
@@ -412,6 +467,9 @@ export type WorkShiftUncheckedUpdateInput = {
   breakMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumWorkShiftStatusFieldUpdateOperationsInput | $Enums.WorkShiftStatus
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceSchedulePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSchedulePlanCellId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scheduleVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   timeEvents?: Prisma.TimeEventUncheckedUpdateManyWithoutShiftNestedInput
@@ -429,6 +487,9 @@ export type WorkShiftCreateManyInput = {
   breakMinutes?: number
   status?: $Enums.WorkShiftStatus
   createdById: string
+  sourceSchedulePlanId?: string | null
+  sourceSchedulePlanCellId?: string | null
+  scheduleVersion?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -440,6 +501,7 @@ export type WorkShiftUpdateManyMutationInput = {
   endsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   breakMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumWorkShiftStatusFieldUpdateOperationsInput | $Enums.WorkShiftStatus
+  scheduleVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -454,6 +516,9 @@ export type WorkShiftUncheckedUpdateManyInput = {
   breakMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumWorkShiftStatusFieldUpdateOperationsInput | $Enums.WorkShiftStatus
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceSchedulePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSchedulePlanCellId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scheduleVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -468,6 +533,11 @@ export type WorkShiftOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type WorkShiftNullableScalarRelationFilter = {
+  is?: Prisma.WorkShiftWhereInput | null
+  isNot?: Prisma.WorkShiftWhereInput | null
+}
+
 export type WorkShiftCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   employeeId?: Prisma.SortOrder
@@ -478,12 +548,16 @@ export type WorkShiftCountOrderByAggregateInput = {
   breakMinutes?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
+  sourceSchedulePlanId?: Prisma.SortOrder
+  sourceSchedulePlanCellId?: Prisma.SortOrder
+  scheduleVersion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type WorkShiftAvgOrderByAggregateInput = {
   breakMinutes?: Prisma.SortOrder
+  scheduleVersion?: Prisma.SortOrder
 }
 
 export type WorkShiftMaxOrderByAggregateInput = {
@@ -496,6 +570,9 @@ export type WorkShiftMaxOrderByAggregateInput = {
   breakMinutes?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
+  sourceSchedulePlanId?: Prisma.SortOrder
+  sourceSchedulePlanCellId?: Prisma.SortOrder
+  scheduleVersion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -510,17 +587,16 @@ export type WorkShiftMinOrderByAggregateInput = {
   breakMinutes?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
+  sourceSchedulePlanId?: Prisma.SortOrder
+  sourceSchedulePlanCellId?: Prisma.SortOrder
+  scheduleVersion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type WorkShiftSumOrderByAggregateInput = {
   breakMinutes?: Prisma.SortOrder
-}
-
-export type WorkShiftNullableScalarRelationFilter = {
-  is?: Prisma.WorkShiftWhereInput | null
-  isNot?: Prisma.WorkShiftWhereInput | null
+  scheduleVersion?: Prisma.SortOrder
 }
 
 export type WorkShiftCreateNestedManyWithoutCreatedByInput = {
@@ -649,6 +725,80 @@ export type WorkShiftUncheckedUpdateManyWithoutLocationNestedInput = {
   deleteMany?: Prisma.WorkShiftScalarWhereInput | Prisma.WorkShiftScalarWhereInput[]
 }
 
+export type WorkShiftCreateNestedManyWithoutSourceSchedulePlanInput = {
+  create?: Prisma.XOR<Prisma.WorkShiftCreateWithoutSourceSchedulePlanInput, Prisma.WorkShiftUncheckedCreateWithoutSourceSchedulePlanInput> | Prisma.WorkShiftCreateWithoutSourceSchedulePlanInput[] | Prisma.WorkShiftUncheckedCreateWithoutSourceSchedulePlanInput[]
+  connectOrCreate?: Prisma.WorkShiftCreateOrConnectWithoutSourceSchedulePlanInput | Prisma.WorkShiftCreateOrConnectWithoutSourceSchedulePlanInput[]
+  createMany?: Prisma.WorkShiftCreateManySourceSchedulePlanInputEnvelope
+  connect?: Prisma.WorkShiftWhereUniqueInput | Prisma.WorkShiftWhereUniqueInput[]
+}
+
+export type WorkShiftUncheckedCreateNestedManyWithoutSourceSchedulePlanInput = {
+  create?: Prisma.XOR<Prisma.WorkShiftCreateWithoutSourceSchedulePlanInput, Prisma.WorkShiftUncheckedCreateWithoutSourceSchedulePlanInput> | Prisma.WorkShiftCreateWithoutSourceSchedulePlanInput[] | Prisma.WorkShiftUncheckedCreateWithoutSourceSchedulePlanInput[]
+  connectOrCreate?: Prisma.WorkShiftCreateOrConnectWithoutSourceSchedulePlanInput | Prisma.WorkShiftCreateOrConnectWithoutSourceSchedulePlanInput[]
+  createMany?: Prisma.WorkShiftCreateManySourceSchedulePlanInputEnvelope
+  connect?: Prisma.WorkShiftWhereUniqueInput | Prisma.WorkShiftWhereUniqueInput[]
+}
+
+export type WorkShiftUpdateManyWithoutSourceSchedulePlanNestedInput = {
+  create?: Prisma.XOR<Prisma.WorkShiftCreateWithoutSourceSchedulePlanInput, Prisma.WorkShiftUncheckedCreateWithoutSourceSchedulePlanInput> | Prisma.WorkShiftCreateWithoutSourceSchedulePlanInput[] | Prisma.WorkShiftUncheckedCreateWithoutSourceSchedulePlanInput[]
+  connectOrCreate?: Prisma.WorkShiftCreateOrConnectWithoutSourceSchedulePlanInput | Prisma.WorkShiftCreateOrConnectWithoutSourceSchedulePlanInput[]
+  upsert?: Prisma.WorkShiftUpsertWithWhereUniqueWithoutSourceSchedulePlanInput | Prisma.WorkShiftUpsertWithWhereUniqueWithoutSourceSchedulePlanInput[]
+  createMany?: Prisma.WorkShiftCreateManySourceSchedulePlanInputEnvelope
+  set?: Prisma.WorkShiftWhereUniqueInput | Prisma.WorkShiftWhereUniqueInput[]
+  disconnect?: Prisma.WorkShiftWhereUniqueInput | Prisma.WorkShiftWhereUniqueInput[]
+  delete?: Prisma.WorkShiftWhereUniqueInput | Prisma.WorkShiftWhereUniqueInput[]
+  connect?: Prisma.WorkShiftWhereUniqueInput | Prisma.WorkShiftWhereUniqueInput[]
+  update?: Prisma.WorkShiftUpdateWithWhereUniqueWithoutSourceSchedulePlanInput | Prisma.WorkShiftUpdateWithWhereUniqueWithoutSourceSchedulePlanInput[]
+  updateMany?: Prisma.WorkShiftUpdateManyWithWhereWithoutSourceSchedulePlanInput | Prisma.WorkShiftUpdateManyWithWhereWithoutSourceSchedulePlanInput[]
+  deleteMany?: Prisma.WorkShiftScalarWhereInput | Prisma.WorkShiftScalarWhereInput[]
+}
+
+export type WorkShiftUncheckedUpdateManyWithoutSourceSchedulePlanNestedInput = {
+  create?: Prisma.XOR<Prisma.WorkShiftCreateWithoutSourceSchedulePlanInput, Prisma.WorkShiftUncheckedCreateWithoutSourceSchedulePlanInput> | Prisma.WorkShiftCreateWithoutSourceSchedulePlanInput[] | Prisma.WorkShiftUncheckedCreateWithoutSourceSchedulePlanInput[]
+  connectOrCreate?: Prisma.WorkShiftCreateOrConnectWithoutSourceSchedulePlanInput | Prisma.WorkShiftCreateOrConnectWithoutSourceSchedulePlanInput[]
+  upsert?: Prisma.WorkShiftUpsertWithWhereUniqueWithoutSourceSchedulePlanInput | Prisma.WorkShiftUpsertWithWhereUniqueWithoutSourceSchedulePlanInput[]
+  createMany?: Prisma.WorkShiftCreateManySourceSchedulePlanInputEnvelope
+  set?: Prisma.WorkShiftWhereUniqueInput | Prisma.WorkShiftWhereUniqueInput[]
+  disconnect?: Prisma.WorkShiftWhereUniqueInput | Prisma.WorkShiftWhereUniqueInput[]
+  delete?: Prisma.WorkShiftWhereUniqueInput | Prisma.WorkShiftWhereUniqueInput[]
+  connect?: Prisma.WorkShiftWhereUniqueInput | Prisma.WorkShiftWhereUniqueInput[]
+  update?: Prisma.WorkShiftUpdateWithWhereUniqueWithoutSourceSchedulePlanInput | Prisma.WorkShiftUpdateWithWhereUniqueWithoutSourceSchedulePlanInput[]
+  updateMany?: Prisma.WorkShiftUpdateManyWithWhereWithoutSourceSchedulePlanInput | Prisma.WorkShiftUpdateManyWithWhereWithoutSourceSchedulePlanInput[]
+  deleteMany?: Prisma.WorkShiftScalarWhereInput | Prisma.WorkShiftScalarWhereInput[]
+}
+
+export type WorkShiftCreateNestedOneWithoutSourceSchedulePlanCellInput = {
+  create?: Prisma.XOR<Prisma.WorkShiftCreateWithoutSourceSchedulePlanCellInput, Prisma.WorkShiftUncheckedCreateWithoutSourceSchedulePlanCellInput>
+  connectOrCreate?: Prisma.WorkShiftCreateOrConnectWithoutSourceSchedulePlanCellInput
+  connect?: Prisma.WorkShiftWhereUniqueInput
+}
+
+export type WorkShiftUncheckedCreateNestedOneWithoutSourceSchedulePlanCellInput = {
+  create?: Prisma.XOR<Prisma.WorkShiftCreateWithoutSourceSchedulePlanCellInput, Prisma.WorkShiftUncheckedCreateWithoutSourceSchedulePlanCellInput>
+  connectOrCreate?: Prisma.WorkShiftCreateOrConnectWithoutSourceSchedulePlanCellInput
+  connect?: Prisma.WorkShiftWhereUniqueInput
+}
+
+export type WorkShiftUpdateOneWithoutSourceSchedulePlanCellNestedInput = {
+  create?: Prisma.XOR<Prisma.WorkShiftCreateWithoutSourceSchedulePlanCellInput, Prisma.WorkShiftUncheckedCreateWithoutSourceSchedulePlanCellInput>
+  connectOrCreate?: Prisma.WorkShiftCreateOrConnectWithoutSourceSchedulePlanCellInput
+  upsert?: Prisma.WorkShiftUpsertWithoutSourceSchedulePlanCellInput
+  disconnect?: Prisma.WorkShiftWhereInput | boolean
+  delete?: Prisma.WorkShiftWhereInput | boolean
+  connect?: Prisma.WorkShiftWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.WorkShiftUpdateToOneWithWhereWithoutSourceSchedulePlanCellInput, Prisma.WorkShiftUpdateWithoutSourceSchedulePlanCellInput>, Prisma.WorkShiftUncheckedUpdateWithoutSourceSchedulePlanCellInput>
+}
+
+export type WorkShiftUncheckedUpdateOneWithoutSourceSchedulePlanCellNestedInput = {
+  create?: Prisma.XOR<Prisma.WorkShiftCreateWithoutSourceSchedulePlanCellInput, Prisma.WorkShiftUncheckedCreateWithoutSourceSchedulePlanCellInput>
+  connectOrCreate?: Prisma.WorkShiftCreateOrConnectWithoutSourceSchedulePlanCellInput
+  upsert?: Prisma.WorkShiftUpsertWithoutSourceSchedulePlanCellInput
+  disconnect?: Prisma.WorkShiftWhereInput | boolean
+  delete?: Prisma.WorkShiftWhereInput | boolean
+  connect?: Prisma.WorkShiftWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.WorkShiftUpdateToOneWithWhereWithoutSourceSchedulePlanCellInput, Prisma.WorkShiftUpdateWithoutSourceSchedulePlanCellInput>, Prisma.WorkShiftUncheckedUpdateWithoutSourceSchedulePlanCellInput>
+}
+
 export type EnumWorkShiftStatusFieldUpdateOperationsInput = {
   set?: $Enums.WorkShiftStatus
 }
@@ -708,10 +858,13 @@ export type WorkShiftCreateWithoutCreatedByInput = {
   endsAt: Date | string
   breakMinutes?: number
   status?: $Enums.WorkShiftStatus
+  scheduleVersion?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   employee: Prisma.EmployeeProfileCreateNestedOneWithoutShiftsInput
   location: Prisma.WorkLocationCreateNestedOneWithoutShiftsInput
+  sourceSchedulePlan?: Prisma.SchedulePlanCreateNestedOneWithoutSourceWorkShiftsInput
+  sourceSchedulePlanCell?: Prisma.SchedulePlanCellCreateNestedOneWithoutSourceWorkShiftInput
   timeEvents?: Prisma.TimeEventCreateNestedManyWithoutShiftInput
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutShiftInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutShiftInput
@@ -726,6 +879,9 @@ export type WorkShiftUncheckedCreateWithoutCreatedByInput = {
   endsAt: Date | string
   breakMinutes?: number
   status?: $Enums.WorkShiftStatus
+  sourceSchedulePlanId?: string | null
+  sourceSchedulePlanCellId?: string | null
+  scheduleVersion?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   timeEvents?: Prisma.TimeEventUncheckedCreateNestedManyWithoutShiftInput
@@ -772,6 +928,9 @@ export type WorkShiftScalarWhereInput = {
   breakMinutes?: Prisma.IntFilter<"WorkShift"> | number
   status?: Prisma.EnumWorkShiftStatusFilter<"WorkShift"> | $Enums.WorkShiftStatus
   createdById?: Prisma.StringFilter<"WorkShift"> | string
+  sourceSchedulePlanId?: Prisma.StringNullableFilter<"WorkShift"> | string | null
+  sourceSchedulePlanCellId?: Prisma.StringNullableFilter<"WorkShift"> | string | null
+  scheduleVersion?: Prisma.IntNullableFilter<"WorkShift"> | number | null
   createdAt?: Prisma.DateTimeFilter<"WorkShift"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"WorkShift"> | Date | string
 }
@@ -783,10 +942,13 @@ export type WorkShiftCreateWithoutEmployeeInput = {
   endsAt: Date | string
   breakMinutes?: number
   status?: $Enums.WorkShiftStatus
+  scheduleVersion?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   location: Prisma.WorkLocationCreateNestedOneWithoutShiftsInput
   createdBy: Prisma.UserCreateNestedOneWithoutWorkShiftsCreatedInput
+  sourceSchedulePlan?: Prisma.SchedulePlanCreateNestedOneWithoutSourceWorkShiftsInput
+  sourceSchedulePlanCell?: Prisma.SchedulePlanCellCreateNestedOneWithoutSourceWorkShiftInput
   timeEvents?: Prisma.TimeEventCreateNestedManyWithoutShiftInput
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutShiftInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutShiftInput
@@ -801,6 +963,9 @@ export type WorkShiftUncheckedCreateWithoutEmployeeInput = {
   breakMinutes?: number
   status?: $Enums.WorkShiftStatus
   createdById: string
+  sourceSchedulePlanId?: string | null
+  sourceSchedulePlanCellId?: string | null
+  scheduleVersion?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   timeEvents?: Prisma.TimeEventUncheckedCreateNestedManyWithoutShiftInput
@@ -841,10 +1006,13 @@ export type WorkShiftCreateWithoutLocationInput = {
   endsAt: Date | string
   breakMinutes?: number
   status?: $Enums.WorkShiftStatus
+  scheduleVersion?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   employee: Prisma.EmployeeProfileCreateNestedOneWithoutShiftsInput
   createdBy: Prisma.UserCreateNestedOneWithoutWorkShiftsCreatedInput
+  sourceSchedulePlan?: Prisma.SchedulePlanCreateNestedOneWithoutSourceWorkShiftsInput
+  sourceSchedulePlanCell?: Prisma.SchedulePlanCellCreateNestedOneWithoutSourceWorkShiftInput
   timeEvents?: Prisma.TimeEventCreateNestedManyWithoutShiftInput
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutShiftInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutShiftInput
@@ -859,6 +1027,9 @@ export type WorkShiftUncheckedCreateWithoutLocationInput = {
   breakMinutes?: number
   status?: $Enums.WorkShiftStatus
   createdById: string
+  sourceSchedulePlanId?: string | null
+  sourceSchedulePlanCellId?: string | null
+  scheduleVersion?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   timeEvents?: Prisma.TimeEventUncheckedCreateNestedManyWithoutShiftInput
@@ -892,6 +1063,162 @@ export type WorkShiftUpdateManyWithWhereWithoutLocationInput = {
   data: Prisma.XOR<Prisma.WorkShiftUpdateManyMutationInput, Prisma.WorkShiftUncheckedUpdateManyWithoutLocationInput>
 }
 
+export type WorkShiftCreateWithoutSourceSchedulePlanInput = {
+  id?: string
+  date: string
+  startsAt: Date | string
+  endsAt: Date | string
+  breakMinutes?: number
+  status?: $Enums.WorkShiftStatus
+  scheduleVersion?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  employee: Prisma.EmployeeProfileCreateNestedOneWithoutShiftsInput
+  location: Prisma.WorkLocationCreateNestedOneWithoutShiftsInput
+  createdBy: Prisma.UserCreateNestedOneWithoutWorkShiftsCreatedInput
+  sourceSchedulePlanCell?: Prisma.SchedulePlanCellCreateNestedOneWithoutSourceWorkShiftInput
+  timeEvents?: Prisma.TimeEventCreateNestedManyWithoutShiftInput
+  timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutShiftInput
+  adjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutShiftInput
+}
+
+export type WorkShiftUncheckedCreateWithoutSourceSchedulePlanInput = {
+  id?: string
+  employeeId: string
+  locationId: string
+  date: string
+  startsAt: Date | string
+  endsAt: Date | string
+  breakMinutes?: number
+  status?: $Enums.WorkShiftStatus
+  createdById: string
+  sourceSchedulePlanCellId?: string | null
+  scheduleVersion?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  timeEvents?: Prisma.TimeEventUncheckedCreateNestedManyWithoutShiftInput
+  timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutShiftInput
+  adjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutShiftInput
+}
+
+export type WorkShiftCreateOrConnectWithoutSourceSchedulePlanInput = {
+  where: Prisma.WorkShiftWhereUniqueInput
+  create: Prisma.XOR<Prisma.WorkShiftCreateWithoutSourceSchedulePlanInput, Prisma.WorkShiftUncheckedCreateWithoutSourceSchedulePlanInput>
+}
+
+export type WorkShiftCreateManySourceSchedulePlanInputEnvelope = {
+  data: Prisma.WorkShiftCreateManySourceSchedulePlanInput | Prisma.WorkShiftCreateManySourceSchedulePlanInput[]
+  skipDuplicates?: boolean
+}
+
+export type WorkShiftUpsertWithWhereUniqueWithoutSourceSchedulePlanInput = {
+  where: Prisma.WorkShiftWhereUniqueInput
+  update: Prisma.XOR<Prisma.WorkShiftUpdateWithoutSourceSchedulePlanInput, Prisma.WorkShiftUncheckedUpdateWithoutSourceSchedulePlanInput>
+  create: Prisma.XOR<Prisma.WorkShiftCreateWithoutSourceSchedulePlanInput, Prisma.WorkShiftUncheckedCreateWithoutSourceSchedulePlanInput>
+}
+
+export type WorkShiftUpdateWithWhereUniqueWithoutSourceSchedulePlanInput = {
+  where: Prisma.WorkShiftWhereUniqueInput
+  data: Prisma.XOR<Prisma.WorkShiftUpdateWithoutSourceSchedulePlanInput, Prisma.WorkShiftUncheckedUpdateWithoutSourceSchedulePlanInput>
+}
+
+export type WorkShiftUpdateManyWithWhereWithoutSourceSchedulePlanInput = {
+  where: Prisma.WorkShiftScalarWhereInput
+  data: Prisma.XOR<Prisma.WorkShiftUpdateManyMutationInput, Prisma.WorkShiftUncheckedUpdateManyWithoutSourceSchedulePlanInput>
+}
+
+export type WorkShiftCreateWithoutSourceSchedulePlanCellInput = {
+  id?: string
+  date: string
+  startsAt: Date | string
+  endsAt: Date | string
+  breakMinutes?: number
+  status?: $Enums.WorkShiftStatus
+  scheduleVersion?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  employee: Prisma.EmployeeProfileCreateNestedOneWithoutShiftsInput
+  location: Prisma.WorkLocationCreateNestedOneWithoutShiftsInput
+  createdBy: Prisma.UserCreateNestedOneWithoutWorkShiftsCreatedInput
+  sourceSchedulePlan?: Prisma.SchedulePlanCreateNestedOneWithoutSourceWorkShiftsInput
+  timeEvents?: Prisma.TimeEventCreateNestedManyWithoutShiftInput
+  timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutShiftInput
+  adjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutShiftInput
+}
+
+export type WorkShiftUncheckedCreateWithoutSourceSchedulePlanCellInput = {
+  id?: string
+  employeeId: string
+  locationId: string
+  date: string
+  startsAt: Date | string
+  endsAt: Date | string
+  breakMinutes?: number
+  status?: $Enums.WorkShiftStatus
+  createdById: string
+  sourceSchedulePlanId?: string | null
+  scheduleVersion?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  timeEvents?: Prisma.TimeEventUncheckedCreateNestedManyWithoutShiftInput
+  timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutShiftInput
+  adjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedCreateNestedManyWithoutShiftInput
+}
+
+export type WorkShiftCreateOrConnectWithoutSourceSchedulePlanCellInput = {
+  where: Prisma.WorkShiftWhereUniqueInput
+  create: Prisma.XOR<Prisma.WorkShiftCreateWithoutSourceSchedulePlanCellInput, Prisma.WorkShiftUncheckedCreateWithoutSourceSchedulePlanCellInput>
+}
+
+export type WorkShiftUpsertWithoutSourceSchedulePlanCellInput = {
+  update: Prisma.XOR<Prisma.WorkShiftUpdateWithoutSourceSchedulePlanCellInput, Prisma.WorkShiftUncheckedUpdateWithoutSourceSchedulePlanCellInput>
+  create: Prisma.XOR<Prisma.WorkShiftCreateWithoutSourceSchedulePlanCellInput, Prisma.WorkShiftUncheckedCreateWithoutSourceSchedulePlanCellInput>
+  where?: Prisma.WorkShiftWhereInput
+}
+
+export type WorkShiftUpdateToOneWithWhereWithoutSourceSchedulePlanCellInput = {
+  where?: Prisma.WorkShiftWhereInput
+  data: Prisma.XOR<Prisma.WorkShiftUpdateWithoutSourceSchedulePlanCellInput, Prisma.WorkShiftUncheckedUpdateWithoutSourceSchedulePlanCellInput>
+}
+
+export type WorkShiftUpdateWithoutSourceSchedulePlanCellInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  date?: Prisma.StringFieldUpdateOperationsInput | string
+  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  breakMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumWorkShiftStatusFieldUpdateOperationsInput | $Enums.WorkShiftStatus
+  scheduleVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  employee?: Prisma.EmployeeProfileUpdateOneRequiredWithoutShiftsNestedInput
+  location?: Prisma.WorkLocationUpdateOneRequiredWithoutShiftsNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutWorkShiftsCreatedNestedInput
+  sourceSchedulePlan?: Prisma.SchedulePlanUpdateOneWithoutSourceWorkShiftsNestedInput
+  timeEvents?: Prisma.TimeEventUpdateManyWithoutShiftNestedInput
+  timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutShiftNestedInput
+  adjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutShiftNestedInput
+}
+
+export type WorkShiftUncheckedUpdateWithoutSourceSchedulePlanCellInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeId?: Prisma.StringFieldUpdateOperationsInput | string
+  locationId?: Prisma.StringFieldUpdateOperationsInput | string
+  date?: Prisma.StringFieldUpdateOperationsInput | string
+  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  breakMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumWorkShiftStatusFieldUpdateOperationsInput | $Enums.WorkShiftStatus
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceSchedulePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scheduleVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  timeEvents?: Prisma.TimeEventUncheckedUpdateManyWithoutShiftNestedInput
+  timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutShiftNestedInput
+  adjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutShiftNestedInput
+}
+
 export type WorkShiftCreateWithoutTimeEventsInput = {
   id?: string
   date: string
@@ -899,11 +1226,14 @@ export type WorkShiftCreateWithoutTimeEventsInput = {
   endsAt: Date | string
   breakMinutes?: number
   status?: $Enums.WorkShiftStatus
+  scheduleVersion?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   employee: Prisma.EmployeeProfileCreateNestedOneWithoutShiftsInput
   location: Prisma.WorkLocationCreateNestedOneWithoutShiftsInput
   createdBy: Prisma.UserCreateNestedOneWithoutWorkShiftsCreatedInput
+  sourceSchedulePlan?: Prisma.SchedulePlanCreateNestedOneWithoutSourceWorkShiftsInput
+  sourceSchedulePlanCell?: Prisma.SchedulePlanCellCreateNestedOneWithoutSourceWorkShiftInput
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutShiftInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutShiftInput
 }
@@ -918,6 +1248,9 @@ export type WorkShiftUncheckedCreateWithoutTimeEventsInput = {
   breakMinutes?: number
   status?: $Enums.WorkShiftStatus
   createdById: string
+  sourceSchedulePlanId?: string | null
+  sourceSchedulePlanCellId?: string | null
+  scheduleVersion?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutShiftInput
@@ -947,11 +1280,14 @@ export type WorkShiftUpdateWithoutTimeEventsInput = {
   endsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   breakMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumWorkShiftStatusFieldUpdateOperationsInput | $Enums.WorkShiftStatus
+  scheduleVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   employee?: Prisma.EmployeeProfileUpdateOneRequiredWithoutShiftsNestedInput
   location?: Prisma.WorkLocationUpdateOneRequiredWithoutShiftsNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutWorkShiftsCreatedNestedInput
+  sourceSchedulePlan?: Prisma.SchedulePlanUpdateOneWithoutSourceWorkShiftsNestedInput
+  sourceSchedulePlanCell?: Prisma.SchedulePlanCellUpdateOneWithoutSourceWorkShiftNestedInput
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutShiftNestedInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutShiftNestedInput
 }
@@ -966,6 +1302,9 @@ export type WorkShiftUncheckedUpdateWithoutTimeEventsInput = {
   breakMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumWorkShiftStatusFieldUpdateOperationsInput | $Enums.WorkShiftStatus
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceSchedulePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSchedulePlanCellId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scheduleVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutShiftNestedInput
@@ -979,11 +1318,14 @@ export type WorkShiftCreateWithoutTimesheetDaysInput = {
   endsAt: Date | string
   breakMinutes?: number
   status?: $Enums.WorkShiftStatus
+  scheduleVersion?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   employee: Prisma.EmployeeProfileCreateNestedOneWithoutShiftsInput
   location: Prisma.WorkLocationCreateNestedOneWithoutShiftsInput
   createdBy: Prisma.UserCreateNestedOneWithoutWorkShiftsCreatedInput
+  sourceSchedulePlan?: Prisma.SchedulePlanCreateNestedOneWithoutSourceWorkShiftsInput
+  sourceSchedulePlanCell?: Prisma.SchedulePlanCellCreateNestedOneWithoutSourceWorkShiftInput
   timeEvents?: Prisma.TimeEventCreateNestedManyWithoutShiftInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestCreateNestedManyWithoutShiftInput
 }
@@ -998,6 +1340,9 @@ export type WorkShiftUncheckedCreateWithoutTimesheetDaysInput = {
   breakMinutes?: number
   status?: $Enums.WorkShiftStatus
   createdById: string
+  sourceSchedulePlanId?: string | null
+  sourceSchedulePlanCellId?: string | null
+  scheduleVersion?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   timeEvents?: Prisma.TimeEventUncheckedCreateNestedManyWithoutShiftInput
@@ -1027,11 +1372,14 @@ export type WorkShiftUpdateWithoutTimesheetDaysInput = {
   endsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   breakMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumWorkShiftStatusFieldUpdateOperationsInput | $Enums.WorkShiftStatus
+  scheduleVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   employee?: Prisma.EmployeeProfileUpdateOneRequiredWithoutShiftsNestedInput
   location?: Prisma.WorkLocationUpdateOneRequiredWithoutShiftsNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutWorkShiftsCreatedNestedInput
+  sourceSchedulePlan?: Prisma.SchedulePlanUpdateOneWithoutSourceWorkShiftsNestedInput
+  sourceSchedulePlanCell?: Prisma.SchedulePlanCellUpdateOneWithoutSourceWorkShiftNestedInput
   timeEvents?: Prisma.TimeEventUpdateManyWithoutShiftNestedInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutShiftNestedInput
 }
@@ -1046,6 +1394,9 @@ export type WorkShiftUncheckedUpdateWithoutTimesheetDaysInput = {
   breakMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumWorkShiftStatusFieldUpdateOperationsInput | $Enums.WorkShiftStatus
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceSchedulePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSchedulePlanCellId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scheduleVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   timeEvents?: Prisma.TimeEventUncheckedUpdateManyWithoutShiftNestedInput
@@ -1059,11 +1410,14 @@ export type WorkShiftCreateWithoutAdjustmentRequestsInput = {
   endsAt: Date | string
   breakMinutes?: number
   status?: $Enums.WorkShiftStatus
+  scheduleVersion?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   employee: Prisma.EmployeeProfileCreateNestedOneWithoutShiftsInput
   location: Prisma.WorkLocationCreateNestedOneWithoutShiftsInput
   createdBy: Prisma.UserCreateNestedOneWithoutWorkShiftsCreatedInput
+  sourceSchedulePlan?: Prisma.SchedulePlanCreateNestedOneWithoutSourceWorkShiftsInput
+  sourceSchedulePlanCell?: Prisma.SchedulePlanCellCreateNestedOneWithoutSourceWorkShiftInput
   timeEvents?: Prisma.TimeEventCreateNestedManyWithoutShiftInput
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutShiftInput
 }
@@ -1078,6 +1432,9 @@ export type WorkShiftUncheckedCreateWithoutAdjustmentRequestsInput = {
   breakMinutes?: number
   status?: $Enums.WorkShiftStatus
   createdById: string
+  sourceSchedulePlanId?: string | null
+  sourceSchedulePlanCellId?: string | null
+  scheduleVersion?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   timeEvents?: Prisma.TimeEventUncheckedCreateNestedManyWithoutShiftInput
@@ -1107,11 +1464,14 @@ export type WorkShiftUpdateWithoutAdjustmentRequestsInput = {
   endsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   breakMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumWorkShiftStatusFieldUpdateOperationsInput | $Enums.WorkShiftStatus
+  scheduleVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   employee?: Prisma.EmployeeProfileUpdateOneRequiredWithoutShiftsNestedInput
   location?: Prisma.WorkLocationUpdateOneRequiredWithoutShiftsNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutWorkShiftsCreatedNestedInput
+  sourceSchedulePlan?: Prisma.SchedulePlanUpdateOneWithoutSourceWorkShiftsNestedInput
+  sourceSchedulePlanCell?: Prisma.SchedulePlanCellUpdateOneWithoutSourceWorkShiftNestedInput
   timeEvents?: Prisma.TimeEventUpdateManyWithoutShiftNestedInput
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutShiftNestedInput
 }
@@ -1126,6 +1486,9 @@ export type WorkShiftUncheckedUpdateWithoutAdjustmentRequestsInput = {
   breakMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumWorkShiftStatusFieldUpdateOperationsInput | $Enums.WorkShiftStatus
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceSchedulePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSchedulePlanCellId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scheduleVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   timeEvents?: Prisma.TimeEventUncheckedUpdateManyWithoutShiftNestedInput
@@ -1141,6 +1504,9 @@ export type WorkShiftCreateManyCreatedByInput = {
   endsAt: Date | string
   breakMinutes?: number
   status?: $Enums.WorkShiftStatus
+  sourceSchedulePlanId?: string | null
+  sourceSchedulePlanCellId?: string | null
+  scheduleVersion?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1152,10 +1518,13 @@ export type WorkShiftUpdateWithoutCreatedByInput = {
   endsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   breakMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumWorkShiftStatusFieldUpdateOperationsInput | $Enums.WorkShiftStatus
+  scheduleVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   employee?: Prisma.EmployeeProfileUpdateOneRequiredWithoutShiftsNestedInput
   location?: Prisma.WorkLocationUpdateOneRequiredWithoutShiftsNestedInput
+  sourceSchedulePlan?: Prisma.SchedulePlanUpdateOneWithoutSourceWorkShiftsNestedInput
+  sourceSchedulePlanCell?: Prisma.SchedulePlanCellUpdateOneWithoutSourceWorkShiftNestedInput
   timeEvents?: Prisma.TimeEventUpdateManyWithoutShiftNestedInput
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutShiftNestedInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutShiftNestedInput
@@ -1170,6 +1539,9 @@ export type WorkShiftUncheckedUpdateWithoutCreatedByInput = {
   endsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   breakMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumWorkShiftStatusFieldUpdateOperationsInput | $Enums.WorkShiftStatus
+  sourceSchedulePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSchedulePlanCellId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scheduleVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   timeEvents?: Prisma.TimeEventUncheckedUpdateManyWithoutShiftNestedInput
@@ -1186,6 +1558,9 @@ export type WorkShiftUncheckedUpdateManyWithoutCreatedByInput = {
   endsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   breakMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumWorkShiftStatusFieldUpdateOperationsInput | $Enums.WorkShiftStatus
+  sourceSchedulePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSchedulePlanCellId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scheduleVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1199,6 +1574,9 @@ export type WorkShiftCreateManyEmployeeInput = {
   breakMinutes?: number
   status?: $Enums.WorkShiftStatus
   createdById: string
+  sourceSchedulePlanId?: string | null
+  sourceSchedulePlanCellId?: string | null
+  scheduleVersion?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1210,10 +1588,13 @@ export type WorkShiftUpdateWithoutEmployeeInput = {
   endsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   breakMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumWorkShiftStatusFieldUpdateOperationsInput | $Enums.WorkShiftStatus
+  scheduleVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   location?: Prisma.WorkLocationUpdateOneRequiredWithoutShiftsNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutWorkShiftsCreatedNestedInput
+  sourceSchedulePlan?: Prisma.SchedulePlanUpdateOneWithoutSourceWorkShiftsNestedInput
+  sourceSchedulePlanCell?: Prisma.SchedulePlanCellUpdateOneWithoutSourceWorkShiftNestedInput
   timeEvents?: Prisma.TimeEventUpdateManyWithoutShiftNestedInput
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutShiftNestedInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutShiftNestedInput
@@ -1228,6 +1609,9 @@ export type WorkShiftUncheckedUpdateWithoutEmployeeInput = {
   breakMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumWorkShiftStatusFieldUpdateOperationsInput | $Enums.WorkShiftStatus
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceSchedulePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSchedulePlanCellId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scheduleVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   timeEvents?: Prisma.TimeEventUncheckedUpdateManyWithoutShiftNestedInput
@@ -1244,6 +1628,9 @@ export type WorkShiftUncheckedUpdateManyWithoutEmployeeInput = {
   breakMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumWorkShiftStatusFieldUpdateOperationsInput | $Enums.WorkShiftStatus
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceSchedulePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSchedulePlanCellId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scheduleVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1257,6 +1644,9 @@ export type WorkShiftCreateManyLocationInput = {
   breakMinutes?: number
   status?: $Enums.WorkShiftStatus
   createdById: string
+  sourceSchedulePlanId?: string | null
+  sourceSchedulePlanCellId?: string | null
+  scheduleVersion?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1268,10 +1658,13 @@ export type WorkShiftUpdateWithoutLocationInput = {
   endsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   breakMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumWorkShiftStatusFieldUpdateOperationsInput | $Enums.WorkShiftStatus
+  scheduleVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   employee?: Prisma.EmployeeProfileUpdateOneRequiredWithoutShiftsNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutWorkShiftsCreatedNestedInput
+  sourceSchedulePlan?: Prisma.SchedulePlanUpdateOneWithoutSourceWorkShiftsNestedInput
+  sourceSchedulePlanCell?: Prisma.SchedulePlanCellUpdateOneWithoutSourceWorkShiftNestedInput
   timeEvents?: Prisma.TimeEventUpdateManyWithoutShiftNestedInput
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutShiftNestedInput
   adjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutShiftNestedInput
@@ -1286,6 +1679,9 @@ export type WorkShiftUncheckedUpdateWithoutLocationInput = {
   breakMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumWorkShiftStatusFieldUpdateOperationsInput | $Enums.WorkShiftStatus
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceSchedulePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSchedulePlanCellId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scheduleVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   timeEvents?: Prisma.TimeEventUncheckedUpdateManyWithoutShiftNestedInput
@@ -1302,6 +1698,79 @@ export type WorkShiftUncheckedUpdateManyWithoutLocationInput = {
   breakMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumWorkShiftStatusFieldUpdateOperationsInput | $Enums.WorkShiftStatus
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceSchedulePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSchedulePlanCellId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scheduleVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type WorkShiftCreateManySourceSchedulePlanInput = {
+  id?: string
+  employeeId: string
+  locationId: string
+  date: string
+  startsAt: Date | string
+  endsAt: Date | string
+  breakMinutes?: number
+  status?: $Enums.WorkShiftStatus
+  createdById: string
+  sourceSchedulePlanCellId?: string | null
+  scheduleVersion?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type WorkShiftUpdateWithoutSourceSchedulePlanInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  date?: Prisma.StringFieldUpdateOperationsInput | string
+  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  breakMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumWorkShiftStatusFieldUpdateOperationsInput | $Enums.WorkShiftStatus
+  scheduleVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  employee?: Prisma.EmployeeProfileUpdateOneRequiredWithoutShiftsNestedInput
+  location?: Prisma.WorkLocationUpdateOneRequiredWithoutShiftsNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutWorkShiftsCreatedNestedInput
+  sourceSchedulePlanCell?: Prisma.SchedulePlanCellUpdateOneWithoutSourceWorkShiftNestedInput
+  timeEvents?: Prisma.TimeEventUpdateManyWithoutShiftNestedInput
+  timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutShiftNestedInput
+  adjustmentRequests?: Prisma.TimeAdjustmentRequestUpdateManyWithoutShiftNestedInput
+}
+
+export type WorkShiftUncheckedUpdateWithoutSourceSchedulePlanInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeId?: Prisma.StringFieldUpdateOperationsInput | string
+  locationId?: Prisma.StringFieldUpdateOperationsInput | string
+  date?: Prisma.StringFieldUpdateOperationsInput | string
+  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  breakMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumWorkShiftStatusFieldUpdateOperationsInput | $Enums.WorkShiftStatus
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceSchedulePlanCellId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scheduleVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  timeEvents?: Prisma.TimeEventUncheckedUpdateManyWithoutShiftNestedInput
+  timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutShiftNestedInput
+  adjustmentRequests?: Prisma.TimeAdjustmentRequestUncheckedUpdateManyWithoutShiftNestedInput
+}
+
+export type WorkShiftUncheckedUpdateManyWithoutSourceSchedulePlanInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeId?: Prisma.StringFieldUpdateOperationsInput | string
+  locationId?: Prisma.StringFieldUpdateOperationsInput | string
+  date?: Prisma.StringFieldUpdateOperationsInput | string
+  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  breakMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumWorkShiftStatusFieldUpdateOperationsInput | $Enums.WorkShiftStatus
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceSchedulePlanCellId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scheduleVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1365,11 +1834,16 @@ export type WorkShiftSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   breakMinutes?: boolean
   status?: boolean
   createdById?: boolean
+  sourceSchedulePlanId?: boolean
+  sourceSchedulePlanCellId?: boolean
+  scheduleVersion?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   employee?: boolean | Prisma.EmployeeProfileDefaultArgs<ExtArgs>
   location?: boolean | Prisma.WorkLocationDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  sourceSchedulePlan?: boolean | Prisma.WorkShift$sourceSchedulePlanArgs<ExtArgs>
+  sourceSchedulePlanCell?: boolean | Prisma.WorkShift$sourceSchedulePlanCellArgs<ExtArgs>
   timeEvents?: boolean | Prisma.WorkShift$timeEventsArgs<ExtArgs>
   timesheetDays?: boolean | Prisma.WorkShift$timesheetDaysArgs<ExtArgs>
   adjustmentRequests?: boolean | Prisma.WorkShift$adjustmentRequestsArgs<ExtArgs>
@@ -1386,11 +1860,16 @@ export type WorkShiftSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   breakMinutes?: boolean
   status?: boolean
   createdById?: boolean
+  sourceSchedulePlanId?: boolean
+  sourceSchedulePlanCellId?: boolean
+  scheduleVersion?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   employee?: boolean | Prisma.EmployeeProfileDefaultArgs<ExtArgs>
   location?: boolean | Prisma.WorkLocationDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  sourceSchedulePlan?: boolean | Prisma.WorkShift$sourceSchedulePlanArgs<ExtArgs>
+  sourceSchedulePlanCell?: boolean | Prisma.WorkShift$sourceSchedulePlanCellArgs<ExtArgs>
 }, ExtArgs["result"]["workShift"]>
 
 export type WorkShiftSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1403,11 +1882,16 @@ export type WorkShiftSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   breakMinutes?: boolean
   status?: boolean
   createdById?: boolean
+  sourceSchedulePlanId?: boolean
+  sourceSchedulePlanCellId?: boolean
+  scheduleVersion?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   employee?: boolean | Prisma.EmployeeProfileDefaultArgs<ExtArgs>
   location?: boolean | Prisma.WorkLocationDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  sourceSchedulePlan?: boolean | Prisma.WorkShift$sourceSchedulePlanArgs<ExtArgs>
+  sourceSchedulePlanCell?: boolean | Prisma.WorkShift$sourceSchedulePlanCellArgs<ExtArgs>
 }, ExtArgs["result"]["workShift"]>
 
 export type WorkShiftSelectScalar = {
@@ -1420,15 +1904,20 @@ export type WorkShiftSelectScalar = {
   breakMinutes?: boolean
   status?: boolean
   createdById?: boolean
+  sourceSchedulePlanId?: boolean
+  sourceSchedulePlanCellId?: boolean
+  scheduleVersion?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type WorkShiftOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "employeeId" | "locationId" | "date" | "startsAt" | "endsAt" | "breakMinutes" | "status" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["workShift"]>
+export type WorkShiftOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "employeeId" | "locationId" | "date" | "startsAt" | "endsAt" | "breakMinutes" | "status" | "createdById" | "sourceSchedulePlanId" | "sourceSchedulePlanCellId" | "scheduleVersion" | "createdAt" | "updatedAt", ExtArgs["result"]["workShift"]>
 export type WorkShiftInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   employee?: boolean | Prisma.EmployeeProfileDefaultArgs<ExtArgs>
   location?: boolean | Prisma.WorkLocationDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  sourceSchedulePlan?: boolean | Prisma.WorkShift$sourceSchedulePlanArgs<ExtArgs>
+  sourceSchedulePlanCell?: boolean | Prisma.WorkShift$sourceSchedulePlanCellArgs<ExtArgs>
   timeEvents?: boolean | Prisma.WorkShift$timeEventsArgs<ExtArgs>
   timesheetDays?: boolean | Prisma.WorkShift$timesheetDaysArgs<ExtArgs>
   adjustmentRequests?: boolean | Prisma.WorkShift$adjustmentRequestsArgs<ExtArgs>
@@ -1438,11 +1927,15 @@ export type WorkShiftIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   employee?: boolean | Prisma.EmployeeProfileDefaultArgs<ExtArgs>
   location?: boolean | Prisma.WorkLocationDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  sourceSchedulePlan?: boolean | Prisma.WorkShift$sourceSchedulePlanArgs<ExtArgs>
+  sourceSchedulePlanCell?: boolean | Prisma.WorkShift$sourceSchedulePlanCellArgs<ExtArgs>
 }
 export type WorkShiftIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   employee?: boolean | Prisma.EmployeeProfileDefaultArgs<ExtArgs>
   location?: boolean | Prisma.WorkLocationDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  sourceSchedulePlan?: boolean | Prisma.WorkShift$sourceSchedulePlanArgs<ExtArgs>
+  sourceSchedulePlanCell?: boolean | Prisma.WorkShift$sourceSchedulePlanCellArgs<ExtArgs>
 }
 
 export type $WorkShiftPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1451,6 +1944,8 @@ export type $WorkShiftPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     employee: Prisma.$EmployeeProfilePayload<ExtArgs>
     location: Prisma.$WorkLocationPayload<ExtArgs>
     createdBy: Prisma.$UserPayload<ExtArgs>
+    sourceSchedulePlan: Prisma.$SchedulePlanPayload<ExtArgs> | null
+    sourceSchedulePlanCell: Prisma.$SchedulePlanCellPayload<ExtArgs> | null
     timeEvents: Prisma.$TimeEventPayload<ExtArgs>[]
     timesheetDays: Prisma.$TimesheetDayPayload<ExtArgs>[]
     adjustmentRequests: Prisma.$TimeAdjustmentRequestPayload<ExtArgs>[]
@@ -1465,6 +1960,9 @@ export type $WorkShiftPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     breakMinutes: number
     status: $Enums.WorkShiftStatus
     createdById: string
+    sourceSchedulePlanId: string | null
+    sourceSchedulePlanCellId: string | null
+    scheduleVersion: number | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["workShift"]>
@@ -1864,6 +2362,8 @@ export interface Prisma__WorkShiftClient<T, Null = never, ExtArgs extends runtim
   employee<T extends Prisma.EmployeeProfileDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EmployeeProfileDefaultArgs<ExtArgs>>): Prisma.Prisma__EmployeeProfileClient<runtime.Types.Result.GetResult<Prisma.$EmployeeProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   location<T extends Prisma.WorkLocationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkLocationDefaultArgs<ExtArgs>>): Prisma.Prisma__WorkLocationClient<runtime.Types.Result.GetResult<Prisma.$WorkLocationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   createdBy<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  sourceSchedulePlan<T extends Prisma.WorkShift$sourceSchedulePlanArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkShift$sourceSchedulePlanArgs<ExtArgs>>): Prisma.Prisma__SchedulePlanClient<runtime.Types.Result.GetResult<Prisma.$SchedulePlanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  sourceSchedulePlanCell<T extends Prisma.WorkShift$sourceSchedulePlanCellArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkShift$sourceSchedulePlanCellArgs<ExtArgs>>): Prisma.Prisma__SchedulePlanCellClient<runtime.Types.Result.GetResult<Prisma.$SchedulePlanCellPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   timeEvents<T extends Prisma.WorkShift$timeEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkShift$timeEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TimeEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   timesheetDays<T extends Prisma.WorkShift$timesheetDaysArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkShift$timesheetDaysArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TimesheetDayPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   adjustmentRequests<T extends Prisma.WorkShift$adjustmentRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkShift$adjustmentRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TimeAdjustmentRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -1905,6 +2405,9 @@ export interface WorkShiftFieldRefs {
   readonly breakMinutes: Prisma.FieldRef<"WorkShift", 'Int'>
   readonly status: Prisma.FieldRef<"WorkShift", 'WorkShiftStatus'>
   readonly createdById: Prisma.FieldRef<"WorkShift", 'String'>
+  readonly sourceSchedulePlanId: Prisma.FieldRef<"WorkShift", 'String'>
+  readonly sourceSchedulePlanCellId: Prisma.FieldRef<"WorkShift", 'String'>
+  readonly scheduleVersion: Prisma.FieldRef<"WorkShift", 'Int'>
   readonly createdAt: Prisma.FieldRef<"WorkShift", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"WorkShift", 'DateTime'>
 }
@@ -2305,6 +2808,44 @@ export type WorkShiftDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Limit how many WorkShifts to delete.
    */
   limit?: number
+}
+
+/**
+ * WorkShift.sourceSchedulePlan
+ */
+export type WorkShift$sourceSchedulePlanArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SchedulePlan
+   */
+  select?: Prisma.SchedulePlanSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SchedulePlan
+   */
+  omit?: Prisma.SchedulePlanOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SchedulePlanInclude<ExtArgs> | null
+  where?: Prisma.SchedulePlanWhereInput
+}
+
+/**
+ * WorkShift.sourceSchedulePlanCell
+ */
+export type WorkShift$sourceSchedulePlanCellArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SchedulePlanCell
+   */
+  select?: Prisma.SchedulePlanCellSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SchedulePlanCell
+   */
+  omit?: Prisma.SchedulePlanCellOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SchedulePlanCellInclude<ExtArgs> | null
+  where?: Prisma.SchedulePlanCellWhereInput
 }
 
 /**

@@ -294,6 +294,10 @@ export type WorkLocationWhereInput = {
   setupTokens?: Prisma.LocationDisplaySetupTokenListRelationFilter
   displaySessions?: Prisma.LocationDisplaySessionListRelationFilter
   qrTokens?: Prisma.QrTokenListRelationFilter
+  shiftTemplates?: Prisma.ShiftTemplateListRelationFilter
+  schedulePlans?: Prisma.SchedulePlanListRelationFilter
+  schedulePlanCells?: Prisma.SchedulePlanCellListRelationFilter
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusListRelationFilter
   timeEvents?: Prisma.TimeEventListRelationFilter
   timesheetDays?: Prisma.TimesheetDayListRelationFilter
 }
@@ -318,6 +322,10 @@ export type WorkLocationOrderByWithRelationInput = {
   setupTokens?: Prisma.LocationDisplaySetupTokenOrderByRelationAggregateInput
   displaySessions?: Prisma.LocationDisplaySessionOrderByRelationAggregateInput
   qrTokens?: Prisma.QrTokenOrderByRelationAggregateInput
+  shiftTemplates?: Prisma.ShiftTemplateOrderByRelationAggregateInput
+  schedulePlans?: Prisma.SchedulePlanOrderByRelationAggregateInput
+  schedulePlanCells?: Prisma.SchedulePlanCellOrderByRelationAggregateInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusOrderByRelationAggregateInput
   timeEvents?: Prisma.TimeEventOrderByRelationAggregateInput
   timesheetDays?: Prisma.TimesheetDayOrderByRelationAggregateInput
 }
@@ -345,6 +353,10 @@ export type WorkLocationWhereUniqueInput = Prisma.AtLeast<{
   setupTokens?: Prisma.LocationDisplaySetupTokenListRelationFilter
   displaySessions?: Prisma.LocationDisplaySessionListRelationFilter
   qrTokens?: Prisma.QrTokenListRelationFilter
+  shiftTemplates?: Prisma.ShiftTemplateListRelationFilter
+  schedulePlans?: Prisma.SchedulePlanListRelationFilter
+  schedulePlanCells?: Prisma.SchedulePlanCellListRelationFilter
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusListRelationFilter
   timeEvents?: Prisma.TimeEventListRelationFilter
   timesheetDays?: Prisma.TimesheetDayListRelationFilter
 }, "id" | "code">
@@ -409,6 +421,10 @@ export type WorkLocationCreateInput = {
   setupTokens?: Prisma.LocationDisplaySetupTokenCreateNestedManyWithoutLocationInput
   displaySessions?: Prisma.LocationDisplaySessionCreateNestedManyWithoutLocationInput
   qrTokens?: Prisma.QrTokenCreateNestedManyWithoutLocationInput
+  shiftTemplates?: Prisma.ShiftTemplateCreateNestedManyWithoutLocationInput
+  schedulePlans?: Prisma.SchedulePlanCreateNestedManyWithoutLocationInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutLocationInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutLocationInput
   timeEvents?: Prisma.TimeEventCreateNestedManyWithoutLocationInput
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutLocationInput
 }
@@ -433,6 +449,10 @@ export type WorkLocationUncheckedCreateInput = {
   setupTokens?: Prisma.LocationDisplaySetupTokenUncheckedCreateNestedManyWithoutLocationInput
   displaySessions?: Prisma.LocationDisplaySessionUncheckedCreateNestedManyWithoutLocationInput
   qrTokens?: Prisma.QrTokenUncheckedCreateNestedManyWithoutLocationInput
+  shiftTemplates?: Prisma.ShiftTemplateUncheckedCreateNestedManyWithoutLocationInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutLocationInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutLocationInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutLocationInput
   timeEvents?: Prisma.TimeEventUncheckedCreateNestedManyWithoutLocationInput
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutLocationInput
 }
@@ -457,6 +477,10 @@ export type WorkLocationUpdateInput = {
   setupTokens?: Prisma.LocationDisplaySetupTokenUpdateManyWithoutLocationNestedInput
   displaySessions?: Prisma.LocationDisplaySessionUpdateManyWithoutLocationNestedInput
   qrTokens?: Prisma.QrTokenUpdateManyWithoutLocationNestedInput
+  shiftTemplates?: Prisma.ShiftTemplateUpdateManyWithoutLocationNestedInput
+  schedulePlans?: Prisma.SchedulePlanUpdateManyWithoutLocationNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutLocationNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutLocationNestedInput
   timeEvents?: Prisma.TimeEventUpdateManyWithoutLocationNestedInput
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutLocationNestedInput
 }
@@ -481,6 +505,10 @@ export type WorkLocationUncheckedUpdateInput = {
   setupTokens?: Prisma.LocationDisplaySetupTokenUncheckedUpdateManyWithoutLocationNestedInput
   displaySessions?: Prisma.LocationDisplaySessionUncheckedUpdateManyWithoutLocationNestedInput
   qrTokens?: Prisma.QrTokenUncheckedUpdateManyWithoutLocationNestedInput
+  shiftTemplates?: Prisma.ShiftTemplateUncheckedUpdateManyWithoutLocationNestedInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedUpdateManyWithoutLocationNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutLocationNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutLocationNestedInput
   timeEvents?: Prisma.TimeEventUncheckedUpdateManyWithoutLocationNestedInput
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutLocationNestedInput
 }
@@ -628,6 +656,48 @@ export type WorkLocationUpdateallowedIpRangesInput = {
   push?: string | string[]
 }
 
+export type WorkLocationCreateNestedOneWithoutShiftTemplatesInput = {
+  create?: Prisma.XOR<Prisma.WorkLocationCreateWithoutShiftTemplatesInput, Prisma.WorkLocationUncheckedCreateWithoutShiftTemplatesInput>
+  connectOrCreate?: Prisma.WorkLocationCreateOrConnectWithoutShiftTemplatesInput
+  connect?: Prisma.WorkLocationWhereUniqueInput
+}
+
+export type WorkLocationUpdateOneRequiredWithoutShiftTemplatesNestedInput = {
+  create?: Prisma.XOR<Prisma.WorkLocationCreateWithoutShiftTemplatesInput, Prisma.WorkLocationUncheckedCreateWithoutShiftTemplatesInput>
+  connectOrCreate?: Prisma.WorkLocationCreateOrConnectWithoutShiftTemplatesInput
+  upsert?: Prisma.WorkLocationUpsertWithoutShiftTemplatesInput
+  connect?: Prisma.WorkLocationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.WorkLocationUpdateToOneWithWhereWithoutShiftTemplatesInput, Prisma.WorkLocationUpdateWithoutShiftTemplatesInput>, Prisma.WorkLocationUncheckedUpdateWithoutShiftTemplatesInput>
+}
+
+export type WorkLocationCreateNestedOneWithoutSchedulePlansInput = {
+  create?: Prisma.XOR<Prisma.WorkLocationCreateWithoutSchedulePlansInput, Prisma.WorkLocationUncheckedCreateWithoutSchedulePlansInput>
+  connectOrCreate?: Prisma.WorkLocationCreateOrConnectWithoutSchedulePlansInput
+  connect?: Prisma.WorkLocationWhereUniqueInput
+}
+
+export type WorkLocationUpdateOneRequiredWithoutSchedulePlansNestedInput = {
+  create?: Prisma.XOR<Prisma.WorkLocationCreateWithoutSchedulePlansInput, Prisma.WorkLocationUncheckedCreateWithoutSchedulePlansInput>
+  connectOrCreate?: Prisma.WorkLocationCreateOrConnectWithoutSchedulePlansInput
+  upsert?: Prisma.WorkLocationUpsertWithoutSchedulePlansInput
+  connect?: Prisma.WorkLocationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.WorkLocationUpdateToOneWithWhereWithoutSchedulePlansInput, Prisma.WorkLocationUpdateWithoutSchedulePlansInput>, Prisma.WorkLocationUncheckedUpdateWithoutSchedulePlansInput>
+}
+
+export type WorkLocationCreateNestedOneWithoutSchedulePlanCellsInput = {
+  create?: Prisma.XOR<Prisma.WorkLocationCreateWithoutSchedulePlanCellsInput, Prisma.WorkLocationUncheckedCreateWithoutSchedulePlanCellsInput>
+  connectOrCreate?: Prisma.WorkLocationCreateOrConnectWithoutSchedulePlanCellsInput
+  connect?: Prisma.WorkLocationWhereUniqueInput
+}
+
+export type WorkLocationUpdateOneRequiredWithoutSchedulePlanCellsNestedInput = {
+  create?: Prisma.XOR<Prisma.WorkLocationCreateWithoutSchedulePlanCellsInput, Prisma.WorkLocationUncheckedCreateWithoutSchedulePlanCellsInput>
+  connectOrCreate?: Prisma.WorkLocationCreateOrConnectWithoutSchedulePlanCellsInput
+  upsert?: Prisma.WorkLocationUpsertWithoutSchedulePlanCellsInput
+  connect?: Prisma.WorkLocationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.WorkLocationUpdateToOneWithWhereWithoutSchedulePlanCellsInput, Prisma.WorkLocationUpdateWithoutSchedulePlanCellsInput>, Prisma.WorkLocationUncheckedUpdateWithoutSchedulePlanCellsInput>
+}
+
 export type WorkLocationCreateNestedOneWithoutShiftsInput = {
   create?: Prisma.XOR<Prisma.WorkLocationCreateWithoutShiftsInput, Prisma.WorkLocationUncheckedCreateWithoutShiftsInput>
   connectOrCreate?: Prisma.WorkLocationCreateOrConnectWithoutShiftsInput
@@ -640,6 +710,20 @@ export type WorkLocationUpdateOneRequiredWithoutShiftsNestedInput = {
   upsert?: Prisma.WorkLocationUpsertWithoutShiftsInput
   connect?: Prisma.WorkLocationWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.WorkLocationUpdateToOneWithWhereWithoutShiftsInput, Prisma.WorkLocationUpdateWithoutShiftsInput>, Prisma.WorkLocationUncheckedUpdateWithoutShiftsInput>
+}
+
+export type WorkLocationCreateNestedOneWithoutScheduleDayStatusesInput = {
+  create?: Prisma.XOR<Prisma.WorkLocationCreateWithoutScheduleDayStatusesInput, Prisma.WorkLocationUncheckedCreateWithoutScheduleDayStatusesInput>
+  connectOrCreate?: Prisma.WorkLocationCreateOrConnectWithoutScheduleDayStatusesInput
+  connect?: Prisma.WorkLocationWhereUniqueInput
+}
+
+export type WorkLocationUpdateOneRequiredWithoutScheduleDayStatusesNestedInput = {
+  create?: Prisma.XOR<Prisma.WorkLocationCreateWithoutScheduleDayStatusesInput, Prisma.WorkLocationUncheckedCreateWithoutScheduleDayStatusesInput>
+  connectOrCreate?: Prisma.WorkLocationCreateOrConnectWithoutScheduleDayStatusesInput
+  upsert?: Prisma.WorkLocationUpsertWithoutScheduleDayStatusesInput
+  connect?: Prisma.WorkLocationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.WorkLocationUpdateToOneWithWhereWithoutScheduleDayStatusesInput, Prisma.WorkLocationUpdateWithoutScheduleDayStatusesInput>, Prisma.WorkLocationUncheckedUpdateWithoutScheduleDayStatusesInput>
 }
 
 export type WorkLocationCreateNestedOneWithoutDisplayDevicesInput = {
@@ -747,6 +831,10 @@ export type WorkLocationCreateWithoutDefaultEmployeesInput = {
   setupTokens?: Prisma.LocationDisplaySetupTokenCreateNestedManyWithoutLocationInput
   displaySessions?: Prisma.LocationDisplaySessionCreateNestedManyWithoutLocationInput
   qrTokens?: Prisma.QrTokenCreateNestedManyWithoutLocationInput
+  shiftTemplates?: Prisma.ShiftTemplateCreateNestedManyWithoutLocationInput
+  schedulePlans?: Prisma.SchedulePlanCreateNestedManyWithoutLocationInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutLocationInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutLocationInput
   timeEvents?: Prisma.TimeEventCreateNestedManyWithoutLocationInput
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutLocationInput
 }
@@ -770,6 +858,10 @@ export type WorkLocationUncheckedCreateWithoutDefaultEmployeesInput = {
   setupTokens?: Prisma.LocationDisplaySetupTokenUncheckedCreateNestedManyWithoutLocationInput
   displaySessions?: Prisma.LocationDisplaySessionUncheckedCreateNestedManyWithoutLocationInput
   qrTokens?: Prisma.QrTokenUncheckedCreateNestedManyWithoutLocationInput
+  shiftTemplates?: Prisma.ShiftTemplateUncheckedCreateNestedManyWithoutLocationInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutLocationInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutLocationInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutLocationInput
   timeEvents?: Prisma.TimeEventUncheckedCreateNestedManyWithoutLocationInput
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutLocationInput
 }
@@ -809,6 +901,10 @@ export type WorkLocationUpdateWithoutDefaultEmployeesInput = {
   setupTokens?: Prisma.LocationDisplaySetupTokenUpdateManyWithoutLocationNestedInput
   displaySessions?: Prisma.LocationDisplaySessionUpdateManyWithoutLocationNestedInput
   qrTokens?: Prisma.QrTokenUpdateManyWithoutLocationNestedInput
+  shiftTemplates?: Prisma.ShiftTemplateUpdateManyWithoutLocationNestedInput
+  schedulePlans?: Prisma.SchedulePlanUpdateManyWithoutLocationNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutLocationNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutLocationNestedInput
   timeEvents?: Prisma.TimeEventUpdateManyWithoutLocationNestedInput
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutLocationNestedInput
 }
@@ -832,6 +928,382 @@ export type WorkLocationUncheckedUpdateWithoutDefaultEmployeesInput = {
   setupTokens?: Prisma.LocationDisplaySetupTokenUncheckedUpdateManyWithoutLocationNestedInput
   displaySessions?: Prisma.LocationDisplaySessionUncheckedUpdateManyWithoutLocationNestedInput
   qrTokens?: Prisma.QrTokenUncheckedUpdateManyWithoutLocationNestedInput
+  shiftTemplates?: Prisma.ShiftTemplateUncheckedUpdateManyWithoutLocationNestedInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedUpdateManyWithoutLocationNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutLocationNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutLocationNestedInput
+  timeEvents?: Prisma.TimeEventUncheckedUpdateManyWithoutLocationNestedInput
+  timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutLocationNestedInput
+}
+
+export type WorkLocationCreateWithoutShiftTemplatesInput = {
+  id?: string
+  name: string
+  code: string
+  address: string
+  latitude: number
+  longitude: number
+  allowedRadiusMeters?: number
+  maxAllowedAccuracyMeters?: number
+  timezone?: string
+  allowedIpRanges?: Prisma.WorkLocationCreateallowedIpRangesInput | string[]
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  defaultEmployees?: Prisma.EmployeeProfileCreateNestedManyWithoutDefaultLocationInput
+  shifts?: Prisma.WorkShiftCreateNestedManyWithoutLocationInput
+  displayDevices?: Prisma.LocationDisplayDeviceCreateNestedManyWithoutLocationInput
+  setupTokens?: Prisma.LocationDisplaySetupTokenCreateNestedManyWithoutLocationInput
+  displaySessions?: Prisma.LocationDisplaySessionCreateNestedManyWithoutLocationInput
+  qrTokens?: Prisma.QrTokenCreateNestedManyWithoutLocationInput
+  schedulePlans?: Prisma.SchedulePlanCreateNestedManyWithoutLocationInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutLocationInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutLocationInput
+  timeEvents?: Prisma.TimeEventCreateNestedManyWithoutLocationInput
+  timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutLocationInput
+}
+
+export type WorkLocationUncheckedCreateWithoutShiftTemplatesInput = {
+  id?: string
+  name: string
+  code: string
+  address: string
+  latitude: number
+  longitude: number
+  allowedRadiusMeters?: number
+  maxAllowedAccuracyMeters?: number
+  timezone?: string
+  allowedIpRanges?: Prisma.WorkLocationCreateallowedIpRangesInput | string[]
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  defaultEmployees?: Prisma.EmployeeProfileUncheckedCreateNestedManyWithoutDefaultLocationInput
+  shifts?: Prisma.WorkShiftUncheckedCreateNestedManyWithoutLocationInput
+  displayDevices?: Prisma.LocationDisplayDeviceUncheckedCreateNestedManyWithoutLocationInput
+  setupTokens?: Prisma.LocationDisplaySetupTokenUncheckedCreateNestedManyWithoutLocationInput
+  displaySessions?: Prisma.LocationDisplaySessionUncheckedCreateNestedManyWithoutLocationInput
+  qrTokens?: Prisma.QrTokenUncheckedCreateNestedManyWithoutLocationInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutLocationInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutLocationInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutLocationInput
+  timeEvents?: Prisma.TimeEventUncheckedCreateNestedManyWithoutLocationInput
+  timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutLocationInput
+}
+
+export type WorkLocationCreateOrConnectWithoutShiftTemplatesInput = {
+  where: Prisma.WorkLocationWhereUniqueInput
+  create: Prisma.XOR<Prisma.WorkLocationCreateWithoutShiftTemplatesInput, Prisma.WorkLocationUncheckedCreateWithoutShiftTemplatesInput>
+}
+
+export type WorkLocationUpsertWithoutShiftTemplatesInput = {
+  update: Prisma.XOR<Prisma.WorkLocationUpdateWithoutShiftTemplatesInput, Prisma.WorkLocationUncheckedUpdateWithoutShiftTemplatesInput>
+  create: Prisma.XOR<Prisma.WorkLocationCreateWithoutShiftTemplatesInput, Prisma.WorkLocationUncheckedCreateWithoutShiftTemplatesInput>
+  where?: Prisma.WorkLocationWhereInput
+}
+
+export type WorkLocationUpdateToOneWithWhereWithoutShiftTemplatesInput = {
+  where?: Prisma.WorkLocationWhereInput
+  data: Prisma.XOR<Prisma.WorkLocationUpdateWithoutShiftTemplatesInput, Prisma.WorkLocationUncheckedUpdateWithoutShiftTemplatesInput>
+}
+
+export type WorkLocationUpdateWithoutShiftTemplatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  allowedRadiusMeters?: Prisma.IntFieldUpdateOperationsInput | number
+  maxAllowedAccuracyMeters?: Prisma.IntFieldUpdateOperationsInput | number
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  allowedIpRanges?: Prisma.WorkLocationUpdateallowedIpRangesInput | string[]
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  defaultEmployees?: Prisma.EmployeeProfileUpdateManyWithoutDefaultLocationNestedInput
+  shifts?: Prisma.WorkShiftUpdateManyWithoutLocationNestedInput
+  displayDevices?: Prisma.LocationDisplayDeviceUpdateManyWithoutLocationNestedInput
+  setupTokens?: Prisma.LocationDisplaySetupTokenUpdateManyWithoutLocationNestedInput
+  displaySessions?: Prisma.LocationDisplaySessionUpdateManyWithoutLocationNestedInput
+  qrTokens?: Prisma.QrTokenUpdateManyWithoutLocationNestedInput
+  schedulePlans?: Prisma.SchedulePlanUpdateManyWithoutLocationNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutLocationNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutLocationNestedInput
+  timeEvents?: Prisma.TimeEventUpdateManyWithoutLocationNestedInput
+  timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutLocationNestedInput
+}
+
+export type WorkLocationUncheckedUpdateWithoutShiftTemplatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  allowedRadiusMeters?: Prisma.IntFieldUpdateOperationsInput | number
+  maxAllowedAccuracyMeters?: Prisma.IntFieldUpdateOperationsInput | number
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  allowedIpRanges?: Prisma.WorkLocationUpdateallowedIpRangesInput | string[]
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  defaultEmployees?: Prisma.EmployeeProfileUncheckedUpdateManyWithoutDefaultLocationNestedInput
+  shifts?: Prisma.WorkShiftUncheckedUpdateManyWithoutLocationNestedInput
+  displayDevices?: Prisma.LocationDisplayDeviceUncheckedUpdateManyWithoutLocationNestedInput
+  setupTokens?: Prisma.LocationDisplaySetupTokenUncheckedUpdateManyWithoutLocationNestedInput
+  displaySessions?: Prisma.LocationDisplaySessionUncheckedUpdateManyWithoutLocationNestedInput
+  qrTokens?: Prisma.QrTokenUncheckedUpdateManyWithoutLocationNestedInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedUpdateManyWithoutLocationNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutLocationNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutLocationNestedInput
+  timeEvents?: Prisma.TimeEventUncheckedUpdateManyWithoutLocationNestedInput
+  timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutLocationNestedInput
+}
+
+export type WorkLocationCreateWithoutSchedulePlansInput = {
+  id?: string
+  name: string
+  code: string
+  address: string
+  latitude: number
+  longitude: number
+  allowedRadiusMeters?: number
+  maxAllowedAccuracyMeters?: number
+  timezone?: string
+  allowedIpRanges?: Prisma.WorkLocationCreateallowedIpRangesInput | string[]
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  defaultEmployees?: Prisma.EmployeeProfileCreateNestedManyWithoutDefaultLocationInput
+  shifts?: Prisma.WorkShiftCreateNestedManyWithoutLocationInput
+  displayDevices?: Prisma.LocationDisplayDeviceCreateNestedManyWithoutLocationInput
+  setupTokens?: Prisma.LocationDisplaySetupTokenCreateNestedManyWithoutLocationInput
+  displaySessions?: Prisma.LocationDisplaySessionCreateNestedManyWithoutLocationInput
+  qrTokens?: Prisma.QrTokenCreateNestedManyWithoutLocationInput
+  shiftTemplates?: Prisma.ShiftTemplateCreateNestedManyWithoutLocationInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutLocationInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutLocationInput
+  timeEvents?: Prisma.TimeEventCreateNestedManyWithoutLocationInput
+  timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutLocationInput
+}
+
+export type WorkLocationUncheckedCreateWithoutSchedulePlansInput = {
+  id?: string
+  name: string
+  code: string
+  address: string
+  latitude: number
+  longitude: number
+  allowedRadiusMeters?: number
+  maxAllowedAccuracyMeters?: number
+  timezone?: string
+  allowedIpRanges?: Prisma.WorkLocationCreateallowedIpRangesInput | string[]
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  defaultEmployees?: Prisma.EmployeeProfileUncheckedCreateNestedManyWithoutDefaultLocationInput
+  shifts?: Prisma.WorkShiftUncheckedCreateNestedManyWithoutLocationInput
+  displayDevices?: Prisma.LocationDisplayDeviceUncheckedCreateNestedManyWithoutLocationInput
+  setupTokens?: Prisma.LocationDisplaySetupTokenUncheckedCreateNestedManyWithoutLocationInput
+  displaySessions?: Prisma.LocationDisplaySessionUncheckedCreateNestedManyWithoutLocationInput
+  qrTokens?: Prisma.QrTokenUncheckedCreateNestedManyWithoutLocationInput
+  shiftTemplates?: Prisma.ShiftTemplateUncheckedCreateNestedManyWithoutLocationInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutLocationInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutLocationInput
+  timeEvents?: Prisma.TimeEventUncheckedCreateNestedManyWithoutLocationInput
+  timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutLocationInput
+}
+
+export type WorkLocationCreateOrConnectWithoutSchedulePlansInput = {
+  where: Prisma.WorkLocationWhereUniqueInput
+  create: Prisma.XOR<Prisma.WorkLocationCreateWithoutSchedulePlansInput, Prisma.WorkLocationUncheckedCreateWithoutSchedulePlansInput>
+}
+
+export type WorkLocationUpsertWithoutSchedulePlansInput = {
+  update: Prisma.XOR<Prisma.WorkLocationUpdateWithoutSchedulePlansInput, Prisma.WorkLocationUncheckedUpdateWithoutSchedulePlansInput>
+  create: Prisma.XOR<Prisma.WorkLocationCreateWithoutSchedulePlansInput, Prisma.WorkLocationUncheckedCreateWithoutSchedulePlansInput>
+  where?: Prisma.WorkLocationWhereInput
+}
+
+export type WorkLocationUpdateToOneWithWhereWithoutSchedulePlansInput = {
+  where?: Prisma.WorkLocationWhereInput
+  data: Prisma.XOR<Prisma.WorkLocationUpdateWithoutSchedulePlansInput, Prisma.WorkLocationUncheckedUpdateWithoutSchedulePlansInput>
+}
+
+export type WorkLocationUpdateWithoutSchedulePlansInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  allowedRadiusMeters?: Prisma.IntFieldUpdateOperationsInput | number
+  maxAllowedAccuracyMeters?: Prisma.IntFieldUpdateOperationsInput | number
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  allowedIpRanges?: Prisma.WorkLocationUpdateallowedIpRangesInput | string[]
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  defaultEmployees?: Prisma.EmployeeProfileUpdateManyWithoutDefaultLocationNestedInput
+  shifts?: Prisma.WorkShiftUpdateManyWithoutLocationNestedInput
+  displayDevices?: Prisma.LocationDisplayDeviceUpdateManyWithoutLocationNestedInput
+  setupTokens?: Prisma.LocationDisplaySetupTokenUpdateManyWithoutLocationNestedInput
+  displaySessions?: Prisma.LocationDisplaySessionUpdateManyWithoutLocationNestedInput
+  qrTokens?: Prisma.QrTokenUpdateManyWithoutLocationNestedInput
+  shiftTemplates?: Prisma.ShiftTemplateUpdateManyWithoutLocationNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutLocationNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutLocationNestedInput
+  timeEvents?: Prisma.TimeEventUpdateManyWithoutLocationNestedInput
+  timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutLocationNestedInput
+}
+
+export type WorkLocationUncheckedUpdateWithoutSchedulePlansInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  allowedRadiusMeters?: Prisma.IntFieldUpdateOperationsInput | number
+  maxAllowedAccuracyMeters?: Prisma.IntFieldUpdateOperationsInput | number
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  allowedIpRanges?: Prisma.WorkLocationUpdateallowedIpRangesInput | string[]
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  defaultEmployees?: Prisma.EmployeeProfileUncheckedUpdateManyWithoutDefaultLocationNestedInput
+  shifts?: Prisma.WorkShiftUncheckedUpdateManyWithoutLocationNestedInput
+  displayDevices?: Prisma.LocationDisplayDeviceUncheckedUpdateManyWithoutLocationNestedInput
+  setupTokens?: Prisma.LocationDisplaySetupTokenUncheckedUpdateManyWithoutLocationNestedInput
+  displaySessions?: Prisma.LocationDisplaySessionUncheckedUpdateManyWithoutLocationNestedInput
+  qrTokens?: Prisma.QrTokenUncheckedUpdateManyWithoutLocationNestedInput
+  shiftTemplates?: Prisma.ShiftTemplateUncheckedUpdateManyWithoutLocationNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutLocationNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutLocationNestedInput
+  timeEvents?: Prisma.TimeEventUncheckedUpdateManyWithoutLocationNestedInput
+  timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutLocationNestedInput
+}
+
+export type WorkLocationCreateWithoutSchedulePlanCellsInput = {
+  id?: string
+  name: string
+  code: string
+  address: string
+  latitude: number
+  longitude: number
+  allowedRadiusMeters?: number
+  maxAllowedAccuracyMeters?: number
+  timezone?: string
+  allowedIpRanges?: Prisma.WorkLocationCreateallowedIpRangesInput | string[]
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  defaultEmployees?: Prisma.EmployeeProfileCreateNestedManyWithoutDefaultLocationInput
+  shifts?: Prisma.WorkShiftCreateNestedManyWithoutLocationInput
+  displayDevices?: Prisma.LocationDisplayDeviceCreateNestedManyWithoutLocationInput
+  setupTokens?: Prisma.LocationDisplaySetupTokenCreateNestedManyWithoutLocationInput
+  displaySessions?: Prisma.LocationDisplaySessionCreateNestedManyWithoutLocationInput
+  qrTokens?: Prisma.QrTokenCreateNestedManyWithoutLocationInput
+  shiftTemplates?: Prisma.ShiftTemplateCreateNestedManyWithoutLocationInput
+  schedulePlans?: Prisma.SchedulePlanCreateNestedManyWithoutLocationInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutLocationInput
+  timeEvents?: Prisma.TimeEventCreateNestedManyWithoutLocationInput
+  timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutLocationInput
+}
+
+export type WorkLocationUncheckedCreateWithoutSchedulePlanCellsInput = {
+  id?: string
+  name: string
+  code: string
+  address: string
+  latitude: number
+  longitude: number
+  allowedRadiusMeters?: number
+  maxAllowedAccuracyMeters?: number
+  timezone?: string
+  allowedIpRanges?: Prisma.WorkLocationCreateallowedIpRangesInput | string[]
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  defaultEmployees?: Prisma.EmployeeProfileUncheckedCreateNestedManyWithoutDefaultLocationInput
+  shifts?: Prisma.WorkShiftUncheckedCreateNestedManyWithoutLocationInput
+  displayDevices?: Prisma.LocationDisplayDeviceUncheckedCreateNestedManyWithoutLocationInput
+  setupTokens?: Prisma.LocationDisplaySetupTokenUncheckedCreateNestedManyWithoutLocationInput
+  displaySessions?: Prisma.LocationDisplaySessionUncheckedCreateNestedManyWithoutLocationInput
+  qrTokens?: Prisma.QrTokenUncheckedCreateNestedManyWithoutLocationInput
+  shiftTemplates?: Prisma.ShiftTemplateUncheckedCreateNestedManyWithoutLocationInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutLocationInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutLocationInput
+  timeEvents?: Prisma.TimeEventUncheckedCreateNestedManyWithoutLocationInput
+  timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutLocationInput
+}
+
+export type WorkLocationCreateOrConnectWithoutSchedulePlanCellsInput = {
+  where: Prisma.WorkLocationWhereUniqueInput
+  create: Prisma.XOR<Prisma.WorkLocationCreateWithoutSchedulePlanCellsInput, Prisma.WorkLocationUncheckedCreateWithoutSchedulePlanCellsInput>
+}
+
+export type WorkLocationUpsertWithoutSchedulePlanCellsInput = {
+  update: Prisma.XOR<Prisma.WorkLocationUpdateWithoutSchedulePlanCellsInput, Prisma.WorkLocationUncheckedUpdateWithoutSchedulePlanCellsInput>
+  create: Prisma.XOR<Prisma.WorkLocationCreateWithoutSchedulePlanCellsInput, Prisma.WorkLocationUncheckedCreateWithoutSchedulePlanCellsInput>
+  where?: Prisma.WorkLocationWhereInput
+}
+
+export type WorkLocationUpdateToOneWithWhereWithoutSchedulePlanCellsInput = {
+  where?: Prisma.WorkLocationWhereInput
+  data: Prisma.XOR<Prisma.WorkLocationUpdateWithoutSchedulePlanCellsInput, Prisma.WorkLocationUncheckedUpdateWithoutSchedulePlanCellsInput>
+}
+
+export type WorkLocationUpdateWithoutSchedulePlanCellsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  allowedRadiusMeters?: Prisma.IntFieldUpdateOperationsInput | number
+  maxAllowedAccuracyMeters?: Prisma.IntFieldUpdateOperationsInput | number
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  allowedIpRanges?: Prisma.WorkLocationUpdateallowedIpRangesInput | string[]
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  defaultEmployees?: Prisma.EmployeeProfileUpdateManyWithoutDefaultLocationNestedInput
+  shifts?: Prisma.WorkShiftUpdateManyWithoutLocationNestedInput
+  displayDevices?: Prisma.LocationDisplayDeviceUpdateManyWithoutLocationNestedInput
+  setupTokens?: Prisma.LocationDisplaySetupTokenUpdateManyWithoutLocationNestedInput
+  displaySessions?: Prisma.LocationDisplaySessionUpdateManyWithoutLocationNestedInput
+  qrTokens?: Prisma.QrTokenUpdateManyWithoutLocationNestedInput
+  shiftTemplates?: Prisma.ShiftTemplateUpdateManyWithoutLocationNestedInput
+  schedulePlans?: Prisma.SchedulePlanUpdateManyWithoutLocationNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutLocationNestedInput
+  timeEvents?: Prisma.TimeEventUpdateManyWithoutLocationNestedInput
+  timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutLocationNestedInput
+}
+
+export type WorkLocationUncheckedUpdateWithoutSchedulePlanCellsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  allowedRadiusMeters?: Prisma.IntFieldUpdateOperationsInput | number
+  maxAllowedAccuracyMeters?: Prisma.IntFieldUpdateOperationsInput | number
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  allowedIpRanges?: Prisma.WorkLocationUpdateallowedIpRangesInput | string[]
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  defaultEmployees?: Prisma.EmployeeProfileUncheckedUpdateManyWithoutDefaultLocationNestedInput
+  shifts?: Prisma.WorkShiftUncheckedUpdateManyWithoutLocationNestedInput
+  displayDevices?: Prisma.LocationDisplayDeviceUncheckedUpdateManyWithoutLocationNestedInput
+  setupTokens?: Prisma.LocationDisplaySetupTokenUncheckedUpdateManyWithoutLocationNestedInput
+  displaySessions?: Prisma.LocationDisplaySessionUncheckedUpdateManyWithoutLocationNestedInput
+  qrTokens?: Prisma.QrTokenUncheckedUpdateManyWithoutLocationNestedInput
+  shiftTemplates?: Prisma.ShiftTemplateUncheckedUpdateManyWithoutLocationNestedInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedUpdateManyWithoutLocationNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutLocationNestedInput
   timeEvents?: Prisma.TimeEventUncheckedUpdateManyWithoutLocationNestedInput
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutLocationNestedInput
 }
@@ -855,6 +1327,10 @@ export type WorkLocationCreateWithoutShiftsInput = {
   setupTokens?: Prisma.LocationDisplaySetupTokenCreateNestedManyWithoutLocationInput
   displaySessions?: Prisma.LocationDisplaySessionCreateNestedManyWithoutLocationInput
   qrTokens?: Prisma.QrTokenCreateNestedManyWithoutLocationInput
+  shiftTemplates?: Prisma.ShiftTemplateCreateNestedManyWithoutLocationInput
+  schedulePlans?: Prisma.SchedulePlanCreateNestedManyWithoutLocationInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutLocationInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutLocationInput
   timeEvents?: Prisma.TimeEventCreateNestedManyWithoutLocationInput
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutLocationInput
 }
@@ -878,6 +1354,10 @@ export type WorkLocationUncheckedCreateWithoutShiftsInput = {
   setupTokens?: Prisma.LocationDisplaySetupTokenUncheckedCreateNestedManyWithoutLocationInput
   displaySessions?: Prisma.LocationDisplaySessionUncheckedCreateNestedManyWithoutLocationInput
   qrTokens?: Prisma.QrTokenUncheckedCreateNestedManyWithoutLocationInput
+  shiftTemplates?: Prisma.ShiftTemplateUncheckedCreateNestedManyWithoutLocationInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutLocationInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutLocationInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutLocationInput
   timeEvents?: Prisma.TimeEventUncheckedCreateNestedManyWithoutLocationInput
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutLocationInput
 }
@@ -917,6 +1397,10 @@ export type WorkLocationUpdateWithoutShiftsInput = {
   setupTokens?: Prisma.LocationDisplaySetupTokenUpdateManyWithoutLocationNestedInput
   displaySessions?: Prisma.LocationDisplaySessionUpdateManyWithoutLocationNestedInput
   qrTokens?: Prisma.QrTokenUpdateManyWithoutLocationNestedInput
+  shiftTemplates?: Prisma.ShiftTemplateUpdateManyWithoutLocationNestedInput
+  schedulePlans?: Prisma.SchedulePlanUpdateManyWithoutLocationNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutLocationNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutLocationNestedInput
   timeEvents?: Prisma.TimeEventUpdateManyWithoutLocationNestedInput
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutLocationNestedInput
 }
@@ -940,6 +1424,134 @@ export type WorkLocationUncheckedUpdateWithoutShiftsInput = {
   setupTokens?: Prisma.LocationDisplaySetupTokenUncheckedUpdateManyWithoutLocationNestedInput
   displaySessions?: Prisma.LocationDisplaySessionUncheckedUpdateManyWithoutLocationNestedInput
   qrTokens?: Prisma.QrTokenUncheckedUpdateManyWithoutLocationNestedInput
+  shiftTemplates?: Prisma.ShiftTemplateUncheckedUpdateManyWithoutLocationNestedInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedUpdateManyWithoutLocationNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutLocationNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutLocationNestedInput
+  timeEvents?: Prisma.TimeEventUncheckedUpdateManyWithoutLocationNestedInput
+  timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutLocationNestedInput
+}
+
+export type WorkLocationCreateWithoutScheduleDayStatusesInput = {
+  id?: string
+  name: string
+  code: string
+  address: string
+  latitude: number
+  longitude: number
+  allowedRadiusMeters?: number
+  maxAllowedAccuracyMeters?: number
+  timezone?: string
+  allowedIpRanges?: Prisma.WorkLocationCreateallowedIpRangesInput | string[]
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  defaultEmployees?: Prisma.EmployeeProfileCreateNestedManyWithoutDefaultLocationInput
+  shifts?: Prisma.WorkShiftCreateNestedManyWithoutLocationInput
+  displayDevices?: Prisma.LocationDisplayDeviceCreateNestedManyWithoutLocationInput
+  setupTokens?: Prisma.LocationDisplaySetupTokenCreateNestedManyWithoutLocationInput
+  displaySessions?: Prisma.LocationDisplaySessionCreateNestedManyWithoutLocationInput
+  qrTokens?: Prisma.QrTokenCreateNestedManyWithoutLocationInput
+  shiftTemplates?: Prisma.ShiftTemplateCreateNestedManyWithoutLocationInput
+  schedulePlans?: Prisma.SchedulePlanCreateNestedManyWithoutLocationInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutLocationInput
+  timeEvents?: Prisma.TimeEventCreateNestedManyWithoutLocationInput
+  timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutLocationInput
+}
+
+export type WorkLocationUncheckedCreateWithoutScheduleDayStatusesInput = {
+  id?: string
+  name: string
+  code: string
+  address: string
+  latitude: number
+  longitude: number
+  allowedRadiusMeters?: number
+  maxAllowedAccuracyMeters?: number
+  timezone?: string
+  allowedIpRanges?: Prisma.WorkLocationCreateallowedIpRangesInput | string[]
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  defaultEmployees?: Prisma.EmployeeProfileUncheckedCreateNestedManyWithoutDefaultLocationInput
+  shifts?: Prisma.WorkShiftUncheckedCreateNestedManyWithoutLocationInput
+  displayDevices?: Prisma.LocationDisplayDeviceUncheckedCreateNestedManyWithoutLocationInput
+  setupTokens?: Prisma.LocationDisplaySetupTokenUncheckedCreateNestedManyWithoutLocationInput
+  displaySessions?: Prisma.LocationDisplaySessionUncheckedCreateNestedManyWithoutLocationInput
+  qrTokens?: Prisma.QrTokenUncheckedCreateNestedManyWithoutLocationInput
+  shiftTemplates?: Prisma.ShiftTemplateUncheckedCreateNestedManyWithoutLocationInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutLocationInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutLocationInput
+  timeEvents?: Prisma.TimeEventUncheckedCreateNestedManyWithoutLocationInput
+  timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutLocationInput
+}
+
+export type WorkLocationCreateOrConnectWithoutScheduleDayStatusesInput = {
+  where: Prisma.WorkLocationWhereUniqueInput
+  create: Prisma.XOR<Prisma.WorkLocationCreateWithoutScheduleDayStatusesInput, Prisma.WorkLocationUncheckedCreateWithoutScheduleDayStatusesInput>
+}
+
+export type WorkLocationUpsertWithoutScheduleDayStatusesInput = {
+  update: Prisma.XOR<Prisma.WorkLocationUpdateWithoutScheduleDayStatusesInput, Prisma.WorkLocationUncheckedUpdateWithoutScheduleDayStatusesInput>
+  create: Prisma.XOR<Prisma.WorkLocationCreateWithoutScheduleDayStatusesInput, Prisma.WorkLocationUncheckedCreateWithoutScheduleDayStatusesInput>
+  where?: Prisma.WorkLocationWhereInput
+}
+
+export type WorkLocationUpdateToOneWithWhereWithoutScheduleDayStatusesInput = {
+  where?: Prisma.WorkLocationWhereInput
+  data: Prisma.XOR<Prisma.WorkLocationUpdateWithoutScheduleDayStatusesInput, Prisma.WorkLocationUncheckedUpdateWithoutScheduleDayStatusesInput>
+}
+
+export type WorkLocationUpdateWithoutScheduleDayStatusesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  allowedRadiusMeters?: Prisma.IntFieldUpdateOperationsInput | number
+  maxAllowedAccuracyMeters?: Prisma.IntFieldUpdateOperationsInput | number
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  allowedIpRanges?: Prisma.WorkLocationUpdateallowedIpRangesInput | string[]
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  defaultEmployees?: Prisma.EmployeeProfileUpdateManyWithoutDefaultLocationNestedInput
+  shifts?: Prisma.WorkShiftUpdateManyWithoutLocationNestedInput
+  displayDevices?: Prisma.LocationDisplayDeviceUpdateManyWithoutLocationNestedInput
+  setupTokens?: Prisma.LocationDisplaySetupTokenUpdateManyWithoutLocationNestedInput
+  displaySessions?: Prisma.LocationDisplaySessionUpdateManyWithoutLocationNestedInput
+  qrTokens?: Prisma.QrTokenUpdateManyWithoutLocationNestedInput
+  shiftTemplates?: Prisma.ShiftTemplateUpdateManyWithoutLocationNestedInput
+  schedulePlans?: Prisma.SchedulePlanUpdateManyWithoutLocationNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutLocationNestedInput
+  timeEvents?: Prisma.TimeEventUpdateManyWithoutLocationNestedInput
+  timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutLocationNestedInput
+}
+
+export type WorkLocationUncheckedUpdateWithoutScheduleDayStatusesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  allowedRadiusMeters?: Prisma.IntFieldUpdateOperationsInput | number
+  maxAllowedAccuracyMeters?: Prisma.IntFieldUpdateOperationsInput | number
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  allowedIpRanges?: Prisma.WorkLocationUpdateallowedIpRangesInput | string[]
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  defaultEmployees?: Prisma.EmployeeProfileUncheckedUpdateManyWithoutDefaultLocationNestedInput
+  shifts?: Prisma.WorkShiftUncheckedUpdateManyWithoutLocationNestedInput
+  displayDevices?: Prisma.LocationDisplayDeviceUncheckedUpdateManyWithoutLocationNestedInput
+  setupTokens?: Prisma.LocationDisplaySetupTokenUncheckedUpdateManyWithoutLocationNestedInput
+  displaySessions?: Prisma.LocationDisplaySessionUncheckedUpdateManyWithoutLocationNestedInput
+  qrTokens?: Prisma.QrTokenUncheckedUpdateManyWithoutLocationNestedInput
+  shiftTemplates?: Prisma.ShiftTemplateUncheckedUpdateManyWithoutLocationNestedInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedUpdateManyWithoutLocationNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutLocationNestedInput
   timeEvents?: Prisma.TimeEventUncheckedUpdateManyWithoutLocationNestedInput
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutLocationNestedInput
 }
@@ -963,6 +1575,10 @@ export type WorkLocationCreateWithoutDisplayDevicesInput = {
   setupTokens?: Prisma.LocationDisplaySetupTokenCreateNestedManyWithoutLocationInput
   displaySessions?: Prisma.LocationDisplaySessionCreateNestedManyWithoutLocationInput
   qrTokens?: Prisma.QrTokenCreateNestedManyWithoutLocationInput
+  shiftTemplates?: Prisma.ShiftTemplateCreateNestedManyWithoutLocationInput
+  schedulePlans?: Prisma.SchedulePlanCreateNestedManyWithoutLocationInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutLocationInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutLocationInput
   timeEvents?: Prisma.TimeEventCreateNestedManyWithoutLocationInput
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutLocationInput
 }
@@ -986,6 +1602,10 @@ export type WorkLocationUncheckedCreateWithoutDisplayDevicesInput = {
   setupTokens?: Prisma.LocationDisplaySetupTokenUncheckedCreateNestedManyWithoutLocationInput
   displaySessions?: Prisma.LocationDisplaySessionUncheckedCreateNestedManyWithoutLocationInput
   qrTokens?: Prisma.QrTokenUncheckedCreateNestedManyWithoutLocationInput
+  shiftTemplates?: Prisma.ShiftTemplateUncheckedCreateNestedManyWithoutLocationInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutLocationInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutLocationInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutLocationInput
   timeEvents?: Prisma.TimeEventUncheckedCreateNestedManyWithoutLocationInput
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutLocationInput
 }
@@ -1025,6 +1645,10 @@ export type WorkLocationUpdateWithoutDisplayDevicesInput = {
   setupTokens?: Prisma.LocationDisplaySetupTokenUpdateManyWithoutLocationNestedInput
   displaySessions?: Prisma.LocationDisplaySessionUpdateManyWithoutLocationNestedInput
   qrTokens?: Prisma.QrTokenUpdateManyWithoutLocationNestedInput
+  shiftTemplates?: Prisma.ShiftTemplateUpdateManyWithoutLocationNestedInput
+  schedulePlans?: Prisma.SchedulePlanUpdateManyWithoutLocationNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutLocationNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutLocationNestedInput
   timeEvents?: Prisma.TimeEventUpdateManyWithoutLocationNestedInput
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutLocationNestedInput
 }
@@ -1048,6 +1672,10 @@ export type WorkLocationUncheckedUpdateWithoutDisplayDevicesInput = {
   setupTokens?: Prisma.LocationDisplaySetupTokenUncheckedUpdateManyWithoutLocationNestedInput
   displaySessions?: Prisma.LocationDisplaySessionUncheckedUpdateManyWithoutLocationNestedInput
   qrTokens?: Prisma.QrTokenUncheckedUpdateManyWithoutLocationNestedInput
+  shiftTemplates?: Prisma.ShiftTemplateUncheckedUpdateManyWithoutLocationNestedInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedUpdateManyWithoutLocationNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutLocationNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutLocationNestedInput
   timeEvents?: Prisma.TimeEventUncheckedUpdateManyWithoutLocationNestedInput
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutLocationNestedInput
 }
@@ -1071,6 +1699,10 @@ export type WorkLocationCreateWithoutSetupTokensInput = {
   displayDevices?: Prisma.LocationDisplayDeviceCreateNestedManyWithoutLocationInput
   displaySessions?: Prisma.LocationDisplaySessionCreateNestedManyWithoutLocationInput
   qrTokens?: Prisma.QrTokenCreateNestedManyWithoutLocationInput
+  shiftTemplates?: Prisma.ShiftTemplateCreateNestedManyWithoutLocationInput
+  schedulePlans?: Prisma.SchedulePlanCreateNestedManyWithoutLocationInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutLocationInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutLocationInput
   timeEvents?: Prisma.TimeEventCreateNestedManyWithoutLocationInput
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutLocationInput
 }
@@ -1094,6 +1726,10 @@ export type WorkLocationUncheckedCreateWithoutSetupTokensInput = {
   displayDevices?: Prisma.LocationDisplayDeviceUncheckedCreateNestedManyWithoutLocationInput
   displaySessions?: Prisma.LocationDisplaySessionUncheckedCreateNestedManyWithoutLocationInput
   qrTokens?: Prisma.QrTokenUncheckedCreateNestedManyWithoutLocationInput
+  shiftTemplates?: Prisma.ShiftTemplateUncheckedCreateNestedManyWithoutLocationInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutLocationInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutLocationInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutLocationInput
   timeEvents?: Prisma.TimeEventUncheckedCreateNestedManyWithoutLocationInput
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutLocationInput
 }
@@ -1133,6 +1769,10 @@ export type WorkLocationUpdateWithoutSetupTokensInput = {
   displayDevices?: Prisma.LocationDisplayDeviceUpdateManyWithoutLocationNestedInput
   displaySessions?: Prisma.LocationDisplaySessionUpdateManyWithoutLocationNestedInput
   qrTokens?: Prisma.QrTokenUpdateManyWithoutLocationNestedInput
+  shiftTemplates?: Prisma.ShiftTemplateUpdateManyWithoutLocationNestedInput
+  schedulePlans?: Prisma.SchedulePlanUpdateManyWithoutLocationNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutLocationNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutLocationNestedInput
   timeEvents?: Prisma.TimeEventUpdateManyWithoutLocationNestedInput
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutLocationNestedInput
 }
@@ -1156,6 +1796,10 @@ export type WorkLocationUncheckedUpdateWithoutSetupTokensInput = {
   displayDevices?: Prisma.LocationDisplayDeviceUncheckedUpdateManyWithoutLocationNestedInput
   displaySessions?: Prisma.LocationDisplaySessionUncheckedUpdateManyWithoutLocationNestedInput
   qrTokens?: Prisma.QrTokenUncheckedUpdateManyWithoutLocationNestedInput
+  shiftTemplates?: Prisma.ShiftTemplateUncheckedUpdateManyWithoutLocationNestedInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedUpdateManyWithoutLocationNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutLocationNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutLocationNestedInput
   timeEvents?: Prisma.TimeEventUncheckedUpdateManyWithoutLocationNestedInput
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutLocationNestedInput
 }
@@ -1179,6 +1823,10 @@ export type WorkLocationCreateWithoutDisplaySessionsInput = {
   displayDevices?: Prisma.LocationDisplayDeviceCreateNestedManyWithoutLocationInput
   setupTokens?: Prisma.LocationDisplaySetupTokenCreateNestedManyWithoutLocationInput
   qrTokens?: Prisma.QrTokenCreateNestedManyWithoutLocationInput
+  shiftTemplates?: Prisma.ShiftTemplateCreateNestedManyWithoutLocationInput
+  schedulePlans?: Prisma.SchedulePlanCreateNestedManyWithoutLocationInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutLocationInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutLocationInput
   timeEvents?: Prisma.TimeEventCreateNestedManyWithoutLocationInput
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutLocationInput
 }
@@ -1202,6 +1850,10 @@ export type WorkLocationUncheckedCreateWithoutDisplaySessionsInput = {
   displayDevices?: Prisma.LocationDisplayDeviceUncheckedCreateNestedManyWithoutLocationInput
   setupTokens?: Prisma.LocationDisplaySetupTokenUncheckedCreateNestedManyWithoutLocationInput
   qrTokens?: Prisma.QrTokenUncheckedCreateNestedManyWithoutLocationInput
+  shiftTemplates?: Prisma.ShiftTemplateUncheckedCreateNestedManyWithoutLocationInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutLocationInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutLocationInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutLocationInput
   timeEvents?: Prisma.TimeEventUncheckedCreateNestedManyWithoutLocationInput
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutLocationInput
 }
@@ -1241,6 +1893,10 @@ export type WorkLocationUpdateWithoutDisplaySessionsInput = {
   displayDevices?: Prisma.LocationDisplayDeviceUpdateManyWithoutLocationNestedInput
   setupTokens?: Prisma.LocationDisplaySetupTokenUpdateManyWithoutLocationNestedInput
   qrTokens?: Prisma.QrTokenUpdateManyWithoutLocationNestedInput
+  shiftTemplates?: Prisma.ShiftTemplateUpdateManyWithoutLocationNestedInput
+  schedulePlans?: Prisma.SchedulePlanUpdateManyWithoutLocationNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutLocationNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutLocationNestedInput
   timeEvents?: Prisma.TimeEventUpdateManyWithoutLocationNestedInput
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutLocationNestedInput
 }
@@ -1264,6 +1920,10 @@ export type WorkLocationUncheckedUpdateWithoutDisplaySessionsInput = {
   displayDevices?: Prisma.LocationDisplayDeviceUncheckedUpdateManyWithoutLocationNestedInput
   setupTokens?: Prisma.LocationDisplaySetupTokenUncheckedUpdateManyWithoutLocationNestedInput
   qrTokens?: Prisma.QrTokenUncheckedUpdateManyWithoutLocationNestedInput
+  shiftTemplates?: Prisma.ShiftTemplateUncheckedUpdateManyWithoutLocationNestedInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedUpdateManyWithoutLocationNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutLocationNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutLocationNestedInput
   timeEvents?: Prisma.TimeEventUncheckedUpdateManyWithoutLocationNestedInput
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutLocationNestedInput
 }
@@ -1287,6 +1947,10 @@ export type WorkLocationCreateWithoutQrTokensInput = {
   displayDevices?: Prisma.LocationDisplayDeviceCreateNestedManyWithoutLocationInput
   setupTokens?: Prisma.LocationDisplaySetupTokenCreateNestedManyWithoutLocationInput
   displaySessions?: Prisma.LocationDisplaySessionCreateNestedManyWithoutLocationInput
+  shiftTemplates?: Prisma.ShiftTemplateCreateNestedManyWithoutLocationInput
+  schedulePlans?: Prisma.SchedulePlanCreateNestedManyWithoutLocationInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutLocationInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutLocationInput
   timeEvents?: Prisma.TimeEventCreateNestedManyWithoutLocationInput
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutLocationInput
 }
@@ -1310,6 +1974,10 @@ export type WorkLocationUncheckedCreateWithoutQrTokensInput = {
   displayDevices?: Prisma.LocationDisplayDeviceUncheckedCreateNestedManyWithoutLocationInput
   setupTokens?: Prisma.LocationDisplaySetupTokenUncheckedCreateNestedManyWithoutLocationInput
   displaySessions?: Prisma.LocationDisplaySessionUncheckedCreateNestedManyWithoutLocationInput
+  shiftTemplates?: Prisma.ShiftTemplateUncheckedCreateNestedManyWithoutLocationInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutLocationInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutLocationInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutLocationInput
   timeEvents?: Prisma.TimeEventUncheckedCreateNestedManyWithoutLocationInput
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutLocationInput
 }
@@ -1349,6 +2017,10 @@ export type WorkLocationUpdateWithoutQrTokensInput = {
   displayDevices?: Prisma.LocationDisplayDeviceUpdateManyWithoutLocationNestedInput
   setupTokens?: Prisma.LocationDisplaySetupTokenUpdateManyWithoutLocationNestedInput
   displaySessions?: Prisma.LocationDisplaySessionUpdateManyWithoutLocationNestedInput
+  shiftTemplates?: Prisma.ShiftTemplateUpdateManyWithoutLocationNestedInput
+  schedulePlans?: Prisma.SchedulePlanUpdateManyWithoutLocationNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutLocationNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutLocationNestedInput
   timeEvents?: Prisma.TimeEventUpdateManyWithoutLocationNestedInput
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutLocationNestedInput
 }
@@ -1372,6 +2044,10 @@ export type WorkLocationUncheckedUpdateWithoutQrTokensInput = {
   displayDevices?: Prisma.LocationDisplayDeviceUncheckedUpdateManyWithoutLocationNestedInput
   setupTokens?: Prisma.LocationDisplaySetupTokenUncheckedUpdateManyWithoutLocationNestedInput
   displaySessions?: Prisma.LocationDisplaySessionUncheckedUpdateManyWithoutLocationNestedInput
+  shiftTemplates?: Prisma.ShiftTemplateUncheckedUpdateManyWithoutLocationNestedInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedUpdateManyWithoutLocationNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutLocationNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutLocationNestedInput
   timeEvents?: Prisma.TimeEventUncheckedUpdateManyWithoutLocationNestedInput
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutLocationNestedInput
 }
@@ -1396,6 +2072,10 @@ export type WorkLocationCreateWithoutTimeEventsInput = {
   setupTokens?: Prisma.LocationDisplaySetupTokenCreateNestedManyWithoutLocationInput
   displaySessions?: Prisma.LocationDisplaySessionCreateNestedManyWithoutLocationInput
   qrTokens?: Prisma.QrTokenCreateNestedManyWithoutLocationInput
+  shiftTemplates?: Prisma.ShiftTemplateCreateNestedManyWithoutLocationInput
+  schedulePlans?: Prisma.SchedulePlanCreateNestedManyWithoutLocationInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutLocationInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutLocationInput
   timesheetDays?: Prisma.TimesheetDayCreateNestedManyWithoutLocationInput
 }
 
@@ -1419,6 +2099,10 @@ export type WorkLocationUncheckedCreateWithoutTimeEventsInput = {
   setupTokens?: Prisma.LocationDisplaySetupTokenUncheckedCreateNestedManyWithoutLocationInput
   displaySessions?: Prisma.LocationDisplaySessionUncheckedCreateNestedManyWithoutLocationInput
   qrTokens?: Prisma.QrTokenUncheckedCreateNestedManyWithoutLocationInput
+  shiftTemplates?: Prisma.ShiftTemplateUncheckedCreateNestedManyWithoutLocationInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutLocationInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutLocationInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutLocationInput
   timesheetDays?: Prisma.TimesheetDayUncheckedCreateNestedManyWithoutLocationInput
 }
 
@@ -1458,6 +2142,10 @@ export type WorkLocationUpdateWithoutTimeEventsInput = {
   setupTokens?: Prisma.LocationDisplaySetupTokenUpdateManyWithoutLocationNestedInput
   displaySessions?: Prisma.LocationDisplaySessionUpdateManyWithoutLocationNestedInput
   qrTokens?: Prisma.QrTokenUpdateManyWithoutLocationNestedInput
+  shiftTemplates?: Prisma.ShiftTemplateUpdateManyWithoutLocationNestedInput
+  schedulePlans?: Prisma.SchedulePlanUpdateManyWithoutLocationNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutLocationNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutLocationNestedInput
   timesheetDays?: Prisma.TimesheetDayUpdateManyWithoutLocationNestedInput
 }
 
@@ -1481,6 +2169,10 @@ export type WorkLocationUncheckedUpdateWithoutTimeEventsInput = {
   setupTokens?: Prisma.LocationDisplaySetupTokenUncheckedUpdateManyWithoutLocationNestedInput
   displaySessions?: Prisma.LocationDisplaySessionUncheckedUpdateManyWithoutLocationNestedInput
   qrTokens?: Prisma.QrTokenUncheckedUpdateManyWithoutLocationNestedInput
+  shiftTemplates?: Prisma.ShiftTemplateUncheckedUpdateManyWithoutLocationNestedInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedUpdateManyWithoutLocationNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutLocationNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutLocationNestedInput
   timesheetDays?: Prisma.TimesheetDayUncheckedUpdateManyWithoutLocationNestedInput
 }
 
@@ -1504,6 +2196,10 @@ export type WorkLocationCreateWithoutTimesheetDaysInput = {
   setupTokens?: Prisma.LocationDisplaySetupTokenCreateNestedManyWithoutLocationInput
   displaySessions?: Prisma.LocationDisplaySessionCreateNestedManyWithoutLocationInput
   qrTokens?: Prisma.QrTokenCreateNestedManyWithoutLocationInput
+  shiftTemplates?: Prisma.ShiftTemplateCreateNestedManyWithoutLocationInput
+  schedulePlans?: Prisma.SchedulePlanCreateNestedManyWithoutLocationInput
+  schedulePlanCells?: Prisma.SchedulePlanCellCreateNestedManyWithoutLocationInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusCreateNestedManyWithoutLocationInput
   timeEvents?: Prisma.TimeEventCreateNestedManyWithoutLocationInput
 }
 
@@ -1527,6 +2223,10 @@ export type WorkLocationUncheckedCreateWithoutTimesheetDaysInput = {
   setupTokens?: Prisma.LocationDisplaySetupTokenUncheckedCreateNestedManyWithoutLocationInput
   displaySessions?: Prisma.LocationDisplaySessionUncheckedCreateNestedManyWithoutLocationInput
   qrTokens?: Prisma.QrTokenUncheckedCreateNestedManyWithoutLocationInput
+  shiftTemplates?: Prisma.ShiftTemplateUncheckedCreateNestedManyWithoutLocationInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutLocationInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedCreateNestedManyWithoutLocationInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedCreateNestedManyWithoutLocationInput
   timeEvents?: Prisma.TimeEventUncheckedCreateNestedManyWithoutLocationInput
 }
 
@@ -1566,6 +2266,10 @@ export type WorkLocationUpdateWithoutTimesheetDaysInput = {
   setupTokens?: Prisma.LocationDisplaySetupTokenUpdateManyWithoutLocationNestedInput
   displaySessions?: Prisma.LocationDisplaySessionUpdateManyWithoutLocationNestedInput
   qrTokens?: Prisma.QrTokenUpdateManyWithoutLocationNestedInput
+  shiftTemplates?: Prisma.ShiftTemplateUpdateManyWithoutLocationNestedInput
+  schedulePlans?: Prisma.SchedulePlanUpdateManyWithoutLocationNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUpdateManyWithoutLocationNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUpdateManyWithoutLocationNestedInput
   timeEvents?: Prisma.TimeEventUpdateManyWithoutLocationNestedInput
 }
 
@@ -1589,6 +2293,10 @@ export type WorkLocationUncheckedUpdateWithoutTimesheetDaysInput = {
   setupTokens?: Prisma.LocationDisplaySetupTokenUncheckedUpdateManyWithoutLocationNestedInput
   displaySessions?: Prisma.LocationDisplaySessionUncheckedUpdateManyWithoutLocationNestedInput
   qrTokens?: Prisma.QrTokenUncheckedUpdateManyWithoutLocationNestedInput
+  shiftTemplates?: Prisma.ShiftTemplateUncheckedUpdateManyWithoutLocationNestedInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedUpdateManyWithoutLocationNestedInput
+  schedulePlanCells?: Prisma.SchedulePlanCellUncheckedUpdateManyWithoutLocationNestedInput
+  scheduleDayStatuses?: Prisma.ScheduleDayStatusUncheckedUpdateManyWithoutLocationNestedInput
   timeEvents?: Prisma.TimeEventUncheckedUpdateManyWithoutLocationNestedInput
 }
 
@@ -1604,6 +2312,10 @@ export type WorkLocationCountOutputType = {
   setupTokens: number
   displaySessions: number
   qrTokens: number
+  shiftTemplates: number
+  schedulePlans: number
+  schedulePlanCells: number
+  scheduleDayStatuses: number
   timeEvents: number
   timesheetDays: number
 }
@@ -1615,6 +2327,10 @@ export type WorkLocationCountOutputTypeSelect<ExtArgs extends runtime.Types.Exte
   setupTokens?: boolean | WorkLocationCountOutputTypeCountSetupTokensArgs
   displaySessions?: boolean | WorkLocationCountOutputTypeCountDisplaySessionsArgs
   qrTokens?: boolean | WorkLocationCountOutputTypeCountQrTokensArgs
+  shiftTemplates?: boolean | WorkLocationCountOutputTypeCountShiftTemplatesArgs
+  schedulePlans?: boolean | WorkLocationCountOutputTypeCountSchedulePlansArgs
+  schedulePlanCells?: boolean | WorkLocationCountOutputTypeCountSchedulePlanCellsArgs
+  scheduleDayStatuses?: boolean | WorkLocationCountOutputTypeCountScheduleDayStatusesArgs
   timeEvents?: boolean | WorkLocationCountOutputTypeCountTimeEventsArgs
   timesheetDays?: boolean | WorkLocationCountOutputTypeCountTimesheetDaysArgs
 }
@@ -1674,6 +2390,34 @@ export type WorkLocationCountOutputTypeCountQrTokensArgs<ExtArgs extends runtime
 /**
  * WorkLocationCountOutputType without action
  */
+export type WorkLocationCountOutputTypeCountShiftTemplatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ShiftTemplateWhereInput
+}
+
+/**
+ * WorkLocationCountOutputType without action
+ */
+export type WorkLocationCountOutputTypeCountSchedulePlansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SchedulePlanWhereInput
+}
+
+/**
+ * WorkLocationCountOutputType without action
+ */
+export type WorkLocationCountOutputTypeCountSchedulePlanCellsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SchedulePlanCellWhereInput
+}
+
+/**
+ * WorkLocationCountOutputType without action
+ */
+export type WorkLocationCountOutputTypeCountScheduleDayStatusesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ScheduleDayStatusWhereInput
+}
+
+/**
+ * WorkLocationCountOutputType without action
+ */
 export type WorkLocationCountOutputTypeCountTimeEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.TimeEventWhereInput
 }
@@ -1706,6 +2450,10 @@ export type WorkLocationSelect<ExtArgs extends runtime.Types.Extensions.Internal
   setupTokens?: boolean | Prisma.WorkLocation$setupTokensArgs<ExtArgs>
   displaySessions?: boolean | Prisma.WorkLocation$displaySessionsArgs<ExtArgs>
   qrTokens?: boolean | Prisma.WorkLocation$qrTokensArgs<ExtArgs>
+  shiftTemplates?: boolean | Prisma.WorkLocation$shiftTemplatesArgs<ExtArgs>
+  schedulePlans?: boolean | Prisma.WorkLocation$schedulePlansArgs<ExtArgs>
+  schedulePlanCells?: boolean | Prisma.WorkLocation$schedulePlanCellsArgs<ExtArgs>
+  scheduleDayStatuses?: boolean | Prisma.WorkLocation$scheduleDayStatusesArgs<ExtArgs>
   timeEvents?: boolean | Prisma.WorkLocation$timeEventsArgs<ExtArgs>
   timesheetDays?: boolean | Prisma.WorkLocation$timesheetDaysArgs<ExtArgs>
   _count?: boolean | Prisma.WorkLocationCountOutputTypeDefaultArgs<ExtArgs>
@@ -1767,6 +2515,10 @@ export type WorkLocationInclude<ExtArgs extends runtime.Types.Extensions.Interna
   setupTokens?: boolean | Prisma.WorkLocation$setupTokensArgs<ExtArgs>
   displaySessions?: boolean | Prisma.WorkLocation$displaySessionsArgs<ExtArgs>
   qrTokens?: boolean | Prisma.WorkLocation$qrTokensArgs<ExtArgs>
+  shiftTemplates?: boolean | Prisma.WorkLocation$shiftTemplatesArgs<ExtArgs>
+  schedulePlans?: boolean | Prisma.WorkLocation$schedulePlansArgs<ExtArgs>
+  schedulePlanCells?: boolean | Prisma.WorkLocation$schedulePlanCellsArgs<ExtArgs>
+  scheduleDayStatuses?: boolean | Prisma.WorkLocation$scheduleDayStatusesArgs<ExtArgs>
   timeEvents?: boolean | Prisma.WorkLocation$timeEventsArgs<ExtArgs>
   timesheetDays?: boolean | Prisma.WorkLocation$timesheetDaysArgs<ExtArgs>
   _count?: boolean | Prisma.WorkLocationCountOutputTypeDefaultArgs<ExtArgs>
@@ -1783,6 +2535,10 @@ export type $WorkLocationPayload<ExtArgs extends runtime.Types.Extensions.Intern
     setupTokens: Prisma.$LocationDisplaySetupTokenPayload<ExtArgs>[]
     displaySessions: Prisma.$LocationDisplaySessionPayload<ExtArgs>[]
     qrTokens: Prisma.$QrTokenPayload<ExtArgs>[]
+    shiftTemplates: Prisma.$ShiftTemplatePayload<ExtArgs>[]
+    schedulePlans: Prisma.$SchedulePlanPayload<ExtArgs>[]
+    schedulePlanCells: Prisma.$SchedulePlanCellPayload<ExtArgs>[]
+    scheduleDayStatuses: Prisma.$ScheduleDayStatusPayload<ExtArgs>[]
     timeEvents: Prisma.$TimeEventPayload<ExtArgs>[]
     timesheetDays: Prisma.$TimesheetDayPayload<ExtArgs>[]
   }
@@ -2200,6 +2956,10 @@ export interface Prisma__WorkLocationClient<T, Null = never, ExtArgs extends run
   setupTokens<T extends Prisma.WorkLocation$setupTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkLocation$setupTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LocationDisplaySetupTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   displaySessions<T extends Prisma.WorkLocation$displaySessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkLocation$displaySessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LocationDisplaySessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   qrTokens<T extends Prisma.WorkLocation$qrTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkLocation$qrTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QrTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  shiftTemplates<T extends Prisma.WorkLocation$shiftTemplatesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkLocation$shiftTemplatesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ShiftTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  schedulePlans<T extends Prisma.WorkLocation$schedulePlansArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkLocation$schedulePlansArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SchedulePlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  schedulePlanCells<T extends Prisma.WorkLocation$schedulePlanCellsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkLocation$schedulePlanCellsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SchedulePlanCellPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  scheduleDayStatuses<T extends Prisma.WorkLocation$scheduleDayStatusesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkLocation$scheduleDayStatusesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ScheduleDayStatusPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   timeEvents<T extends Prisma.WorkLocation$timeEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkLocation$timeEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TimeEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   timesheetDays<T extends Prisma.WorkLocation$timesheetDaysArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkLocation$timesheetDaysArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TimesheetDayPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -2778,6 +3538,102 @@ export type WorkLocation$qrTokensArgs<ExtArgs extends runtime.Types.Extensions.I
   take?: number
   skip?: number
   distinct?: Prisma.QrTokenScalarFieldEnum | Prisma.QrTokenScalarFieldEnum[]
+}
+
+/**
+ * WorkLocation.shiftTemplates
+ */
+export type WorkLocation$shiftTemplatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ShiftTemplate
+   */
+  select?: Prisma.ShiftTemplateSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ShiftTemplate
+   */
+  omit?: Prisma.ShiftTemplateOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ShiftTemplateInclude<ExtArgs> | null
+  where?: Prisma.ShiftTemplateWhereInput
+  orderBy?: Prisma.ShiftTemplateOrderByWithRelationInput | Prisma.ShiftTemplateOrderByWithRelationInput[]
+  cursor?: Prisma.ShiftTemplateWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ShiftTemplateScalarFieldEnum | Prisma.ShiftTemplateScalarFieldEnum[]
+}
+
+/**
+ * WorkLocation.schedulePlans
+ */
+export type WorkLocation$schedulePlansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SchedulePlan
+   */
+  select?: Prisma.SchedulePlanSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SchedulePlan
+   */
+  omit?: Prisma.SchedulePlanOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SchedulePlanInclude<ExtArgs> | null
+  where?: Prisma.SchedulePlanWhereInput
+  orderBy?: Prisma.SchedulePlanOrderByWithRelationInput | Prisma.SchedulePlanOrderByWithRelationInput[]
+  cursor?: Prisma.SchedulePlanWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SchedulePlanScalarFieldEnum | Prisma.SchedulePlanScalarFieldEnum[]
+}
+
+/**
+ * WorkLocation.schedulePlanCells
+ */
+export type WorkLocation$schedulePlanCellsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SchedulePlanCell
+   */
+  select?: Prisma.SchedulePlanCellSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SchedulePlanCell
+   */
+  omit?: Prisma.SchedulePlanCellOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SchedulePlanCellInclude<ExtArgs> | null
+  where?: Prisma.SchedulePlanCellWhereInput
+  orderBy?: Prisma.SchedulePlanCellOrderByWithRelationInput | Prisma.SchedulePlanCellOrderByWithRelationInput[]
+  cursor?: Prisma.SchedulePlanCellWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SchedulePlanCellScalarFieldEnum | Prisma.SchedulePlanCellScalarFieldEnum[]
+}
+
+/**
+ * WorkLocation.scheduleDayStatuses
+ */
+export type WorkLocation$scheduleDayStatusesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ScheduleDayStatus
+   */
+  select?: Prisma.ScheduleDayStatusSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ScheduleDayStatus
+   */
+  omit?: Prisma.ScheduleDayStatusOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ScheduleDayStatusInclude<ExtArgs> | null
+  where?: Prisma.ScheduleDayStatusWhereInput
+  orderBy?: Prisma.ScheduleDayStatusOrderByWithRelationInput | Prisma.ScheduleDayStatusOrderByWithRelationInput[]
+  cursor?: Prisma.ScheduleDayStatusWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ScheduleDayStatusScalarFieldEnum | Prisma.ScheduleDayStatusScalarFieldEnum[]
 }
 
 /**

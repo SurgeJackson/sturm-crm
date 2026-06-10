@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
 import {
   canManageEmployeeDevices,
+  canManageShiftTemplates,
   canManageTimeAdjustments,
   canManageWorkLocations,
   canManageWorkShifts,
@@ -15,6 +16,7 @@ import {
   rejectEventSchema,
   reviewAdjustmentSchema,
   reviewEventSchema,
+  shiftTemplateSchema,
   workLocationSchema,
   workShiftSchema
 } from "@/modules/time-clock/schemas";
@@ -25,13 +27,16 @@ import {
   cancelWorkShift,
   changeEmployeeDeviceStatus,
   createAdjustmentRequest,
+  createShiftTemplate,
   createOrUpdateWorkShift,
   createWorkLocation,
   rejectAdjustmentRequest,
   rejectTimeEvent,
   revokeDisplayDevice,
+  setShiftTemplateActive,
   setWorkLocationActive,
   TimeClockServiceError,
+  updateShiftTemplate,
   updateWorkLocation
 } from "@/modules/time-clock/service";
 import { combineDateAndTime } from "@/modules/time-clock/utils";
@@ -85,6 +90,54 @@ export async function toggleWorkLocationAction(id: string, isActive: boolean) {
     throw error;
   }
   redirect("/admin/work-locations?saved=1");
+}
+
+export async function saveShiftTemplateAction(_prev: TimeClockActionState, formData: FormData): Promise<TimeClockActionState> {
+  const user = await getCurrentUser();
+  if (!user || !canManageShiftTemplates(user)) return { message: "Недостаточно прав для управления шаблонами смен" };
+  const parsed = shiftTemplateSchema.safeParse({
+    id: formValue(formData, "id"),
+    locationId: formValue(formData, "locationId"),
+    name: formValue(formData, "name"),
+    code: formValue(formData, "code"),
+    startsAt: formValue(formData, "startsAt"),
+    endsAt: formValue(formData, "endsAt"),
+    breakMinutes: formValue(formData, "breakMinutes") || "0",
+    color: formValue(formData, "color") || "",
+    isActive: formData.get("isActive") === "on",
+    sortOrder: formValue(formData, "sortOrder") || "0"
+  });
+  if (!parsed.success) return { errors: parsed.error.flatten().fieldErrors };
+
+  try {
+    const { id, locationId, ...data } = parsed.data;
+    if (id) await updateShiftTemplate(id, data, user.id);
+    else await createShiftTemplate({ locationId, ...data }, user.id);
+  } catch (error) {
+    if (error instanceof TimeClockServiceError) return { message: error.message };
+    throw error;
+  }
+  redirect(`/admin/work-locations/${parsed.data.locationId}/shift-templates?saved=1`);
+}
+
+export async function saveShiftTemplateDirectAction(formData: FormData) {
+  const locationId = formValue(formData, "locationId");
+  const redirectPath = locationId ? `/admin/work-locations/${locationId}/shift-templates` : "/admin/work-locations";
+  const result = await saveShiftTemplateAction({}, formData);
+  if (result.message) redirect(`${redirectPath}?error=${encodeURIComponent(result.message)}`);
+  if (result.errors) redirect(`${redirectPath}?error=validation`);
+}
+
+export async function toggleShiftTemplateAction(id: string, locationId: string, isActive: boolean) {
+  const user = await getCurrentUser();
+  if (!user || !canManageShiftTemplates(user)) redirect(`/admin/work-locations/${locationId}/shift-templates?error=permission`);
+  try {
+    await setShiftTemplateActive(id, isActive, user.id);
+  } catch (error) {
+    if (error instanceof TimeClockServiceError) redirect(`/admin/work-locations/${locationId}/shift-templates?error=${encodeURIComponent(error.message)}`);
+    throw error;
+  }
+  redirect(`/admin/work-locations/${locationId}/shift-templates?saved=1`);
 }
 
 export async function saveWorkShiftAction(_prev: TimeClockActionState, formData: FormData): Promise<TimeClockActionState> {

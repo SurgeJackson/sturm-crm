@@ -277,6 +277,26 @@ export function canManageWorkShifts(user?: PermissionUser | null) {
   return managerRoles.has(user.role);
 }
 
+export function canManageShiftTemplates(user?: PermissionUser | null) {
+  if (!isActive(user)) return false;
+  return user.role === "OWNER" || user.role === "SALES_LEAD" || user.role === "ADMINISTRATOR";
+}
+
+export function canViewSchedulePlanner(user?: PermissionUser | null) {
+  if (!isActive(user)) return false;
+  return managerRoles.has(user.role);
+}
+
+export function canEditSchedulePlanner(user?: PermissionUser | null) {
+  if (!isActive(user)) return false;
+  return managerRoles.has(user.role);
+}
+
+export function canApproveSchedulePlanner(user?: PermissionUser | null) {
+  if (!isActive(user)) return false;
+  return user.role === "OWNER" || user.role === "SALES_LEAD";
+}
+
 export function canReviewTimeEvents(user?: PermissionUser | null) {
   if (!isActive(user)) return false;
   return managerRoles.has(user.role);
