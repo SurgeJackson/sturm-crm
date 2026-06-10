@@ -1,0 +1,12 @@
+.git
+.next
+coverage
+dist
+node_modules
+npm-debug.log*
+.env
+.env*.local
+Dockerfile
+docker-compose*.yml
+tsconfig.tsbuildinfo
+public/uploads/proposals/*

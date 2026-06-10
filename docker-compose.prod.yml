@@ -1,0 +1,45 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: sturm-crm:prod
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://${POSTGRES_USER:-sturm}:${POSTGRES_PASSWORD:-change-me}@postgres:5432/${POSTGRES_DB:-sturm_crm}?schema=public
+      NEXTAUTH_URL: ${NEXTAUTH_URL:?Set NEXTAUTH_URL}
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:?Set NEXTAUTH_SECRET}
+      APP_URL: ${APP_URL:?Set APP_URL}
+      RESEND_API_KEY: ${RESEND_API_KEY:-}
+      EMAIL_FROM: ${EMAIL_FROM:-STURM CRM <no-reply@sturm.local>}
+      SUPPORT_EMAIL: ${SUPPORT_EMAIL:-support@sturm.local}
+      RUN_SEED: ${RUN_SEED:-false}
+      SKIP_MIGRATIONS: ${SKIP_MIGRATIONS:-false}
+    ports:
+      - "${APP_PORT:-3000}:3000"
+    volumes:
+      - sturm_uploads:/app/public/uploads
+
+  postgres:
+    image: postgres:18-bookworm
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-sturm_crm}
+      POSTGRES_USER: ${POSTGRES_USER:-sturm}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}
+    volumes:
+      - sturm_postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-sturm} -d ${POSTGRES_DB:-sturm_crm}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+volumes:
+  sturm_postgres_data:
+  sturm_uploads:

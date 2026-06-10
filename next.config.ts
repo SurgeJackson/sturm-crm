@@ -2,6 +2,7 @@ import os from "os";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  output: "standalone",
   allowedDevOrigins: getAllowedDevOrigins()
 };
 

@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: postgres:latest
+    image: postgres:18-bookworm
     container_name: sturm-crm-postgres
     restart: unless-stopped
     environment:
