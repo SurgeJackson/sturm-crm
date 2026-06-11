@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { MapPin, Plus } from "lucide-react";
+import { Edit3, History, MapPin, Plus, Power, PowerOff, Settings2, ShieldOff, Unlink } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
 import { DisplaySetupTokenButton } from "@/components/time-clock/display-setup-token-button";
 import { PageHeader } from "@/components/layout/page-header";
@@ -8,6 +8,7 @@ import { PageNoticeStack } from "@/components/layout/page-notice";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Pagination } from "@/components/ui/pagination";
 import { Table, TableBody, TableCell, TableEmptyRow, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -28,35 +29,27 @@ export default async function WorkLocationsPage({ searchParams }: { searchParams
       <PageHeader
         title="Рабочие точки"
         description="Геозоны, QR-экраны и параметры допустимой точности для учета рабочего времени."
+        actions={(
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button>
+                <Plus className="h-4 w-4" />
+                Создать
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle>Создать рабочую точку</DialogTitle>
+              </DialogHeader>
+              <WorkLocationForm submitLabel="Создать" />
+            </DialogContent>
+          </Dialog>
+        )}
       />
       <PageNoticeStack notices={[
         { show: Boolean(params.saved), message: "Изменения сохранены." },
         { show: Boolean(params.error), tone: "destructive", message: params.error ?? "Действие недоступно." }
       ]} />
-      <Card>
-        <CardHeader><CardTitle>Создать рабочую точку</CardTitle></CardHeader>
-        <CardContent>
-          <form action={saveWorkLocationDirectAction} className="grid gap-2 md:grid-cols-4">
-            <Input name="name" placeholder="Название" required />
-            <Input name="code" placeholder="code-latin" required />
-            <Input name="address" placeholder="Адрес" required className="md:col-span-2" />
-            <Input name="latitude" placeholder="Широта" type="number" step="0.000001" required />
-            <Input name="longitude" placeholder="Долгота" type="number" step="0.000001" required />
-            <Input name="allowedRadiusMeters" placeholder="Радиус, м" type="number" defaultValue={100} required />
-            <Input name="maxAllowedAccuracyMeters" placeholder="Погрешность, м" type="number" defaultValue={150} required />
-            <Input name="timezone" placeholder="Часовой пояс" defaultValue="Europe/Moscow" />
-            <label className="flex min-h-10 items-center gap-2 rounded-md border px-3 text-sm">
-              <input name="isActive" type="checkbox" defaultChecked />
-              Активна
-            </label>
-            <Button type="submit" className="md:col-span-2">
-              <Plus className="h-4 w-4" />
-              Создать
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
-
       <Card>
         <CardHeader><CardTitle>Список точек</CardTitle></CardHeader>
         <CardContent className="p-0">
@@ -66,7 +59,7 @@ export default async function WorkLocationsPage({ searchParams }: { searchParams
                 <TableHead>Точка</TableHead>
                 <TableHead>Геозона</TableHead>
                 <TableHead>Статус</TableHead>
-                <TableHead>QR-экраны</TableHead>
+                <TableHead>QR-экран</TableHead>
                 <TableHead>Действия</TableHead>
               </TableRow>
             </TableHeader>
@@ -82,57 +75,104 @@ export default async function WorkLocationsPage({ searchParams }: { searchParams
                     <div className="text-xs text-muted-foreground">Радиус {location.allowedRadiusMeters} м, точность {location.maxAllowedAccuracyMeters} м</div>
                   </TableCell>
                   <TableCell label="Статус"><Badge variant={location.isActive ? "default" : "secondary"}>{location.isActive ? "Активна" : "Выключена"}</Badge></TableCell>
-                  <TableCell label="QR-экраны">
-                    <div className="space-y-2">
-                      <DisplaySetupTokenButton locationId={location.id} />
-                      {location.displayDevices.length ? location.displayDevices.map((device) => (
-                        <div key={device.id} className="rounded-md border p-2 text-xs">
-                          <div className="font-medium">{device.name}</div>
-                          <div className="text-muted-foreground">{locationDisplayDeviceStatusLabels[device.status]} · {device.lastIpAddress ?? "IP не зафиксирован"}</div>
-                          <div className="mt-2 flex flex-wrap gap-1">
-                            <Button asChild variant="outline" size="sm"><Link href={`/admin/location-display-devices/${device.id}`}>История</Link></Button>
+                  <TableCell label="QR-экран">
+                    <div
+                      className="max-w-48 truncate text-xs text-muted-foreground"
+                      title={getDisplayDevicesFullText(location.displayDevices)}
+                    >
+                      {getDisplayDevicesShortText(location.displayDevices)}
+                    </div>
+                  </TableCell>
+                  <TableCell label="Действия" actions>
+                    <div className="flex flex-col items-end gap-1.5">
+                      <div className="flex flex-wrap items-center justify-end gap-1.5">
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button variant="outline" size="icon" className="h-8 w-8" title="Редактировать" aria-label="Редактировать">
+                              <Edit3 className="h-4 w-4" />
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
+                            <DialogHeader>
+                              <DialogTitle>Редактировать рабочую точку</DialogTitle>
+                            </DialogHeader>
+                            <WorkLocationForm
+                              id={location.id}
+                              name={location.name}
+                              code={location.code}
+                              address={location.address}
+                              latitude={location.latitude}
+                              longitude={location.longitude}
+                              allowedRadiusMeters={location.allowedRadiusMeters}
+                              maxAllowedAccuracyMeters={location.maxAllowedAccuracyMeters}
+                              timezone={location.timezone}
+                              isActive={location.isActive}
+                              submitLabel="Сохранить"
+                            />
+                          </DialogContent>
+                        </Dialog>
+                        <Button asChild variant="outline" size="icon" className="h-8 w-8" title="Шаблоны смен" aria-label="Шаблоны смен">
+                          <Link href={`/admin/work-locations/${location.id}/shift-templates`}>
+                            <Settings2 className="h-4 w-4" />
+                          </Link>
+                        </Button>
+                        <form action={toggleWorkLocationAction.bind(null, location.id, !location.isActive)}>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="h-8 w-8"
+                            title={location.isActive ? "Выключить точку" : "Включить точку"}
+                            aria-label={location.isActive ? "Выключить точку" : "Включить точку"}
+                          >
+                            {location.isActive ? <PowerOff className="h-4 w-4" /> : <Power className="h-4 w-4" />}
+                          </Button>
+                        </form>
+                      </div>
+                      <div className="flex flex-wrap items-center justify-end gap-1">
+                        <DisplaySetupTokenButton locationId={location.id} compact />
+                        {location.displayDevices.map((device) => (
+                          <div key={device.id} className="flex items-center gap-1">
+                            <Button
+                              asChild
+                              variant="outline"
+                              size="icon"
+                              className="h-7 w-7"
+                              title={`История QR-экрана: ${device.name}`}
+                              aria-label={`История QR-экрана: ${device.name}`}
+                            >
+                              <Link href={`/admin/location-display-devices/${device.id}`}>
+                                <History className="h-3.5 w-3.5" />
+                              </Link>
+                            </Button>
                             {device.status === "ACTIVE" ? (
                               <>
                                 <form action={revokeDisplayDeviceAction.bind(null, device.id)}>
-                                  <Button variant="outline" size="sm">Отозвать</Button>
+                                  <Button
+                                    variant="outline"
+                                    size="icon"
+                                    className="h-7 w-7"
+                                    title={`Отозвать QR-экран: ${device.name}`}
+                                    aria-label={`Отозвать QR-экран: ${device.name}`}
+                                  >
+                                    <Unlink className="h-3.5 w-3.5" />
+                                  </Button>
                                 </form>
                                 <form action={blockDisplayDeviceAction.bind(null, device.id)}>
-                                  <Button variant="outline" size="sm">Блок</Button>
+                                  <Button
+                                    variant="outline"
+                                    size="icon"
+                                    className="h-7 w-7"
+                                    title={`Заблокировать QR-экран: ${device.name}`}
+                                    aria-label={`Заблокировать QR-экран: ${device.name}`}
+                                  >
+                                    <ShieldOff className="h-3.5 w-3.5" />
+                                  </Button>
                                 </form>
                               </>
                             ) : null}
                           </div>
-                        </div>
-                      )) : <div className="text-xs text-muted-foreground">Нет подключенных экранов</div>}
-                    </div>
-                  </TableCell>
-                  <TableCell label="Действия" actions>
-                    <div className="space-y-2">
-                      <form action={toggleWorkLocationAction.bind(null, location.id, !location.isActive)}>
-                        <Button variant="outline" size="sm">{location.isActive ? "Выключить" : "Включить"}</Button>
-                      </form>
-                      <Button asChild variant="outline" size="sm">
-                        <Link href={`/admin/work-locations/${location.id}/shift-templates`}>Шаблоны смен</Link>
-                      </Button>
-                      <details>
-                        <summary className="cursor-pointer text-xs text-muted-foreground">Редактировать</summary>
-                        <form action={saveWorkLocationDirectAction} className="mt-2 grid gap-2">
-                          <input type="hidden" name="id" value={location.id} />
-                          <Input name="name" defaultValue={location.name} aria-label="Название" />
-                          <Input name="code" defaultValue={location.code} aria-label="Код" />
-                          <Input name="address" defaultValue={location.address} aria-label="Адрес" />
-                          <Input name="latitude" type="number" step="0.000001" defaultValue={location.latitude} aria-label="Широта" />
-                          <Input name="longitude" type="number" step="0.000001" defaultValue={location.longitude} aria-label="Долгота" />
-                          <Input name="allowedRadiusMeters" type="number" defaultValue={location.allowedRadiusMeters} aria-label="Радиус" />
-                          <Input name="maxAllowedAccuracyMeters" type="number" defaultValue={location.maxAllowedAccuracyMeters} aria-label="Погрешность" />
-                          <Input name="timezone" defaultValue={location.timezone} aria-label="Часовой пояс" />
-                          <label className="flex items-center gap-2 text-xs">
-                            <input name="isActive" type="checkbox" defaultChecked={location.isActive} />
-                            Активна
-                          </label>
-                          <Button size="sm">Сохранить</Button>
-                        </form>
-                      </details>
+                        ))}
+                      </div>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -144,4 +184,103 @@ export default async function WorkLocationsPage({ searchParams }: { searchParams
       <Pagination total={locations.total} page={locations.page} pageCount={locations.pageCount} previousHref={locations.page > 1 ? `/admin/work-locations?page=${locations.page - 1}` : undefined} nextHref={locations.page < locations.pageCount ? `/admin/work-locations?page=${locations.page + 1}` : undefined} />
     </div>
   );
+}
+
+function WorkLocationForm({
+  id,
+  name = "",
+  code = "",
+  address = "",
+  latitude,
+  longitude,
+  allowedRadiusMeters = 100,
+  maxAllowedAccuracyMeters = 150,
+  timezone = "Europe/Moscow",
+  isActive = true,
+  submitLabel
+}: {
+  id?: string;
+  name?: string;
+  code?: string;
+  address?: string;
+  latitude?: number;
+  longitude?: number;
+  allowedRadiusMeters?: number;
+  maxAllowedAccuracyMeters?: number;
+  timezone?: string;
+  isActive?: boolean;
+  submitLabel: string;
+}) {
+  return (
+    <form action={saveWorkLocationDirectAction} className="grid gap-3 md:grid-cols-2">
+      {id ? <input type="hidden" name="id" value={id} /> : null}
+      <label className="grid gap-1.5">
+        <span className="text-sm font-medium leading-none">Название</span>
+        <Input name="name" placeholder="Основной офис" defaultValue={name} required />
+      </label>
+      <label className="grid gap-1.5">
+        <span className="text-sm font-medium leading-none">Код</span>
+        <Input name="code" placeholder="main-office" defaultValue={code} required />
+      </label>
+      <label className="grid gap-1.5 md:col-span-2">
+        <span className="text-sm font-medium leading-none">Адрес</span>
+        <Input name="address" placeholder="Город, улица, дом" defaultValue={address} required />
+      </label>
+      <label className="grid gap-1.5">
+        <span className="text-sm font-medium leading-none">Широта</span>
+        <Input name="latitude" placeholder="55.755864" type="number" step="0.000001" defaultValue={latitude} required />
+      </label>
+      <label className="grid gap-1.5">
+        <span className="text-sm font-medium leading-none">Долгота</span>
+        <Input name="longitude" placeholder="37.617698" type="number" step="0.000001" defaultValue={longitude} required />
+      </label>
+      <label className="grid gap-1.5">
+        <span className="text-sm font-medium leading-none">Радиус геозоны, м</span>
+        <Input name="allowedRadiusMeters" placeholder="100" type="number" defaultValue={allowedRadiusMeters} required />
+      </label>
+      <label className="grid gap-1.5">
+        <span className="text-sm font-medium leading-none">Максимальная погрешность, м</span>
+        <Input name="maxAllowedAccuracyMeters" placeholder="150" type="number" defaultValue={maxAllowedAccuracyMeters} required />
+      </label>
+      <label className="grid gap-1.5 md:col-span-2">
+        <span className="text-sm font-medium leading-none">Часовой пояс</span>
+        <Input name="timezone" placeholder="Europe/Moscow" defaultValue={timezone} />
+      </label>
+      <label className="flex min-h-10 items-center gap-2 rounded-md border px-3 text-sm">
+        <input name="isActive" type="checkbox" defaultChecked={isActive} />
+        Активна
+      </label>
+      <div className="flex justify-end gap-2 md:col-span-2">
+        {id ? (
+          <DialogClose asChild>
+            <Button type="button" variant="outline">Отмена</Button>
+          </DialogClose>
+        ) : null}
+        <Button type="submit">
+          <Plus className="h-4 w-4" />
+          {submitLabel}
+        </Button>
+      </div>
+    </form>
+  );
+}
+
+function getDisplayDevicesShortText(devices: Array<{ name: string; status: keyof typeof locationDisplayDeviceStatusLabels }>) {
+  if (!devices.length) return "Не подключен";
+
+  const visible = devices
+    .slice(0, 2)
+    .map((device) => `${device.name} (${locationDisplayDeviceStatusLabels[device.status]})`)
+    .join(", ");
+  const hiddenCount = devices.length - 2;
+
+  return hiddenCount > 0 ? `${visible} +${hiddenCount}` : visible;
+}
+
+function getDisplayDevicesFullText(devices: Array<{ name: string; status: keyof typeof locationDisplayDeviceStatusLabels }>) {
+  if (!devices.length) return "QR-экраны не подключены";
+
+  return devices
+    .map((device) => `${device.name}: ${locationDisplayDeviceStatusLabels[device.status]}`)
+    .join(", ");
 }

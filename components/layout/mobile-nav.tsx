@@ -10,7 +10,6 @@ import {
   canManageEmployeeDevices,
   canManageTimeAdjustments,
   canManageWorkLocations,
-  canManageWorkShifts,
   canReviewTimeEvents,
   canViewDesignerBonusReports,
   canViewOwnTimeClock,
@@ -41,7 +40,6 @@ const timeClockMobileLinks = [
   { href: "/admin/schedule-planner", label: "Планировщик" },
   { href: "/admin/timesheet", label: "Табель" },
   { href: "/admin/work-locations", label: "Рабочие точки" },
-  { href: "/admin/work-shifts", label: "График смен" },
   { href: "/admin/time-events/review", label: "Спорные отметки" },
   { href: "/admin/employee-devices", label: "Устройства сотрудников" },
   { href: "/admin/time-adjustments", label: "Корректировки времени" },
@@ -64,7 +62,6 @@ export function MobileNav({ user }: MobileNavProps) {
     if (href === "/admin/schedule-planner") return canViewSchedulePlanner(user);
     if (href === "/admin/timesheet") return canViewTimesheet(user);
     if (href === "/admin/work-locations") return canManageWorkLocations(user);
-    if (href === "/admin/work-shifts") return canManageWorkShifts(user);
     if (href === "/admin/time-events/review") return canReviewTimeEvents(user);
     if (href === "/admin/employee-devices") return canManageEmployeeDevices(user);
     if (href === "/admin/time-adjustments") return canManageTimeAdjustments(user);

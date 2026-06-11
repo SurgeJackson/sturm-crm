@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { ArrowLeft, Plus } from "lucide-react";
+import { ArrowLeft, Edit3, Plus, Power, PowerOff } from "lucide-react";
 import { getCurrentUser } from "@/auth/get-current-user";
 import { PageHeader } from "@/components/layout/page-header";
 import { PageNoticeStack } from "@/components/layout/page-notice";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableEmptyRow, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { saveShiftTemplateDirectAction, toggleShiftTemplateAction } from "@/modules/time-clock/actions";
@@ -34,25 +35,34 @@ export default async function ShiftTemplatesPage({
         title={`Шаблоны смен: ${location.name}`}
         description="Преднастроенные смены точки используются в планировщике месячного графика."
         actions={(
-          <Button asChild variant="outline">
-            <Link href="/admin/work-locations">
-              <ArrowLeft className="h-4 w-4" />
-              Рабочие точки
-            </Link>
-          </Button>
+          <div className="flex flex-wrap items-center gap-2">
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button>
+                  <Plus className="h-4 w-4" />
+                  Создать
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>Создать шаблон смены</DialogTitle>
+                </DialogHeader>
+                <ShiftTemplateForm locationId={location.id} submitLabel="Создать" />
+              </DialogContent>
+            </Dialog>
+            <Button asChild variant="outline">
+              <Link href="/admin/work-locations">
+                <ArrowLeft className="h-4 w-4" />
+                Рабочие точки
+              </Link>
+            </Button>
+          </div>
         )}
       />
       <PageNoticeStack notices={[
         { show: Boolean(query.saved), message: "Изменения сохранены." },
         { show: Boolean(query.error), tone: "destructive", message: query.error === "validation" ? "Проверьте поля формы." : query.error ?? "Действие недоступно." }
       ]} />
-
-      <Card>
-        <CardHeader><CardTitle>Создать шаблон смены</CardTitle></CardHeader>
-        <CardContent>
-          <ShiftTemplateForm locationId={location.id} submitLabel="Создать" />
-        </CardContent>
-      </Card>
 
       <Card>
         <CardHeader>
@@ -92,13 +102,28 @@ export default async function ShiftTemplatesPage({
                     </Badge>
                   </TableCell>
                   <TableCell label="Действия" actions>
-                    <div className="space-y-2">
+                    <div className="flex flex-wrap items-center justify-end gap-1.5">
                       <form action={toggleShiftTemplateAction.bind(null, template.id, location.id, !template.isActive)}>
-                        <Button variant="outline" size="sm">{template.isActive ? "Отключить" : "Включить"}</Button>
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          className="h-8 w-8"
+                          title={template.isActive ? "Отключить шаблон" : "Включить шаблон"}
+                          aria-label={template.isActive ? "Отключить шаблон" : "Включить шаблон"}
+                        >
+                          {template.isActive ? <PowerOff className="h-4 w-4" /> : <Power className="h-4 w-4" />}
+                        </Button>
                       </form>
-                      <details>
-                        <summary className="cursor-pointer text-xs text-muted-foreground">Редактировать</summary>
-                        <div className="mt-2">
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button variant="outline" size="icon" className="h-8 w-8" title="Редактировать" aria-label="Редактировать">
+                            <Edit3 className="h-4 w-4" />
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
+                          <DialogHeader>
+                            <DialogTitle>Редактировать шаблон смены</DialogTitle>
+                          </DialogHeader>
                           <ShiftTemplateForm
                             id={template.id}
                             locationId={location.id}
@@ -112,8 +137,8 @@ export default async function ShiftTemplatesPage({
                             sortOrder={template.sortOrder}
                             submitLabel="Сохранить"
                           />
-                        </div>
-                      </details>
+                        </DialogContent>
+                      </Dialog>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -152,24 +177,52 @@ function ShiftTemplateForm({
   submitLabel: string;
 }) {
   return (
-    <form action={saveShiftTemplateDirectAction} className="grid gap-2 md:grid-cols-6">
+    <form action={saveShiftTemplateDirectAction} className="grid gap-3 md:grid-cols-2">
       {id ? <input type="hidden" name="id" value={id} /> : null}
       <input type="hidden" name="locationId" value={locationId} />
-      <Input name="name" placeholder="Название смены" defaultValue={name} required className="md:col-span-2" />
-      <Input name="code" placeholder="code-latin" defaultValue={code} required />
-      <Input name="startsAt" type="time" defaultValue={startsAt} required aria-label="Начало" />
-      <Input name="endsAt" type="time" defaultValue={endsAt} required aria-label="Окончание" />
-      <Input name="breakMinutes" type="number" min={0} max={600} defaultValue={breakMinutes} required aria-label="Обед, минут" />
-      <Input name="color" type="color" defaultValue={color || "#2563eb"} aria-label="Цвет" />
-      <Input name="sortOrder" type="number" min={0} defaultValue={sortOrder} aria-label="Порядок" />
+      <label className="grid gap-1.5">
+        <span className="text-sm font-medium leading-none">Название смены</span>
+        <Input name="name" placeholder="Дневная смена" defaultValue={name} required />
+      </label>
+      <label className="grid gap-1.5">
+        <span className="text-sm font-medium leading-none">Код</span>
+        <Input name="code" placeholder="day" defaultValue={code} required />
+      </label>
+      <label className="grid gap-1.5">
+        <span className="text-sm font-medium leading-none">Начало</span>
+        <Input name="startsAt" type="time" defaultValue={startsAt} required />
+      </label>
+      <label className="grid gap-1.5">
+        <span className="text-sm font-medium leading-none">Окончание</span>
+        <Input name="endsAt" type="time" defaultValue={endsAt} required />
+      </label>
+      <label className="grid gap-1.5">
+        <span className="text-sm font-medium leading-none">Обед, минут</span>
+        <Input name="breakMinutes" type="number" min={0} max={600} defaultValue={breakMinutes} required />
+      </label>
+      <label className="grid gap-1.5">
+        <span className="text-sm font-medium leading-none">Цвет</span>
+        <Input name="color" type="color" defaultValue={color || "#2563eb"} />
+      </label>
+      <label className="grid gap-1.5">
+        <span className="text-sm font-medium leading-none">Порядок</span>
+        <Input name="sortOrder" type="number" min={0} defaultValue={sortOrder} />
+      </label>
       <label className="flex min-h-10 items-center gap-2 rounded-md border px-3 text-sm">
         <input name="isActive" type="checkbox" defaultChecked={isActive} />
         Активна
       </label>
-      <Button type="submit" className="md:col-span-2">
-        <Plus className="h-4 w-4" />
-        {submitLabel}
-      </Button>
+      <div className="flex justify-end gap-2 md:col-span-2">
+        {id ? (
+          <DialogClose asChild>
+            <Button type="button" variant="outline">Отмена</Button>
+          </DialogClose>
+        ) : null}
+        <Button type="submit">
+          <Plus className="h-4 w-4" />
+          {submitLabel}
+        </Button>
+      </div>
     </form>
   );
 }

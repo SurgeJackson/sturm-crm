@@ -4,6 +4,7 @@ import { PageHeader } from "@/components/layout/page-header";
 import { PageNoticeStack } from "@/components/layout/page-notice";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { FilterActions, FilterBar, FilterDateInput, FilterSelect } from "@/components/ui/filter-bar";
 import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
@@ -94,23 +95,35 @@ export default async function WorkShiftsPage({ searchParams }: { searchParams: P
                           <Button variant="outline" size="sm">Отменить</Button>
                         </form>
                       ) : null}
-                      <details>
-                        <summary className="cursor-pointer text-xs text-muted-foreground">Редактировать</summary>
-                        <form action={saveWorkShiftDirectAction} className="mt-2 grid gap-2">
-                          <input type="hidden" name="id" value={shift.id} />
-                          <NativeSelect name="employeeId" defaultValue={shift.employeeId} aria-label="Сотрудник">
-                            {employees.map((employee) => <option key={employee.id} value={employee.id}>{employee.user.name}</option>)}
-                          </NativeSelect>
-                          <NativeSelect name="locationId" defaultValue={shift.locationId} aria-label="Точка">
-                            {locations.map((location) => <option key={location.id} value={location.id}>{location.name}</option>)}
-                          </NativeSelect>
-                          <Input name="date" type="date" defaultValue={shift.date} />
-                          <Input name="startsAt" type="time" defaultValue={timeInput(shift.startsAt)} />
-                          <Input name="endsAt" type="time" defaultValue={timeInput(shift.endsAt)} />
-                          <Input name="breakMinutes" type="number" defaultValue={shift.breakMinutes} />
-                          <Button size="sm">Сохранить</Button>
-                        </form>
-                      </details>
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button variant="outline" size="sm">Редактировать</Button>
+                        </DialogTrigger>
+                        <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
+                          <DialogHeader>
+                            <DialogTitle>Редактировать смену</DialogTitle>
+                          </DialogHeader>
+                          <form action={saveWorkShiftDirectAction} className="grid gap-3 md:grid-cols-2">
+                            <input type="hidden" name="id" value={shift.id} />
+                            <NativeSelect name="employeeId" defaultValue={shift.employeeId} aria-label="Сотрудник" className="md:col-span-2">
+                              {employees.map((employee) => <option key={employee.id} value={employee.id}>{employee.user.name}</option>)}
+                            </NativeSelect>
+                            <NativeSelect name="locationId" defaultValue={shift.locationId} aria-label="Точка" className="md:col-span-2">
+                              {locations.map((location) => <option key={location.id} value={location.id}>{location.name}</option>)}
+                            </NativeSelect>
+                            <Input name="date" type="date" defaultValue={shift.date} />
+                            <Input name="breakMinutes" type="number" min={0} max={600} defaultValue={shift.breakMinutes} />
+                            <Input name="startsAt" type="time" defaultValue={timeInput(shift.startsAt)} />
+                            <Input name="endsAt" type="time" defaultValue={timeInput(shift.endsAt)} />
+                            <div className="flex justify-end gap-2 md:col-span-2">
+                              <DialogClose asChild>
+                                <Button type="button" variant="outline">Отмена</Button>
+                              </DialogClose>
+                              <Button type="submit">Сохранить</Button>
+                            </div>
+                          </form>
+                        </DialogContent>
+                      </Dialog>
                     </div>
                   </TableCell>
                 </TableRow>
