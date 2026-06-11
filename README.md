@@ -51,11 +51,16 @@ Production-сборка состоит из Next.js app container и PostgreSQL 
 
 ```bash
 cp .env.production.example .env.production
-# Заполните POSTGRES_PASSWORD, NEXTAUTH_URL, APP_URL и NEXTAUTH_SECRET.
+# Заполните POSTGRES_PASSWORD, NEXTAUTH_URL, APP_URL, NEXTAUTH_SECRET.
+# Для первого запуска также заполните INITIAL_ADMIN_EMAIL и INITIAL_ADMIN_PASSWORD.
 docker compose --env-file .env.production -f docker-compose.prod.yml up -d --build
 ```
 
-Контейнер приложения при старте выполняет `prisma migrate deploy`. Для первичного demo/staging заполнения можно один раз поставить `RUN_SEED=true` в `.env.production`, запустить compose, затем вернуть `RUN_SEED=false`.
+Контейнер приложения при старте выполняет `prisma migrate deploy`. Для первичного production-запуска можно один раз поставить `RUN_SEED=true` в `.env.production`: будет создан только первый пользователь с ролью `OWNER` из `INITIAL_ADMIN_EMAIL`, `INITIAL_ADMIN_PASSWORD` и `INITIAL_ADMIN_NAME`. Если в базе уже есть пользователи, production seed не создает нового администратора. После первого успешного запуска верните `RUN_SEED=false`.
+
+Если нужно полностью пересоздать production-БД с нуля, поставьте `RESET_DATABASE=true` перед запуском compose. Это удалит существующие данные в целевой БД/схеме и заново применит миграции. Для чистого первого запуска обычно используют `RESET_DATABASE=true` вместе с `RUN_SEED=true`, затем оба параметра возвращают в `false`.
+
+Локальная команда `npm run seed` остается demo seed и создает тестовые данные. Не используйте ее для production.
 
 Постоянные данные:
 

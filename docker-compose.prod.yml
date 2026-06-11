@@ -17,7 +17,11 @@ services:
       RESEND_API_KEY: ${RESEND_API_KEY:-}
       EMAIL_FROM: ${EMAIL_FROM:-STURM CRM <no-reply@sturm.local>}
       SUPPORT_EMAIL: ${SUPPORT_EMAIL:-support@sturm.local}
+      RESET_DATABASE: ${RESET_DATABASE:-false}
       RUN_SEED: ${RUN_SEED:-false}
+      INITIAL_ADMIN_EMAIL: ${INITIAL_ADMIN_EMAIL:-}
+      INITIAL_ADMIN_PASSWORD: ${INITIAL_ADMIN_PASSWORD:-}
+      INITIAL_ADMIN_NAME: ${INITIAL_ADMIN_NAME:-}
       SKIP_MIGRATIONS: ${SKIP_MIGRATIONS:-false}
     ports:
       - "${APP_PORT:-3000}:3000"
