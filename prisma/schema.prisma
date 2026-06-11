@@ -620,6 +620,7 @@ model User {
   deactivatedAt             DateTime?
   deactivatedById           String?
   confidentialityAcceptedAt DateTime?
+  profileSettings           Json      @default("{}")
   createdAt                 DateTime  @default(now())
   updatedAt                 DateTime  @updatedAt
 

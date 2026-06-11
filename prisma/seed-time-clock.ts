@@ -51,6 +51,7 @@ export async function seedTimeClock(prisma: PrismaClient, now: Date) {
     const profile = await prisma.employeeProfile.upsert({
       where: { userId: user.id },
       update: {
+        departmentId: roleDepartment(user.role),
         employmentStatus: "ACTIVE",
         defaultLocationId: location.id,
         trustedDeviceLimit: 2
@@ -58,6 +59,7 @@ export async function seedTimeClock(prisma: PrismaClient, now: Date) {
       create: {
         id: `seed_employee_${user.id}`,
         userId: user.id,
+        departmentId: roleDepartment(user.role),
         defaultLocationId: location.id,
         position: rolePosition(user.role),
         employmentStatus: "ACTIVE",
@@ -125,4 +127,12 @@ function rolePosition(role: string) {
   if (role === "STORE_MANAGER") return "Менеджер магазина";
   if (role === "PROJECT_MANAGER") return "Проектный менеджер";
   return "Администратор";
+}
+
+function roleDepartment(role: string) {
+  if (role === "OWNER") return "Управление";
+  if (role === "SALES_LEAD") return "Продажи";
+  if (role === "STORE_MANAGER") return "Шоурум";
+  if (role === "PROJECT_MANAGER") return "Проектный отдел";
+  return "Администрация";
 }

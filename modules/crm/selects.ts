@@ -8,7 +8,12 @@ export const userNameSelect = {
 export const userSummarySelect = {
   id: true,
   name: true,
-  email: true
+  email: true,
+  employeeProfile: {
+    select: {
+      departmentId: true
+    }
+  }
 } satisfies Prisma.UserSelect;
 
 export const clientNameSelect = {

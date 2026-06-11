@@ -9,5 +9,5 @@ export function PipelineItemCard({
   children: ReactNode;
   className?: string;
 }) {
-  return <BorderedListItem className={cn("bg-background", className)}>{children}</BorderedListItem>;
+  return <BorderedListItem className={cn("bg-background p-2.5", className)}>{children}</BorderedListItem>;
 }

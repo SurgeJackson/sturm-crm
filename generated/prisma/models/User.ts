@@ -90,6 +90,7 @@ export type UserCountAggregateOutputType = {
   deactivatedAt: number
   deactivatedById: number
   confidentialityAcceptedAt: number
+  profileSettings: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -160,6 +161,7 @@ export type UserCountAggregateInputType = {
   deactivatedAt?: true
   deactivatedById?: true
   confidentialityAcceptedAt?: true
+  profileSettings?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -267,6 +269,7 @@ export type UserGroupByOutputType = {
   deactivatedAt: Date | null
   deactivatedById: string | null
   confidentialityAcceptedAt: Date | null
+  profileSettings: runtime.JsonValue
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
@@ -310,6 +313,7 @@ export type UserWhereInput = {
   deactivatedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   deactivatedById?: Prisma.StringNullableFilter<"User"> | string | null
   confidentialityAcceptedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  profileSettings?: Prisma.JsonFilter<"User">
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   clientsResponsible?: Prisma.ClientListRelationFilter
@@ -384,6 +388,7 @@ export type UserOrderByWithRelationInput = {
   deactivatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   deactivatedById?: Prisma.SortOrderInput | Prisma.SortOrder
   confidentialityAcceptedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  profileSettings?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   clientsResponsible?: Prisma.ClientOrderByRelationAggregateInput
@@ -461,6 +466,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   deactivatedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   deactivatedById?: Prisma.StringNullableFilter<"User"> | string | null
   confidentialityAcceptedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  profileSettings?: Prisma.JsonFilter<"User">
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   clientsResponsible?: Prisma.ClientListRelationFilter
@@ -535,6 +541,7 @@ export type UserOrderByWithAggregationInput = {
   deactivatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   deactivatedById?: Prisma.SortOrderInput | Prisma.SortOrder
   confidentialityAcceptedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  profileSettings?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
@@ -563,6 +570,7 @@ export type UserScalarWhereWithAggregatesInput = {
   deactivatedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   deactivatedById?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   confidentialityAcceptedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  profileSettings?: Prisma.JsonWithAggregatesFilter<"User">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
@@ -582,6 +590,7 @@ export type UserCreateInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -656,6 +665,7 @@ export type UserUncheckedCreateInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -728,6 +738,7 @@ export type UserUpdateInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -802,6 +813,7 @@ export type UserUncheckedUpdateInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -875,6 +887,7 @@ export type UserCreateManyInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -894,6 +907,7 @@ export type UserUpdateManyMutationInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -914,6 +928,7 @@ export type UserUncheckedUpdateManyInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -949,6 +964,7 @@ export type UserCountOrderByAggregateInput = {
   deactivatedAt?: Prisma.SortOrder
   deactivatedById?: Prisma.SortOrder
   confidentialityAcceptedAt?: Prisma.SortOrder
+  profileSettings?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -1877,6 +1893,7 @@ export type UserCreateWithoutDeactivatedUsersInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -1950,6 +1967,7 @@ export type UserUncheckedCreateWithoutDeactivatedUsersInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -2026,6 +2044,7 @@ export type UserCreateWithoutDeactivatedByInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -2098,6 +2117,7 @@ export type UserUncheckedCreateWithoutDeactivatedByInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -2191,6 +2211,7 @@ export type UserUpdateWithoutDeactivatedUsersInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -2264,6 +2285,7 @@ export type UserUncheckedUpdateWithoutDeactivatedUsersInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -2355,6 +2377,7 @@ export type UserScalarWhereInput = {
   deactivatedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   deactivatedById?: Prisma.StringNullableFilter<"User"> | string | null
   confidentialityAcceptedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  profileSettings?: Prisma.JsonFilter<"User">
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
 }
@@ -2374,6 +2397,7 @@ export type UserCreateWithoutClientsResponsibleInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsCreated?: Prisma.ClientCreateNestedManyWithoutCreatedByInput
@@ -2447,6 +2471,7 @@ export type UserUncheckedCreateWithoutClientsResponsibleInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsCreated?: Prisma.ClientUncheckedCreateNestedManyWithoutCreatedByInput
@@ -2523,6 +2548,7 @@ export type UserCreateWithoutClientsCreatedInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -2596,6 +2622,7 @@ export type UserUncheckedCreateWithoutClientsCreatedInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -2683,6 +2710,7 @@ export type UserUpdateWithoutClientsResponsibleInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsCreated?: Prisma.ClientUpdateManyWithoutCreatedByNestedInput
@@ -2756,6 +2784,7 @@ export type UserUncheckedUpdateWithoutClientsResponsibleInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsCreated?: Prisma.ClientUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -2838,6 +2867,7 @@ export type UserUpdateWithoutClientsCreatedInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -2911,6 +2941,7 @@ export type UserUncheckedUpdateWithoutClientsCreatedInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -2982,6 +3013,7 @@ export type UserCreateWithoutDesignersResponsibleInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -3055,6 +3087,7 @@ export type UserUncheckedCreateWithoutDesignersResponsibleInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -3131,6 +3164,7 @@ export type UserCreateWithoutDesignersCreatedInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -3204,6 +3238,7 @@ export type UserUncheckedCreateWithoutDesignersCreatedInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -3291,6 +3326,7 @@ export type UserUpdateWithoutDesignersResponsibleInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -3364,6 +3400,7 @@ export type UserUncheckedUpdateWithoutDesignersResponsibleInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -3446,6 +3483,7 @@ export type UserUpdateWithoutDesignersCreatedInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -3519,6 +3557,7 @@ export type UserUncheckedUpdateWithoutDesignersCreatedInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -3590,6 +3629,7 @@ export type UserCreateWithoutObjectsResponsibleInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -3663,6 +3703,7 @@ export type UserUncheckedCreateWithoutObjectsResponsibleInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -3739,6 +3780,7 @@ export type UserCreateWithoutObjectsCreatedInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -3812,6 +3854,7 @@ export type UserUncheckedCreateWithoutObjectsCreatedInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -3899,6 +3942,7 @@ export type UserUpdateWithoutObjectsResponsibleInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -3972,6 +4016,7 @@ export type UserUncheckedUpdateWithoutObjectsResponsibleInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -4054,6 +4099,7 @@ export type UserUpdateWithoutObjectsCreatedInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -4127,6 +4173,7 @@ export type UserUncheckedUpdateWithoutObjectsCreatedInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -4198,6 +4245,7 @@ export type UserCreateWithoutObjectParticipantsResponsibleInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -4271,6 +4319,7 @@ export type UserUncheckedCreateWithoutObjectParticipantsResponsibleInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -4347,6 +4396,7 @@ export type UserCreateWithoutObjectParticipantsCreatedInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -4420,6 +4470,7 @@ export type UserUncheckedCreateWithoutObjectParticipantsCreatedInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -4507,6 +4558,7 @@ export type UserUpdateWithoutObjectParticipantsResponsibleInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -4580,6 +4632,7 @@ export type UserUncheckedUpdateWithoutObjectParticipantsResponsibleInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -4662,6 +4715,7 @@ export type UserUpdateWithoutObjectParticipantsCreatedInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -4735,6 +4789,7 @@ export type UserUncheckedUpdateWithoutObjectParticipantsCreatedInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -4806,6 +4861,7 @@ export type UserCreateWithoutDealsResponsibleInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -4879,6 +4935,7 @@ export type UserUncheckedCreateWithoutDealsResponsibleInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -4955,6 +5012,7 @@ export type UserCreateWithoutDealsCreatedInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -5028,6 +5086,7 @@ export type UserUncheckedCreateWithoutDealsCreatedInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -5115,6 +5174,7 @@ export type UserUpdateWithoutDealsResponsibleInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -5188,6 +5248,7 @@ export type UserUncheckedUpdateWithoutDealsResponsibleInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -5270,6 +5331,7 @@ export type UserUpdateWithoutDealsCreatedInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -5343,6 +5405,7 @@ export type UserUncheckedUpdateWithoutDealsCreatedInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -5414,6 +5477,7 @@ export type UserCreateWithoutProposalsResponsibleInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -5487,6 +5551,7 @@ export type UserUncheckedCreateWithoutProposalsResponsibleInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -5563,6 +5628,7 @@ export type UserCreateWithoutProposalsCreatedInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -5636,6 +5702,7 @@ export type UserUncheckedCreateWithoutProposalsCreatedInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -5712,6 +5779,7 @@ export type UserCreateWithoutProposalsUploadedInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -5785,6 +5853,7 @@ export type UserUncheckedCreateWithoutProposalsUploadedInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -5872,6 +5941,7 @@ export type UserUpdateWithoutProposalsResponsibleInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -5945,6 +6015,7 @@ export type UserUncheckedUpdateWithoutProposalsResponsibleInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -6027,6 +6098,7 @@ export type UserUpdateWithoutProposalsCreatedInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -6100,6 +6172,7 @@ export type UserUncheckedUpdateWithoutProposalsCreatedInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -6182,6 +6255,7 @@ export type UserUpdateWithoutProposalsUploadedInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -6255,6 +6329,7 @@ export type UserUncheckedUpdateWithoutProposalsUploadedInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -6326,6 +6401,7 @@ export type UserCreateWithoutTasksResponsibleInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -6399,6 +6475,7 @@ export type UserUncheckedCreateWithoutTasksResponsibleInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -6475,6 +6552,7 @@ export type UserCreateWithoutTasksCreatedInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -6548,6 +6626,7 @@ export type UserUncheckedCreateWithoutTasksCreatedInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -6635,6 +6714,7 @@ export type UserUpdateWithoutTasksResponsibleInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -6708,6 +6788,7 @@ export type UserUncheckedUpdateWithoutTasksResponsibleInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -6790,6 +6871,7 @@ export type UserUpdateWithoutTasksCreatedInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -6863,6 +6945,7 @@ export type UserUncheckedUpdateWithoutTasksCreatedInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -6934,6 +7017,7 @@ export type UserCreateWithoutAuditLogsInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -7007,6 +7091,7 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -7094,6 +7179,7 @@ export type UserUpdateWithoutAuditLogsInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -7167,6 +7253,7 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -7238,6 +7325,7 @@ export type UserCreateWithoutCrmViolationsResponsibleInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -7311,6 +7399,7 @@ export type UserUncheckedCreateWithoutCrmViolationsResponsibleInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -7387,6 +7476,7 @@ export type UserCreateWithoutCrmViolationsResolvedInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -7460,6 +7550,7 @@ export type UserUncheckedCreateWithoutCrmViolationsResolvedInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -7547,6 +7638,7 @@ export type UserUpdateWithoutCrmViolationsResponsibleInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -7620,6 +7712,7 @@ export type UserUncheckedUpdateWithoutCrmViolationsResponsibleInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -7702,6 +7795,7 @@ export type UserUpdateWithoutCrmViolationsResolvedInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -7775,6 +7869,7 @@ export type UserUncheckedUpdateWithoutCrmViolationsResolvedInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -7846,6 +7941,7 @@ export type UserCreateWithoutBonusAgreementsCreatedInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -7919,6 +8015,7 @@ export type UserUncheckedCreateWithoutBonusAgreementsCreatedInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -7995,6 +8092,7 @@ export type UserCreateWithoutBonusAgreementsApprovedInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -8068,6 +8166,7 @@ export type UserUncheckedCreateWithoutBonusAgreementsApprovedInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -8155,6 +8254,7 @@ export type UserUpdateWithoutBonusAgreementsCreatedInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -8228,6 +8328,7 @@ export type UserUncheckedUpdateWithoutBonusAgreementsCreatedInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -8310,6 +8411,7 @@ export type UserUpdateWithoutBonusAgreementsApprovedInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -8383,6 +8485,7 @@ export type UserUncheckedUpdateWithoutBonusAgreementsApprovedInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -8454,6 +8557,7 @@ export type UserCreateWithoutPaymentsCreatedInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -8527,6 +8631,7 @@ export type UserUncheckedCreateWithoutPaymentsCreatedInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -8603,6 +8708,7 @@ export type UserCreateWithoutPaymentsConfirmedInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -8676,6 +8782,7 @@ export type UserUncheckedCreateWithoutPaymentsConfirmedInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -8763,6 +8870,7 @@ export type UserUpdateWithoutPaymentsCreatedInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -8836,6 +8944,7 @@ export type UserUncheckedUpdateWithoutPaymentsCreatedInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -8918,6 +9027,7 @@ export type UserUpdateWithoutPaymentsConfirmedInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -8991,6 +9101,7 @@ export type UserUncheckedUpdateWithoutPaymentsConfirmedInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -9062,6 +9173,7 @@ export type UserCreateWithoutBonusAccrualsCreatedInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -9135,6 +9247,7 @@ export type UserUncheckedCreateWithoutBonusAccrualsCreatedInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -9211,6 +9324,7 @@ export type UserCreateWithoutBonusAccrualsApprovedInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -9284,6 +9398,7 @@ export type UserUncheckedCreateWithoutBonusAccrualsApprovedInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -9371,6 +9486,7 @@ export type UserUpdateWithoutBonusAccrualsCreatedInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -9444,6 +9560,7 @@ export type UserUncheckedUpdateWithoutBonusAccrualsCreatedInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -9526,6 +9643,7 @@ export type UserUpdateWithoutBonusAccrualsApprovedInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -9599,6 +9717,7 @@ export type UserUncheckedUpdateWithoutBonusAccrualsApprovedInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -9670,6 +9789,7 @@ export type UserCreateWithoutBonusPayoutsCreatedInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -9743,6 +9863,7 @@ export type UserUncheckedCreateWithoutBonusPayoutsCreatedInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -9819,6 +9940,7 @@ export type UserCreateWithoutBonusPayoutsApprovedInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -9892,6 +10014,7 @@ export type UserUncheckedCreateWithoutBonusPayoutsApprovedInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -9968,6 +10091,7 @@ export type UserCreateWithoutBonusPayoutsPaidInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -10041,6 +10165,7 @@ export type UserUncheckedCreateWithoutBonusPayoutsPaidInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -10128,6 +10253,7 @@ export type UserUpdateWithoutBonusPayoutsCreatedInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -10201,6 +10327,7 @@ export type UserUncheckedUpdateWithoutBonusPayoutsCreatedInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -10283,6 +10410,7 @@ export type UserUpdateWithoutBonusPayoutsApprovedInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -10356,6 +10484,7 @@ export type UserUncheckedUpdateWithoutBonusPayoutsApprovedInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -10438,6 +10567,7 @@ export type UserUpdateWithoutBonusPayoutsPaidInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -10511,6 +10641,7 @@ export type UserUncheckedUpdateWithoutBonusPayoutsPaidInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -10582,6 +10713,7 @@ export type UserCreateWithoutBonusAdjustmentsCreatedInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -10655,6 +10787,7 @@ export type UserUncheckedCreateWithoutBonusAdjustmentsCreatedInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -10731,6 +10864,7 @@ export type UserCreateWithoutBonusAdjustmentsApprovedInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -10804,6 +10938,7 @@ export type UserUncheckedCreateWithoutBonusAdjustmentsApprovedInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -10891,6 +11026,7 @@ export type UserUpdateWithoutBonusAdjustmentsCreatedInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -10964,6 +11100,7 @@ export type UserUncheckedUpdateWithoutBonusAdjustmentsCreatedInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -11046,6 +11183,7 @@ export type UserUpdateWithoutBonusAdjustmentsApprovedInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -11119,6 +11257,7 @@ export type UserUncheckedUpdateWithoutBonusAdjustmentsApprovedInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -11190,6 +11329,7 @@ export type UserCreateWithoutEmployeeProfileInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -11263,6 +11403,7 @@ export type UserUncheckedCreateWithoutEmployeeProfileInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -11350,6 +11491,7 @@ export type UserUpdateWithoutEmployeeProfileInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -11423,6 +11565,7 @@ export type UserUncheckedUpdateWithoutEmployeeProfileInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -11494,6 +11637,7 @@ export type UserCreateWithoutSchedulePlansCreatedInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -11567,6 +11711,7 @@ export type UserUncheckedCreateWithoutSchedulePlansCreatedInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -11643,6 +11788,7 @@ export type UserCreateWithoutSchedulePlansSubmittedInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -11716,6 +11862,7 @@ export type UserUncheckedCreateWithoutSchedulePlansSubmittedInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -11792,6 +11939,7 @@ export type UserCreateWithoutSchedulePlansApprovedInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -11865,6 +12013,7 @@ export type UserUncheckedCreateWithoutSchedulePlansApprovedInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -11941,6 +12090,7 @@ export type UserCreateWithoutSchedulePlansReturnedInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -12014,6 +12164,7 @@ export type UserUncheckedCreateWithoutSchedulePlansReturnedInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -12101,6 +12252,7 @@ export type UserUpdateWithoutSchedulePlansCreatedInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -12174,6 +12326,7 @@ export type UserUncheckedUpdateWithoutSchedulePlansCreatedInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -12256,6 +12409,7 @@ export type UserUpdateWithoutSchedulePlansSubmittedInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -12329,6 +12483,7 @@ export type UserUncheckedUpdateWithoutSchedulePlansSubmittedInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -12411,6 +12566,7 @@ export type UserUpdateWithoutSchedulePlansApprovedInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -12484,6 +12640,7 @@ export type UserUncheckedUpdateWithoutSchedulePlansApprovedInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -12566,6 +12723,7 @@ export type UserUpdateWithoutSchedulePlansReturnedInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -12639,6 +12797,7 @@ export type UserUncheckedUpdateWithoutSchedulePlansReturnedInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -12710,6 +12869,7 @@ export type UserCreateWithoutSchedulePlanCellsInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -12783,6 +12943,7 @@ export type UserUncheckedCreateWithoutSchedulePlanCellsInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -12870,6 +13031,7 @@ export type UserUpdateWithoutSchedulePlanCellsInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -12943,6 +13105,7 @@ export type UserUncheckedUpdateWithoutSchedulePlanCellsInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -13014,6 +13177,7 @@ export type UserCreateWithoutSchedulePlanApprovalLogsInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -13087,6 +13251,7 @@ export type UserUncheckedCreateWithoutSchedulePlanApprovalLogsInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -13174,6 +13339,7 @@ export type UserUpdateWithoutSchedulePlanApprovalLogsInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -13247,6 +13413,7 @@ export type UserUncheckedUpdateWithoutSchedulePlanApprovalLogsInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -13318,6 +13485,7 @@ export type UserCreateWithoutWorkShiftsCreatedInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -13391,6 +13559,7 @@ export type UserUncheckedCreateWithoutWorkShiftsCreatedInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -13478,6 +13647,7 @@ export type UserUpdateWithoutWorkShiftsCreatedInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -13551,6 +13721,7 @@ export type UserUncheckedUpdateWithoutWorkShiftsCreatedInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -13622,6 +13793,7 @@ export type UserCreateWithoutScheduleDayStatusesInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -13695,6 +13867,7 @@ export type UserUncheckedCreateWithoutScheduleDayStatusesInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -13782,6 +13955,7 @@ export type UserUpdateWithoutScheduleDayStatusesInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -13855,6 +14029,7 @@ export type UserUncheckedUpdateWithoutScheduleDayStatusesInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -13926,6 +14101,7 @@ export type UserCreateWithoutEmployeeDevicesApprovedInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -13999,6 +14175,7 @@ export type UserUncheckedCreateWithoutEmployeeDevicesApprovedInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -14075,6 +14252,7 @@ export type UserCreateWithoutEmployeeDevicesBlockedInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -14148,6 +14326,7 @@ export type UserUncheckedCreateWithoutEmployeeDevicesBlockedInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -14235,6 +14414,7 @@ export type UserUpdateWithoutEmployeeDevicesApprovedInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -14308,6 +14488,7 @@ export type UserUncheckedUpdateWithoutEmployeeDevicesApprovedInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -14390,6 +14571,7 @@ export type UserUpdateWithoutEmployeeDevicesBlockedInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -14463,6 +14645,7 @@ export type UserUncheckedUpdateWithoutEmployeeDevicesBlockedInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -14534,6 +14717,7 @@ export type UserCreateWithoutLocationDisplayDevicesApprovedInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -14607,6 +14791,7 @@ export type UserUncheckedCreateWithoutLocationDisplayDevicesApprovedInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -14683,6 +14868,7 @@ export type UserCreateWithoutLocationDisplayDevicesRevokedInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -14756,6 +14942,7 @@ export type UserUncheckedCreateWithoutLocationDisplayDevicesRevokedInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -14843,6 +15030,7 @@ export type UserUpdateWithoutLocationDisplayDevicesApprovedInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -14916,6 +15104,7 @@ export type UserUncheckedUpdateWithoutLocationDisplayDevicesApprovedInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -14998,6 +15187,7 @@ export type UserUpdateWithoutLocationDisplayDevicesRevokedInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -15071,6 +15261,7 @@ export type UserUncheckedUpdateWithoutLocationDisplayDevicesRevokedInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -15142,6 +15333,7 @@ export type UserCreateWithoutDisplaySetupTokensCreatedInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -15215,6 +15407,7 @@ export type UserUncheckedCreateWithoutDisplaySetupTokensCreatedInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -15302,6 +15495,7 @@ export type UserUpdateWithoutDisplaySetupTokensCreatedInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -15375,6 +15569,7 @@ export type UserUncheckedUpdateWithoutDisplaySetupTokensCreatedInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -15446,6 +15641,7 @@ export type UserCreateWithoutTimeEventsInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -15519,6 +15715,7 @@ export type UserUncheckedCreateWithoutTimeEventsInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -15595,6 +15792,7 @@ export type UserCreateWithoutTimeEventsReviewedInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -15668,6 +15866,7 @@ export type UserUncheckedCreateWithoutTimeEventsReviewedInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -15755,6 +15954,7 @@ export type UserUpdateWithoutTimeEventsInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -15828,6 +16028,7 @@ export type UserUncheckedUpdateWithoutTimeEventsInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -15910,6 +16111,7 @@ export type UserUpdateWithoutTimeEventsReviewedInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -15983,6 +16185,7 @@ export type UserUncheckedUpdateWithoutTimeEventsReviewedInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -16054,6 +16257,7 @@ export type UserCreateWithoutTimesheetDaysInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -16127,6 +16331,7 @@ export type UserUncheckedCreateWithoutTimesheetDaysInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -16214,6 +16419,7 @@ export type UserUpdateWithoutTimesheetDaysInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -16287,6 +16493,7 @@ export type UserUncheckedUpdateWithoutTimesheetDaysInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -16358,6 +16565,7 @@ export type UserCreateWithoutTimeAdjustmentRequestsInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -16431,6 +16639,7 @@ export type UserUncheckedCreateWithoutTimeAdjustmentRequestsInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -16507,6 +16716,7 @@ export type UserCreateWithoutTimeAdjustmentRequestsReviewedInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -16580,6 +16790,7 @@ export type UserUncheckedCreateWithoutTimeAdjustmentRequestsReviewedInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -16667,6 +16878,7 @@ export type UserUpdateWithoutTimeAdjustmentRequestsInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -16740,6 +16952,7 @@ export type UserUncheckedUpdateWithoutTimeAdjustmentRequestsInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -16822,6 +17035,7 @@ export type UserUpdateWithoutTimeAdjustmentRequestsReviewedInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -16895,6 +17109,7 @@ export type UserUncheckedUpdateWithoutTimeAdjustmentRequestsReviewedInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -16966,6 +17181,7 @@ export type UserCreateWithoutSecurityLogsInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -17039,6 +17255,7 @@ export type UserUncheckedCreateWithoutSecurityLogsInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -17126,6 +17343,7 @@ export type UserUpdateWithoutSecurityLogsInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -17199,6 +17417,7 @@ export type UserUncheckedUpdateWithoutSecurityLogsInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -17270,6 +17489,7 @@ export type UserCreateWithoutEmailVerificationTokensInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -17343,6 +17563,7 @@ export type UserUncheckedCreateWithoutEmailVerificationTokensInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -17430,6 +17651,7 @@ export type UserUpdateWithoutEmailVerificationTokensInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -17503,6 +17725,7 @@ export type UserUncheckedUpdateWithoutEmailVerificationTokensInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -17574,6 +17797,7 @@ export type UserCreateWithoutPasswordResetTokensInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -17647,6 +17871,7 @@ export type UserUncheckedCreateWithoutPasswordResetTokensInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -17734,6 +17959,7 @@ export type UserUpdateWithoutPasswordResetTokensInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -17807,6 +18033,7 @@ export type UserUncheckedUpdateWithoutPasswordResetTokensInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -17878,6 +18105,7 @@ export type UserCreateWithoutInvitationsSentInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientCreateNestedManyWithoutResponsibleInput
@@ -17951,6 +18179,7 @@ export type UserUncheckedCreateWithoutInvitationsSentInput = {
   deactivatedAt?: Date | string | null
   deactivatedById?: string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   clientsResponsible?: Prisma.ClientUncheckedCreateNestedManyWithoutResponsibleInput
@@ -18038,6 +18267,7 @@ export type UserUpdateWithoutInvitationsSentInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -18111,6 +18341,7 @@ export type UserUncheckedUpdateWithoutInvitationsSentInput = {
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -18182,6 +18413,7 @@ export type UserCreateManyDeactivatedByInput = {
   lockedUntil?: Date | string | null
   deactivatedAt?: Date | string | null
   confidentialityAcceptedAt?: Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -18201,6 +18433,7 @@ export type UserUpdateWithoutDeactivatedByInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUpdateManyWithoutResponsibleNestedInput
@@ -18273,6 +18506,7 @@ export type UserUncheckedUpdateWithoutDeactivatedByInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   clientsResponsible?: Prisma.ClientUncheckedUpdateManyWithoutResponsibleNestedInput
@@ -18345,6 +18579,7 @@ export type UserUncheckedUpdateManyWithoutDeactivatedByInput = {
   lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deactivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confidentialityAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  profileSettings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -18855,6 +19090,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   deactivatedAt?: boolean
   deactivatedById?: boolean
   confidentialityAcceptedAt?: boolean
+  profileSettings?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   clientsResponsible?: boolean | Prisma.User$clientsResponsibleArgs<ExtArgs>
@@ -18930,6 +19166,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   deactivatedAt?: boolean
   deactivatedById?: boolean
   confidentialityAcceptedAt?: boolean
+  profileSettings?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   deactivatedBy?: boolean | Prisma.User$deactivatedByArgs<ExtArgs>
@@ -18951,6 +19188,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   deactivatedAt?: boolean
   deactivatedById?: boolean
   confidentialityAcceptedAt?: boolean
+  profileSettings?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   deactivatedBy?: boolean | Prisma.User$deactivatedByArgs<ExtArgs>
@@ -18972,11 +19210,12 @@ export type UserSelectScalar = {
   deactivatedAt?: boolean
   deactivatedById?: boolean
   confidentialityAcceptedAt?: boolean
+  profileSettings?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "passwordHash" | "authProviderId" | "role" | "isActive" | "emailVerifiedAt" | "lastLoginAt" | "lastPasswordChangeAt" | "failedLoginAttempts" | "lockedUntil" | "deactivatedAt" | "deactivatedById" | "confidentialityAcceptedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "passwordHash" | "authProviderId" | "role" | "isActive" | "emailVerifiedAt" | "lastLoginAt" | "lastPasswordChangeAt" | "failedLoginAttempts" | "lockedUntil" | "deactivatedAt" | "deactivatedById" | "confidentialityAcceptedAt" | "profileSettings" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   clientsResponsible?: boolean | Prisma.User$clientsResponsibleArgs<ExtArgs>
   clientsCreated?: boolean | Prisma.User$clientsCreatedArgs<ExtArgs>
@@ -19115,6 +19354,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     deactivatedAt: Date | null
     deactivatedById: string | null
     confidentialityAcceptedAt: Date | null
+    profileSettings: runtime.JsonValue
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["user"]>
@@ -19609,6 +19849,7 @@ export interface UserFieldRefs {
   readonly deactivatedAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly deactivatedById: Prisma.FieldRef<"User", 'String'>
   readonly confidentialityAcceptedAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly profileSettings: Prisma.FieldRef<"User", 'Json'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }

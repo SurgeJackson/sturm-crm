@@ -1,47 +1,29 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/auth/get-current-user";
-import { DealPipelineCard } from "@/components/crm/pipeline/deal-pipeline-card";
-import { PipelineBoard } from "@/components/crm/pipeline-board";
+import { DealPipelineBoard } from "@/components/crm/pipeline/deal-pipeline-board";
 import { PageHeader } from "@/components/layout/page-header";
 import { PageNoticeStack } from "@/components/layout/page-notice";
 import { Button } from "@/components/ui/button";
-import { dealStageLabels } from "@/lib/constants";
+import { prisma } from "@/lib/prisma";
+import { getPipelinePreference } from "@/lib/pipeline-preferences";
+import { dealStages } from "@/modules/deals/form";
 import { getDealPipeline } from "@/modules/deals/queries";
 
 type DealPipelinePageProps = {
   searchParams: Promise<{ saved?: string; error?: string }>;
 };
 
-const stageOrder = [
-  "NEW_REQUEST",
-  "QUALIFICATION",
-  "SELECTION",
-  "PROPOSAL_IN_PROGRESS",
-  "PROPOSAL_SENT",
-  "WAITING_DECISION",
-  "NEGOTIATION",
-  "INVOICE_OR_ORDER",
-  "PAID",
-  "IN_DELIVERY",
-  "COMPLETED",
-  "LOST"
-] as const;
-
 export default async function DealPipelinePage({ searchParams }: DealPipelinePageProps) {
   const user = await getCurrentUser();
   if (!user) redirect("/login");
 
   const query = await searchParams;
-  const deals = await getDealPipeline(user);
-  const grouped = Object.fromEntries(stageOrder.map((stage) => [stage, deals.filter((deal) => deal.stage === stage)]));
-  const columns = stageOrder.map((stage) => ({
-    id: stage,
-    title: dealStageLabels[stage],
-    items: grouped[stage],
-    emptyText: "Нет сделок.",
-    renderItem: (deal: (typeof deals)[number]) => <DealPipelineCard key={deal.id} deal={deal} />
-  }));
+  const [deals, settings] = await Promise.all([
+    getDealPipeline(user),
+    prisma.user.findUnique({ where: { id: user.id }, select: { profileSettings: true } })
+  ]);
+  const pipelinePreference = getPipelinePreference(settings?.profileSettings, "deals", dealStages);
 
   return (
     <div className="space-y-6">
@@ -64,7 +46,7 @@ export default async function DealPipelinePage({ searchParams }: DealPipelinePag
         ]}
       />
 
-      <PipelineBoard columns={columns} />
+      <DealPipelineBoard deals={deals} now={new Date().toISOString()} initialPreference={pipelinePreference} />
     </div>
   );
 }
