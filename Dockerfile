@@ -19,6 +19,7 @@ ENV NEXTAUTH_SECRET=build-time-placeholder
 ENV APP_URL=http://localhost:3000
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+RUN mkdir -p public/uploads/proposals
 RUN npm run prisma:generate
 RUN npm run build
 
