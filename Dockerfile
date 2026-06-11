@@ -42,7 +42,14 @@ COPY --chown=nextjs:nodejs --from=builder /app/public ./public
 COPY --chown=nextjs:nodejs --from=builder /app/prisma ./prisma
 COPY --chown=nextjs:nodejs --from=builder /app/prisma.config.ts ./prisma.config.ts
 COPY --chown=nextjs:nodejs --from=builder /app/package.json ./package.json
+COPY --chown=nextjs:nodejs --from=builder /app/tsconfig.json ./tsconfig.json
 COPY --chown=nextjs:nodejs --from=builder /app/generated ./generated
+COPY --chown=nextjs:nodejs --from=builder /app/lib/audit-log.ts ./lib/audit-log.ts
+COPY --chown=nextjs:nodejs --from=builder /app/lib/prisma.ts ./lib/prisma.ts
+COPY --chown=nextjs:nodejs --from=builder /app/modules/admin/permissions.ts ./modules/admin/permissions.ts
+COPY --chown=nextjs:nodejs --from=builder /app/modules/crm/domain-constants.ts ./modules/crm/domain-constants.ts
+COPY --chown=nextjs:nodejs --from=builder /app/modules/crm/form-utils.ts ./modules/crm/form-utils.ts
+COPY --chown=nextjs:nodejs --from=builder /app/modules/crm-discipline ./modules/crm-discipline
 COPY --chown=nextjs:nodejs docker-entrypoint.sh ./docker-entrypoint.sh
 
 RUN mkdir -p public/uploads/proposals \
