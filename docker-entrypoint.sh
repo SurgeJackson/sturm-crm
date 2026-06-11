@@ -3,7 +3,7 @@ set -eu
 
 if [ "${RESET_DATABASE:-false}" = "true" ]; then
   echo "RESET_DATABASE=true: resetting database and applying migrations. Existing data will be deleted."
-  ./node_modules/.bin/prisma migrate reset --force --skip-seed
+  ./node_modules/.bin/prisma migrate reset --force
 elif [ "${SKIP_MIGRATIONS:-false}" != "true" ]; then
   ./node_modules/.bin/prisma migrate deploy
 fi
